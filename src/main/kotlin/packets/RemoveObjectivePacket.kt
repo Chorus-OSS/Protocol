@@ -1,0 +1,22 @@
+package org.chorus_oss.protocol.packets
+
+
+import org.chorus_oss.protocol.ProtocolInfo
+
+
+class RemoveObjectivePacket : DataPacket() {
+    @JvmField
+    var objectiveName: String? = null
+
+    override fun encode(byteBuf: ByteBuf) {
+        byteBuf.writeString(objectiveName!!)
+    }
+
+    override fun pid(): Int {
+        return ProtocolInfo.REMOVE_OBJECTIVE_PACKET
+    }
+
+    override fun handle(handler: PacketHandler) {
+        handler.handle(this)
+    }
+}
