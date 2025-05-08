@@ -27,6 +27,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.io)
+                implementation(libs.semver)
             }
         }
 

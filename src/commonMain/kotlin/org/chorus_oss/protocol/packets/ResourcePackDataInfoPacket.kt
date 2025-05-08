@@ -8,9 +8,6 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.utils.Version
-
-import java.util.*
 
 class ResourcePackDataInfoPacket(
     val resourceName: String,

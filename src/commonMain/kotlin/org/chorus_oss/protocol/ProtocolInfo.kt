@@ -1,6 +1,6 @@
 package org.chorus_oss.protocol
 
-import org.chorus_oss.chorus.utils.SemVersion
+import net.swiftzer.semver.SemVer
 
 interface ProtocolInfo {
     companion object {
@@ -9,10 +9,9 @@ interface ProtocolInfo {
         const val GAME_VERSION_NET = "1.21.80"
         const val GAME_VERSION_STR = "v$GAME_VERSION_NET"
 
-        val GAME_VERSION = SemVersion(1, 21, 8, 0, 0)
+        val GAME_VERSION = SemVer(1, 21, 80)
 
-        val BLOCK_STATE_VERSION_NO_REVISION =
-            (GAME_VERSION.major shl 24) or (GAME_VERSION.minor shl 16) or (GAME_VERSION.patch shl 8)
+        val BLOCK_STATE_VERSION_NO_REVISION = (GAME_VERSION.major shl 24) or (GAME_VERSION.minor shl 16) or (GAME_VERSION.patch shl 8)
 
         const val LOGIN_PACKET = 1
         const val PLAY_STATUS_PACKET = 2
