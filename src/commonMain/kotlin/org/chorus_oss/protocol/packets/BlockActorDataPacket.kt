@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.BlockVector3
-import org.chorus_oss.chorus.nbt.NBTIO
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import java.nio.ByteOrder

@@ -21,9 +21,9 @@ data class AddPlayerPacket(
     val carriedItem: Item,
     val playerGameType: Int,
     val entityDataMap: EntityDataMap,
-    val syncedProperties: PropertySyncData,
+    val syncedProperties: ActorProperties,
     val abilitiesData: SerializedAbilitiesData,
-    val actorLinks: List<EntityLink>,
+    val actorLinks: List<ActorLink>,
     val deviceID: String,
     val buildPlatform: Platform,
 ) : DataPacket(), PacketEncoder {

@@ -1,12 +1,12 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.types.EntityLink
+import org.chorus_oss.protocol.types.ActorLink
 
 class SetEntityLinkPacket : DataPacket() {
     var vehicleUniqueId: Long = 0 //from
     var riderUniqueId: Long = 0 //to
-    var type: EntityLink.Type? = null
+    var type: ActorLink.Type? = null
     var immediate: Byte = 0
     var riderInitiated: Boolean = false
     var vehicleAngularVelocity: Float = 0f

@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 import io.netty.handler.codec.EncoderException
-import org.chorus_oss.chorus.nbt.NBTIO.writeValue
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import java.io.IOException

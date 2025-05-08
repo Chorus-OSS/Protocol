@@ -4,8 +4,6 @@ import io.netty.buffer.ByteBufInputStream
 import io.netty.handler.codec.EncoderException
 import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.chorus.math.Vector3
-import org.chorus_oss.chorus.nbt.NBTIO.readNetworkCompressed
-import org.chorus_oss.chorus.nbt.NBTIO.writeNetwork
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 import org.chorus_oss.chorus.nbt.tag.IntTag
 import org.chorus_oss.chorus.nbt.tag.ListTag

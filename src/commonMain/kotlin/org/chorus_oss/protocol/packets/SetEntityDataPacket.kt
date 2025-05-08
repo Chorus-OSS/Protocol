@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.entity.data.EntityDataMap
 
-import org.chorus_oss.protocol.types.PropertySyncData
+import org.chorus_oss.protocol.types.ActorProperties
 import org.chorus_oss.chorus.utils.Binary
 import org.chorus_oss.chorus.utils.Loggable
 
@@ -11,7 +11,7 @@ class SetEntityDataPacket : DataPacket() {
     var eid: Long = 0
 
     var entityData: EntityDataMap = EntityDataMap()
-    var syncedProperties: PropertySyncData = PropertySyncData(intArrayOf(), floatArrayOf())
+    var syncedProperties: ActorProperties = ActorProperties(intArrayOf(), floatArrayOf())
     var frame: Long = 0
 
     override fun encode(byteBuf: ByteBuf) {

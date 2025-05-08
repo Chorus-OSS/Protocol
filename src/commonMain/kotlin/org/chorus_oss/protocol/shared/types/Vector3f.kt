@@ -80,9 +80,9 @@ data class Vector3f(
 
     fun round(): Vector3f {
         return Vector3f(
-            Math.round(this.x).toFloat(), Math.round(this.y).toFloat(), Math.round(
+            kotlin.math.round(this.x), kotlin.math.round(this.y), kotlin.math.round(
                 this.z
-            ).toFloat()
+            )
         )
     }
 

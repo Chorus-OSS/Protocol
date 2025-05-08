@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 
 import io.netty.buffer.ByteBufInputStream
-import org.chorus_oss.chorus.nbt.NBTIO.read
-import org.chorus_oss.chorus.nbt.NBTIO.write
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import org.chorus_oss.chorus.utils.Loggable
