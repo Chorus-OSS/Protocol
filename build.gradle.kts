@@ -12,14 +12,10 @@ repositories {
 
 kotlin {
     jvm()
+    linuxX64()
+    mingwX64()
 
-    // TODO: Support more platforms
-    // js()
-    // wasmJs()
-    // wasmWasi()
-    // linuxX64()
-    // linuxArm64()
-    // mingwX64()
+    // TODO: Add more supported platforms
 
     sourceSets {
         val commonMain by getting {
