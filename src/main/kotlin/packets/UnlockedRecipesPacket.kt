@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class UnlockedRecipesPacket : DataPacket() {
     var unlockedNotification: Boolean = false
     val unlockedRecipes: MutableList<String> = mutableListOf()

@@ -1,9 +1,9 @@
-package org.chorus_oss.protocol.packets
+package packets
 
 import org.chorus_oss.chorus.Server
 import org.chorus_oss.chorus.entity.data.Skin
-
-import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import java.awt.Color
 
 import java.util.*
 
@@ -15,7 +15,7 @@ class PlayerListPacket : DataPacket() {
     @JvmField
     var entries: Array<Entry> = emptyArray()
 
-    override fun encode(byteBuf: ByteBuf) {
+    override fun encode(byteBuf: HandleByteBuf) {
         byteBuf.writeByte(type.toInt())
         byteBuf.writeUnsignedVarInt(entries.size)
 
@@ -32,6 +32,7 @@ class PlayerListPacket : DataPacket() {
                 byteBuf.writeBoolean(entry.isTeacher)
                 byteBuf.writeBoolean(entry.isHost)
                 byteBuf.writeBoolean(entry.subClient)
+                byteBuf.writeIntLE(entry.color.rgb)
             }
 
             for (entry in this.entries) {
@@ -60,6 +61,7 @@ class PlayerListPacket : DataPacket() {
         var isHost: Boolean = false
         var subClient: Boolean = false
         var trustedSkin: Boolean = false
+        var color: Color = Color.WHITE
 
         constructor(uuid: UUID) {
             this.uuid = uuid

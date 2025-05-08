@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class RespawnPacket : DataPacket() {
     @JvmField
     var x: Float = 0f

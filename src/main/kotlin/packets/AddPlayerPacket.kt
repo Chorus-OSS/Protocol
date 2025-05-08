@@ -7,7 +7,6 @@ import org.chorus_oss.chorus.math.Vector3f
 
 import org.chorus_oss.protocol.types.*
 import org.chorus_oss.chorus.utils.Binary
-import org.chorus_oss.protocol.ProtocolInfo
 import java.util.*
 
 data class AddPlayerPacket(

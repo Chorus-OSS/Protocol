@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.CodeBuilderCategoryType
 import org.chorus_oss.protocol.types.CodeBuilderCodeStatus
 import org.chorus_oss.protocol.types.CodeBuilderOperationType

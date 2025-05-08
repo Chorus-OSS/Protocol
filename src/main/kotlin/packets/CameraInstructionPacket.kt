@@ -8,7 +8,6 @@ import org.chorus_oss.chorus.camera.instruction.impl.FadeInstruction
 import org.chorus_oss.chorus.camera.instruction.impl.SetInstruction
 import org.chorus_oss.chorus.camera.instruction.impl.TargetInstruction
 
-import org.chorus_oss.protocol.ProtocolInfo
 import java.awt.Color
 
 data class CameraInstructionPacket(

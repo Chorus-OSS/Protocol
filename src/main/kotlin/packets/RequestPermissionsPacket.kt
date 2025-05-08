@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.Player
 import org.chorus_oss.chorus.Server
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.PlayerAbility
 import org.chorus_oss.protocol.types.PlayerPermission
 

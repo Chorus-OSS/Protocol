@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.LegacySetItemSlotData
 import org.chorus_oss.protocol.types.inventory.transaction.*
 import org.chorus_oss.protocol.types.inventory.transaction.UseItemData.PredictedResult

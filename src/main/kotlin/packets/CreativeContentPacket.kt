@@ -4,7 +4,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.inventory.creative.CreativeItemData
 import org.chorus_oss.protocol.types.inventory.creative.CreativeItemGroup
 import org.chorus_oss.chorus.registry.CreativeItemRegistry
-import org.chorus_oss.protocol.ProtocolInfo
 
 data class CreativeContentPacket(
     val groups: List<CreativeItemGroup> = CreativeItemRegistry.creativeGroups.toList(),

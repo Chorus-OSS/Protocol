@@ -77,8 +77,6 @@ interface PacketHandler {
 
     fun handle(pk: CompletedUsingItemPacket) {}
 
-    fun handle(pk: CompressedBiomeDefinitionListPacket) {}
-
     fun handle(pk: ContainerClosePacket) {}
 
     fun handle(pk: ContainerOpenPacket) {}
@@ -203,8 +201,6 @@ interface PacketHandler {
 
     fun handle(pk: PlayerHotbarPacket) {}
 
-    fun handle(pk: PlayerInputPacket) {}
-
     fun handle(pk: PlayerListPacket) {}
 
     fun handle(pk: PlayerSkinPacket) {}
@@ -242,8 +238,6 @@ interface PacketHandler {
     fun handle(pk: ResourcePacksInfoPacket) {}
 
     fun handle(pk: RespawnPacket) {}
-
-    fun handle(pk: RiderJumpPacket) {}
 
     fun handle(pk: ScriptMessagePacket) {}
 

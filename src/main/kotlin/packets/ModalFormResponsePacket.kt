@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class ModalFormResponsePacket : DataPacket() {
     var formId: Int = 0
     var data: String = "null"

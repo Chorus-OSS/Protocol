@@ -3,8 +3,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 data class AddVolumeEntityPacket(
     val entityNetworkID: Int,
     val components: CompoundTag,

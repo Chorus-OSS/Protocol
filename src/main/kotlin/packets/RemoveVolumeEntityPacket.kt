@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class RemoveVolumeEntityPacket : DataPacket() {
     var id: Long = 0
 

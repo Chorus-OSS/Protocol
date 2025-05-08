@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 
 import org.chorus_oss.protocol.utils.Version
-import org.chorus_oss.protocol.ProtocolInfo
 
 import java.util.*
 

@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class RemoveEntityPacket : DataPacket() {
     @JvmField
     var eid: Long = 0

@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class DebugInfoPacket : DataPacket() {
     var entityId: Long = 0
     var data: String? = null

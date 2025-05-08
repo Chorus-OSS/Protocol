@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 class UpdateEquipmentPacket : DataPacket() {
     var windowId: Int = 0
     var windowType: Int = 0

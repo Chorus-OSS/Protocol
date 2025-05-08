@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 class DimensionDataPacket : DataPacket() {
     override fun encode(byteBuf: ByteBuf) {
         // TODO

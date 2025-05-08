@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.chorus.math.Vector3
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.Rotation
 import java.awt.Color

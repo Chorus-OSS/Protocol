@@ -1,9 +1,8 @@
-package org.chorus_oss.protocol.packets
+package org.chorus_oss.chorus.network.protocol
 
-
-import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import org.chorus_oss.chorus.network.protocol.types.ActorUniqueID
 import org.chorus_oss.chorus.utils.Utils
-import org.chorus_oss.protocol.ProtocolInfo
 
 open class LevelSoundEventPacket : DataPacket() {
     var sound: Int = 0
@@ -16,7 +15,7 @@ open class LevelSoundEventPacket : DataPacket() {
     var isGlobal: Boolean = false
     var entityUniqueID: ActorUniqueID = 0
 
-    override fun encode(byteBuf: ByteBuf) {
+    override fun encode(byteBuf: HandleByteBuf) {
         byteBuf.writeUnsignedVarInt(this.sound)
         byteBuf.writeVector3f(this.x, this.y, this.z)
         byteBuf.writeVarInt(this.extraData)
@@ -27,7 +26,7 @@ open class LevelSoundEventPacket : DataPacket() {
     }
 
     override fun pid(): Int {
-        return ProtocolInfo.LEVEL_SOUND_EVENT_PACKET
+        return ProtocolInfo.Companion.LEVEL_SOUND_EVENT_PACKET
     }
 
     override fun handle(handler: PacketHandler) {
@@ -35,7 +34,7 @@ open class LevelSoundEventPacket : DataPacket() {
     }
 
     companion object : PacketDecoder<LevelSoundEventPacket> {
-        override fun decode(byteBuf: ByteBuf): LevelSoundEventPacket {
+        override fun decode(byteBuf: HandleByteBuf): LevelSoundEventPacket {
             val packet = LevelSoundEventPacket()
 
             packet.sound = byteBuf.readUnsignedVarInt()
@@ -50,6 +49,8 @@ open class LevelSoundEventPacket : DataPacket() {
 
             return packet
         }
+
+        // TODO: Turn into enum...
 
         val SOUND_ITEM_USE_ON: Int = Utils.dynamic(0)
         val SOUND_HIT: Int = Utils.dynamic(1)
@@ -600,8 +601,29 @@ open class LevelSoundEventPacket : DataPacket() {
         val SOUND_RECORD_CREATOR_MUSIC_BOX: Int = Utils.dynamic(528)
         val SOUND_RECORD_PRECIPICE: Int = Utils.dynamic(529)
         val SOUND_VAULT_REJECT_REWARDED_PLAYER: Int = Utils.dynamic(530)
-        val IMITATE_ENDERMITE: Int = Utils.dynamic(531)
-        val BUNDLE_INSERT_FAIL: Int = Utils.dynamic(532)
-        val IMITATE_DROWNED: Int = Utils.dynamic(533)
+        val IMITATE_DROWNED: Int = Utils.dynamic(531)
+        val IMITATE_CREAKING: Int = Utils.dynamic(532)
+        val BUNDLE_INSERT_FAIL: Int = Utils.dynamic(533)
+        val SPONGE_ABSORB: Int = Utils.dynamic(534)
+        val BLOCK_CREAKING_HEART_TRAIL: Int = Utils.dynamic(536)
+        val CREAKING_HEART_SPAWN: Int = Utils.dynamic(537)
+        val ACTIVATE: Int = Utils.dynamic(538)
+        val DEACTIVATE: Int = Utils.dynamic(539)
+        val FREEZE: Int = Utils.dynamic(540)
+        val UNFREEZE: Int = Utils.dynamic(541)
+        val OPEN: Int = Utils.dynamic(542)
+        val OPEN_LONG: Int = Utils.dynamic(543)
+        val CLOSE: Int = Utils.dynamic(544)
+        val CLOSE_LONG: Int = Utils.dynamic(545)
+        val IMITATE_PHANTOM: Int = Utils.dynamic(546)
+        val IMITATE_ZOGLIN: Int = Utils.dynamic(547)
+        val IMITATE_GUARDIAN: Int = Utils.dynamic(548)
+        val IMITATE_RAVAGER: Int = Utils.dynamic(549)
+        val IMITATE_PILLAGER: Int = Utils.dynamic(550)
+        val PLACE_IN_WATER: Int = Utils.dynamic(551)
+        val STATE_CHANGE: Int = Utils.dynamic(552)
+        val IMITATE_HAPPY_GHAST: Int = Utils.dynamic(553)
+        val UNEQUIP_GENERIC: Int = Utils.dynamic(554)
+        val UNDEFINED: Int = Utils.dynamic(555)
     }
 }

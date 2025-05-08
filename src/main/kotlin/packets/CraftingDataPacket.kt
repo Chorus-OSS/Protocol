@@ -6,7 +6,6 @@ import org.chorus_oss.protocol.types.RecipeUnlockingRequirement
 import org.chorus_oss.protocol.types.RecipeUnlockingRequirement.UnlockingContext
 import org.chorus_oss.chorus.recipe.*
 import org.chorus_oss.chorus.recipe.descriptor.DefaultDescriptor
-import org.chorus_oss.protocol.ProtocolInfo
 
 import java.util.*
 

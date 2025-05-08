@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.item.Item
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 
 class MobEquipmentPacket : DataPacket() {
     var eid: Long = 0

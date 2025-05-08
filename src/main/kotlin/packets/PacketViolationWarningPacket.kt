@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 
 import org.chorus_oss.chorus.utils.MainLogger
-import org.chorus_oss.protocol.ProtocolInfo
 
 
 class PacketViolationWarningPacket : DataPacket() {

@@ -1,15 +1,13 @@
-package org.chorus_oss.protocol
-
 import org.chorus_oss.chorus.utils.SemVersion
 
 interface ProtocolInfo {
     companion object {
-        const val PROTOCOL_VERSION = 786
+        const val PROTOCOL_VERSION = 800
 
-        const val GAME_VERSION_NET = "1.21.70"
+        const val GAME_VERSION_NET = "1.21.80"
         const val GAME_VERSION_STR = "v$GAME_VERSION_NET"
 
-        val GAME_VERSION = SemVersion(1, 21, 7, 0, 0)
+        val GAME_VERSION = SemVersion(1, 21, 8, 0, 0)
 
         val BLOCK_STATE_VERSION_NO_REVISION =
             (GAME_VERSION.major shl 24) or (GAME_VERSION.minor shl 16) or (GAME_VERSION.patch shl 8)
@@ -33,7 +31,7 @@ interface ProtocolInfo {
         const val TAKE_ITEM_ENTITY_PACKET = 17
         const val MOVE_ENTITY_ABSOLUTE_PACKET = 18
         const val MOVE_PLAYER_PACKET = 19
-        const val RIDER_JUMP_PACKET = 20
+        // UNUSED                                           = 20
         const val UPDATE_BLOCK_PACKET = 21
         const val ADD_PAINTING_PACKET = 22
 
@@ -74,7 +72,7 @@ interface ProtocolInfo {
 
         // UNUSED                                           = 55
         const val BLOCK_ACTOR_DATA_PACKET = 56
-        const val PLAYER_INPUT_PACKET = 57
+        // UNUSED                                           = 57
         const val LEVEL_CHUNK_PACKET = 58
         const val SET_COMMANDS_ENABLED_PACKET = 59
         const val SET_DIFFICULTY_PACKET = 60
@@ -231,7 +229,7 @@ interface ProtocolInfo {
         // UNUSED                                           = ...
         // UNUSED                                           = 299
         const val CAMERA_INSTRUCTION_PACKET = 300
-        const val COMPRESSED_BIOME_DEFINITIONS_LIST = 301
+        // UNUSED                                           = 301
         const val TRIM_DATA = 302
         const val OPEN_SIGN = 303
         const val AGENT_ANIMATION = 304
@@ -257,5 +255,7 @@ interface ProtocolInfo {
         const val UPDATE_CLIENT_OPTIONS_PACKET = 323
         const val PLAYER_VIDEO_CAPTURE_PACKET = 324
         const val PLAYER_UPDATE_ENTITY_OVERRIDES_PACKET = 325
+        const val PLAYER_LOCATION_PACKET = 326
+        const val CLIENTBOUND_CONTROL_SCHEME_SET_PACKET = 327
     }
 }

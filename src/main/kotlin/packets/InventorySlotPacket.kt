@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.item.Item
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.inventory.FullContainerName
 import org.chorus_oss.protocol.types.itemstack.ContainerSlotType
 

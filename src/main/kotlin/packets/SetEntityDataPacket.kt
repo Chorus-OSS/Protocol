@@ -5,7 +5,6 @@ import org.chorus_oss.chorus.entity.data.EntityDataMap
 import org.chorus_oss.protocol.types.PropertySyncData
 import org.chorus_oss.chorus.utils.Binary
 import org.chorus_oss.chorus.utils.Loggable
-import org.chorus_oss.protocol.ProtocolInfo
 
 class SetEntityDataPacket : DataPacket() {
     @JvmField

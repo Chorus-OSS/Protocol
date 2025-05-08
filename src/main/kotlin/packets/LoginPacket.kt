@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken
 import org.chorus_oss.chorus.entity.data.Skin
 
 import org.chorus_oss.chorus.utils.*
-import org.chorus_oss.protocol.ProtocolInfo
 import java.nio.charset.StandardCharsets
 import java.util.*
 

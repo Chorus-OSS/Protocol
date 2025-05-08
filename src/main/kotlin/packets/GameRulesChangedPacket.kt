@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.level.GameRules
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 
 class GameRulesChangedPacket : DataPacket() {
     @JvmField

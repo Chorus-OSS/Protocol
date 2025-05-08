@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 data class CodeBuilderPacket(
     val url: String,
     val shouldOpenCodeBuilder: Boolean,

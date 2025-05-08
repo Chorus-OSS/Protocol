@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.entity.Attribute
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 
 class UpdateAttributesPacket : DataPacket() {
     var entries: Array<Attribute> = emptyArray()

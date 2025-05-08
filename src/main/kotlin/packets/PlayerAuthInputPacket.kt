@@ -4,7 +4,6 @@ import org.chorus_oss.chorus.math.Vector2
 import org.chorus_oss.chorus.math.Vector2f
 import org.chorus_oss.chorus.math.Vector3f
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.*
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
 import java.util.*

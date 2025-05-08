@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class GUIDataPickItemPacket : DataPacket() {
     var hotbarSlot: Int = 0
 

@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.BlockVector3
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 
 class LecternUpdatePacket : DataPacket() {
     var page: Int = 0

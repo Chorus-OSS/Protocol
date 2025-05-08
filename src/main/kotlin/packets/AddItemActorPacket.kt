@@ -7,7 +7,6 @@ import org.chorus_oss.chorus.math.Vector3f
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.chorus.utils.Binary
-import org.chorus_oss.protocol.ProtocolInfo
 
 data class AddItemActorPacket(
     val targetActorID: ActorUniqueID,

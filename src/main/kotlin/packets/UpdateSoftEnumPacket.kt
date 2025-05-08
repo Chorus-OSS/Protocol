@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class UpdateSoftEnumPacket : DataPacket() {
     var values: List<String> = listOf()
     var name: String = ""

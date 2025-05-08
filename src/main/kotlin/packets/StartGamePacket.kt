@@ -7,7 +7,6 @@ import org.chorus_oss.chorus.nbt.NBTIO.writeNetwork
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import org.chorus_oss.chorus.utils.Loggable
-import org.chorus_oss.protocol.ProtocolInfo
 
 
 import java.io.IOException

@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 open class UpdateBlockPacket : DataPacket() {
     @JvmField
     var x: Int = 0

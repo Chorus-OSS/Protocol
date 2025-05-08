@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class PlaySoundPacket : DataPacket() {
     var name: String? = null
     var x: Int = 0

@@ -4,7 +4,6 @@ import org.chorus_oss.chorus.nbt.NBTIO.write
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import org.chorus_oss.chorus.utils.MainLogger
-import org.chorus_oss.protocol.ProtocolInfo
 
 import java.io.IOException
 import java.nio.ByteOrder

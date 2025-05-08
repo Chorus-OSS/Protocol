@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 
 import org.chorus_oss.chorus.utils.Utils
-import org.chorus_oss.protocol.ProtocolInfo
 
 
 class LevelEventPacket : DataPacket() {

@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.inventory.SpecialWindowId
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 class PlayerHotbarPacket : DataPacket() {
     var selectedHotbarSlot: Int = 0
     var windowId: Int = SpecialWindowId.PLAYER.id

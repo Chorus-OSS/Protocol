@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class MapCreateLockedCopyPacket : DataPacket() {
     var originalMapId: Long = 0
     var newMapId: Long = 0

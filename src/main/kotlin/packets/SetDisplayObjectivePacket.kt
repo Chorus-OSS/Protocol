@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.scoreboard.data.DisplaySlot
 import org.chorus_oss.chorus.scoreboard.data.SortOrder
-import org.chorus_oss.protocol.ProtocolInfo
 
 
 class SetDisplayObjectivePacket : DataPacket() {

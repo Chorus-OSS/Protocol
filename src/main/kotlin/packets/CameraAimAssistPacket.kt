@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.Vector2f
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 data class CameraAimAssistPacket(
     val presetId: String,
     val viewAngle: Vector2f,

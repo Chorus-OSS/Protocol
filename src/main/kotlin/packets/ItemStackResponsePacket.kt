@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponse
 import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseContainer
 import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseSlot

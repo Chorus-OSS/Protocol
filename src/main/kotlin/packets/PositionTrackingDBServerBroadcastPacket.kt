@@ -10,7 +10,6 @@ import org.chorus_oss.chorus.nbt.tag.CompoundTag
 import org.chorus_oss.chorus.nbt.tag.IntTag
 import org.chorus_oss.chorus.nbt.tag.ListTag
 
-import org.chorus_oss.protocol.ProtocolInfo
 import java.io.IOException
 
 class PositionTrackingDBServerBroadcastPacket : DataPacket() {

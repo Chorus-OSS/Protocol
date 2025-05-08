@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 class ServerSettingsRequestPacket : DataPacket() {
     override fun pid(): Int {
         return ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET

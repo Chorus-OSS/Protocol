@@ -1,23 +1,22 @@
-package org.chorus_oss.protocol.packets
+package org.chorus_oss.chorus.network.protocol
 
 import org.chorus_oss.chorus.camera.data.CameraPreset
-
-import org.chorus_oss.protocol.types.camera.aimassist.CameraAimAssist
-import org.chorus_oss.protocol.types.camera.aimassist.CameraPresetAimAssist
+import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import org.chorus_oss.chorus.network.protocol.types.camera.aimassist.CameraAimAssist
+import org.chorus_oss.chorus.network.protocol.types.camera.aimassist.CameraPresetAimAssist
 import org.chorus_oss.chorus.utils.OptionalValue
-import org.chorus_oss.protocol.ProtocolInfo
 
 data class CameraPresetsPacket(
     val presets: MutableList<CameraPreset>
 ) : DataPacket(), PacketEncoder {
-    override fun encode(byteBuf: ByteBuf) {
+    override fun encode(byteBuf: HandleByteBuf) {
         byteBuf.writeUnsignedVarInt(presets.size)
         for (p in presets) {
             writePreset(byteBuf, p)
         }
     }
 
-    fun writePreset(byteBuf: ByteBuf, preset: CameraPreset) {
+    fun writePreset(byteBuf: HandleByteBuf, preset: CameraPreset) {
         byteBuf.writeString(preset.identifier)
         byteBuf.writeString(preset.inheritFrom)
         byteBuf.writeNotNull(preset.pos) { v -> byteBuf.writeFloatLE(v.x) }
@@ -40,9 +39,10 @@ data class CameraPresetsPacket(
         byteBuf.writeOptional(preset.playEffect) { value -> byteBuf.writeBoolean(value) }
         byteBuf.writeOptional(preset.alignTargetAndCameraForward) { value -> byteBuf.writeBoolean(value) }
         writeCameraPresetAimAssist(byteBuf, preset.aimAssist)
+        byteBuf.writeNotNull(preset.controlScheme) { value -> byteBuf.writeByte(value.ordinal) }
     }
 
-    fun writeCameraPresetAimAssist(byteBuf: ByteBuf, data: OptionalValue<CameraPresetAimAssist>) {
+    fun writeCameraPresetAimAssist(byteBuf: HandleByteBuf, data: OptionalValue<CameraPresetAimAssist>) {
         val present = data.isPresent
         byteBuf.writeBoolean(present)
         if (present) {
@@ -54,7 +54,7 @@ data class CameraPresetsPacket(
         }
     }
 
-    private fun writeTargetMode(byteBuf: ByteBuf, data: OptionalValue<CameraAimAssist>) {
+    private fun writeTargetMode(byteBuf: HandleByteBuf, data: OptionalValue<CameraAimAssist>) {
         val present = data.isPresent
         byteBuf.writeBoolean(present)
         if (present) {
@@ -63,7 +63,7 @@ data class CameraPresetsPacket(
     }
 
     override fun pid(): Int {
-        return ProtocolInfo.CAMERA_PRESETS_PACKET
+        return ProtocolInfo.Companion.CAMERA_PRESETS_PACKET
     }
 
     override fun handle(handler: PacketHandler) {

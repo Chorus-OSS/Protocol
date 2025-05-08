@@ -18,8 +18,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 class NPCDialoguePacket : DataPacket() {
     @JvmField
     var runtimeEntityId: Long = 0

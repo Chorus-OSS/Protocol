@@ -4,6 +4,7 @@ plugins {
 
 group = "org.chorus_oss.protocol"
 version = "1.0-SNAPSHOT"
+description = "Protocol"
 
 repositories {
     mavenCentral()

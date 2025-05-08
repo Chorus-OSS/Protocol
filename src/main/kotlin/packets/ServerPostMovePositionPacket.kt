@@ -2,8 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.Vector3f
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 
 class ServerPostMovePositionPacket : DataPacket() {
     lateinit var position: Vector3f

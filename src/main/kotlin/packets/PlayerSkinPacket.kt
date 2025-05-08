@@ -3,8 +3,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.Server
 import org.chorus_oss.chorus.entity.data.Skin
 
-import org.chorus_oss.protocol.ProtocolInfo
-
 import java.util.*
 
 

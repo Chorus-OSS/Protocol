@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.entity.data.EntityFlag
 import org.chorus_oss.chorus.math.Vector3f
 
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ClientMovementPredictionSyncPacket(

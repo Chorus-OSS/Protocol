@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 
 import org.chorus_oss.chorus.resourcepacks.ResourcePack
-import org.chorus_oss.protocol.ProtocolInfo
 
 class ResourcePackStackPacket : DataPacket() {
     var mustAccept: Boolean = false

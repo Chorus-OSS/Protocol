@@ -10,7 +10,6 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.EntityLink
 import org.chorus_oss.protocol.types.PropertySyncData
 import org.chorus_oss.chorus.utils.Binary
-import org.chorus_oss.protocol.ProtocolInfo
 
 data class AddActorPacket(
     val targetActorID: ActorUniqueID,

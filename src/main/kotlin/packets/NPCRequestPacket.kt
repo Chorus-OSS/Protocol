@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class NPCRequestPacket : DataPacket() {
     var entityRuntimeId: Long = 0
     var requestType: RequestType = RequestType.SET_SKIN

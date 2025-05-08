@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import io.netty.util.internal.EmptyArrays
 
-import org.chorus_oss.protocol.ProtocolInfo
 import java.util.function.Function
 
 class TextPacket : DataPacket() {

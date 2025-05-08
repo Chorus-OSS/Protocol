@@ -6,7 +6,6 @@ import org.chorus_oss.chorus.command.data.*
 import org.chorus_oss.protocol.types.CommandEnumConstraintData
 import org.chorus_oss.chorus.utils.SequencedHashSet
 import org.chorus_oss.chorus.utils.Utils
-import org.chorus_oss.protocol.ProtocolInfo
 import java.util.function.ObjIntConsumer
 
 class AvailableCommandsPacket : DataPacket() {

@@ -1,9 +1,6 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.ProtocolInfo
-
-
 class EmotePacket : DataPacket() {
     var runtimeId: Long = 0
     var xuid: String = ""

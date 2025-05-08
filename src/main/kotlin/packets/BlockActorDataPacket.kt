@@ -4,7 +4,6 @@ import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.chorus.nbt.NBTIO
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
-import org.chorus_oss.protocol.ProtocolInfo
 import java.nio.ByteOrder
 
 data class BlockActorDataPacket(
