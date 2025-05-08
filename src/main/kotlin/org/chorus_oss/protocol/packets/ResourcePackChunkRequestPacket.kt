@@ -1,37 +1,31 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
 
-import org.chorus_oss.protocol.utils.Version
+data class ResourcePackChunkRequestPacket(
+    val resourceName: String,
+    val chunkID: UInt,
+) {
+    companion object : PacketCodec<ResourcePackChunkRequestPacket> {
+        override val id: Int
+            get() = ProtocolInfo.RESOURCE_PACK_CHUNK_REQUEST_PACKET
 
-import java.util.*
+        override fun deserialize(stream: Buffer): ResourcePackChunkRequestPacket {
+            return ResourcePackChunkRequestPacket(
+                resourceName = Proto.String.deserialize(stream),
+                chunkID = ProtoLE.UInt.deserialize(stream),
+            )
+        }
 
-
-class ResourcePackChunkRequestPacket : AbstractResourcePackDataPacket() {
-    override var packId: UUID? = null
-    override var packVersion: Version? = null
-    var chunkIndex: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        encodePackInfo(byteBuf)
-        byteBuf.writeIntLE(this.chunkIndex)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.RESOURCE_PACK_CHUNK_REQUEST_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<ResourcePackChunkRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): ResourcePackChunkRequestPacket {
-            val packet = ResourcePackChunkRequestPacket()
-
-            packet.decodePackInfo(byteBuf)
-            packet.chunkIndex = byteBuf.readIntLE()
-
-            return packet
+        override fun serialize(value: ResourcePackChunkRequestPacket, stream: Buffer) {
+            Proto.String.serialize(value.resourceName, stream)
+            ProtoLE.UInt.serialize(value.chunkID, stream)
         }
     }
 }

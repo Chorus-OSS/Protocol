@@ -16,8 +16,7 @@ val Proto.String by lazy {
         }
 
         override fun deserialize(stream: Buffer): String {
-            val size = ProtoVAR.UInt.deserialize(stream)
-            val bytes = ByteArray(size.toInt()) {
+            val bytes = ByteArray(ProtoVAR.UInt.deserialize(stream).toInt()) {
                 Proto.Byte.deserialize(stream)
             }
             return String(bytes)

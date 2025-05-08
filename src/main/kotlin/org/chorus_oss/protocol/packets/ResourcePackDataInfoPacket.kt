@@ -1,62 +1,72 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.utils.Version
 
 import java.util.*
 
-class ResourcePackDataInfoPacket : AbstractResourcePackDataPacket() {
-    override var packId: UUID? = null
-    override var packVersion: Version? = null
-    var maxChunkSize: Int = 0
-    var chunkCount: Int = 0
-    var compressedPackSize: Long = 0
-    var sha256: ByteArray = byteArrayOf()
-    var premium: Boolean = false
-    var type: Int = TYPE_RESOURCE
+class ResourcePackDataInfoPacket(
+    val resourceName: String,
+    val chunkSize: UInt,
+    val chunkCount: UInt,
+    val fileSize: ULong,
+    val fileHash: String,
+    val premium: Boolean,
+    val type: Type,
+) {
+    companion object : PacketCodec<ResourcePackDataInfoPacket> {
+        enum class Type {
+            INVALID,
+            ADDON,
+            CACHED,
+            COPY_PROTECTED,
+            BEHAVIOUR,
+            PERSONA_PIECE,
+            RESOURCE,
+            SKINS,
+            WORLD_TEMPLATE;
 
-    override fun encode(byteBuf: ByteBuf) {
-        encodePackInfo(byteBuf)
-        byteBuf.writeIntLE(this.maxChunkSize)
-        byteBuf.writeIntLE(this.chunkCount)
-        byteBuf.writeLongLE(this.compressedPackSize)
-        byteBuf.writeByteArray(this.sha256)
-        byteBuf.writeBoolean(this.premium)
-        byteBuf.writeByte(type.toByte().toInt())
-    }
+            companion object : ProtoCodec<Type> {
+                override fun serialize(value: Type, stream: Buffer) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    override fun pid(): Int {
-        return ProtocolInfo.RESOURCE_PACK_DATA_INFO_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<ResourcePackDataInfoPacket> {
-        override fun decode(byteBuf: ByteBuf): ResourcePackDataInfoPacket {
-            val packet = ResourcePackDataInfoPacket()
-
-            packet.decodePackInfo(byteBuf)
-            packet.maxChunkSize = byteBuf.readIntLE()
-            packet.chunkCount = byteBuf.readIntLE()
-            packet.compressedPackSize = byteBuf.readLongLE()
-            packet.sha256 = byteBuf.readByteArray()
-            packet.premium = byteBuf.readBoolean()
-            packet.type = byteBuf.readByte().toInt()
-
-            return packet
+                override fun deserialize(stream: Buffer): Type {
+                    return Type.entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
         }
 
-        const val TYPE_INVALID: Int = 0
-        const val TYPE_ADDON: Int = 1
-        const val TYPE_CACHED: Int = 2
-        const val TYPE_COPY_PROTECTED: Int = 3
-        const val TYPE_BEHAVIOR: Int = 4
-        const val TYPE_PERSONA_PIECE: Int = 5
-        const val TYPE_RESOURCE: Int = 6
-        const val TYPE_SKINS: Int = 7
-        const val TYPE_WORLD_TEMPLATE: Int = 8
-        const val TYPE_COUNT: Int = 9
+        override val id: Int
+            get() = ProtocolInfo.RESOURCE_PACK_DATA_INFO_PACKET
+
+        override fun deserialize(stream: Buffer): ResourcePackDataInfoPacket {
+            return ResourcePackDataInfoPacket(
+                resourceName = Proto.String.deserialize(stream),
+                chunkSize = ProtoLE.UInt.deserialize(stream),
+                chunkCount = ProtoLE.UInt.deserialize(stream),
+                fileSize = ProtoLE.ULong.deserialize(stream),
+                fileHash = Proto.String.deserialize(stream),
+                premium = Proto.Boolean.deserialize(stream),
+                type = Type.deserialize(stream),
+            )
+        }
+
+        override fun serialize(value: ResourcePackDataInfoPacket, stream: Buffer) {
+            Proto.String.serialize(value.resourceName, stream)
+            ProtoLE.UInt.serialize(value.chunkSize, stream)
+            ProtoLE.UInt.serialize(value.chunkCount, stream)
+            ProtoLE.ULong.serialize(value.fileSize, stream)
+            Proto.String.serialize(value.fileHash, stream)
+            Proto.Boolean.serialize(value.premium, stream)
+            Type.serialize(value.type, stream)
+        }
     }
 }
