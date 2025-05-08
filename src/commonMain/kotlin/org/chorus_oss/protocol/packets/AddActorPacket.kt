@@ -6,6 +6,7 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.shared.types.Vector2f
 import org.chorus_oss.protocol.shared.types.Vector3f
 import org.chorus_oss.protocol.types.ActorLink
@@ -36,7 +37,7 @@ data class AddActorPacket(
         override fun deserialize(stream: Buffer): AddActorPacket {
             return AddActorPacket(
                 actorUniqueID = ProtoVAR.Long.deserialize(stream),
-                actorRuntimeID = ProtoVAR.Long.deserialize(stream),
+                actorRuntimeID = ProtoVAR.ULong.deserialize(stream),
                 actorType = Proto.String.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 velocity = Vector3f.deserialize(stream),
@@ -52,7 +53,7 @@ data class AddActorPacket(
 
         override fun serialize(value: AddActorPacket, stream: Buffer) {
             ProtoVAR.Long.serialize(value.actorUniqueID, stream)
-            ProtoVAR.Long.serialize(value.actorRuntimeID, stream)
+            ProtoVAR.ULong.serialize(value.actorRuntimeID, stream)
             Proto.String.serialize(value.actorType, stream)
             Vector3f.serialize(value.position, stream)
             Vector3f.serialize(value.velocity, stream)

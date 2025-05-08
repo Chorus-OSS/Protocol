@@ -3,10 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Buffer
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
-import org.chorus_oss.protocol.core.types.Float
-import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.core.types.Long
-import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AnimateEntityPacket(
@@ -47,7 +44,7 @@ data class AnimateEntityPacket(
                 stopExpressionVersion = ProtoLE.Int.deserialize(stream),
                 controller = Proto.String.deserialize(stream),
                 blendOutTime = ProtoLE.Float.deserialize(stream),
-                runtimeIDs = ProtoHelper.deserializeList(stream, ProtoVAR.Long::deserialize)
+                runtimeIDs = ProtoHelper.deserializeList(stream, ProtoVAR.ULong::deserialize)
             )
         }
 
@@ -58,7 +55,7 @@ data class AnimateEntityPacket(
             ProtoLE.Int.serialize(value.stopExpressionVersion, stream)
             Proto.String.serialize(value.controller, stream)
             ProtoLE.Float.serialize(value.blendOutTime, stream)
-            ProtoHelper.serializeList(value.runtimeIDs, stream, ProtoVAR.Long::serialize)
+            ProtoHelper.serializeList(value.runtimeIDs, stream, ProtoVAR.ULong::serialize)
         }
 
         fun fromAnimation(ani: Animation): AnimateEntityPacket {

@@ -1,3 +1,3 @@
 package org.chorus_oss.protocol.types
 
-typealias ActorRuntimeID = Long
+typealias ActorRuntimeID = ULong
