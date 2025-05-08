@@ -5,14 +5,14 @@ import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.UInt
 
 object ProtoHelper {
-    fun <T> writeNullable(value: T?, stream: Buffer, fn: (T, Buffer) -> Unit) {
+    fun <T> serializeNullable(value: T?, stream: Buffer, fn: (T, Buffer) -> Unit) {
         Proto.Boolean.serialize(value != null, stream)
         if (value != null) {
             fn.invoke(value, stream)
         }
     }
 
-    fun <T> readNullable(stream: Buffer, fn: (Buffer) -> T): T? {
+    fun <T> deserializeNullable(stream: Buffer, fn: (Buffer) -> T): T? {
         val present = Proto.Boolean.deserialize(stream)
         if (present) {
             return fn.invoke(stream)
@@ -20,14 +20,14 @@ object ProtoHelper {
         return null
     }
 
-    fun <T> writeList(value: List<T>, stream: Buffer, fn: (T, Buffer) -> Unit) {
+    fun <T> serializeList(value: List<T>, stream: Buffer, fn: (T, Buffer) -> Unit) {
         ProtoVAR.UInt.serialize(value.size.toUInt(), stream)
         for (item in value) {
             fn.invoke(item, stream)
         }
     }
 
-    fun <T> readList(stream: Buffer, fn: (Buffer) -> T): List<T> {
+    fun <T> deserializeList(stream: Buffer, fn: (Buffer) -> T): List<T> {
         val size = ProtoVAR.UInt.deserialize(stream).toInt()
         return List(size) {
             fn.invoke(stream)

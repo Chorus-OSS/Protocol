@@ -47,7 +47,7 @@ data class AnimateEntityPacket(
                 stopExpressionVersion = ProtoLE.Int.deserialize(stream),
                 controller = Proto.String.deserialize(stream),
                 blendOutTime = ProtoLE.Float.deserialize(stream),
-                runtimeIDs = ProtoHelper.readList(stream, ProtoVAR.Long::deserialize)
+                runtimeIDs = ProtoHelper.deserializeList(stream, ProtoVAR.Long::deserialize)
             )
         }
 
@@ -58,7 +58,7 @@ data class AnimateEntityPacket(
             ProtoLE.Int.serialize(value.stopExpressionVersion, stream)
             Proto.String.serialize(value.controller, stream)
             ProtoLE.Float.serialize(value.blendOutTime, stream)
-            ProtoHelper.writeList(value.runtimeIDs, stream, ProtoVAR.Long::serialize)
+            ProtoHelper.serializeList(value.runtimeIDs, stream, ProtoVAR.Long::serialize)
         }
 
         fun fromAnimation(ani: Animation): AnimateEntityPacket {
