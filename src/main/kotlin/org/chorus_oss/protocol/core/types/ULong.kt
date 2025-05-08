@@ -1,49 +1,48 @@
 package org.chorus_oss.protocol.core.types
 
-import io.netty.buffer.ByteBuf
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.Zigzag
+import kotlinx.io.*
+import org.chorus_oss.protocol.core.*
 
-val ULong.Companion.protoCodecLE by lazy {
+val ProtoLE.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: ByteBuf) {
-            stream.writeLongLE(value.toLong())
+        override fun serialize(value: ULong, stream: Buffer) {
+            stream.writeULongLe(value)
         }
 
-        override fun deserialize(stream: ByteBuf): ULong {
-            return stream.readLongLE().toULong()
+        override fun deserialize(stream: Buffer): ULong {
+            return stream.readULongLe()
         }
     }
 }
 
-val ULong.Companion.protoCodecBE by lazy {
+val ProtoBE.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: ByteBuf) {
-            stream.writeLong(value.toLong())
+        override fun serialize(value: ULong, stream: Buffer) {
+            stream.writeULong(value)
         }
 
-        override fun deserialize(stream: ByteBuf): ULong {
-            return stream.readLong().toULong()
+        override fun deserialize(stream: Buffer): ULong {
+            return stream.readULong()
         }
     }
 }
 
-val ULong.Companion.protoCodecVAR by lazy {
+val ProtoVAR.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: ByteBuf) {
+        override fun serialize(value: ULong, stream: Buffer) {
             var mValue = value
 
             while (mValue >= 128u) {
                 val next = ((mValue and 127u) or 128u).toByte()
                 mValue = mValue shr 7
 
-                stream.writeByte(next.toInt())
+                stream.writeByte(next)
             }
 
-            stream.writeByte((mValue and 127u).toInt())
+            stream.writeByte((mValue and 127u).toByte())
         }
 
-        override fun deserialize(stream: ByteBuf): ULong {
+        override fun deserialize(stream: Buffer): ULong {
             var shift = 0
             var decoded: ULong = 0u
             var next: Byte

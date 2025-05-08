@@ -1,3 +1,5 @@
+package org.chorus_oss.protocol
+
 import org.chorus_oss.chorus.utils.SemVersion
 
 interface ProtocolInfo {

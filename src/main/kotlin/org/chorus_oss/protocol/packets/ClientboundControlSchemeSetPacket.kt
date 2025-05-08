@@ -1,8 +1,6 @@
 package org.chorus_oss.chorus.network.protocol
 
 import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
-import org.chorus_oss.protocol.packets.DataPacket
-import org.chorus_oss.protocol.packets.PacketEncoder
 import org.chorus_oss.protocol.packets.PacketHandler
 import org.chorus_oss.protocol.types.ControlScheme
 

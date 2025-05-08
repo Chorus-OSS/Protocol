@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.netty:netty-buffer:4.2.0.Final")
+    implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.7.0")
 
     testImplementation(kotlin("test"))
 }
