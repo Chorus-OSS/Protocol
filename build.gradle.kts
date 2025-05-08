@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
     kotlin("multiplatform") version "2.1.10"
 }
@@ -12,15 +10,16 @@ repositories {
     mavenCentral()
 }
 
-@OptIn(ExperimentalWasmDsl::class)
 kotlin {
     jvm()
-    js()
-    wasmJs()
-    wasmWasi()
-    linuxX64()
-    linuxArm64()
-    mingwX64()
+
+    // TODO: Support more platforms
+    // js()
+    // wasmJs()
+    // wasmWasi()
+    // linuxX64()
+    // linuxArm64()
+    // mingwX64()
 
     sourceSets {
         val commonMain by getting {
