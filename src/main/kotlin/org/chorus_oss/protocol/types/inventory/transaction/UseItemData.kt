@@ -4,7 +4,7 @@ import org.chorus_oss.chorus.item.Item
 import org.chorus_oss.chorus.math.BlockFace
 import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.chorus.math.Vector3
-import org.chorus_oss.chorus.math.Vector3f
+import org.chorus_oss.protocol.shared.types.Vector3f
 
 data class UseItemData(
     val actionType: Int,

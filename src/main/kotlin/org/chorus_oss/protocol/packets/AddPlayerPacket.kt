@@ -2,8 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.entity.data.EntityDataMap
 import org.chorus_oss.chorus.item.Item
-import org.chorus_oss.chorus.math.Vector2f
-import org.chorus_oss.chorus.math.Vector3f
+import org.chorus_oss.protocol.shared.types.Vector2f
+import org.chorus_oss.protocol.shared.types.Vector3f
 
 import org.chorus_oss.protocol.types.*
 import org.chorus_oss.chorus.utils.Binary

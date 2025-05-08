@@ -1,6 +1,12 @@
 package org.chorus_oss.protocol.packets
 
-
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.Long
+import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AnimateEntityPacket(
@@ -10,20 +16,8 @@ data class AnimateEntityPacket(
     val stopExpressionVersion: Int,
     val controller: String,
     val blendOutTime: Float,
-    val runtimeIDs: MutableList<ActorRuntimeID>,
-) : DataPacket(), PacketEncoder {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(this.animation)
-        byteBuf.writeString(this.nextState)
-        byteBuf.writeString(this.stopExpression)
-        byteBuf.writeInt(this.stopExpressionVersion)
-        byteBuf.writeString(this.controller)
-        byteBuf.writeFloatLE(this.blendOutTime)
-        byteBuf.writeArray(this.runtimeIDs) { buf, id ->
-            buf.writeActorRuntimeID(id)
-        }
-    }
-
+    val runtimeIDs: List<ActorRuntimeID>,
+) {
     data class Animation(
         val animation: String,
         val nextState: String = DEFAULT_NEXT_STATE,
@@ -41,15 +35,32 @@ data class AnimateEntityPacket(
         }
     }
 
-    override fun pid(): Int {
-        return ProtocolInfo.ANIMATE_ENTITY_PACKET
-    }
+    companion object : PacketCodec<AnimateEntityPacket> {
+        override val id: Int
+            get() = ProtocolInfo.ANIMATE_ENTITY_PACKET
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+        override fun deserialize(stream: Buffer): AnimateEntityPacket {
+            return AnimateEntityPacket(
+                animation = Proto.String.deserialize(stream),
+                nextState = Proto.String.deserialize(stream),
+                stopExpression = Proto.String.deserialize(stream),
+                stopExpressionVersion = ProtoLE.Int.deserialize(stream),
+                controller = Proto.String.deserialize(stream),
+                blendOutTime = ProtoLE.Float.deserialize(stream),
+                runtimeIDs = ProtoHelper.readList(stream, ProtoVAR.Long::deserialize)
+            )
+        }
 
-    companion object {
+        override fun serialize(value: AnimateEntityPacket, stream: Buffer) {
+            Proto.String.serialize(value.animation, stream)
+            Proto.String.serialize(value.nextState, stream)
+            Proto.String.serialize(value.stopExpression, stream)
+            ProtoLE.Int.serialize(value.stopExpressionVersion, stream)
+            Proto.String.serialize(value.controller, stream)
+            ProtoLE.Float.serialize(value.blendOutTime, stream)
+            ProtoHelper.writeList(value.runtimeIDs, stream, ProtoVAR.Long::serialize)
+        }
+
         fun fromAnimation(ani: Animation): AnimateEntityPacket {
             return AnimateEntityPacket(
                 animation = ani.animation,

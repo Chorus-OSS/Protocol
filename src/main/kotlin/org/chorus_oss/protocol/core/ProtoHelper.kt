@@ -2,6 +2,7 @@ package org.chorus_oss.protocol.core
 
 import kotlinx.io.Buffer
 import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.UInt
 
 object ProtoHelper {
     fun <T> writeNullable(value: T?, stream: Buffer, fn: (T, Buffer) -> Unit) {
@@ -17,5 +18,19 @@ object ProtoHelper {
             return fn.invoke(stream)
         }
         return null
+    }
+
+    fun <T> writeList(value: List<T>, stream: Buffer, fn: (T, Buffer) -> Unit) {
+        ProtoVAR.UInt.serialize(value.size.toUInt(), stream)
+        for (item in value) {
+            fn.invoke(item, stream)
+        }
+    }
+
+    fun <T> readList(stream: Buffer, fn: (Buffer) -> T): List<T> {
+        val size = ProtoVAR.UInt.deserialize(stream).toInt()
+        return List(size) {
+            fn.invoke(stream)
+        }
     }
 }

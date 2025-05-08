@@ -1,6 +1,6 @@
 package org.chorus_oss.protocol.types.camera.aimassist
 
-import org.chorus_oss.chorus.math.Vector2f
+import org.chorus_oss.protocol.shared.types.Vector2f
 import org.chorus_oss.chorus.utils.OptionalValue
 
 data class CameraPresetAimAssist(
