@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
-    kotlin("jvm") version "2.1.10"
+    kotlin("multiplatform") version "2.1.10"
 }
 
 group = "org.chorus_oss.protocol"
@@ -10,15 +12,29 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.7.0")
-
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
+@OptIn(ExperimentalWasmDsl::class)
 kotlin {
-    jvmToolchain(21)
+    jvm()
+    js()
+    wasmJs()
+    wasmWasi()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.io)
+            }
+        }
+
+        val commonTest by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+    }
 }
