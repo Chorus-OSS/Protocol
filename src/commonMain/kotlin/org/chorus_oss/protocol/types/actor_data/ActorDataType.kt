@@ -1,11 +1,9 @@
 package org.chorus_oss.protocol.types.actor_data
 
+import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.shared.types.IVector3
 import org.chorus_oss.protocol.shared.types.Vector3f
 import kotlin.reflect.KClass
-
-// TODO: NBT Impl
-typealias NbtCompound = Nothing
 
 sealed class ActorDataType<T : Any>(
     val key: ActorDataKey,
@@ -129,7 +127,7 @@ sealed class ActorDataType<T : Any>(
     data object HighTierCuredTradeDiscount : ActorDataType<Int>(ActorDataKey.HighTierCuredTradeDiscount, Int::class)
     data object NearbyCuredTradeDiscount : ActorDataType<Int>(ActorDataKey.NearbyCuredTradeDiscount, Int::class)
     data object NearbyCuredDiscountTimeStamp : ActorDataType<Int>(ActorDataKey.NearbyCuredDiscountTimeStamp, Int::class)
-    data object Hitbox : ActorDataType<NbtCompound>(ActorDataKey.HitBox, NbtCompound::class)
+    data object Hitbox : ActorDataType<CompoundTag>(ActorDataKey.HitBox, CompoundTag::class)
     data object IsBuoyant : ActorDataType<Byte>(ActorDataKey.IsBuoyant, Byte::class)
     data object FreezingEffectStrength : ActorDataType<Float>(ActorDataKey.FreezingEffectStrength, Float::class)
     data object BuoyancyData : ActorDataType<String>(ActorDataKey.BuoyancyData, String::class)

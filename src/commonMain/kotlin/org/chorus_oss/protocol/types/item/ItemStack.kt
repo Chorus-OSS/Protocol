@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.types.item
 
 import kotlinx.io.Buffer
-import net.benwoodworth.knbt.NbtCompound
+import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.ProtoCodec
 
 data class ItemStack(
@@ -9,7 +9,7 @@ data class ItemStack(
     val metadata: UInt,
     val blockRuntimeID: Int,
     val count: UShort,
-    val nbtData: NbtCompound,
+    val nbtData: CompoundTag,
     val canBePlacedOn: List<String>,
     val canDestroy: List<String>,
     val hasNetworkID: Boolean,

@@ -1,7 +1,9 @@
 package org.chorus_oss.protocol.types.actor_data
 
 import kotlinx.io.Buffer
-import net.benwoodworth.knbt.*
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagSerialization
+import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -90,7 +92,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                     ActorDataFormat.INT -> ProtoVAR.Int.serialize(data as Int, stream)
                     ActorDataFormat.FLOAT -> ProtoLE.Float.serialize(data as Float, stream)
                     ActorDataFormat.STRING -> Proto.String.serialize(data as String, stream)
-                    ActorDataFormat.NBT -> TODO("NBT Impl")
+                    ActorDataFormat.NBT -> Tag.serialize(data as Tag, stream, TagSerialization.NetLE, isRoot = true)
                     ActorDataFormat.VECTOR3I -> {
                         val vec = data as IVector3
                         ProtoVAR.Int.serialize(vec.x, stream)
@@ -115,7 +117,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                     ActorDataFormat.INT -> ProtoVAR.Int.deserialize(stream)
                     ActorDataFormat.FLOAT -> ProtoLE.Float.deserialize(stream)
                     ActorDataFormat.STRING -> Proto.String.deserialize(stream)
-                    ActorDataFormat.NBT -> TODO("NBT Impl")
+                    ActorDataFormat.NBT -> Tag.deserialize(stream, TagSerialization.NetLE)
                     ActorDataFormat.VECTOR3I -> IVector3(
                         x = ProtoVAR.Int.deserialize(stream),
                         y = ProtoVAR.Int.deserialize(stream),

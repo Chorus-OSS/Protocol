@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.types.actor_data
 
 import kotlinx.io.Buffer
-import net.benwoodworth.knbt.NbtCompound
+import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
@@ -36,7 +36,7 @@ enum class ActorDataFormat {
                 is Float -> FLOAT
                 is Long -> LONG
                 is String -> STRING
-                is NbtCompound -> NBT
+                is CompoundTag -> NBT
                 is IVector3 -> VECTOR3I
                 is Vector3f -> VECTOR3F
 

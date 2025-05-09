@@ -2,11 +2,12 @@ plugins {
     kotlin("multiplatform") version "2.1.10"
 }
 
-group = "org.chorus_oss.protocol"
+group = "org.chorus_oss"
 version = "1.0-SNAPSHOT"
 description = "Protocol"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -23,12 +24,11 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.io)
                 implementation(libs.semver)
-                implementation(libs.knbt)
+                implementation(libs.nbt)
             }
         }
 
         val commonTest by getting {
-            dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlin.test)
             }
