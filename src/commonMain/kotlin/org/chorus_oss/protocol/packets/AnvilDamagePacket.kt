@@ -1,25 +1,30 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.BlockVector3
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.shared.types.IVector3
 
 data class AnvilDamagePacket(
     val damageAmount: Byte,
-    val blockPosition: BlockVector3,
-) : DataPacket() {
-    override fun pid(): Int {
-        return ProtocolInfo.ANVIL_DAMAGE_PACKET
-    }
+    val blockPosition: IVector3,
+) {
+    companion object : PacketCodec<AnvilDamagePacket> {
+        override val id: Int
+            get() = ProtocolInfo.ANVIL_DAMAGE_PACKET
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<AnvilDamagePacket> {
-        override fun decode(byteBuf: ByteBuf): AnvilDamagePacket {
+        override fun deserialize(stream: Buffer): AnvilDamagePacket {
             return AnvilDamagePacket(
-                damageAmount = byteBuf.readByte(),
-                blockPosition = byteBuf.readBlockVector3()
+                damageAmount = Proto.Byte.deserialize(stream),
+                blockPosition = IVector3.deserialize(stream)
             )
+        }
+
+        override fun serialize(value: AnvilDamagePacket, stream: Buffer) {
+            Proto.Byte.serialize(value.damageAmount, stream)
+            IVector3.serialize(value.blockPosition, stream)
         }
     }
 }

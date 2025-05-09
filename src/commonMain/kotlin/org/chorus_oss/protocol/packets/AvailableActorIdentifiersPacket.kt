@@ -1,32 +1,29 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Byte
+
 
 data class AvailableActorIdentifiersPacket(
-    val tag: ByteArray,
-) : DataPacket(), PacketEncoder {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeBytes(tag)
-    }
+    val tag: List<Byte>,
+) {
+    companion object : PacketCodec<AvailableActorIdentifiersPacket> {
+        override val id: Int
+            get() = ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS_PACKET
 
-    override fun pid(): Int {
-        return ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS_PACKET
-    }
+        override fun deserialize(stream: Buffer): AvailableActorIdentifiersPacket {
+            return AvailableActorIdentifiersPacket(
+                tag = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize),
+            )
+        }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AvailableActorIdentifiersPacket
-
-        return tag.contentEquals(other.tag)
-    }
-
-    override fun hashCode(): Int {
-        return tag.contentHashCode()
+        override fun serialize(value: AvailableActorIdentifiersPacket, stream: Buffer) {
+            ProtoHelper.serializeList(value.tag, stream, Proto.Byte::serialize)
+        }
     }
 }
 

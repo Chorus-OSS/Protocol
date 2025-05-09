@@ -20,13 +20,13 @@ data class AgentAnimationPacket(
         override fun deserialize(stream: Buffer): AgentAnimationPacket {
             return AgentAnimationPacket(
                 animation = Proto.Byte.deserialize(stream),
-                runtimeID = ProtoVAR.Long.deserialize(stream),
+                runtimeID = ActorRuntimeID.deserialize(stream),
             )
         }
 
         override fun serialize(value: AgentAnimationPacket, stream: Buffer) {
             Proto.Byte.serialize(value.animation, stream)
-            ProtoVAR.Long.serialize(value.runtimeID, stream)
+            ActorRuntimeID.serialize(value.runtimeID, stream)
         }
     }
 }

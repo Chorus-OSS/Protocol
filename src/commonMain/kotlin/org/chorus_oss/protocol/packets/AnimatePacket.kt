@@ -1,13 +1,18 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AnimatePacket(
     val action: Action,
     val targetRuntimeID: ActorRuntimeID,
     val actionData: Action.ActionData? = null,
-) : DataPacket(), PacketEncoder {
+) {
     enum class Action(val id: Int) {
         NO_ACTION(0),
         SWING_ARM(1),
@@ -17,11 +22,14 @@ data class AnimatePacket(
         ROW_RIGHT(128),
         ROW_LEFT(129);
 
-        companion object {
-            private val ID_LOOKUP: Map<Int, Action> = entries.associateBy { it.id }
+        companion object : ProtoCodec<Action> {
+            override fun serialize(value: Action, stream: Buffer) {
+                ProtoVAR.Int.serialize(value.id, stream)
+            }
 
-            fun fromId(id: Int): Action {
-                return ID_LOOKUP[id] ?: throw RuntimeException("Unknown Action ID: $id")
+            override fun deserialize(stream: Buffer): Action {
+                val id = ProtoVAR.Int.deserialize(stream)
+                return entries.find { it.id == id }!!
             }
         }
 
@@ -31,44 +39,38 @@ data class AnimatePacket(
         ) : ActionData
     }
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(action.id)
-        byteBuf.writeActorRuntimeID(this.targetRuntimeID)
-        when (this.action) {
-            Action.ROW_LEFT,
-            Action.ROW_RIGHT -> {
-                val actionData = this.actionData as Action.RowingData
-                byteBuf.writeFloatLE(actionData.rowingTime)
-            }
+    companion object : PacketCodec<AnimatePacket> {
+        override val id: Int
+            get() = ProtocolInfo.ANIMATE_PACKET
 
-            else -> Unit
-        }
-
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.ANIMATE_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<AnimatePacket> {
-        override fun decode(byteBuf: ByteBuf): AnimatePacket {
+        override fun deserialize(stream: Buffer): AnimatePacket {
             val action: Action
             return AnimatePacket(
-                action = Action.fromId(byteBuf.readVarInt()).also { action = it },
-                targetRuntimeID = byteBuf.readActorRuntimeID(),
+                action = Action.deserialize(stream).also { action = it },
+                targetRuntimeID = ActorRuntimeID.deserialize(stream),
                 actionData = when (action) {
                     Action.ROW_LEFT,
                     Action.ROW_RIGHT -> Action.RowingData(
-                        rowingTime = byteBuf.readFloatLE()
+                        rowingTime = ProtoLE.Float.deserialize(stream)
                     )
 
                     else -> null
                 }
             )
+        }
+
+        override fun serialize(value: AnimatePacket, stream: Buffer) {
+            Action.serialize(value.action, stream)
+            ActorRuntimeID.serialize(value.targetRuntimeID, stream)
+            when (value.action) {
+                Action.ROW_LEFT,
+                Action.ROW_RIGHT -> {
+                    val actionData = value.actionData as Action.RowingData
+                    ProtoLE.Float.serialize(actionData.rowingTime, stream)
+                }
+
+                else -> Unit
+            }
         }
     }
 }
