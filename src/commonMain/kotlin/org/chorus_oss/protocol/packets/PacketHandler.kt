@@ -16,7 +16,7 @@ interface PacketHandler {
 
     fun handle(pk: AddPlayerPacket) {}
 
-    fun handle(pk: AddVolumeEntityPacket) {}
+    fun handle(pk: AddVolumeActorPacket) {}
 
     fun handle(pk: AgentActionEventPacket) {}
 
