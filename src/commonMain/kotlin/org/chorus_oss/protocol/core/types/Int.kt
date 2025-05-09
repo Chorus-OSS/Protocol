@@ -4,6 +4,8 @@ import kotlinx.io.Buffer
 import kotlinx.io.readIntLe
 import kotlinx.io.writeIntLe
 import org.chorus_oss.protocol.core.*
+import org.chorus_oss.varlen.types.readIntVar
+import org.chorus_oss.varlen.types.writeIntVar
 
 val ProtoLE.Int by lazy {
     object : ProtoCodec<Int> {
@@ -32,17 +34,11 @@ val ProtoBE.Int by lazy {
 val ProtoVAR.Int by lazy {
     object : ProtoCodec<Int> {
         override fun serialize(value: Int, stream: Buffer) {
-            ProtoVAR.UInt.serialize(Int.zigzag(value), stream)
+            stream.writeIntVar(value)
         }
 
         override fun deserialize(stream: Buffer): Int {
-            return UInt.zigzag(ProtoVAR.UInt.deserialize(stream))
+            return stream.readIntVar()
         }
-    }
-}
-
-val Int.Companion.zigzag by lazy {
-    Zigzag<Int, UInt> { value ->
-        ((value shl 1) xor (value shr 31)).toUInt()
     }
 }

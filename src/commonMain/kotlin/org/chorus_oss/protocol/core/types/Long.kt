@@ -4,6 +4,8 @@ import kotlinx.io.Buffer
 import kotlinx.io.readLongLe
 import kotlinx.io.writeLongLe
 import org.chorus_oss.protocol.core.*
+import org.chorus_oss.varlen.types.readLongVar
+import org.chorus_oss.varlen.types.writeLongVar
 
 val ProtoLE.Long by lazy {
     object : ProtoCodec<Long> {
@@ -32,17 +34,11 @@ val ProtoBE.Long by lazy {
 val ProtoVAR.Long by lazy {
     object : ProtoCodec<Long> {
         override fun serialize(value: Long, stream: Buffer) {
-            ProtoVAR.ULong.serialize(Long.zigzag(value), stream)
+            stream.writeLongVar(value)
         }
 
         override fun deserialize(stream: Buffer): Long {
-            return ULong.zigzag(ProtoVAR.ULong.deserialize(stream))
+            return stream.readLongVar()
         }
-    }
-}
-
-val Long.Companion.zigzag by lazy {
-    Zigzag<Long, ULong> { value ->
-        ((value shl 1) xor (value shr 63)).toULong()
     }
 }

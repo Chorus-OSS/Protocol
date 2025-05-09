@@ -3,6 +3,7 @@ kotlin = "2.1.10"
 kotlinx-io = "0.7.0"
 semver = "2.0.0"
 nbt = "1.0-SNAPSHOT"
+varlen = "1.0-SNAPSHOT"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -10,3 +11,4 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 semver = { module = "net.swiftzer.semver:semver", version.ref = "semver" }
 nbt = { module = "org.chorus_oss:nbt", version.ref = "nbt" }
+varlen = { module = "org.chorus_oss:varlen", version.ref = "varlen" }

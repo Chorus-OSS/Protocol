@@ -25,6 +25,7 @@ kotlin {
                 implementation(libs.kotlinx.io)
                 implementation(libs.semver)
                 implementation(libs.nbt)
+                implementation(libs.varlen)
             }
         }
 
