@@ -15,8 +15,8 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class AddPaintingPacket(
-    val targetActorID: ActorUniqueID,
-    val targetRuntimeID: ActorRuntimeID,
+    val actorUniqueID: ActorUniqueID,
+    val actorRuntimeID: ActorRuntimeID,
     val position: Vector3f,
     val direction: Int,
     val motif: String,
@@ -27,8 +27,8 @@ data class AddPaintingPacket(
 
         override fun deserialize(stream: Buffer): AddPaintingPacket {
             return AddPaintingPacket(
-                targetActorID = ProtoVAR.Long.deserialize(stream),
-                targetRuntimeID = ProtoVAR.ULong.deserialize(stream),
+                actorUniqueID = ActorUniqueID.deserialize(stream),
+                actorRuntimeID = ActorRuntimeID.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 direction = ProtoVAR.Int.deserialize(stream),
                 motif = Proto.String.deserialize(stream),
@@ -36,8 +36,8 @@ data class AddPaintingPacket(
         }
 
         override fun serialize(value: AddPaintingPacket, stream: Buffer) {
-            ProtoVAR.Long.serialize(value.targetActorID, stream)
-            ProtoVAR.ULong.serialize(value.targetRuntimeID, stream)
+            ActorUniqueID.serialize(value.actorUniqueID, stream)
+            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
             Vector3f.serialize(value.position, stream)
             ProtoVAR.Int.serialize(value.direction, stream)
             Proto.String.serialize(value.motif, stream)

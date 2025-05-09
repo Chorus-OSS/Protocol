@@ -27,7 +27,6 @@ enum class PlayerAbility(
     VERTICAL_FLY_SPEED;
 
     companion object {
-        @JvmField
         val VALUES: List<PlayerAbility> = entries.toList()
     }
 }

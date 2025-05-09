@@ -4,10 +4,8 @@ import kotlinx.io.Buffer
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ActorPickRequestPacket(
@@ -21,14 +19,14 @@ data class ActorPickRequestPacket(
 
         override fun deserialize(stream: Buffer): ActorPickRequestPacket {
             return ActorPickRequestPacket(
-                actorID = ProtoVAR.Long.deserialize(stream),
+                actorID = ActorUniqueID.deserialize(stream),
                 maxSlots = Proto.Byte.deserialize(stream),
                 withData = Proto.Boolean.deserialize(stream),
             )
         }
 
         override fun serialize(value: ActorPickRequestPacket, stream: Buffer) {
-            ProtoVAR.Long.serialize(value.actorID, stream)
+            ActorUniqueID.serialize(value.actorID, stream)
             Proto.Byte.serialize(value.maxSlots, stream)
             Proto.Boolean.serialize(value.withData, stream)
         }

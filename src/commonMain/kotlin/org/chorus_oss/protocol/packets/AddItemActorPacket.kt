@@ -12,12 +12,12 @@ import org.chorus_oss.protocol.shared.types.Vector3f
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.actor_data.ActorDataMap
-import org.chorus_oss.protocol.types.item.ItemInstance
+import org.chorus_oss.protocol.types.item.ItemStack
 
 data class AddItemActorPacket(
     val actorUniqueID: ActorUniqueID,
     val actorRuntimeID: ActorRuntimeID,
-    val item: ItemInstance,
+    val item: ItemStack,
     val position: Vector3f,
     val velocity: Vector3f,
     val actorData: ActorDataMap,
@@ -29,9 +29,9 @@ data class AddItemActorPacket(
 
         override fun deserialize(stream: Buffer): AddItemActorPacket {
             return AddItemActorPacket(
-                actorUniqueID = ProtoVAR.Long.deserialize(stream),
-                actorRuntimeID = ProtoVAR.ULong.deserialize(stream),
-                item = ItemInstance.deserialize(stream),
+                actorUniqueID = ActorUniqueID.deserialize(stream),
+                actorRuntimeID = ActorRuntimeID.deserialize(stream),
+                item = ItemStack.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 velocity = Vector3f.deserialize(stream),
                 actorData = ActorDataMap.deserialize(stream),
@@ -40,9 +40,9 @@ data class AddItemActorPacket(
         }
 
         override fun serialize(value: AddItemActorPacket, stream: Buffer) {
-            ProtoVAR.Long.serialize(value.actorUniqueID, stream)
-            ProtoVAR.ULong.serialize(value.actorRuntimeID, stream)
-            ItemInstance.serialize(value.item, stream)
+            ActorUniqueID.serialize(value.actorUniqueID, stream)
+            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
+            ItemStack.serialize(value.item, stream)
             Vector3f.serialize(value.position, stream)
             Vector3f.serialize(value.velocity, stream)
             ActorDataMap.serialize(value.actorData, stream)

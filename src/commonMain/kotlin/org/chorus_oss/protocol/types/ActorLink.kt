@@ -36,8 +36,8 @@ data class ActorLink(
         }
 
         override fun serialize(value: ActorLink, stream: Buffer) {
-            ProtoVAR.Long.serialize(value.riddenActorUniqueID, stream)
-            ProtoVAR.Long.serialize(value.riderActorUniqueID, stream)
+            ActorUniqueID.serialize(value.riddenActorUniqueID, stream)
+            ActorUniqueID.serialize(value.riderActorUniqueID, stream)
             Type.serialize(value.type, stream)
             Proto.Boolean.serialize(value.immediate, stream)
             Proto.Boolean.serialize(value.riderInitiated, stream)
@@ -46,8 +46,8 @@ data class ActorLink(
 
         override fun deserialize(stream: Buffer): ActorLink {
             return ActorLink(
-                riddenActorUniqueID = ProtoVAR.Long.deserialize(stream),
-                riderActorUniqueID = ProtoVAR.Long.deserialize(stream),
+                riddenActorUniqueID = ActorUniqueID.deserialize(stream),
+                riderActorUniqueID = ActorUniqueID.deserialize(stream),
                 type = Type.deserialize(stream),
                 immediate = Proto.Boolean.deserialize(stream),
                 riderInitiated = Proto.Boolean.deserialize(stream),

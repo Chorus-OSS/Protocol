@@ -36,8 +36,8 @@ data class AddActorPacket(
 
         override fun deserialize(stream: Buffer): AddActorPacket {
             return AddActorPacket(
-                actorUniqueID = ProtoVAR.Long.deserialize(stream),
-                actorRuntimeID = ProtoVAR.ULong.deserialize(stream),
+                actorUniqueID = ActorUniqueID.deserialize(stream),
+                actorRuntimeID = ActorRuntimeID.deserialize(stream),
                 actorType = Proto.String.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 velocity = Vector3f.deserialize(stream),
@@ -52,8 +52,8 @@ data class AddActorPacket(
         }
 
         override fun serialize(value: AddActorPacket, stream: Buffer) {
-            ProtoVAR.Long.serialize(value.actorUniqueID, stream)
-            ProtoVAR.ULong.serialize(value.actorRuntimeID, stream)
+            ActorUniqueID.serialize(value.actorUniqueID, stream)
+            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
             Proto.String.serialize(value.actorType, stream)
             Vector3f.serialize(value.position, stream)
             Vector3f.serialize(value.velocity, stream)

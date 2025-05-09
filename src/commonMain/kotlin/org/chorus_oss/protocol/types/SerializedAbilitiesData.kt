@@ -1,20 +1,33 @@
 package org.chorus_oss.protocol.types
 
 
-import org.chorus_oss.protocol.packets.UpdateAbilitiesPacket
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Byte
 
 data class SerializedAbilitiesData(
     val targetPlayerRawID: ActorUniqueID,
     val playerPermissions: PlayerPermission,
     val commandPermissions: CommandPermission,
-    val layers: Array<AbilityLayer>
+    val layers: List<AbilityLayer>
 ) {
-    fun write(byteBuf: ByteBuf) {
-        byteBuf.writeActorUniqueID(this.targetPlayerRawID)
-        byteBuf.writeByte(this.playerPermissions.ordinal)
-        byteBuf.writeByte(this.commandPermissions.ordinal)
-        byteBuf.writeArray(this.layers) {
-            UpdateAbilitiesPacket.writeAbilityLayer(byteBuf, it)
+    companion object : ProtoCodec<SerializedAbilitiesData> {
+        override fun serialize(value: SerializedAbilitiesData, stream: Buffer) {
+            ActorUniqueID.serialize(value.targetPlayerRawID, stream)
+            Proto.Byte.serialize(value.playerPermissions.ordinal.toByte(), stream)
+            Proto.Byte.serialize(value.commandPermissions.ordinal.toByte(), stream)
+            ProtoHelper.serializeList(value.layers, stream, AbilityLayer::serialize)
+        }
+
+        override fun deserialize(stream: Buffer): SerializedAbilitiesData {
+            return SerializedAbilitiesData(
+                targetPlayerRawID = ActorUniqueID.deserialize(stream),
+                playerPermissions = PlayerPermission.entries[Proto.Byte.deserialize(stream).toInt()],
+                commandPermissions = CommandPermission.entries[Proto.Byte.deserialize(stream).toInt()],
+                layers = ProtoHelper.deserializeList(stream, AbilityLayer::deserialize)
+            )
         }
     }
 }

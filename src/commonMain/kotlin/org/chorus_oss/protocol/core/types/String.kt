@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.core.ProtoVAR
 val Proto.String by lazy {
     object : ProtoCodec<String> {
         override fun serialize(value: String, stream: Buffer) {
-            val bytes = value.toByteArray()
+            val bytes = value.encodeToByteArray()
             ProtoVAR.UInt.serialize(bytes.size.toUInt(), stream)
             for (byte in bytes) {
                 Proto.Byte.serialize(byte, stream)
@@ -19,7 +19,7 @@ val Proto.String by lazy {
             val bytes = ByteArray(ProtoVAR.UInt.deserialize(stream).toInt()) {
                 Proto.Byte.deserialize(stream)
             }
-            return String(bytes)
+            return bytes.decodeToString()
         }
     }
 }

@@ -1,5 +1,10 @@
 package org.chorus_oss.protocol.types
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Int
+
 enum class Platform(val platformName: String, val id: Int) {
     UNKNOWN("Unknown", -1),
     ANDROID("Android", 1),
@@ -23,13 +28,14 @@ enum class Platform(val platformName: String, val id: Int) {
     LINUX("Linux", 15);
 
 
-    companion object {
-        private val PLATFORM_BY_ID: Map<Int, Platform> = entries.associateBy { it.id }
-
-        fun getPlatformByID(id: Int): Platform {
-            return PLATFORM_BY_ID[id] ?: UNKNOWN
+    companion object : ProtoCodec<Platform> {
+        override fun serialize(value: Platform, stream: Buffer) {
+            ProtoLE.Int.serialize(value.id, stream)
         }
 
-        var VALUES: Array<Platform> = entries.toTypedArray()
+        override fun deserialize(stream: Buffer): Platform {
+            val id = ProtoLE.Int.deserialize(stream)
+            return entries.find { it.id == id }!!
+        }
     }
 }
