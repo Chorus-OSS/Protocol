@@ -1,191 +1,189 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
+import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class BossEventPacket(
     var targetActorID: ActorUniqueID,
     var eventType: EventType,
     val eventData: EventType.Companion.EventData?,
-) : DataPacket(), PacketEncoder {
-    enum class EventType {
-        ADD,
-        PLAYER_ADDED,
-        REMOVE,
-        PLAYER_REMOVED,
-        UPDATE_PERCENT,
-        UPDATE_NAME,
-        UPDATE_PROPERTIES,
-        UPDATE_STYLE,
-        QUERY;
+) {
+    companion object : PacketCodec<BossEventPacket> {
+        enum class EventType {
+            ADD,
+            PLAYER_ADDED,
+            REMOVE,
+            PLAYER_REMOVED,
+            UPDATE_PERCENT,
+            UPDATE_NAME,
+            UPDATE_PROPERTIES,
+            UPDATE_STYLE,
+            QUERY;
 
-        companion object {
-            fun fromOrdinal(ordinal: Int): EventType {
-                return entries.find { it.ordinal == ordinal }
-                    ?: throw RuntimeException("Unknown BossEventUpdateType Ordinal: $ordinal")
-            }
+            companion object : ProtoCodec<EventType> {
+                override fun serialize(value: EventType, stream: Buffer) {
+                    ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
+                }
 
-            interface EventData
+                override fun deserialize(stream: Buffer): EventType {
+                    return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
+                }
 
-            data class AddData(
-                val name: String,
-                val filteredName: String,
-                val healthPercent: Float,
-                val darkenScreen: Short,
-                val color: Int,
-                val overlay: Int,
-            ) : EventData
+                interface EventData
 
-            data class PlayerAddedData(
-                val playerID: ActorUniqueID,
-            ) : EventData
+                data class AddData(
+                    val name: String,
+                    val filteredName: String,
+                    val healthPercent: Float,
+                    val darkenScreen: UShort,
+                    val color: UInt,
+                    val overlay: UInt,
+                ) : EventData
 
-            data class PlayerRemovedData(
-                val playerID: ActorUniqueID,
-            ) : EventData
+                data class PlayerAddedData(
+                    val playerID: ActorUniqueID,
+                ) : EventData
 
-            data class UpdatePercentData(
-                val healthPercent: Float,
-            ) : EventData
+                data class PlayerRemovedData(
+                    val playerID: ActorUniqueID,
+                ) : EventData
 
-            data class UpdateNameData(
-                val name: String,
-                val filteredName: String,
-            ) : EventData
+                data class UpdatePercentData(
+                    val healthPercent: Float,
+                ) : EventData
 
-            data class UpdatePropertiesData(
-                val darkenScreen: Short,
-                val color: Int,
-                val overlay: Int,
-            ) : EventData
+                data class UpdateNameData(
+                    val name: String,
+                    val filteredName: String,
+                ) : EventData
 
-            data class UpdateStyleData(
-                val color: Int,
-                val overlay: Int,
-            ) : EventData
+                data class UpdatePropertiesData(
+                    val darkenScreen: UShort,
+                    val color: UInt,
+                    val overlay: UInt,
+                ) : EventData
 
-            data class QueryData(
-                val playerID: ActorUniqueID,
-            ) : EventData
-        }
-    }
+                data class UpdateStyleData(
+                    val color: UInt,
+                    val overlay: UInt,
+                ) : EventData
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorUniqueID(this.targetActorID)
-        byteBuf.writeUnsignedVarInt(this.eventType.ordinal)
-        when (this.eventType) {
-            EventType.ADD -> {
-                val eventData = this.eventData as EventType.Companion.AddData
-                byteBuf.writeString(eventData.name)
-                byteBuf.writeString(eventData.filteredName)
-                byteBuf.writeFloatLE(eventData.healthPercent)
-                byteBuf.writeShort(eventData.darkenScreen.toInt())
-                byteBuf.writeUnsignedVarInt(eventData.color)
-                byteBuf.writeUnsignedVarInt(eventData.overlay)
-            }
-
-            EventType.PLAYER_ADDED -> {
-                val eventData = this.eventData as EventType.Companion.PlayerAddedData
-                byteBuf.writeActorUniqueID(eventData.playerID)
-            }
-
-            EventType.REMOVE -> {}
-
-            EventType.PLAYER_REMOVED -> {
-                val eventData = this.eventData as EventType.Companion.PlayerRemovedData
-                byteBuf.writeActorUniqueID(eventData.playerID)
-            }
-
-            EventType.UPDATE_PERCENT -> {
-                val eventData = this.eventData as EventType.Companion.UpdatePercentData
-                byteBuf.writeFloatLE(eventData.healthPercent)
-            }
-
-            EventType.UPDATE_NAME -> {
-                val eventData = this.eventData as EventType.Companion.UpdateNameData
-                byteBuf.writeString(eventData.name)
-                byteBuf.writeString(eventData.filteredName)
-            }
-
-            EventType.UPDATE_PROPERTIES -> {
-                val eventData = this.eventData as EventType.Companion.UpdatePropertiesData
-                byteBuf.writeShort(eventData.darkenScreen.toInt())
-                byteBuf.writeUnsignedVarInt(eventData.color)
-                byteBuf.writeUnsignedVarInt(eventData.overlay)
-            }
-
-            EventType.UPDATE_STYLE -> {
-                val eventData = this.eventData as EventType.Companion.UpdateStyleData
-                byteBuf.writeUnsignedVarInt(eventData.color)
-                byteBuf.writeUnsignedVarInt(eventData.overlay)
-            }
-
-            EventType.QUERY -> {
-                val eventData = this.eventData as EventType.Companion.QueryData
-                byteBuf.writeActorUniqueID(eventData.playerID)
+                data class QueryData(
+                    val playerID: ActorUniqueID,
+                ) : EventData
             }
         }
-    }
 
-    override fun pid(): Int {
-        return ProtocolInfo.BOSS_EVENT_PACKET
-    }
+        override val id: Int
+            get() = ProtocolInfo.BOSS_EVENT_PACKET
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<BossEventPacket> {
-        override fun decode(byteBuf: ByteBuf): BossEventPacket {
+        override fun deserialize(stream: Buffer): BossEventPacket {
             val eventType: EventType
             return BossEventPacket(
-                targetActorID = byteBuf.readActorUniqueID(),
-                eventType = EventType.fromOrdinal(byteBuf.readUnsignedVarInt()).also { eventType = it },
+                targetActorID = ActorUniqueID.deserialize(stream),
+                eventType = EventType.deserialize(stream).also { eventType = it },
                 eventData = when (eventType) {
                     EventType.ADD -> EventType.Companion.AddData(
-                        name = byteBuf.readString(),
-                        filteredName = byteBuf.readString(),
-                        healthPercent = byteBuf.readFloatLE(),
-                        darkenScreen = byteBuf.readShort(),
-                        color = byteBuf.readUnsignedVarInt(),
-                        overlay = byteBuf.readUnsignedVarInt(),
+                        name = Proto.String.deserialize(stream),
+                        filteredName = Proto.String.deserialize(stream),
+                        healthPercent = ProtoLE.Float.deserialize(stream),
+                        darkenScreen = ProtoLE.UShort.deserialize(stream),
+                        color = ProtoVAR.UInt.deserialize(stream),
+                        overlay = ProtoVAR.UInt.deserialize(stream),
                     )
 
                     EventType.PLAYER_ADDED -> EventType.Companion.PlayerAddedData(
-                        playerID = byteBuf.readActorUniqueID()
+                        playerID = ActorUniqueID.deserialize(stream)
                     )
 
                     EventType.REMOVE -> null
 
                     EventType.PLAYER_REMOVED -> EventType.Companion.PlayerRemovedData(
-                        playerID = byteBuf.readActorUniqueID()
+                        playerID = ActorUniqueID.deserialize(stream)
                     )
 
                     EventType.UPDATE_PERCENT -> EventType.Companion.UpdatePercentData(
-                        healthPercent = byteBuf.readFloatLE()
+                        healthPercent = ProtoLE.Float.deserialize(stream)
                     )
 
                     EventType.UPDATE_NAME -> EventType.Companion.UpdateNameData(
-                        name = byteBuf.readString(),
-                        filteredName = byteBuf.readString(),
+                        name = Proto.String.deserialize(stream),
+                        filteredName = Proto.String.deserialize(stream),
                     )
 
                     EventType.UPDATE_PROPERTIES -> EventType.Companion.UpdatePropertiesData(
-                        darkenScreen = byteBuf.readShort(),
-                        color = byteBuf.readUnsignedVarInt(),
-                        overlay = byteBuf.readUnsignedVarInt(),
+                        darkenScreen = ProtoLE.UShort.deserialize(stream),
+                        color = ProtoVAR.UInt.deserialize(stream),
+                        overlay = ProtoVAR.UInt.deserialize(stream),
                     )
 
                     EventType.UPDATE_STYLE -> EventType.Companion.UpdateStyleData(
-                        color = byteBuf.readUnsignedVarInt(),
-                        overlay = byteBuf.readUnsignedVarInt(),
+                        color = ProtoVAR.UInt.deserialize(stream),
+                        overlay = ProtoVAR.UInt.deserialize(stream),
                     )
 
                     EventType.QUERY -> EventType.Companion.QueryData(
-                        playerID = byteBuf.readActorUniqueID(),
+                        playerID = ActorUniqueID.deserialize(stream),
                     )
                 }
             )
+        }
+
+        override fun serialize(value: BossEventPacket, stream: Buffer) {
+            ActorUniqueID.serialize(value.targetActorID, stream)
+            EventType.serialize(value.eventType, stream)
+            
+            when (value.eventType) {
+                EventType.ADD -> {
+                    val addData = value.eventData as EventType.Companion.AddData
+                    Proto.String.serialize(addData.name, stream)
+                    Proto.String.serialize(addData.filteredName, stream)
+                    ProtoLE.Float.serialize(addData.healthPercent, stream)
+                    ProtoLE.UShort.serialize(addData.darkenScreen, stream)
+                    ProtoVAR.UInt.serialize(addData.color, stream)
+                    ProtoVAR.UInt.serialize(addData.overlay, stream)
+                }
+                EventType.PLAYER_ADDED -> {
+                    val playerAddedData = value.eventData as EventType.Companion.PlayerAddedData
+                    ActorUniqueID.serialize(playerAddedData.playerID, stream)
+                }
+                EventType.REMOVE -> Unit
+                EventType.PLAYER_REMOVED -> {
+                    val playerRemovedData = value.eventData as EventType.Companion.PlayerRemovedData
+                    ActorUniqueID.serialize(playerRemovedData.playerID, stream)
+                }
+                EventType.UPDATE_PERCENT -> {
+                    val updatePercentData = value.eventData as EventType.Companion.UpdatePercentData
+                    ProtoLE.Float.serialize(updatePercentData.healthPercent, stream)
+                }
+                EventType.UPDATE_NAME -> {
+                    val updateNameData = value.eventData as EventType.Companion.UpdateNameData
+                    Proto.String.serialize(updateNameData.name, stream)
+                    Proto.String.serialize(updateNameData.filteredName, stream)
+                }
+                EventType.UPDATE_PROPERTIES -> {
+                    val updatePropertiesData = value.eventData as EventType.Companion.UpdatePropertiesData
+                    ProtoLE.UShort.serialize(updatePropertiesData.darkenScreen, stream)
+                    ProtoVAR.UInt.serialize(updatePropertiesData.color, stream)
+                    ProtoVAR.UInt.serialize(updatePropertiesData.overlay, stream)
+                }
+                EventType.UPDATE_STYLE -> {
+                    val updateStyleData = value.eventData as EventType.Companion.UpdateStyleData
+                    ProtoVAR.UInt.serialize(updateStyleData.color, stream)
+                    ProtoVAR.UInt.serialize(updateStyleData.overlay, stream)
+                }
+                EventType.QUERY -> {
+                    val queryData = value.eventData as EventType.Companion.QueryData
+                    ActorUniqueID.serialize(queryData.playerID, stream)
+                }
+            }
         }
     }
 }

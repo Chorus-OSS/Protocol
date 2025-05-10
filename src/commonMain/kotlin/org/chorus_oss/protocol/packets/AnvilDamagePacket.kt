@@ -6,6 +6,7 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.shared.types.UIVector3
 
 data class AnvilDamagePacket(
     val damageAmount: Byte,
@@ -18,13 +19,13 @@ data class AnvilDamagePacket(
         override fun deserialize(stream: Buffer): AnvilDamagePacket {
             return AnvilDamagePacket(
                 damageAmount = Proto.Byte.deserialize(stream),
-                blockPosition = IVector3.deserialize(stream)
+                blockPosition = UIVector3.deserialize(stream)
             )
         }
 
         override fun serialize(value: AnvilDamagePacket, stream: Buffer) {
             Proto.Byte.serialize(value.damageAmount, stream)
-            IVector3.serialize(value.blockPosition, stream)
+            UIVector3.serialize(value.blockPosition, stream)
         }
     }
 }

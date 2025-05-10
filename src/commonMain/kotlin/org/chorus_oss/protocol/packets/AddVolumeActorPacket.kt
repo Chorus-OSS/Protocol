@@ -11,6 +11,7 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.shared.types.UIVector3
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AddVolumeActorPacket(
@@ -33,8 +34,8 @@ data class AddVolumeActorPacket(
                 components = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
                 jsonIdentifier = Proto.String.deserialize(stream),
                 instanceIdentifier = Proto.String.deserialize(stream),
-                minBounds = IVector3.deserialize(stream),
-                maxBounds = IVector3.deserialize(stream),
+                minBounds = UIVector3.deserialize(stream),
+                maxBounds = UIVector3.deserialize(stream),
                 dimension = ProtoVAR.Int.deserialize(stream),
                 engineVersion = Proto.String.deserialize(stream),
             )
@@ -45,8 +46,8 @@ data class AddVolumeActorPacket(
             Tag.serialize(value.components, stream, TagSerialization.NetLE, true)
             Proto.String.serialize(value.jsonIdentifier, stream)
             Proto.String.serialize(value.instanceIdentifier, stream)
-            IVector3.serialize(value.minBounds, stream)
-            IVector3.serialize(value.maxBounds, stream)
+            UIVector3.serialize(value.minBounds, stream)
+            UIVector3.serialize(value.maxBounds, stream)
             ProtoVAR.Int.serialize(value.dimension, stream)
             Proto.String.serialize(value.engineVersion, stream)
         }

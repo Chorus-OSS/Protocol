@@ -1,5 +1,14 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.shared.types.Vector2f
 
 data class CameraAimAssistPacket(
@@ -8,44 +17,59 @@ data class CameraAimAssistPacket(
     val distance: Float,
     val targetMode: TargetMode,
     val action: Action,
-) : DataPacket(), PacketEncoder {
-    enum class TargetMode {
-        ANGLE,
-        DISTANCE,
-        COUNT
-    }
+) {
+    companion object : PacketCodec<CameraAimAssistPacket> {
+        enum class TargetMode {
+            ANGLE,
+            DISTANCE,
+            COUNT;
 
-    enum class Action {
-        SET,
-        CLEAR,
-        COUNT
-    }
+            companion object : ProtoCodec<TargetMode> {
+                override fun serialize(value: TargetMode, stream: Buffer) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(this.presetId)
-        byteBuf.writeVector2f(this.viewAngle)
-        byteBuf.writeFloatLE(this.distance)
-        byteBuf.writeByte(this.targetMode.ordinal)
-        byteBuf.writeByte(this.action.ordinal)
-    }
+                override fun deserialize(stream: Buffer): TargetMode {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
+        }
 
-    override fun pid(): Int {
-        return ProtocolInfo.CAMERA_AIM_ASSIST_PACKET
-    }
+        enum class Action {
+            SET,
+            CLEAR,
+            COUNT;
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+            companion object : ProtoCodec<Action> {
+                override fun serialize(value: Action, stream: Buffer) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    companion object : PacketDecoder<CameraAimAssistPacket> {
-        override fun decode(byteBuf: ByteBuf): CameraAimAssistPacket {
+                override fun deserialize(stream: Buffer): Action {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.CAMERA_AIM_ASSIST_PACKET
+
+        override fun deserialize(stream: Buffer): CameraAimAssistPacket {
             return CameraAimAssistPacket(
-                presetId = byteBuf.readString(),
-                viewAngle = byteBuf.readVector2f(),
-                distance = byteBuf.readFloatLE(),
-                targetMode = TargetMode.entries[byteBuf.readUnsignedByte().toInt()],
-                action = Action.entries[byteBuf.readUnsignedByte().toInt()]
+                presetId = Proto.String.deserialize(stream),
+                viewAngle = Vector2f.deserialize(stream),
+                distance = ProtoLE.Float.deserialize(stream),
+                targetMode = TargetMode.deserialize(stream),
+                action = Action.deserialize(stream)
             )
+        }
+
+        override fun serialize(value: CameraAimAssistPacket, stream: Buffer) {
+            Proto.String.serialize(value.presetId, stream)
+            Vector2f.serialize(value.viewAngle, stream)
+            ProtoLE.Float.serialize(value.distance, stream)
+            TargetMode.serialize(value.targetMode, stream)
+            Action.serialize(value.action, stream)
         }
     }
 }
