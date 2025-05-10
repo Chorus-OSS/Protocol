@@ -1,26 +1,41 @@
-package org.chorus_oss.chorus.network.protocol
+package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
-import org.chorus_oss.chorus.network.protocol.types.biome.BiomeDefinitionData
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.types.biome.BiomeDefinitionData
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Short
+import org.chorus_oss.protocol.core.types.String
 
 data class BiomeDefinitionListPacket(
     val biomeDefinitions: Map<Short, BiomeDefinitionData>,
     val biomeStringList: List<String>,
-) : DataPacket(), PacketEncoder {
-    override fun pid(): Int {
-        return ProtocolInfo.BIOME_DEFINITION_LIST_PACKET
-    }
+) {
+    companion object : PacketCodec<BiomeDefinitionListPacket> {
+        override val id: Int
+            get() = ProtocolInfo.BIOME_DEFINITION_LIST_PACKET
 
-    override fun handle(handler: PacketHandler) {}
-
-    override fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeUnsignedVarInt(biomeDefinitions.size)
-        for ((key, value) in biomeDefinitions) {
-            byteBuf.writeShortLE(key.toInt())
-            value.encode(byteBuf)
+        override fun deserialize(stream: Buffer): BiomeDefinitionListPacket {
+            return BiomeDefinitionListPacket(
+                biomeDefinitions = ProtoHelper.deserializeList(stream) { buf ->
+                    Pair(
+                        ProtoLE.Short.deserialize(buf),
+                        BiomeDefinitionData.deserialize(buf)
+                    )
+                }.toMap(),
+                biomeStringList = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+            )
         }
-        byteBuf.writeArray(biomeStringList) { buf, data ->
-            buf.writeString(data)
+
+        override fun serialize(value: BiomeDefinitionListPacket, stream: Buffer) {
+            ProtoHelper.serializeList(value.biomeDefinitions.entries.toList(), stream) { (k, v), buf ->
+                ProtoLE.Short.serialize(k, buf)
+                BiomeDefinitionData.serialize(v, buf)
+            }
+            ProtoHelper.serializeList(value.biomeStringList, stream, Proto.String::serialize)
         }
     }
 }

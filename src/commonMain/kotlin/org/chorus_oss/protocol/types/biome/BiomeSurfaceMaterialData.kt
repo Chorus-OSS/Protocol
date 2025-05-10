@@ -1,6 +1,9 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Int
 
 data class BiomeSurfaceMaterialData(
     val topBlock: Int,
@@ -10,12 +13,25 @@ data class BiomeSurfaceMaterialData(
     val seaBlock: Int,
     val seaFloorDepth: Int,
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeIntLE(topBlock)
-        byteBuf.writeIntLE(midBlock)
-        byteBuf.writeIntLE(seaFloorBlock)
-        byteBuf.writeIntLE(seaBlock)
-        byteBuf.writeIntLE(seaFloorDepth)
-        byteBuf.writeIntLE(foundationBlock)
+    companion object : ProtoCodec<BiomeSurfaceMaterialData> {
+        override fun serialize(value: BiomeSurfaceMaterialData, stream: Buffer) {
+            ProtoLE.Int.serialize(value.topBlock, stream)
+            ProtoLE.Int.serialize(value.midBlock, stream)
+            ProtoLE.Int.serialize(value.seaFloorBlock, stream)
+            ProtoLE.Int.serialize(value.seaBlock, stream)
+            ProtoLE.Int.serialize(value.seaFloorDepth, stream)
+            ProtoLE.Int.serialize(value.foundationBlock, stream)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeSurfaceMaterialData {
+            return BiomeSurfaceMaterialData(
+                topBlock = ProtoLE.Int.deserialize(stream),
+                midBlock = ProtoLE.Int.deserialize(stream),
+                seaFloorBlock = ProtoLE.Int.deserialize(stream),
+                seaBlock = ProtoLE.Int.deserialize(stream),
+                seaFloorDepth = ProtoLE.Int.deserialize(stream),
+                foundationBlock = ProtoLE.Int.deserialize(stream),
+            )
+        }
     }
 }

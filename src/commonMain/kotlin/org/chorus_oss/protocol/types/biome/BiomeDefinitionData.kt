@@ -1,6 +1,11 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.*
 
 data class BiomeDefinitionData(
     val id: UShort? = null,
@@ -17,19 +22,39 @@ data class BiomeDefinitionData(
     val tags: BiomeTagsData? = null,
     val chunkGenData: BiomeDefinitionChunkGenData? = null
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeNotNull(id) { byteBuf.writeShortLE(it.toInt()) }
-        byteBuf.writeFloatLE(temperature)
-        byteBuf.writeFloatLE(downfall)
-        byteBuf.writeFloatLE(redSporeDensity)
-        byteBuf.writeFloatLE(blueSporeDensity)
-        byteBuf.writeFloatLE(ashDensity)
-        byteBuf.writeFloatLE(whiteAshDensity)
-        byteBuf.writeFloatLE(depth)
-        byteBuf.writeFloatLE(scale)
-        byteBuf.writeIntLE(mapWaterColorARGB)
-        byteBuf.writeBoolean(rain)
-        byteBuf.writeNotNull(tags) { it.encode(byteBuf) }
-        byteBuf.writeNotNull(chunkGenData) { it.encode(byteBuf) }
+    companion object : ProtoCodec<BiomeDefinitionData> {
+        override fun serialize(value: BiomeDefinitionData, stream: Buffer) {
+            ProtoHelper.serializeNullable(value.id, stream, ProtoLE.UShort::serialize)
+            ProtoLE.Float.serialize(value.temperature, stream)
+            ProtoLE.Float.serialize(value.downfall, stream)
+            ProtoLE.Float.serialize(value.redSporeDensity, stream)
+            ProtoLE.Float.serialize(value.blueSporeDensity, stream)
+            ProtoLE.Float.serialize(value.ashDensity, stream)
+            ProtoLE.Float.serialize(value.whiteAshDensity, stream)
+            ProtoLE.Float.serialize(value.depth, stream)
+            ProtoLE.Float.serialize(value.scale, stream)
+            ProtoLE.Int.serialize(value.mapWaterColorARGB, stream)
+            Proto.Boolean.serialize(value.rain, stream)
+            ProtoHelper.serializeNullable(value.tags, stream, BiomeTagsData::serialize)
+            ProtoHelper.serializeNullable(value.chunkGenData, stream, BiomeDefinitionChunkGenData::serialize)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeDefinitionData {
+            return BiomeDefinitionData(
+                id = ProtoHelper.deserializeNullable(stream, ProtoLE.UShort::deserialize),
+                temperature = ProtoLE.Float.deserialize(stream),
+                downfall = ProtoLE.Float.deserialize(stream),
+                redSporeDensity = ProtoLE.Float.deserialize(stream),
+                blueSporeDensity = ProtoLE.Float.deserialize(stream),
+                ashDensity = ProtoLE.Float.deserialize(stream),
+                whiteAshDensity = ProtoLE.Float.deserialize(stream),
+                depth = ProtoLE.Float.deserialize(stream),
+                scale = ProtoLE.Float.deserialize(stream),
+                mapWaterColorARGB = ProtoLE.Int.deserialize(stream),
+                rain = Proto.Boolean.deserialize(stream),
+                tags = ProtoHelper.deserializeNullable(stream, BiomeTagsData::deserialize),
+                chunkGenData = ProtoHelper.deserializeNullable(stream, BiomeDefinitionChunkGenData::deserialize)
+            )
+        }
     }
 }

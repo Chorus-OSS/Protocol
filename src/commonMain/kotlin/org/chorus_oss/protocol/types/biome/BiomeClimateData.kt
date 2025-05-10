@@ -1,6 +1,9 @@
 package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Float
 
 data class BiomeClimateData(
     val temperature: Float,
@@ -12,14 +15,29 @@ data class BiomeClimateData(
     val snowAccumulationMin: Float,
     val snowAccumulationMax: Float
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeFloatLE(temperature)
-        byteBuf.writeFloatLE(downfall)
-        byteBuf.writeFloatLE(redSporeDensity)
-        byteBuf.writeFloatLE(blueSporeDensity)
-        byteBuf.writeFloatLE(ashDensity)
-        byteBuf.writeFloatLE(whiteAshDensity)
-        byteBuf.writeFloatLE(snowAccumulationMin)
-        byteBuf.writeFloatLE(snowAccumulationMax)
+    companion object : ProtoCodec<BiomeClimateData> {
+        override fun serialize(value: BiomeClimateData, stream: Buffer) {
+            ProtoLE.Float.serialize(value.temperature, stream)
+            ProtoLE.Float.serialize(value.downfall, stream)
+            ProtoLE.Float.serialize(value.redSporeDensity, stream)
+            ProtoLE.Float.serialize(value.blueSporeDensity, stream)
+            ProtoLE.Float.serialize(value.ashDensity, stream)
+            ProtoLE.Float.serialize(value.whiteAshDensity, stream)
+            ProtoLE.Float.serialize(value.snowAccumulationMin, stream)
+            ProtoLE.Float.serialize(value.snowAccumulationMax, stream)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeClimateData {
+            return BiomeClimateData(
+                temperature = ProtoLE.Float.deserialize(stream),
+                downfall = ProtoLE.Float.deserialize(stream),
+                redSporeDensity = ProtoLE.Float.deserialize(stream),
+                blueSporeDensity = ProtoLE.Float.deserialize(stream),
+                ashDensity = ProtoLE.Float.deserialize(stream),
+                whiteAshDensity = ProtoLE.Float.deserialize(stream),
+                snowAccumulationMin = ProtoLE.Float.deserialize(stream),
+                snowAccumulationMax = ProtoLE.Float.deserialize(stream)
+            )
+        }
     }
 }

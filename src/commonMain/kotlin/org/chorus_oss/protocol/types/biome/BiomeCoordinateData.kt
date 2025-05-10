@@ -1,6 +1,11 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Short
+import org.chorus_oss.protocol.core.types.UInt
 
 data class BiomeCoordinateData(
     val minValueType: ExpressionOp,
@@ -11,13 +16,27 @@ data class BiomeCoordinateData(
     val gridStepSize: UInt,
     val distribution: RandomDistributionType,
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeVarInt(minValueType.ordinal)
-        byteBuf.writeShortLE(minValue.toInt())
-        byteBuf.writeVarInt(maxValueType.ordinal)
-        byteBuf.writeShortLE(maxValue.toInt())
-        byteBuf.writeUnsignedVarInt(gridOffset.toInt())
-        byteBuf.writeUnsignedVarInt(gridStepSize.toInt())
-        byteBuf.writeVarInt(distribution.ordinal)
+    companion object : ProtoCodec<BiomeCoordinateData> {
+        override fun serialize(value: BiomeCoordinateData, stream: Buffer) {
+            ExpressionOp.serialize(value.minValueType, stream)
+            ProtoLE.Short.serialize(value.minValue, stream)
+            ExpressionOp.serialize(value.maxValueType, stream)
+            ProtoLE.Short.serialize(value.maxValue, stream)
+            ProtoVAR.UInt.serialize(value.gridOffset, stream)
+            ProtoVAR.UInt.serialize(value.gridStepSize, stream)
+            RandomDistributionType.serialize(value.distribution, stream)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeCoordinateData {
+            return BiomeCoordinateData(
+                minValueType = ExpressionOp.deserialize(stream),
+                minValue = ProtoLE.Short.deserialize(stream),
+                maxValueType = ExpressionOp.deserialize(stream),
+                maxValue = ProtoLE.Short.deserialize(stream),
+                gridOffset = ProtoVAR.UInt.deserialize(stream),
+                gridStepSize = ProtoVAR.UInt.deserialize(stream),
+                distribution = RandomDistributionType.deserialize(stream)
+            )
+        }
     }
 }

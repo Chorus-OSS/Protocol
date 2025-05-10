@@ -1,13 +1,21 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 
 data class BiomeConsolidatedFeaturesData(
     val features: List<BiomeConsolidatedFeatureData>
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeArray(features) { buf, data ->
-            data.encode(buf)
+    companion object : ProtoCodec<BiomeConsolidatedFeaturesData> {
+        override fun serialize(value: BiomeConsolidatedFeaturesData, stream: Buffer) {
+            ProtoHelper.serializeList(value.features, stream, BiomeConsolidatedFeatureData::serialize)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeConsolidatedFeaturesData {
+            return BiomeConsolidatedFeaturesData(
+                features = ProtoHelper.deserializeList(stream, BiomeConsolidatedFeatureData::deserialize)
+            )
         }
     }
 }

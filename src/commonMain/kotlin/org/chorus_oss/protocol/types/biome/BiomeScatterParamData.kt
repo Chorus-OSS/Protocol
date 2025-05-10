@@ -1,6 +1,11 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.Short
 
 data class BiomeScatterParamData(
     val coordinate: List<BiomeCoordinateData>,
@@ -12,16 +17,30 @@ data class BiomeScatterParamData(
     val iterationsType: ExpressionOp,
     val iterations: Short,
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeArray(coordinate) { buf, data ->
-            data.encode(buf)
+    companion object : ProtoCodec<BiomeScatterParamData> {
+        override fun serialize(value: BiomeScatterParamData, stream: Buffer) {
+            ProtoHelper.serializeList(value.coordinate, stream, BiomeCoordinateData::serialize)
+            CoordinateEvaluationOrder.serialize(value.evalOrder, stream)
+            ExpressionOp.serialize(value.chancePercentType, stream)
+            ProtoLE.Short.serialize(value.chancePercent, stream)
+            ProtoLE.Int.serialize(value.chanceNumerator, stream)
+            ProtoLE.Int.serialize(value.chanceDenominator, stream)
+            ExpressionOp.serialize(value.iterationsType, stream)
+            ProtoLE.Short.serialize(value.iterations, stream)
         }
-        byteBuf.writeVarInt(evalOrder.ordinal)
-        byteBuf.writeVarInt(chancePercentType.ordinal)
-        byteBuf.writeShortLE(chancePercent.toInt())
-        byteBuf.writeIntLE(chanceNumerator)
-        byteBuf.writeIntLE(chanceDenominator)
-        byteBuf.writeVarInt(iterationsType.ordinal)
-        byteBuf.writeShortLE(iterations.toInt())
+
+        override fun deserialize(stream: Buffer): BiomeScatterParamData {
+            return BiomeScatterParamData(
+                coordinate = ProtoHelper.deserializeList(stream, BiomeCoordinateData::deserialize),
+                evalOrder = CoordinateEvaluationOrder.deserialize(stream),
+                chancePercentType = ExpressionOp.deserialize(stream),
+                chancePercent = ProtoLE.Short.deserialize(stream),
+                chanceNumerator = ProtoLE.Int.deserialize(stream),
+                chanceDenominator = ProtoLE.Int.deserialize(stream),
+                iterationsType = ExpressionOp.deserialize(stream),
+                iterations = ProtoLE.Short.deserialize(stream),
+            )
+        }
+
     }
 }

@@ -1,6 +1,8 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 
 data class BiomeOverworldGenRulesData(
     val hillsTransformations: List<BiomeWeightedData>,
@@ -11,27 +13,27 @@ data class BiomeOverworldGenRulesData(
     val postShoreEdge: List<BiomeConditionalTransformationData>,
     val climate: List<BiomeWeightedTemperatureData>,
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeArray(hillsTransformations) { buf, data ->
-            data.encode(buf)
+    companion object : ProtoCodec<BiomeOverworldGenRulesData> {
+        override fun serialize(value: BiomeOverworldGenRulesData, stream: Buffer) {
+            ProtoHelper.serializeList(value.hillsTransformations, stream, BiomeWeightedData::serialize)
+            ProtoHelper.serializeList(value.mutateTransformations, stream, BiomeWeightedData::serialize)
+            ProtoHelper.serializeList(value.riverTransformations, stream, BiomeWeightedData::serialize)
+            ProtoHelper.serializeList(value.shoreTransformations, stream, BiomeWeightedData::serialize)
+            ProtoHelper.serializeList(value.preHillsEdge, stream, BiomeConditionalTransformationData::serialize)
+            ProtoHelper.serializeList(value.postShoreEdge, stream, BiomeConditionalTransformationData::serialize)
+            ProtoHelper.serializeList(value.climate, stream, BiomeWeightedTemperatureData::serialize)
         }
-        byteBuf.writeArray(mutateTransformations) { buf, data ->
-            data.encode(buf)
-        }
-        byteBuf.writeArray(riverTransformations) { buf, data ->
-            data.encode(buf)
-        }
-        byteBuf.writeArray(shoreTransformations) { buf, data ->
-            data.encode(buf)
-        }
-        byteBuf.writeArray(preHillsEdge) { buf, data ->
-            data.encode(buf)
-        }
-        byteBuf.writeArray(postShoreEdge) { buf, data ->
-            data.encode(buf)
-        }
-        byteBuf.writeArray(climate) { buf, data ->
-            data.encode(buf)
+
+        override fun deserialize(stream: Buffer): BiomeOverworldGenRulesData {
+            return BiomeOverworldGenRulesData(
+                hillsTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
+                mutateTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
+                riverTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
+                shoreTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
+                preHillsEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData::deserialize),
+                postShoreEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData::deserialize),
+                climate = ProtoHelper.deserializeList(stream, BiomeWeightedTemperatureData::deserialize),
+            )
         }
     }
 }

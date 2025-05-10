@@ -1,13 +1,26 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Short
+import org.chorus_oss.protocol.core.types.UInt
 
 data class BiomeWeightedData(
     val biome: Short,
     val weight: UInt,
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeShortLE(biome.toInt())
-        byteBuf.writeIntLE(weight.toInt())
+    companion object : ProtoCodec<BiomeWeightedData> {
+        override fun serialize(value: BiomeWeightedData, stream: Buffer) {
+            ProtoLE.Short.serialize(value.biome, stream)
+            ProtoLE.UInt.serialize(value.weight, stream)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeWeightedData {
+            return BiomeWeightedData(
+                biome = ProtoLE.Short.deserialize(stream),
+                weight = ProtoLE.UInt.deserialize(stream)
+            )
+        }
     }
 }

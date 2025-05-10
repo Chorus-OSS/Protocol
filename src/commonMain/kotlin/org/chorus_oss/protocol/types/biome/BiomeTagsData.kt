@@ -1,13 +1,23 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Short
 
 data class BiomeTagsData(
     val tags: List<Short>
 ) {
-    fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeArray(tags) { buf, tag ->
-            buf.writeShortLE(tag.toInt())
+    companion object : ProtoCodec<BiomeTagsData> {
+        override fun serialize(value: BiomeTagsData, stream: Buffer) {
+            ProtoHelper.serializeList(value.tags, stream, ProtoLE.Short::serialize)
+        }
+
+        override fun deserialize(stream: Buffer): BiomeTagsData {
+            return BiomeTagsData(
+                tags = ProtoHelper.deserializeList(stream, ProtoLE.Short::deserialize)
+            )
         }
     }
 }

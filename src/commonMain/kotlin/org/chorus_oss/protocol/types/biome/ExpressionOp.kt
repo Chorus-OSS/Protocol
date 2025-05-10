@@ -1,4 +1,9 @@
-package org.chorus_oss.chorus.network.protocol.types.biome
+package org.chorus_oss.protocol.types.biome
+
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
 
 enum class ExpressionOp {
     LEFT_BRACE,
@@ -78,5 +83,15 @@ enum class ExpressionOp {
     RETURN,
     COMMA,
     THIS,
-    NON_EVALUATED_ARRAY
+    NON_EVALUATED_ARRAY;
+
+    companion object : ProtoCodec<ExpressionOp> {
+        override fun serialize(value: ExpressionOp, stream: Buffer) {
+            ProtoVAR.Int.serialize(value.ordinal, stream)
+        }
+
+        override fun deserialize(stream: Buffer): ExpressionOp {
+            return entries[ProtoVAR.Int.deserialize(stream)]
+        }
+    }
 }
