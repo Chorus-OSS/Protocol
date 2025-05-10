@@ -1,80 +1,42 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.camera.data.Ease
-import org.chorus_oss.chorus.camera.data.Time
-import org.chorus_oss.chorus.camera.instruction.CameraInstruction
-import org.chorus_oss.chorus.camera.instruction.impl.ClearInstruction
-import org.chorus_oss.chorus.camera.instruction.impl.FadeInstruction
-import org.chorus_oss.chorus.camera.instruction.impl.SetInstruction
-import org.chorus_oss.chorus.camera.instruction.impl.TargetInstruction
-
-import java.awt.Color
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.types.camera.instruction.CameraFadeInstruction
+import org.chorus_oss.protocol.types.camera.instruction.CameraSetInstruction
+import org.chorus_oss.protocol.types.camera.instruction.CameraTargetInstruction
 
 data class CameraInstructionPacket(
-    var set: SetInstruction? = null,
-    var clear: ClearInstruction? = null,
-    var fade: FadeInstruction? = null,
-    var target: TargetInstruction? = null,
+    var set: CameraSetInstruction? = null,
+    var clear: Boolean? = null,
+    var fade: CameraFadeInstruction? = null,
+    var target: CameraTargetInstruction? = null,
     var removeTarget: Boolean? = null,
-) : DataPacket(), PacketEncoder {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeNotNull(set) { s ->
-            byteBuf.writeIntLE(s.preset!!.getId())
-            byteBuf.writeNotNull(s.ease) { e -> this.writeEase(byteBuf, e) }
-            byteBuf.writeNotNull(s.pos, byteBuf::writeVector3f)
-            byteBuf.writeNotNull(s.rot, byteBuf::writeVector2f)
-            byteBuf.writeNotNull(s.facing, byteBuf::writeVector3f)
-            byteBuf.writeNotNull(s.viewOffset, byteBuf::writeVector2f)
-            byteBuf.writeNotNull(s.entityOffset, byteBuf::writeVector3f)
-            byteBuf.writeOptional(s.defaultPreset) { value -> byteBuf.writeBoolean(value) }
+) {
+    companion object : PacketCodec<CameraInstructionPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CAMERA_INSTRUCTION_PACKET
+
+        override fun deserialize(stream: Buffer): CameraInstructionPacket {
+            return CameraInstructionPacket(
+                set = ProtoHelper.deserializeNullable(stream, CameraSetInstruction::deserialize),
+                clear = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
+                fade = ProtoHelper.deserializeNullable(stream, CameraFadeInstruction::deserialize),
+                target = ProtoHelper.deserializeNullable(stream, CameraTargetInstruction::deserialize),
+                removeTarget = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
+            )
         }
 
-        byteBuf.writeNotNull(clear) { byteBuf.writeBoolean(true) }
-
-        byteBuf.writeNotNull(fade) { f ->
-            byteBuf.writeNotNull(f.time) { t -> this.writeTimeData(byteBuf, t) }
-            byteBuf.writeNotNull(f.color) { c -> this.writeColor(byteBuf, c) }
+        override fun serialize(value: CameraInstructionPacket, stream: Buffer) {
+            ProtoHelper.serializeNullable(value.set, stream, CameraSetInstruction::serialize)
+            ProtoHelper.serializeNullable(value.clear, stream, Proto.Boolean::serialize)
+            ProtoHelper.serializeNullable(value.fade, stream, CameraFadeInstruction::serialize)
+            ProtoHelper.serializeNullable(value.target, stream, CameraTargetInstruction::serialize)
+            ProtoHelper.serializeNullable(value.removeTarget, stream, Proto.Boolean::serialize)
         }
-
-        byteBuf.writeNotNull(target) { target ->
-            byteBuf.writeNotNull(target.targetCenterOffset, byteBuf::writeVector3f)
-            byteBuf.writeLongLE(target.uniqueEntityId)
-        }
-
-        byteBuf.writeNotNull(removeTarget) { byteBuf.writeBoolean(it) }
-    }
-
-    fun setInstruction(instruction: CameraInstruction) {
-        when (instruction) {
-            is SetInstruction -> this.set = instruction
-            is FadeInstruction -> this.fade = instruction
-            is ClearInstruction -> this.clear = instruction
-            is TargetInstruction -> this.target = instruction
-        }
-    }
-
-    protected fun writeEase(byteBuf: ByteBuf, ease: Ease) {
-        byteBuf.writeByte(ease.easeType.ordinal.toByte().toInt())
-        byteBuf.writeFloatLE(ease.time)
-    }
-
-    protected fun writeTimeData(byteBuf: ByteBuf, time: Time) {
-        byteBuf.writeFloatLE(time.fadeIn)
-        byteBuf.writeFloatLE(time.hold)
-        byteBuf.writeFloatLE(time.fadeOut)
-    }
-
-    protected fun writeColor(byteBuf: ByteBuf, color: Color) {
-        byteBuf.writeFloatLE(color.red / 255f)
-        byteBuf.writeFloatLE(color.green / 255f)
-        byteBuf.writeFloatLE(color.blue / 255f)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.CAMERA_INSTRUCTION_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
     }
 }

@@ -10,35 +10,19 @@ import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.shared.types.Vector2f
+import org.chorus_oss.protocol.types.camera.CameraAimAssistTargetMode
 
 data class CameraAimAssistPacket(
     val presetId: String,
     val viewAngle: Vector2f,
     val distance: Float,
-    val targetMode: TargetMode,
+    val targetMode: CameraAimAssistTargetMode,
     val action: Action,
 ) {
     companion object : PacketCodec<CameraAimAssistPacket> {
-        enum class TargetMode {
-            ANGLE,
-            DISTANCE,
-            COUNT;
-
-            companion object : ProtoCodec<TargetMode> {
-                override fun serialize(value: TargetMode, stream: Buffer) {
-                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
-                }
-
-                override fun deserialize(stream: Buffer): TargetMode {
-                    return entries[Proto.Byte.deserialize(stream).toInt()]
-                }
-            }
-        }
-
         enum class Action {
             SET,
-            CLEAR,
-            COUNT;
+            CLEAR;
 
             companion object : ProtoCodec<Action> {
                 override fun serialize(value: Action, stream: Buffer) {
@@ -59,7 +43,7 @@ data class CameraAimAssistPacket(
                 presetId = Proto.String.deserialize(stream),
                 viewAngle = Vector2f.deserialize(stream),
                 distance = ProtoLE.Float.deserialize(stream),
-                targetMode = TargetMode.deserialize(stream),
+                targetMode = CameraAimAssistTargetMode.deserialize(stream),
                 action = Action.deserialize(stream)
             )
         }
@@ -68,7 +52,7 @@ data class CameraAimAssistPacket(
             Proto.String.serialize(value.presetId, stream)
             Vector2f.serialize(value.viewAngle, stream)
             ProtoLE.Float.serialize(value.distance, stream)
-            TargetMode.serialize(value.targetMode, stream)
+            CameraAimAssistTargetMode.serialize(value.targetMode, stream)
             Action.serialize(value.action, stream)
         }
     }
