@@ -1,18 +1,25 @@
-package org.chorus_oss.chorus.network.protocol
+package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.ControlScheme
 
 data class ClientboundControlSchemeSetPacket(
     val controlScheme: ControlScheme
-) : DataPacket(), PacketEncoder {
-    override fun pid(): Int {
-        return ProtocolInfo.CLIENTBOUND_CONTROL_SCHEME_SET_PACKET
-    }
+) {
+    companion object : PacketCodec<ClientboundControlSchemeSetPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CLIENTBOUND_CONTROL_SCHEME_SET_PACKET
 
-    override fun handle(handler: PacketHandler) {}
+        override fun deserialize(stream: Buffer): ClientboundControlSchemeSetPacket {
+            return ClientboundControlSchemeSetPacket(
+                controlScheme = ControlScheme.deserialize(stream)
+            )
+        }
 
-    override fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeByte(controlScheme.ordinal)
+        override fun serialize(value: ClientboundControlSchemeSetPacket, stream: Buffer) {
+            ControlScheme.serialize(value.controlScheme, stream)
+        }
     }
 }

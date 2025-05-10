@@ -5,10 +5,12 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.types.Color
+import org.chorus_oss.protocol.types.FColorRGB
 
 data class CameraFadeInstruction(
     val timeData: TimeData? = null,
-    val color: ColorData? = null,
+    val color: Color? = null,
 ) {
     companion object : ProtoCodec<CameraFadeInstruction> {
         data class TimeData(
@@ -33,37 +35,15 @@ data class CameraFadeInstruction(
             }
         }
 
-        data class ColorData(
-            val r: Float,
-            val g: Float,
-            val b: Float,
-        ) {
-            companion object : ProtoCodec<ColorData> {
-                override fun serialize(value: ColorData, stream: Buffer) {
-                    ProtoLE.Float.serialize(value.r, stream)
-                    ProtoLE.Float.serialize(value.g, stream)
-                    ProtoLE.Float.serialize(value.b, stream)
-                }
-
-                override fun deserialize(stream: Buffer): ColorData {
-                    return ColorData(
-                        r = ProtoLE.Float.deserialize(stream),
-                        g = ProtoLE.Float.deserialize(stream),
-                        b = ProtoLE.Float.deserialize(stream)
-                    )
-                }
-            }
-        }
-
         override fun serialize(value: CameraFadeInstruction, stream: Buffer) {
             ProtoHelper.serializeNullable(value.timeData, stream, TimeData::serialize)
-            ProtoHelper.serializeNullable(value.color, stream, ColorData::serialize)
+            ProtoHelper.serializeNullable(value.color, stream, FColorRGB::serialize)
         }
 
         override fun deserialize(stream: Buffer): CameraFadeInstruction {
             return CameraFadeInstruction(
                 timeData = ProtoHelper.deserializeNullable(stream, TimeData::deserialize),
-                color = ProtoHelper.deserializeNullable(stream, ColorData::deserialize)
+                color = ProtoHelper.deserializeNullable(stream, FColorRGB::deserialize)
             )
         }
     }

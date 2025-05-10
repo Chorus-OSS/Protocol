@@ -1,18 +1,27 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+
 
 data class ChunkRadiusUpdatedPacket(
     val radius: Int
-) : DataPacket(), PacketEncoder {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(this.radius)
-    }
+) {
+    companion object : PacketCodec<ChunkRadiusUpdatedPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CHUNK_RADIUS_UPDATED_PACKET
 
-    override fun pid(): Int {
-        return ProtocolInfo.CHUNK_RADIUS_UPDATED_PACKET
-    }
+        override fun deserialize(stream: Buffer): ChunkRadiusUpdatedPacket {
+            return ChunkRadiusUpdatedPacket(
+                radius = ProtoVAR.Int.deserialize(stream)
+            )
+        }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
+        override fun serialize(value: ChunkRadiusUpdatedPacket, stream: Buffer) {
+            ProtoVAR.Int.serialize(value.radius, stream)
+        }
     }
 }

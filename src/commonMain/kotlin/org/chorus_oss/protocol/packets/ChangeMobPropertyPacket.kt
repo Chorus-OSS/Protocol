@@ -1,34 +1,48 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Buffer
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ChangeMobPropertyPacket(
     val actorID: ActorUniqueID,
-    val propertyName: String,
-    val boolComponentValue: Boolean,
-    val stringComponentValue: String,
-    val intComponentValue: Int,
-    val floatComponentValue: Float,
-) : DataPacket() {
-    override fun pid(): Int {
-        return ProtocolInfo.CHANGE_MOB_PROPERTY_PACKET
-    }
+    val property: String,
+    val boolValue: Boolean,
+    val stringValue: String,
+    val intValue: Int,
+    val floatValue: Float,
+) {
+    companion object : PacketCodec<ChangeMobPropertyPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CHANGE_MOB_PROPERTY_PACKET
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<ChangeMobPropertyPacket> {
-        override fun decode(byteBuf: ByteBuf): ChangeMobPropertyPacket {
+        override fun deserialize(stream: Buffer): ChangeMobPropertyPacket {
             return ChangeMobPropertyPacket(
-                actorID = byteBuf.readActorUniqueID(),
-                propertyName = byteBuf.readString(),
-                boolComponentValue = byteBuf.readBoolean(),
-                stringComponentValue = byteBuf.readString(),
-                intComponentValue = byteBuf.readInt(),
-                floatComponentValue = byteBuf.readFloatLE(),
+                actorID = ActorUniqueID.deserialize(stream),
+                property = Proto.String.deserialize(stream),
+                boolValue = Proto.Boolean.deserialize(stream),
+                stringValue = Proto.String.deserialize(stream),
+                intValue = ProtoVAR.Int.deserialize(stream),
+                floatValue = ProtoLE.Float.deserialize(stream),
             )
+        }
+
+        override fun serialize(value: ChangeMobPropertyPacket, stream: Buffer) {
+            ActorUniqueID.serialize(value.actorID, stream)
+            Proto.String.serialize(value.property, stream)
+            Proto.Boolean.serialize(value.boolValue, stream)
+            Proto.String.serialize(value.stringValue, stream)
+            ProtoVAR.Int.serialize(value.intValue, stream)
+            ProtoLE.Float.serialize(value.floatValue, stream)
         }
     }
 }
