@@ -7,6 +7,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.shared.types.Vector2f
 import org.chorus_oss.protocol.types.camera.CameraAimAssistTargetMode
@@ -20,7 +21,9 @@ data class CameraPresetAimAssist(
     companion object : ProtoCodec<CameraPresetAimAssist> {
         override fun serialize(value: CameraPresetAimAssist, stream: Sink) {
             ProtoHelper.serializeNullable(value.presetId, stream, Proto.String::serialize)
-            ProtoHelper.serializeNullable(value.targetMode, stream, CameraAimAssistTargetMode::serialize) // TODO: Byte or Int?
+            ProtoHelper.serializeNullable(value.targetMode, stream) { m, buf ->
+                ProtoLE.Int.serialize(m.ordinal, buf)
+            }
             ProtoHelper.serializeNullable(value.angle, stream, Vector2f::serialize)
             ProtoHelper.serializeNullable(value.distance, stream, ProtoLE.Float::serialize)
         }
@@ -28,7 +31,9 @@ data class CameraPresetAimAssist(
         override fun deserialize(stream: Source): CameraPresetAimAssist {
             return CameraPresetAimAssist(
                 presetId = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
-                targetMode = ProtoHelper.deserializeNullable(stream, CameraAimAssistTargetMode::deserialize),
+                targetMode = ProtoHelper.deserializeNullable(stream) { buf ->
+                    CameraAimAssistTargetMode.entries[ProtoLE.Int.deserialize(buf)]
+                },
                 angle = ProtoHelper.deserializeNullable(stream, Vector2f::deserialize),
                 distance = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
             )
