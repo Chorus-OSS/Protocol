@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -19,7 +20,7 @@ data class AgentActionEventPacket(
         override val id: Int
             get() = ProtocolInfo.AGENT_ACTION_EVENT_PACKET
 
-        override fun deserialize(stream: Buffer): AgentActionEventPacket {
+        override fun deserialize(stream: Source): AgentActionEventPacket {
             return AgentActionEventPacket(
                 requestId = Proto.String.deserialize(stream),
                 action = AgentActionType.entries[ProtoLE.Int.deserialize(stream)],
@@ -27,7 +28,7 @@ data class AgentActionEventPacket(
             )
         }
 
-        override fun serialize(value: AgentActionEventPacket, stream: Buffer) {
+        override fun serialize(value: AgentActionEventPacket, stream: Sink) {
             Proto.String.serialize(value.requestId, stream)
             ProtoLE.Int.serialize(value.action.ordinal, stream)
             Proto.String.serialize(value.response, stream)

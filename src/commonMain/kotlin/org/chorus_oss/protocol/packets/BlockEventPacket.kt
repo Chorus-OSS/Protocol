@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoVAR
@@ -17,7 +18,7 @@ data class BlockEventPacket(
         override val id: Int
             get() = ProtocolInfo.BLOCK_EVENT_PACKET
 
-        override fun deserialize(stream: Buffer): BlockEventPacket {
+        override fun deserialize(stream: Source): BlockEventPacket {
             return BlockEventPacket(
                 blockPosition = UIVector3.deserialize(stream),
                 eventType = ProtoVAR.Int.deserialize(stream),
@@ -25,7 +26,7 @@ data class BlockEventPacket(
             )
         }
 
-        override fun serialize(value: BlockEventPacket, stream: Buffer) {
+        override fun serialize(value: BlockEventPacket, stream: Sink) {
             UIVector3.serialize(value.blockPosition, stream)
             ProtoVAR.Int.serialize(value.eventType, stream)
             ProtoVAR.Int.serialize(value.eventValue, stream)

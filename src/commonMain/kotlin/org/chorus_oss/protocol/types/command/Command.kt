@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.command
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -21,7 +22,7 @@ data class Command(
     val overloads: List<CommandOverload>
 ) {
     companion object : ProtoCodec<Command> {
-        override fun serialize(value: Command, stream: Buffer) {
+        override fun serialize(value: Command, stream: Sink) {
             Proto.String.serialize(value.name, stream)
             Proto.String.serialize(value.description, stream)
             ProtoLE.UShort.serialize(value.flags, stream)
@@ -31,7 +32,7 @@ data class Command(
             ProtoHelper.serializeList(value.overloads, stream, CommandOverload::serialize)
         }
 
-        override fun deserialize(stream: Buffer): Command {
+        override fun deserialize(stream: Source): Command {
             return Command(
                 name = Proto.String.deserialize(stream),
                 description = Proto.String.deserialize(stream),

@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
@@ -35,7 +36,7 @@ data class AddPlayerPacket(
         override val id: Int
             get() = ProtocolInfo.ADD_PLAYER_PACKET
 
-        override fun deserialize(stream: Buffer): AddPlayerPacket {
+        override fun deserialize(stream: Source): AddPlayerPacket {
             return AddPlayerPacket(
                 uuid = Proto.Uuid.deserialize(stream),
                 playerName = Proto.String.deserialize(stream),
@@ -57,7 +58,7 @@ data class AddPlayerPacket(
         }
 
         @OptIn(ExperimentalUuidApi::class)
-        override fun serialize(value: AddPlayerPacket, stream: Buffer) {
+        override fun serialize(value: AddPlayerPacket, stream: Sink) {
             Proto.Uuid.serialize(value.uuid, stream)
             Proto.String.serialize(value.playerName, stream)
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)

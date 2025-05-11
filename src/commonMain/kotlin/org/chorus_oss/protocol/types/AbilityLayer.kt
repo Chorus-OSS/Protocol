@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
@@ -24,17 +25,17 @@ data class AbilityLayer(
             LOADING_SCREEN;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     ProtoLE.Short.serialize(value.ordinal.toShort(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[ProtoLE.Short.deserialize(stream).toInt()]
                 }
             }
         }
 
-        override fun serialize(value: AbilityLayer, stream: Buffer) {
+        override fun serialize(value: AbilityLayer, stream: Sink) {
             Type.serialize(value.layerType, stream)
             PlayerAbilitySet.serialize(value.abilitiesSet, stream)
             PlayerAbilitySet.serialize(value.abilityValues, stream)
@@ -43,7 +44,7 @@ data class AbilityLayer(
             ProtoLE.Float.serialize(value.walkSpeed, stream)
         }
 
-        override fun deserialize(stream: Buffer): AbilityLayer {
+        override fun deserialize(stream: Source): AbilityLayer {
             return AbilityLayer(
                 layerType = Type.deserialize(stream),
                 abilitiesSet = PlayerAbilitySet.deserialize(stream),

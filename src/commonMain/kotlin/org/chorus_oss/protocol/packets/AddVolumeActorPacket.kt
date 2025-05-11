@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
@@ -28,7 +29,7 @@ data class AddVolumeActorPacket(
         override val id: Int
             get() = ProtocolInfo.ADD_VOLUME_ENTITY_PACKET
 
-        override fun deserialize(stream: Buffer): AddVolumeActorPacket {
+        override fun deserialize(stream: Source): AddVolumeActorPacket {
             return AddVolumeActorPacket(
                 actorRuntimeID = ActorRuntimeID.deserialize(stream),
                 components = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
@@ -41,7 +42,7 @@ data class AddVolumeActorPacket(
             )
         }
 
-        override fun serialize(value: AddVolumeActorPacket, stream: Buffer) {
+        override fun serialize(value: AddVolumeActorPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)
             Tag.serialize(value.components, stream, TagSerialization.NetLE, true)
             Proto.String.serialize(value.jsonIdentifier, stream)

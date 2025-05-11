@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.command
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -20,23 +21,23 @@ data class CommandEnumConstraint(
             HostPermissions;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
         }
 
-        override fun serialize(value: CommandEnumConstraint, stream: Buffer) {
+        override fun serialize(value: CommandEnumConstraint, stream: Sink) {
             ProtoLE.UInt.serialize(value.enumValueIndex, stream)
             ProtoLE.UInt.serialize(value.enumIndex, stream)
             ProtoHelper.serializeList(value.constraints, stream, Type::serialize)
         }
 
-        override fun deserialize(stream: Buffer): CommandEnumConstraint {
+        override fun deserialize(stream: Source): CommandEnumConstraint {
             return CommandEnumConstraint(
                 enumValueIndex = ProtoLE.UInt.deserialize(stream),
                 enumIndex = ProtoLE.UInt.deserialize(stream),

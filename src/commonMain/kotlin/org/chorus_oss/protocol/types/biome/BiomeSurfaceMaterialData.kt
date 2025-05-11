@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
@@ -14,7 +15,7 @@ data class BiomeSurfaceMaterialData(
     val seaFloorDepth: Int,
 ) {
     companion object : ProtoCodec<BiomeSurfaceMaterialData> {
-        override fun serialize(value: BiomeSurfaceMaterialData, stream: Buffer) {
+        override fun serialize(value: BiomeSurfaceMaterialData, stream: Sink) {
             ProtoLE.Int.serialize(value.topBlock, stream)
             ProtoLE.Int.serialize(value.midBlock, stream)
             ProtoLE.Int.serialize(value.seaFloorBlock, stream)
@@ -23,7 +24,7 @@ data class BiomeSurfaceMaterialData(
             ProtoLE.Int.serialize(value.foundationBlock, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeSurfaceMaterialData {
+        override fun deserialize(stream: Source): BiomeSurfaceMaterialData {
             return BiomeSurfaceMaterialData(
                 topBlock = ProtoLE.Int.deserialize(stream),
                 midBlock = ProtoLE.Int.deserialize(stream),

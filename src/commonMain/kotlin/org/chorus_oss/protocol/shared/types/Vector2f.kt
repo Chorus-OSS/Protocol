@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.shared.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
@@ -100,12 +101,12 @@ data class Vector2f(
     }
 
     companion object : ProtoCodec<Vector2f> {
-        override fun serialize(value: Vector2f, stream: Buffer) {
+        override fun serialize(value: Vector2f, stream: Sink) {
             ProtoLE.Float.serialize(value.x, stream)
             ProtoLE.Float.serialize(value.y, stream)
         }
 
-        override fun deserialize(stream: Buffer): Vector2f {
+        override fun deserialize(stream: Source): Vector2f {
             return Vector2f(
                 x = ProtoLE.Float.deserialize(stream),
                 y = ProtoLE.Float.deserialize(stream),

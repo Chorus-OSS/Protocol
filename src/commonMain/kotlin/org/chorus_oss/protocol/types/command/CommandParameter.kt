@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.command
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -16,14 +17,14 @@ data class CommandParameter(
     val options: Byte,
 ) {
     companion object : ProtoCodec<CommandParameter> {
-        override fun serialize(value: CommandParameter, stream: Buffer) {
+        override fun serialize(value: CommandParameter, stream: Sink) {
             Proto.String.serialize(value.name, stream)
             ProtoLE.UInt.serialize(value.typeFlags, stream)
             Proto.Boolean.serialize(value.optional, stream)
             Proto.Byte.serialize(value.options, stream)
         }
 
-        override fun deserialize(stream: Buffer): CommandParameter {
+        override fun deserialize(stream: Source): CommandParameter {
             return CommandParameter(
                 name = Proto.String.deserialize(stream),
                 typeFlags = ProtoLE.UInt.deserialize(stream),

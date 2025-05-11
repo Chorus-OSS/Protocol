@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -26,7 +27,7 @@ data class AvailableCommandsPacket(
         override val id: Int
             get() = ProtocolInfo.AVAILABLE_COMMANDS_PACKET
 
-        override fun deserialize(stream: Buffer): AvailableCommandsPacket {
+        override fun deserialize(stream: Source): AvailableCommandsPacket {
             val enumValuesLen: Int
             return AvailableCommandsPacket(
                 enumValues = ProtoHelper.deserializeList(stream, Proto.String::deserialize).also { enumValuesLen = it.size },
@@ -59,7 +60,7 @@ data class AvailableCommandsPacket(
             )
         }
 
-        override fun serialize(value: AvailableCommandsPacket, stream: Buffer) {
+        override fun serialize(value: AvailableCommandsPacket, stream: Sink) {
             ProtoHelper.serializeList(value.enumValues, stream, Proto.String::serialize)
             ProtoHelper.serializeList(value.chainedSubcommandValues, stream, Proto.String::serialize)
             ProtoHelper.serializeList(value.suffixes, stream, Proto.String::serialize)

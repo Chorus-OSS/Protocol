@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.types.item
 
-import kotlinx.io.Buffer
-import kotlinx.io.readByteArray
-import kotlinx.io.readTo
+import kotlinx.io.*
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
@@ -27,7 +25,7 @@ data class ItemInstance(
                 _ShieldID = value
             }
 
-        override fun serialize(value: ItemInstance, stream: Buffer) {
+        override fun serialize(value: ItemInstance, stream: Sink) {
             ProtoVAR.Int.serialize(value.netID, stream)
             if (value.netID == 0) {
                 return // ItemStack is invalid, no more data.
@@ -62,7 +60,7 @@ data class ItemInstance(
             stream.write(bytes)
         }
 
-        override fun deserialize(stream: Buffer): ItemInstance {
+        override fun deserialize(stream: Source): ItemInstance {
             val netID = ProtoVAR.Int.deserialize(stream)
             if (netID == 0) {
                 return ItemInstance(

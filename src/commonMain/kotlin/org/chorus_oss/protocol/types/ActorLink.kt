@@ -1,14 +1,13 @@
 package org.chorus_oss.protocol.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
-import org.chorus_oss.protocol.core.types.Long
 
 data class ActorLink(
     val riddenActorUniqueID: ActorUniqueID,
@@ -25,17 +24,17 @@ data class ActorLink(
             PASSENGER;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
         }
 
-        override fun serialize(value: ActorLink, stream: Buffer) {
+        override fun serialize(value: ActorLink, stream: Sink) {
             ActorUniqueID.serialize(value.riddenActorUniqueID, stream)
             ActorUniqueID.serialize(value.riderActorUniqueID, stream)
             Type.serialize(value.type, stream)
@@ -44,7 +43,7 @@ data class ActorLink(
             ProtoLE.Float.serialize(value.vehicleAngularVelocity, stream)
         }
 
-        override fun deserialize(stream: Buffer): ActorLink {
+        override fun deserialize(stream: Source): ActorLink {
             return ActorLink(
                 riddenActorUniqueID = ActorUniqueID.deserialize(stream),
                 riderActorUniqueID = ActorUniqueID.deserialize(stream),

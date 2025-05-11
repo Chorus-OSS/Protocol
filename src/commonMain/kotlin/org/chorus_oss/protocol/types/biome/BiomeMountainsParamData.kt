@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -16,7 +17,7 @@ data class BiomeMountainsParamData(
     val topSlideEnabled: Boolean,
 ) {
     companion object : ProtoCodec<BiomeMountainsParamData> {
-        override fun serialize(value: BiomeMountainsParamData, stream: Buffer) {
+        override fun serialize(value: BiomeMountainsParamData, stream: Sink) {
             ProtoLE.Int.serialize(value.steepBlock, stream)
             Proto.Boolean.serialize(value.northSlopes, stream)
             Proto.Boolean.serialize(value.southSlopes, stream)
@@ -25,7 +26,7 @@ data class BiomeMountainsParamData(
             Proto.Boolean.serialize(value.topSlideEnabled, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeMountainsParamData {
+        override fun deserialize(stream: Source): BiomeMountainsParamData {
             return BiomeMountainsParamData(
                 steepBlock = ProtoLE.Int.deserialize(stream),
                 northSlopes = Proto.Boolean.deserialize(stream),

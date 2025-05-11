@@ -1,13 +1,11 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.core.types.Long
-import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.shared.types.Vector3f
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -27,7 +25,7 @@ data class AddItemActorPacket(
         override val id: Int
             get() = ProtocolInfo.ADD_ITEM_ACTOR_PACKET
 
-        override fun deserialize(stream: Buffer): AddItemActorPacket {
+        override fun deserialize(stream: Source): AddItemActorPacket {
             return AddItemActorPacket(
                 actorUniqueID = ActorUniqueID.deserialize(stream),
                 actorRuntimeID = ActorRuntimeID.deserialize(stream),
@@ -39,7 +37,7 @@ data class AddItemActorPacket(
             )
         }
 
-        override fun serialize(value: AddItemActorPacket, stream: Buffer) {
+        override fun serialize(value: AddItemActorPacket, stream: Sink) {
             ActorUniqueID.serialize(value.actorUniqueID, stream)
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)
             ItemStack.serialize(value.item, stream)

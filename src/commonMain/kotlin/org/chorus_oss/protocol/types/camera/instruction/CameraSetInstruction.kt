@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera.instruction
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -22,7 +23,7 @@ data class CameraSetInstruction(
     val default: Boolean? = null,
 ) {
     companion object : ProtoCodec<CameraSetInstruction> {
-        override fun serialize(value: CameraSetInstruction, stream: Buffer) {
+        override fun serialize(value: CameraSetInstruction, stream: Sink) {
             ProtoLE.UInt.serialize(value.preset, stream)
             ProtoHelper.serializeNullable(value.ease, stream, CameraEase::serialize)
             ProtoHelper.serializeNullable(value.position, stream, Vector3f::serialize)
@@ -33,7 +34,7 @@ data class CameraSetInstruction(
             ProtoHelper.serializeNullable(value.default, stream, Proto.Boolean::serialize)
         }
 
-        override fun deserialize(stream: Buffer): CameraSetInstruction {
+        override fun deserialize(stream: Source): CameraSetInstruction {
             return CameraSetInstruction(
                 preset = ProtoLE.UInt.deserialize(stream),
                 ease = ProtoHelper.deserializeNullable(stream, CameraEase::deserialize),

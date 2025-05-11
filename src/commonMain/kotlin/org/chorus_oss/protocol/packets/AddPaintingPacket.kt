@@ -1,14 +1,13 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.shared.types.Vector3f
 
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -25,7 +24,7 @@ data class AddPaintingPacket(
         override val id: Int
             get() = ProtocolInfo.ADD_PAINTING_PACKET
 
-        override fun deserialize(stream: Buffer): AddPaintingPacket {
+        override fun deserialize(stream: Source): AddPaintingPacket {
             return AddPaintingPacket(
                 actorUniqueID = ActorUniqueID.deserialize(stream),
                 actorRuntimeID = ActorRuntimeID.deserialize(stream),
@@ -35,7 +34,7 @@ data class AddPaintingPacket(
             )
         }
 
-        override fun serialize(value: AddPaintingPacket, stream: Buffer) {
+        override fun serialize(value: AddPaintingPacket, stream: Sink) {
             ActorUniqueID.serialize(value.actorUniqueID, stream)
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)
             Vector3f.serialize(value.position, stream)

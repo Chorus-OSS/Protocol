@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
@@ -17,7 +18,7 @@ data class BiomeElementData(
     val adjustedMaterials: BiomeSurfaceMaterialData,
 ) {
     companion object : ProtoCodec<BiomeElementData> {
-        override fun serialize(value: BiomeElementData, stream: Buffer) {
+        override fun serialize(value: BiomeElementData, stream: Sink) {
             ProtoLE.Float.serialize(value.noiseFrequencyScale, stream)
             ProtoLE.Float.serialize(value.noiseLowerBound, stream)
             ProtoLE.Float.serialize(value.noiseUpperBound, stream)
@@ -28,7 +29,7 @@ data class BiomeElementData(
             BiomeSurfaceMaterialData.serialize(value.adjustedMaterials, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeElementData {
+        override fun deserialize(stream: Source): BiomeElementData {
             return BiomeElementData(
                 noiseFrequencyScale = ProtoLE.Float.deserialize(stream),
                 noiseLowerBound = ProtoLE.Float.deserialize(stream),

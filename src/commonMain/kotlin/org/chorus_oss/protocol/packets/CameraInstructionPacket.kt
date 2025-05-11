@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -21,7 +22,7 @@ data class CameraInstructionPacket(
         override val id: Int
             get() = ProtocolInfo.CAMERA_INSTRUCTION_PACKET
 
-        override fun deserialize(stream: Buffer): CameraInstructionPacket {
+        override fun deserialize(stream: Source): CameraInstructionPacket {
             return CameraInstructionPacket(
                 set = ProtoHelper.deserializeNullable(stream, CameraSetInstruction::deserialize),
                 clear = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
@@ -31,7 +32,7 @@ data class CameraInstructionPacket(
             )
         }
 
-        override fun serialize(value: CameraInstructionPacket, stream: Buffer) {
+        override fun serialize(value: CameraInstructionPacket, stream: Sink) {
             ProtoHelper.serializeNullable(value.set, stream, CameraSetInstruction::serialize)
             ProtoHelper.serializeNullable(value.clear, stream, Proto.Boolean::serialize)
             ProtoHelper.serializeNullable(value.fade, stream, CameraFadeInstruction::serialize)

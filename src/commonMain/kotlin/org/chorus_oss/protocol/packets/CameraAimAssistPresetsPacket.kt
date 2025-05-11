@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -16,7 +17,7 @@ data class CameraAimAssistPresetsPacket(
         override val id: Int
             get() = ProtocolInfo.CAMERA_AIM_ASSIST_PRESETS_PACKET
 
-        override fun deserialize(stream: Buffer): CameraAimAssistPresetsPacket {
+        override fun deserialize(stream: Source): CameraAimAssistPresetsPacket {
             return CameraAimAssistPresetsPacket(
                 categories = ProtoHelper.deserializeList(stream, CameraAimAssistCategory::deserialize),
                 presets = ProtoHelper.deserializeList(stream, CameraAimAssistPreset::deserialize),
@@ -24,7 +25,7 @@ data class CameraAimAssistPresetsPacket(
             )
         }
 
-        override fun serialize(value: CameraAimAssistPresetsPacket, stream: Buffer) {
+        override fun serialize(value: CameraAimAssistPresetsPacket, stream: Sink) {
             ProtoHelper.serializeList(value.categories, stream, CameraAimAssistCategory::serialize)
             ProtoHelper.serializeList(value.presets, stream, CameraAimAssistPreset::serialize)
             CameraAimAssistPresetsPacketOperation.serialize(value.operation, stream)

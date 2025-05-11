@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -17,7 +18,7 @@ data class ActorPickRequestPacket(
         override val id: Int
             get() = ProtocolInfo.ACTOR_PICK_REQUEST_PACKET
 
-        override fun deserialize(stream: Buffer): ActorPickRequestPacket {
+        override fun deserialize(stream: Source): ActorPickRequestPacket {
             return ActorPickRequestPacket(
                 actorID = ActorUniqueID.deserialize(stream),
                 maxSlots = Proto.Byte.deserialize(stream),
@@ -25,7 +26,7 @@ data class ActorPickRequestPacket(
             )
         }
 
-        override fun serialize(value: ActorPickRequestPacket, stream: Buffer) {
+        override fun serialize(value: ActorPickRequestPacket, stream: Sink) {
             ActorUniqueID.serialize(value.actorID, stream)
             Proto.Byte.serialize(value.maxSlots, stream)
             Proto.Boolean.serialize(value.withData, stream)

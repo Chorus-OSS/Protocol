@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
@@ -13,13 +14,13 @@ data class BiomeConditionalTransformationData(
     val minPassingNeighbors: UInt,
 ) {
     companion object : ProtoCodec<BiomeConditionalTransformationData> {
-        override fun serialize(value: BiomeConditionalTransformationData, stream: Buffer) {
+        override fun serialize(value: BiomeConditionalTransformationData, stream: Sink) {
             ProtoHelper.serializeList(value.weightedBiome, stream, BiomeWeightedData::serialize)
             ProtoLE.Short.serialize(value.conditionJSON, stream)
             ProtoLE.UInt.serialize(value.minPassingNeighbors, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeConditionalTransformationData {
+        override fun deserialize(stream: Source): BiomeConditionalTransformationData {
             return BiomeConditionalTransformationData(
                 weightedBiome = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
                 conditionJSON = ProtoLE.Short.deserialize(stream),

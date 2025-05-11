@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -31,11 +32,11 @@ class ResourcePackDataInfoPacket(
             WORLD_TEMPLATE;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return Type.entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
@@ -44,7 +45,7 @@ class ResourcePackDataInfoPacket(
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_DATA_INFO_PACKET
 
-        override fun deserialize(stream: Buffer): ResourcePackDataInfoPacket {
+        override fun deserialize(stream: Source): ResourcePackDataInfoPacket {
             return ResourcePackDataInfoPacket(
                 resourceName = Proto.String.deserialize(stream),
                 chunkSize = ProtoLE.UInt.deserialize(stream),
@@ -56,7 +57,7 @@ class ResourcePackDataInfoPacket(
             )
         }
 
-        override fun serialize(value: ResourcePackDataInfoPacket, stream: Buffer) {
+        override fun serialize(value: ResourcePackDataInfoPacket, stream: Sink) {
             Proto.String.serialize(value.resourceName, stream)
             ProtoLE.UInt.serialize(value.chunkSize, stream)
             ProtoLE.UInt.serialize(value.chunkCount, stream)

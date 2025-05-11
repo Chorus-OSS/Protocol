@@ -1,9 +1,9 @@
 package org.chorus_oss.protocol.types.actor_data
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
-import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -78,7 +78,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
     }
 
     companion object : ProtoCodec<ActorDataMap> {
-        override fun serialize(value: ActorDataMap, stream: Buffer) {
+        override fun serialize(value: ActorDataMap, stream: Sink) {
             ProtoVAR.UInt.serialize(value.size.toUInt(), stream)
             for ((type, data) in value.entries) {
                 ActorDataKey.serialize(type, stream)
@@ -105,7 +105,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
             }
         }
 
-        override fun deserialize(stream: Buffer): ActorDataMap {
+        override fun deserialize(stream: Source): ActorDataMap {
             val dataMap = ActorDataMap()
             val size = ProtoVAR.UInt.deserialize(stream).toInt()
             for (i in 0 until size) {

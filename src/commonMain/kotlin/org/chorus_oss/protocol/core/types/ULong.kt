@@ -7,11 +7,11 @@ import org.chorus_oss.varlen.types.writeULongVar
 
 val ProtoLE.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: Buffer) {
+        override fun serialize(value: ULong, stream: Sink) {
             stream.writeULongLe(value)
         }
 
-        override fun deserialize(stream: Buffer): ULong {
+        override fun deserialize(stream: Source): ULong {
             return stream.readULongLe()
         }
     }
@@ -19,11 +19,11 @@ val ProtoLE.ULong by lazy {
 
 val ProtoBE.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: Buffer) {
+        override fun serialize(value: ULong, stream: Sink) {
             stream.writeULong(value)
         }
 
-        override fun deserialize(stream: Buffer): ULong {
+        override fun deserialize(stream: Source): ULong {
             return stream.readULong()
         }
     }
@@ -31,11 +31,11 @@ val ProtoBE.ULong by lazy {
 
 val ProtoVAR.ULong by lazy {
     object : ProtoCodec<ULong> {
-        override fun serialize(value: ULong, stream: Buffer) {
+        override fun serialize(value: ULong, stream: Sink) {
             stream.writeULongVar(value)
         }
 
-        override fun deserialize(stream: Buffer): ULong {
+        override fun deserialize(stream: Source): ULong {
             return stream.readULongVar()
         }
     }

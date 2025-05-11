@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
@@ -17,7 +18,7 @@ data class BiomeCoordinateData(
     val distribution: RandomDistributionType,
 ) {
     companion object : ProtoCodec<BiomeCoordinateData> {
-        override fun serialize(value: BiomeCoordinateData, stream: Buffer) {
+        override fun serialize(value: BiomeCoordinateData, stream: Sink) {
             ExpressionOp.serialize(value.minValueType, stream)
             ProtoLE.Short.serialize(value.minValue, stream)
             ExpressionOp.serialize(value.maxValueType, stream)
@@ -27,7 +28,7 @@ data class BiomeCoordinateData(
             RandomDistributionType.serialize(value.distribution, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeCoordinateData {
+        override fun deserialize(stream: Source): BiomeCoordinateData {
             return BiomeCoordinateData(
                 minValueType = ExpressionOp.deserialize(stream),
                 minValue = ProtoLE.Short.deserialize(stream),

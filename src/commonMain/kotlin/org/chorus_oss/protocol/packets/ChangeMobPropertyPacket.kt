@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -25,7 +26,7 @@ data class ChangeMobPropertyPacket(
         override val id: Int
             get() = ProtocolInfo.CHANGE_MOB_PROPERTY_PACKET
 
-        override fun deserialize(stream: Buffer): ChangeMobPropertyPacket {
+        override fun deserialize(stream: Source): ChangeMobPropertyPacket {
             return ChangeMobPropertyPacket(
                 actorID = ActorUniqueID.deserialize(stream),
                 property = Proto.String.deserialize(stream),
@@ -36,7 +37,7 @@ data class ChangeMobPropertyPacket(
             )
         }
 
-        override fun serialize(value: ChangeMobPropertyPacket, stream: Buffer) {
+        override fun serialize(value: ChangeMobPropertyPacket, stream: Sink) {
             ActorUniqueID.serialize(value.actorID, stream)
             Proto.String.serialize(value.property, stream)
             Proto.Boolean.serialize(value.boolValue, stream)

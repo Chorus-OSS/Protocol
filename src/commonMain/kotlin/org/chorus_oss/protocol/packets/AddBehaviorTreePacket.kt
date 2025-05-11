@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -13,13 +14,13 @@ data class AddBehaviorTreePacket(
         override val id: Int
             get() = ProtocolInfo.ADD_BEHAVIOR_TREE_PACKET
 
-        override fun deserialize(stream: Buffer): AddBehaviorTreePacket {
+        override fun deserialize(stream: Source): AddBehaviorTreePacket {
             return AddBehaviorTreePacket(
                 behaviorTreeJSON = Proto.String.deserialize(stream)
             )
         }
 
-        override fun serialize(value: AddBehaviorTreePacket, stream: Buffer) {
+        override fun serialize(value: AddBehaviorTreePacket, stream: Sink) {
             Proto.String.serialize(value.behaviorTreeJSON, stream)
         }
     }

@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
@@ -29,11 +30,11 @@ enum class Platform(val platformName: String, val id: Int) {
 
 
     companion object : ProtoCodec<Platform> {
-        override fun serialize(value: Platform, stream: Buffer) {
+        override fun serialize(value: Platform, stream: Sink) {
             ProtoLE.Int.serialize(value.id, stream)
         }
 
-        override fun deserialize(stream: Buffer): Platform {
+        override fun deserialize(stream: Source): Platform {
             val id = ProtoLE.Int.deserialize(stream)
             return entries.find { it.id == id }!!
         }

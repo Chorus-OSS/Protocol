@@ -7,11 +7,11 @@ import org.chorus_oss.protocol.core.ProtoLE
 
 val ProtoLE.Double by lazy {
     object : ProtoCodec<Double> {
-        override fun serialize(value: Double, stream: Buffer) {
+        override fun serialize(value: Double, stream: Sink) {
             stream.writeDoubleLe(value)
         }
 
-        override fun deserialize(stream: Buffer): Double {
+        override fun deserialize(stream: Source): Double {
             return stream.readDoubleLe()
         }
     }
@@ -19,11 +19,11 @@ val ProtoLE.Double by lazy {
 
 val ProtoBE.Double by lazy {
     object : ProtoCodec<Double> {
-        override fun serialize(value: Double, stream: Buffer) {
+        override fun serialize(value: Double, stream: Sink) {
             stream.writeDouble(value)
         }
 
-        override fun deserialize(stream: Buffer): Double {
+        override fun deserialize(stream: Source): Double {
             return stream.readDouble()
         }
     }

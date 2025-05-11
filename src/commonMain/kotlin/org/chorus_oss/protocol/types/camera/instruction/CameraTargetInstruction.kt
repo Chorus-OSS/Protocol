@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera.instruction
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
@@ -13,12 +14,12 @@ data class CameraTargetInstruction(
     val actorUniqueID: ActorUniqueID
 ) {
     companion object : ProtoCodec<CameraTargetInstruction> {
-        override fun serialize(value: CameraTargetInstruction, stream: Buffer) {
+        override fun serialize(value: CameraTargetInstruction, stream: Sink) {
             ProtoHelper.serializeNullable(value.centerOffset, stream, Vector3f::serialize)
             ProtoLE.Long.serialize(value.actorUniqueID.id, stream)
         }
 
-        override fun deserialize(stream: Buffer): CameraTargetInstruction {
+        override fun deserialize(stream: Source): CameraTargetInstruction {
             return CameraTargetInstruction(
                 centerOffset = ProtoHelper.deserializeNullable(stream, Vector3f::deserialize),
                 actorUniqueID = ActorUniqueID(ProtoLE.Long.deserialize(stream))

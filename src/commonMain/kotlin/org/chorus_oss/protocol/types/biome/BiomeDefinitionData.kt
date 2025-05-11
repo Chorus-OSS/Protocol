@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -23,7 +24,7 @@ data class BiomeDefinitionData(
     val chunkGenData: BiomeDefinitionChunkGenData? = null
 ) {
     companion object : ProtoCodec<BiomeDefinitionData> {
-        override fun serialize(value: BiomeDefinitionData, stream: Buffer) {
+        override fun serialize(value: BiomeDefinitionData, stream: Sink) {
             ProtoHelper.serializeNullable(value.id, stream, ProtoLE.UShort::serialize)
             ProtoLE.Float.serialize(value.temperature, stream)
             ProtoLE.Float.serialize(value.downfall, stream)
@@ -39,7 +40,7 @@ data class BiomeDefinitionData(
             ProtoHelper.serializeNullable(value.chunkGenData, stream, BiomeDefinitionChunkGenData::serialize)
         }
 
-        override fun deserialize(stream: Buffer): BiomeDefinitionData {
+        override fun deserialize(stream: Source): BiomeDefinitionData {
             return BiomeDefinitionData(
                 id = ProtoHelper.deserializeNullable(stream, ProtoLE.UShort::deserialize),
                 temperature = ProtoLE.Float.deserialize(stream),

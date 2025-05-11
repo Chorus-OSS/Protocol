@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera.preset
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -39,7 +40,7 @@ data class CameraPreset(
     val controlScheme: ControlScheme? = null,
 ) {
     companion object : ProtoCodec<CameraPreset> {
-        override fun serialize(value: CameraPreset, stream: Buffer) {
+        override fun serialize(value: CameraPreset, stream: Sink) {
             Proto.String.serialize(value.name, stream)
             Proto.String.serialize(value.parent, stream)
             ProtoHelper.serializeNullable(value.posX, stream, ProtoLE.Float::serialize)
@@ -65,7 +66,7 @@ data class CameraPreset(
             ProtoHelper.serializeNullable(value.controlScheme, stream, ControlScheme::serialize)
         }
 
-        override fun deserialize(stream: Buffer): CameraPreset {
+        override fun deserialize(stream: Source): CameraPreset {
             return CameraPreset(
                 name = Proto.String.deserialize(stream),
                 parent = Proto.String.deserialize(stream),

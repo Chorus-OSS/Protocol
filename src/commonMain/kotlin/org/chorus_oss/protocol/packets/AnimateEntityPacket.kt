@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
@@ -36,7 +37,7 @@ data class AnimateEntityPacket(
         override val id: Int
             get() = ProtocolInfo.ANIMATE_ENTITY_PACKET
 
-        override fun deserialize(stream: Buffer): AnimateEntityPacket {
+        override fun deserialize(stream: Source): AnimateEntityPacket {
             return AnimateEntityPacket(
                 animation = Proto.String.deserialize(stream),
                 nextState = Proto.String.deserialize(stream),
@@ -48,7 +49,7 @@ data class AnimateEntityPacket(
             )
         }
 
-        override fun serialize(value: AnimateEntityPacket, stream: Buffer) {
+        override fun serialize(value: AnimateEntityPacket, stream: Sink) {
             Proto.String.serialize(value.animation, stream)
             Proto.String.serialize(value.nextState, stream)
             Proto.String.serialize(value.stopExpression, stream)

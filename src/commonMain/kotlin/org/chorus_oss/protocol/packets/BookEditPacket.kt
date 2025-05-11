@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -22,11 +23,11 @@ data class BookEditPacket(
         FINALIZE;
 
         companion object : ProtoCodec<Action> {
-            override fun serialize(value: Action, stream: Buffer) {
+            override fun serialize(value: Action, stream: Sink) {
                 Proto.Byte.serialize(value.ordinal.toByte(), stream)
             }
 
-            override fun deserialize(stream: Buffer): Action {
+            override fun deserialize(stream: Source): Action {
                 return entries[Proto.Byte.deserialize(stream).toInt()]
             }
         }
@@ -64,7 +65,7 @@ data class BookEditPacket(
         override val id: Int
             get() = ProtocolInfo.BOOK_EDIT_PACKET
 
-        override fun deserialize(stream: Buffer): BookEditPacket {
+        override fun deserialize(stream: Source): BookEditPacket {
             val action: Action
             return BookEditPacket(
                 action = Action.deserialize(stream).also { action = it },
@@ -100,7 +101,7 @@ data class BookEditPacket(
             )
         }
 
-        override fun serialize(value: BookEditPacket, stream: Buffer) {
+        override fun serialize(value: BookEditPacket, stream: Sink) {
             Action.serialize(value.action, stream)
             Proto.Byte.serialize(value.bookSlot, stream)
 

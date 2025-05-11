@@ -1,12 +1,11 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AgentAnimationPacket(
@@ -17,14 +16,14 @@ data class AgentAnimationPacket(
         override val id: Int
             get() = ProtocolInfo.AGENT_ANIMATION
 
-        override fun deserialize(stream: Buffer): AgentAnimationPacket {
+        override fun deserialize(stream: Source): AgentAnimationPacket {
             return AgentAnimationPacket(
                 animation = Proto.Byte.deserialize(stream),
                 runtimeID = ActorRuntimeID.deserialize(stream),
             )
         }
 
-        override fun serialize(value: AgentAnimationPacket, stream: Buffer) {
+        override fun serialize(value: AgentAnimationPacket, stream: Sink) {
             Proto.Byte.serialize(value.animation, stream)
             ActorRuntimeID.serialize(value.runtimeID, stream)
         }

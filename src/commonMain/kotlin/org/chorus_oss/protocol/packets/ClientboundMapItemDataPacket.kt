@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
@@ -90,17 +91,17 @@ data class ClientboundMapItemDataPacket(
                         val PLAYER_HIDDEN = NO_DRAW
                         val ITEM_FRAME = MARKER_GREEN
 
-                        override fun serialize(value: Type, stream: Buffer) {
+                        override fun serialize(value: Type, stream: Sink) {
                             Proto.Byte.serialize(value.ordinal.toByte(), stream)
                         }
 
-                        override fun deserialize(stream: Buffer): Type {
+                        override fun deserialize(stream: Source): Type {
                             return entries[Proto.Byte.deserialize(stream).toInt()]
                         }
                     }
                 }
 
-                override fun serialize(value: MapDecoration, stream: Buffer) {
+                override fun serialize(value: MapDecoration, stream: Sink) {
                     Type.serialize(value.type, stream)
                     Proto.Byte.serialize(value.rotation, stream)
                     Proto.Byte.serialize(value.x, stream)
@@ -109,7 +110,7 @@ data class ClientboundMapItemDataPacket(
                     IVarColorRGBA.serialize(value.color, stream)
                 }
 
-                override fun deserialize(stream: Buffer): MapDecoration {
+                override fun deserialize(stream: Source): MapDecoration {
                     return MapDecoration(
                         type = Type.deserialize(stream),
                         rotation = Proto.Byte.deserialize(stream),
@@ -133,11 +134,11 @@ data class ClientboundMapItemDataPacket(
                     BLOCK;
 
                     companion object : ProtoCodec<Type> {
-                        override fun serialize(value: Type, stream: Buffer) {
+                        override fun serialize(value: Type, stream: Sink) {
                             ProtoLE.Int.serialize(value.ordinal, stream)
                         }
 
-                        override fun deserialize(stream: Buffer): Type {
+                        override fun deserialize(stream: Source): Type {
                             return entries[ProtoLE.Int.deserialize(stream)]
                         }
                     }
@@ -152,7 +153,7 @@ data class ClientboundMapItemDataPacket(
                     val blockPosition: IVector3,
                 ) : Data
 
-                override fun serialize(value: MapItemTrackedActor, stream: Buffer) {
+                override fun serialize(value: MapItemTrackedActor, stream: Sink) {
                     Type.serialize(value.type, stream)
                     when (value.type) {
                         Type.ENTITY -> {
@@ -166,7 +167,7 @@ data class ClientboundMapItemDataPacket(
                     }
                 }
 
-                override fun deserialize(stream: Buffer): MapItemTrackedActor {
+                override fun deserialize(stream: Source): MapItemTrackedActor {
                     val type: Type
                     return MapItemTrackedActor(
                         type = Type.deserialize(stream).also { type = it },
@@ -186,7 +187,7 @@ data class ClientboundMapItemDataPacket(
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_MAP_ITEM_DATA_PACKET
 
-        override fun deserialize(stream: Buffer): ClientboundMapItemDataPacket {
+        override fun deserialize(stream: Source): ClientboundMapItemDataPacket {
             val typeFlags: UInt
             return ClientboundMapItemDataPacket(
                 mapID = ActorUniqueID.deserialize(stream),
@@ -228,7 +229,7 @@ data class ClientboundMapItemDataPacket(
             )
         }
 
-        override fun serialize(value: ClientboundMapItemDataPacket, stream: Buffer) {
+        override fun serialize(value: ClientboundMapItemDataPacket, stream: Sink) {
             ActorUniqueID.serialize(value.mapID, stream)
             ProtoVAR.UInt.serialize(value.typeFlags, stream)
             Proto.Byte.serialize(value.dimension, stream)

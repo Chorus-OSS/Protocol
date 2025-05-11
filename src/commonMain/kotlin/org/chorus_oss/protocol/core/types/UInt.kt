@@ -7,11 +7,11 @@ import org.chorus_oss.varlen.types.writeUIntVar
 
 val ProtoLE.UInt by lazy {
     object : ProtoCodec<UInt> {
-        override fun serialize(value: UInt, stream: Buffer) {
+        override fun serialize(value: UInt, stream: Sink) {
             stream.writeUIntLe(value)
         }
 
-        override fun deserialize(stream: Buffer): UInt {
+        override fun deserialize(stream: Source): UInt {
             return stream.readUIntLe()
         }
     }
@@ -19,11 +19,11 @@ val ProtoLE.UInt by lazy {
 
 val ProtoBE.UInt by lazy {
     object : ProtoCodec<UInt> {
-        override fun serialize(value: UInt, stream: Buffer) {
+        override fun serialize(value: UInt, stream: Sink) {
             stream.writeUInt(value)
         }
 
-        override fun deserialize(stream: Buffer): UInt {
+        override fun deserialize(stream: Source): UInt {
             return stream.readUInt()
         }
     }
@@ -31,11 +31,11 @@ val ProtoBE.UInt by lazy {
 
 val ProtoVAR.UInt by lazy {
     object : ProtoCodec<UInt> {
-        override fun serialize(value: UInt, stream: Buffer) {
+        override fun serialize(value: UInt, stream: Sink) {
             stream.writeUIntVar(value)
         }
 
-        override fun deserialize(stream: Buffer): UInt {
+        override fun deserialize(stream: Source): UInt {
             return stream.readUIntVar()
         }
     }

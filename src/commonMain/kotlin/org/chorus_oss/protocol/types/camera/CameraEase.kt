@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -47,22 +48,22 @@ data class CameraEase(
             InOutElastic;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
         }
 
-        override fun serialize(value: CameraEase, stream: Buffer) {
+        override fun serialize(value: CameraEase, stream: Sink) {
             Type.serialize(value.type, stream)
             ProtoLE.Float.serialize(value.duration, stream)
         }
 
-        override fun deserialize(stream: Buffer): CameraEase {
+        override fun deserialize(stream: Source): CameraEase {
             return CameraEase(
                 type = Type.deserialize(stream),
                 duration = ProtoLE.Float.deserialize(stream)

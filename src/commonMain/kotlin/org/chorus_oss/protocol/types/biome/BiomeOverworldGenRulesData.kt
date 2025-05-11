@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 
@@ -14,7 +15,7 @@ data class BiomeOverworldGenRulesData(
     val climate: List<BiomeWeightedTemperatureData>,
 ) {
     companion object : ProtoCodec<BiomeOverworldGenRulesData> {
-        override fun serialize(value: BiomeOverworldGenRulesData, stream: Buffer) {
+        override fun serialize(value: BiomeOverworldGenRulesData, stream: Sink) {
             ProtoHelper.serializeList(value.hillsTransformations, stream, BiomeWeightedData::serialize)
             ProtoHelper.serializeList(value.mutateTransformations, stream, BiomeWeightedData::serialize)
             ProtoHelper.serializeList(value.riverTransformations, stream, BiomeWeightedData::serialize)
@@ -24,7 +25,7 @@ data class BiomeOverworldGenRulesData(
             ProtoHelper.serializeList(value.climate, stream, BiomeWeightedTemperatureData::serialize)
         }
 
-        override fun deserialize(stream: Buffer): BiomeOverworldGenRulesData {
+        override fun deserialize(stream: Source): BiomeOverworldGenRulesData {
             return BiomeOverworldGenRulesData(
                 hillsTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
                 mutateTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),

@@ -1,8 +1,6 @@
 package org.chorus_oss.protocol.types.item
 
-import kotlinx.io.Buffer
-import kotlinx.io.readString
-import kotlinx.io.readTo
+import kotlinx.io.*
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
@@ -15,7 +13,7 @@ data class ItemStack(
     val item: ItemInstance,
 ) {
     companion object : ProtoCodec<ItemStack> {
-        override fun serialize(value: ItemStack, stream: Buffer) {
+        override fun serialize(value: ItemStack, stream: Sink) {
             ProtoVAR.Int.serialize(value.item.netID, stream)
             if (value.item.netID == 0) {
                 return // ItemStack is invalid, no more data.
@@ -56,7 +54,7 @@ data class ItemStack(
             Proto.String.serialize(userDataBuffer.readString(), stream)
         }
 
-        override fun deserialize(stream: Buffer): ItemStack {
+        override fun deserialize(stream: Source): ItemStack {
             val netID = ProtoVAR.Int.deserialize(stream)
             if (netID == 0) {
                 return ItemStack(

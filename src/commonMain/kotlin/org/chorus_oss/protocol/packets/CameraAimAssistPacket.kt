@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -25,11 +26,11 @@ data class CameraAimAssistPacket(
             CLEAR;
 
             companion object : ProtoCodec<Action> {
-                override fun serialize(value: Action, stream: Buffer) {
+                override fun serialize(value: Action, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Action {
+                override fun deserialize(stream: Source): Action {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
@@ -38,7 +39,7 @@ data class CameraAimAssistPacket(
         override val id: Int
             get() = ProtocolInfo.CAMERA_AIM_ASSIST_PACKET
 
-        override fun deserialize(stream: Buffer): CameraAimAssistPacket {
+        override fun deserialize(stream: Source): CameraAimAssistPacket {
             return CameraAimAssistPacket(
                 presetId = Proto.String.deserialize(stream),
                 viewAngle = Vector2f.deserialize(stream),
@@ -48,7 +49,7 @@ data class CameraAimAssistPacket(
             )
         }
 
-        override fun serialize(value: CameraAimAssistPacket, stream: Buffer) {
+        override fun serialize(value: CameraAimAssistPacket, stream: Sink) {
             Proto.String.serialize(value.presetId, stream)
             Vector2f.serialize(value.viewAngle, stream)
             ProtoLE.Float.serialize(value.distance, stream)

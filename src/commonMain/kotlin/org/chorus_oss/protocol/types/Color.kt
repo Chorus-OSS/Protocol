@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
@@ -15,13 +16,13 @@ data class Color(
 )
 
 object FColorRGB : ProtoCodec<Color> {
-    override fun serialize(value: Color, stream: Buffer) {
+    override fun serialize(value: Color, stream: Sink) {
         ProtoLE.Float.serialize(value.r.toFloat() / 255f, stream)
         ProtoLE.Float.serialize(value.g.toFloat() / 255f, stream)
         ProtoLE.Float.serialize(value.b.toFloat() / 255f, stream)
     }
 
-    override fun deserialize(stream: Buffer): Color {
+    override fun deserialize(stream: Source): Color {
         return Color(
             r = (ProtoLE.Float.deserialize(stream) * 255f).toInt().toByte(),
             g = (ProtoLE.Float.deserialize(stream) * 255f).toInt().toByte(),
@@ -31,14 +32,14 @@ object FColorRGB : ProtoCodec<Color> {
 }
 
 object IColorRGBA : ProtoCodec<Color> {
-    override fun serialize(value: Color, stream: Buffer) {
+    override fun serialize(value: Color, stream: Sink) {
         ProtoLE.Int.serialize(
             value.r.toInt() or (value.g.toInt() shl 8) or (value.b.toInt() shl 16) or (value.a.toInt() shl 24),
             stream
         )
     }
 
-    override fun deserialize(stream: Buffer): Color {
+    override fun deserialize(stream: Source): Color {
         val int = ProtoLE.Int.deserialize(stream)
         return Color(
             r = int.toByte(),
@@ -50,14 +51,14 @@ object IColorRGBA : ProtoCodec<Color> {
 }
 
 object IVarColorRGBA : ProtoCodec<Color> {
-    override fun serialize(value: Color, stream: Buffer) {
+    override fun serialize(value: Color, stream: Sink) {
         ProtoVAR.Int.serialize(
             value.r.toInt() or (value.g.toInt() shl 8) or (value.b.toInt() shl 16) or (value.a.toInt() shl 24),
             stream
         )
     }
 
-    override fun deserialize(stream: Buffer): Color {
+    override fun deserialize(stream: Source): Color {
         val int = ProtoVAR.Int.deserialize(stream)
         return Color(
             r = int.toByte(),

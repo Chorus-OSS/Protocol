@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
@@ -17,7 +18,7 @@ data class ChangeDimensionPacket(
         override val id: Int
             get() = ProtocolInfo.CHANGE_DIMENSION_PACKET
 
-        override fun deserialize(stream: Buffer): ChangeDimensionPacket {
+        override fun deserialize(stream: Source): ChangeDimensionPacket {
             return ChangeDimensionPacket(
                 dimension = ProtoVAR.Int.deserialize(stream),
                 position = Vector3f.deserialize(stream),
@@ -26,7 +27,7 @@ data class ChangeDimensionPacket(
             )
         }
 
-        override fun serialize(value: ChangeDimensionPacket, stream: Buffer) {
+        override fun serialize(value: ChangeDimensionPacket, stream: Sink) {
             ProtoVAR.Int.serialize(value.dimension, stream)
             Vector3f.serialize(value.position, stream)
             Proto.Boolean.serialize(value.respawn, stream)

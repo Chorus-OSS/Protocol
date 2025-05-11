@@ -1,15 +1,13 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
-import kotlinx.io.readByteArray
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.*
-
-import java.util.*
 
 data class ResourcePackChunkDataPacket(
     val resourceName: String,
@@ -21,7 +19,7 @@ data class ResourcePackChunkDataPacket(
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_CHUNK_DATA_PACKET
 
-        override fun deserialize(stream: Buffer): ResourcePackChunkDataPacket {
+        override fun deserialize(stream: Source): ResourcePackChunkDataPacket {
             return ResourcePackChunkDataPacket(
                 resourceName = Proto.String.deserialize(stream),
                 chunkID = ProtoLE.UInt.deserialize(stream),
@@ -30,7 +28,7 @@ data class ResourcePackChunkDataPacket(
             )
         }
 
-        override fun serialize(value: ResourcePackChunkDataPacket, stream: Buffer) {
+        override fun serialize(value: ResourcePackChunkDataPacket, stream: Sink) {
             Proto.String.serialize(value.resourceName, stream)
             ProtoLE.UInt.serialize(value.chunkID, stream)
             ProtoLE.ULong.serialize(value.byteOffset, stream)

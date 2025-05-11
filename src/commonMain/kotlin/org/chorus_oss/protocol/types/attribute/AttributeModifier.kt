@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.attribute
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -18,7 +19,7 @@ data class AttributeModifier(
     val serializable: Boolean,
 ) {
     companion object : ProtoCodec<AttributeModifier> {
-        override fun serialize(value: AttributeModifier, stream: Buffer) {
+        override fun serialize(value: AttributeModifier, stream: Sink) {
             Proto.String.serialize(value.id, stream)
             Proto.String.serialize(value.name, stream)
             ProtoLE.Float.serialize(value.amount, stream)
@@ -27,7 +28,7 @@ data class AttributeModifier(
             Proto.Boolean.serialize(value.serializable, stream)
         }
 
-        override fun deserialize(stream: Buffer): AttributeModifier {
+        override fun deserialize(stream: Source): AttributeModifier {
             return AttributeModifier(
                 id = Proto.String.deserialize(stream),
                 name = Proto.String.deserialize(stream),

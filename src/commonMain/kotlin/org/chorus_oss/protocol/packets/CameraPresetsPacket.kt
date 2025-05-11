@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -13,13 +14,13 @@ data class CameraPresetsPacket(
         override val id: Int
             get() = ProtocolInfo.CAMERA_PRESETS_PACKET
 
-        override fun deserialize(stream: Buffer): CameraPresetsPacket {
+        override fun deserialize(stream: Source): CameraPresetsPacket {
             return CameraPresetsPacket(
                 presets = ProtoHelper.deserializeList(stream, CameraPreset::deserialize)
             )
         }
 
-        override fun serialize(value: CameraPresetsPacket, stream: Buffer) {
+        override fun serialize(value: CameraPresetsPacket, stream: Sink) {
             ProtoHelper.serializeList(value.presets, stream, CameraPreset::serialize)
         }
     }

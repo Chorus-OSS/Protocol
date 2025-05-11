@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera.aimassist
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -15,7 +16,7 @@ data class CameraAimAssistPreset(
     val handSettings: String? = null,
 ) {
     companion object : ProtoCodec<CameraAimAssistPreset> {
-        override fun serialize(value: CameraAimAssistPreset, stream: Buffer) {
+        override fun serialize(value: CameraAimAssistPreset, stream: Sink) {
             Proto.String.serialize(value.identifier, stream)
             ProtoHelper.serializeList(value.exclusionList, stream, Proto.String::serialize)
             ProtoHelper.serializeList(value.liquidTargetingList, stream, Proto.String::serialize)
@@ -24,7 +25,7 @@ data class CameraAimAssistPreset(
             ProtoHelper.serializeNullable(value.handSettings, stream, Proto.String::serialize)
         }
 
-        override fun deserialize(stream: Buffer): CameraAimAssistPreset {
+        override fun deserialize(stream: Source): CameraAimAssistPreset {
             return CameraAimAssistPreset(
                 identifier = Proto.String.deserialize(stream),
                 exclusionList = ProtoHelper.deserializeList(stream, Proto.String::deserialize),

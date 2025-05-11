@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -22,11 +23,11 @@ data class CameraShakePacket(
             STOP;
 
             companion object : ProtoCodec<Action> {
-                override fun serialize(value: Action, stream: Buffer) {
+                override fun serialize(value: Action, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Action {
+                override fun deserialize(stream: Source): Action {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
@@ -37,11 +38,11 @@ data class CameraShakePacket(
             ROTATIONAL;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
@@ -50,7 +51,7 @@ data class CameraShakePacket(
         override val id: Int
             get() = ProtocolInfo.CAMERA_SHAKE_PACKET
 
-        override fun deserialize(stream: Buffer): CameraShakePacket {
+        override fun deserialize(stream: Source): CameraShakePacket {
             return CameraShakePacket(
                 intensity = ProtoLE.Float.deserialize(stream),
                 duration = ProtoLE.Float.deserialize(stream),
@@ -59,7 +60,7 @@ data class CameraShakePacket(
             )
         }
 
-        override fun serialize(value: CameraShakePacket, stream: Buffer) {
+        override fun serialize(value: CameraShakePacket, stream: Sink) {
             ProtoLE.Float.serialize(value.intensity, stream)
             ProtoLE.Float.serialize(value.duration, stream)
             Type.serialize(value.type, stream)

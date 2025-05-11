@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -22,7 +23,7 @@ data class BiomeDefinitionChunkGenData(
     val legacyWorldGenRules: BiomeLegacyWorldGenRulesData? = null,
 ) {
     companion object : ProtoCodec<BiomeDefinitionChunkGenData> {
-        override fun serialize(value: BiomeDefinitionChunkGenData, stream: Buffer) {
+        override fun serialize(value: BiomeDefinitionChunkGenData, stream: Sink) {
             ProtoHelper.serializeNullable(value.climate, stream, BiomeClimateData::serialize)
             ProtoHelper.serializeNullable(value.consolidatedFeatures, stream, BiomeConsolidatedFeaturesData::serialize)
             ProtoHelper.serializeNullable(value.mountainParams, stream, BiomeMountainsParamData::serialize)
@@ -38,7 +39,7 @@ data class BiomeDefinitionChunkGenData(
             ProtoHelper.serializeNullable(value.legacyWorldGenRules, stream, BiomeLegacyWorldGenRulesData::serialize)
         }
 
-        override fun deserialize(stream: Buffer): BiomeDefinitionChunkGenData {
+        override fun deserialize(stream: Source): BiomeDefinitionChunkGenData {
             return BiomeDefinitionChunkGenData(
                 climate = ProtoHelper.deserializeNullable(stream, BiomeClimateData::deserialize),
                 consolidatedFeatures = ProtoHelper.deserializeNullable(stream, BiomeConsolidatedFeaturesData::deserialize),

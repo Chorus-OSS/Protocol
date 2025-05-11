@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
@@ -15,7 +16,7 @@ data class BiomeCappedSurfaceData(
     val beachBlock: UInt? = null,
 ) {
     companion object : ProtoCodec<BiomeCappedSurfaceData> {
-        override fun serialize(value: BiomeCappedSurfaceData, stream: Buffer) {
+        override fun serialize(value: BiomeCappedSurfaceData, stream: Sink) {
             ProtoHelper.serializeList(value.floorBlocks, stream, ProtoLE.Int::serialize)
             ProtoHelper.serializeList(value.ceilingBlocks, stream, ProtoLE.Int::serialize)
             ProtoHelper.serializeNullable(value.seaBlock, stream, ProtoLE.UInt::serialize)
@@ -23,7 +24,7 @@ data class BiomeCappedSurfaceData(
             ProtoHelper.serializeNullable(value.beachBlock, stream, ProtoLE.UInt::serialize)
         }
 
-        override fun deserialize(stream: Buffer): BiomeCappedSurfaceData {
+        override fun deserialize(stream: Source): BiomeCappedSurfaceData {
             return BiomeCappedSurfaceData(
                 floorBlocks = ProtoHelper.deserializeList(stream, ProtoLE.Int::deserialize),
                 ceilingBlocks = ProtoHelper.deserializeList(stream, ProtoLE.Int::deserialize),

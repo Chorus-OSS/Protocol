@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -17,7 +18,7 @@ data class BlockPickRequestPacket(
         override val id: Int
             get() = ProtocolInfo.BLOCK_PICK_REQUEST_PACKET
 
-        override fun deserialize(stream: Buffer): BlockPickRequestPacket {
+        override fun deserialize(stream: Source): BlockPickRequestPacket {
             return BlockPickRequestPacket(
                 position = IVector3.deserialize(stream),
                 withData = Proto.Boolean.deserialize(stream),
@@ -25,7 +26,7 @@ data class BlockPickRequestPacket(
             )
         }
 
-        override fun serialize(value: BlockPickRequestPacket, stream: Buffer) {
+        override fun serialize(value: BlockPickRequestPacket, stream: Sink) {
             IVector3.serialize(value.position, stream)
             Proto.Boolean.serialize(value.withData, stream)
             Proto.Byte.serialize(value.maxSlots, stream)

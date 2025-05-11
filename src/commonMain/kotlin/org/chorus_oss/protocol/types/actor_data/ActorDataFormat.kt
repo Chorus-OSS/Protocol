@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.actor_data
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
@@ -20,11 +21,11 @@ enum class ActorDataFormat {
     VECTOR3F;
 
     companion object : ProtoCodec<ActorDataFormat> {
-        override fun serialize(value: ActorDataFormat, stream: Buffer) {
+        override fun serialize(value: ActorDataFormat, stream: Sink) {
             ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
         }
 
-        override fun deserialize(stream: Buffer): ActorDataFormat {
+        override fun deserialize(stream: Source): ActorDataFormat {
             return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
         }
 

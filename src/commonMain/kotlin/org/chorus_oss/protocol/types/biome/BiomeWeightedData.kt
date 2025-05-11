@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Short
@@ -11,12 +12,12 @@ data class BiomeWeightedData(
     val weight: UInt,
 ) {
     companion object : ProtoCodec<BiomeWeightedData> {
-        override fun serialize(value: BiomeWeightedData, stream: Buffer) {
+        override fun serialize(value: BiomeWeightedData, stream: Sink) {
             ProtoLE.Short.serialize(value.biome, stream)
             ProtoLE.UInt.serialize(value.weight, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeWeightedData {
+        override fun deserialize(stream: Source): BiomeWeightedData {
             return BiomeWeightedData(
                 biome = ProtoLE.Short.deserialize(stream),
                 weight = ProtoLE.UInt.deserialize(stream)

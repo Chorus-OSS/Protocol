@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.attribute
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
@@ -13,11 +14,11 @@ enum class AttributeOperation {
     INVALID;
 
     companion object : ProtoCodec<AttributeOperation> {
-        override fun serialize(value: AttributeOperation, stream: Buffer) {
+        override fun serialize(value: AttributeOperation, stream: Sink) {
             ProtoLE.Int.serialize(value.ordinal, stream)
         }
 
-        override fun deserialize(stream: Buffer): AttributeOperation {
+        override fun deserialize(stream: Source): AttributeOperation {
             return entries[ProtoLE.Int.deserialize(stream)]
         }
     }

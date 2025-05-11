@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
@@ -23,11 +24,11 @@ data class AnimatePacket(
         ROW_LEFT(129);
 
         companion object : ProtoCodec<Action> {
-            override fun serialize(value: Action, stream: Buffer) {
+            override fun serialize(value: Action, stream: Sink) {
                 ProtoVAR.Int.serialize(value.id, stream)
             }
 
-            override fun deserialize(stream: Buffer): Action {
+            override fun deserialize(stream: Source): Action {
                 val id = ProtoVAR.Int.deserialize(stream)
                 return entries.find { it.id == id }!!
             }
@@ -43,7 +44,7 @@ data class AnimatePacket(
         override val id: Int
             get() = ProtocolInfo.ANIMATE_PACKET
 
-        override fun deserialize(stream: Buffer): AnimatePacket {
+        override fun deserialize(stream: Source): AnimatePacket {
             val action: Action
             return AnimatePacket(
                 action = Action.deserialize(stream).also { action = it },
@@ -59,7 +60,7 @@ data class AnimatePacket(
             )
         }
 
-        override fun serialize(value: AnimatePacket, stream: Buffer) {
+        override fun serialize(value: AnimatePacket, stream: Sink) {
             Action.serialize(value.action, stream)
             ActorRuntimeID.serialize(value.targetRuntimeID, stream)
             when (value.action) {

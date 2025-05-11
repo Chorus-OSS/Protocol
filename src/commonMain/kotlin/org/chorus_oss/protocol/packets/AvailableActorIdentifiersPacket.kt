@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -15,13 +16,13 @@ data class AvailableActorIdentifiersPacket(
         override val id: Int
             get() = ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS_PACKET
 
-        override fun deserialize(stream: Buffer): AvailableActorIdentifiersPacket {
+        override fun deserialize(stream: Source): AvailableActorIdentifiersPacket {
             return AvailableActorIdentifiersPacket(
                 tag = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize),
             )
         }
 
-        override fun serialize(value: AvailableActorIdentifiersPacket, stream: Buffer) {
+        override fun serialize(value: AvailableActorIdentifiersPacket, stream: Sink) {
             ProtoHelper.serializeList(value.tag, stream, Proto.Byte::serialize)
         }
     }

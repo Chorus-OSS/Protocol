@@ -1,7 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
@@ -28,11 +29,11 @@ data class BossEventPacket(
             QUERY;
 
             companion object : ProtoCodec<EventType> {
-                override fun serialize(value: EventType, stream: Buffer) {
+                override fun serialize(value: EventType, stream: Sink) {
                     ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): EventType {
+                override fun deserialize(stream: Source): EventType {
                     return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
                 }
 
@@ -84,7 +85,7 @@ data class BossEventPacket(
         override val id: Int
             get() = ProtocolInfo.BOSS_EVENT_PACKET
 
-        override fun deserialize(stream: Buffer): BossEventPacket {
+        override fun deserialize(stream: Source): BossEventPacket {
             val eventType: EventType
             return BossEventPacket(
                 targetActorID = ActorUniqueID.deserialize(stream),
@@ -136,7 +137,7 @@ data class BossEventPacket(
             )
         }
 
-        override fun serialize(value: BossEventPacket, stream: Buffer) {
+        override fun serialize(value: BossEventPacket, stream: Sink) {
             ActorUniqueID.serialize(value.targetActorID, stream)
             EventType.serialize(value.eventType, stream)
             

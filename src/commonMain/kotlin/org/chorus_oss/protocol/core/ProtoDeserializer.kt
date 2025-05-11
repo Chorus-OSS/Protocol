@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.core
 
-import kotlinx.io.Buffer
+import kotlinx.io.Source
 
 fun interface ProtoDeserializer<T> {
-    fun deserialize(stream: Buffer): T
+    fun deserialize(stream: Source): T
 }

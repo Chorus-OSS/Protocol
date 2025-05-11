@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
@@ -18,7 +19,7 @@ data class BiomeScatterParamData(
     val iterations: Short,
 ) {
     companion object : ProtoCodec<BiomeScatterParamData> {
-        override fun serialize(value: BiomeScatterParamData, stream: Buffer) {
+        override fun serialize(value: BiomeScatterParamData, stream: Sink) {
             ProtoHelper.serializeList(value.coordinate, stream, BiomeCoordinateData::serialize)
             CoordinateEvaluationOrder.serialize(value.evalOrder, stream)
             ExpressionOp.serialize(value.chancePercentType, stream)
@@ -29,7 +30,7 @@ data class BiomeScatterParamData(
             ProtoLE.Short.serialize(value.iterations, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeScatterParamData {
+        override fun deserialize(stream: Source): BiomeScatterParamData {
             return BiomeScatterParamData(
                 coordinate = ProtoHelper.deserializeList(stream, BiomeCoordinateData::deserialize),
                 evalOrder = CoordinateEvaluationOrder.deserialize(stream),

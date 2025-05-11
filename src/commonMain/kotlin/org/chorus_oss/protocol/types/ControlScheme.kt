@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -13,11 +14,11 @@ enum class ControlScheme {
     PlayerRelativeStrafe;
 
     companion object : ProtoCodec<ControlScheme> {
-        override fun serialize(value: ControlScheme, stream: Buffer) {
+        override fun serialize(value: ControlScheme, stream: Sink) {
             Proto.Byte.serialize(value.ordinal.toByte(), stream)
         }
 
-        override fun deserialize(stream: Buffer): ControlScheme {
+        override fun deserialize(stream: Source): ControlScheme {
             return entries[Proto.Byte.deserialize(stream).toInt()]
         }
     }

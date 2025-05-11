@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.types.biome.BiomeDefinitionData
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
@@ -18,7 +19,7 @@ data class BiomeDefinitionListPacket(
         override val id: Int
             get() = ProtocolInfo.BIOME_DEFINITION_LIST_PACKET
 
-        override fun deserialize(stream: Buffer): BiomeDefinitionListPacket {
+        override fun deserialize(stream: Source): BiomeDefinitionListPacket {
             return BiomeDefinitionListPacket(
                 biomeDefinitions = ProtoHelper.deserializeList(stream) { buf ->
                     Pair(
@@ -30,7 +31,7 @@ data class BiomeDefinitionListPacket(
             )
         }
 
-        override fun serialize(value: BiomeDefinitionListPacket, stream: Buffer) {
+        override fun serialize(value: BiomeDefinitionListPacket, stream: Sink) {
             ProtoHelper.serializeList(value.biomeDefinitions.entries.toList(), stream) { (k, v), buf ->
                 ProtoLE.Short.serialize(k, buf)
                 BiomeDefinitionData.serialize(v, buf)

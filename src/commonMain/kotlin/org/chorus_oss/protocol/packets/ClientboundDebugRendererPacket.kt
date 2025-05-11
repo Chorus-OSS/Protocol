@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -22,11 +23,11 @@ data class ClientboundDebugRendererPacket(
             AddCube;
 
             companion object : ProtoCodec<Type> {
-                override fun serialize(value: Type, stream: Buffer) {
+                override fun serialize(value: Type, stream: Sink) {
                     ProtoLE.UInt.serialize(value.ordinal.toUInt(), stream)
                 }
 
-                override fun deserialize(stream: Buffer): Type {
+                override fun deserialize(stream: Source): Type {
                     return entries[ProtoLE.UInt.deserialize(stream).toInt()]
                 }
             }
@@ -46,7 +47,7 @@ data class ClientboundDebugRendererPacket(
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_DEBUG_RENDERER_PACKET
 
-        override fun deserialize(stream: Buffer): ClientboundDebugRendererPacket {
+        override fun deserialize(stream: Source): ClientboundDebugRendererPacket {
             val type: Type
             return ClientboundDebugRendererPacket(
                 type = Type.deserialize(stream).also { type = it },
@@ -65,7 +66,7 @@ data class ClientboundDebugRendererPacket(
             )
         }
 
-        override fun serialize(value: ClientboundDebugRendererPacket, stream: Buffer) {
+        override fun serialize(value: ClientboundDebugRendererPacket, stream: Sink) {
             Type.serialize(value.type, stream)
             when (value.type) {
                 Type.AddCube -> {

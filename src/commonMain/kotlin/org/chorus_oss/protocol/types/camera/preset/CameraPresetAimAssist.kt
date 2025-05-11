@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.camera.preset
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -17,14 +18,14 @@ data class CameraPresetAimAssist(
     val distance: Float? = null,
 ) {
     companion object : ProtoCodec<CameraPresetAimAssist> {
-        override fun serialize(value: CameraPresetAimAssist, stream: Buffer) {
+        override fun serialize(value: CameraPresetAimAssist, stream: Sink) {
             ProtoHelper.serializeNullable(value.presetId, stream, Proto.String::serialize)
             ProtoHelper.serializeNullable(value.targetMode, stream, CameraAimAssistTargetMode::serialize) // TODO: Byte or Int?
             ProtoHelper.serializeNullable(value.angle, stream, Vector2f::serialize)
             ProtoHelper.serializeNullable(value.distance, stream, ProtoLE.Float::serialize)
         }
 
-        override fun deserialize(stream: Buffer): CameraPresetAimAssist {
+        override fun deserialize(stream: Source): CameraPresetAimAssist {
             return CameraPresetAimAssist(
                 presetId = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
                 targetMode = ProtoHelper.deserializeNullable(stream, CameraAimAssistTargetMode::deserialize),

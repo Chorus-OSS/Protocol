@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.types.biome
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
@@ -15,7 +16,7 @@ data class BiomeConsolidatedFeatureData(
     val canUseInternal: Boolean,
 ) {
     companion object : ProtoCodec<BiomeConsolidatedFeatureData> {
-        override fun serialize(value: BiomeConsolidatedFeatureData, stream: Buffer) {
+        override fun serialize(value: BiomeConsolidatedFeatureData, stream: Sink) {
             BiomeScatterParamData.serialize(value.scatter, stream)
             ProtoLE.Short.serialize(value.feature, stream)
             ProtoLE.Short.serialize(value.identifier, stream)
@@ -23,7 +24,7 @@ data class BiomeConsolidatedFeatureData(
             Proto.Boolean.serialize(value.canUseInternal, stream)
         }
 
-        override fun deserialize(stream: Buffer): BiomeConsolidatedFeatureData {
+        override fun deserialize(stream: Source): BiomeConsolidatedFeatureData {
             return BiomeConsolidatedFeatureData(
                 scatter = BiomeScatterParamData.deserialize(stream),
                 feature = ProtoLE.Short.deserialize(stream),

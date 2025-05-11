@@ -1,6 +1,7 @@
 package org.chorus_oss.protocol.packets
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -16,14 +17,14 @@ data class AnvilDamagePacket(
         override val id: Int
             get() = ProtocolInfo.ANVIL_DAMAGE_PACKET
 
-        override fun deserialize(stream: Buffer): AnvilDamagePacket {
+        override fun deserialize(stream: Source): AnvilDamagePacket {
             return AnvilDamagePacket(
                 damageAmount = Proto.Byte.deserialize(stream),
                 blockPosition = UIVector3.deserialize(stream)
             )
         }
 
-        override fun serialize(value: AnvilDamagePacket, stream: Buffer) {
+        override fun serialize(value: AnvilDamagePacket, stream: Sink) {
             Proto.Byte.serialize(value.damageAmount, stream)
             UIVector3.serialize(value.blockPosition, stream)
         }
