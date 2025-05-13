@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
@@ -13,7 +14,7 @@ data class ActorPickRequestPacket(
     val actorID: ActorUniqueID,
     val maxSlots: Byte,
     val withData: Boolean,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ActorPickRequestPacket> {
         override val id: Int
             get() = ProtocolInfo.ACTOR_PICK_REQUEST_PACKET
