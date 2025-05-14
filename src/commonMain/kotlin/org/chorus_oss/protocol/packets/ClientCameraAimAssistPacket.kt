@@ -1,6 +1,15 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.camera.aimassist.ClientCameraAimAssistPacketAction
 
 data class ClientCameraAimAssistPacket(
@@ -8,27 +17,22 @@ data class ClientCameraAimAssistPacket(
     val action: ClientCameraAimAssistPacketAction,
     val allowAimAssist: Boolean,
 ) : Packet(id) {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(this.cameraPresetID)
-        byteBuf.writeByte(this.action.ordinal)
-        byteBuf.writeBoolean(this.allowAimAssist)
-    }
+    companion object : PacketCodec<ClientCameraAimAssistPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CLIENT_CAMERA_AIM_ASSIST_PACKET
 
-    override fun pid(): Int {
-        return ProtocolInfo.CLIENT_CAMERA_AIM_ASSIST_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<ClientCameraAimAssistPacket> {
-        override fun decode(byteBuf: ByteBuf): ClientCameraAimAssistPacket {
+        override fun deserialize(stream: Source): ClientCameraAimAssistPacket {
             return ClientCameraAimAssistPacket(
-                cameraPresetID = byteBuf.readString(),
-                action = ClientCameraAimAssistPacketAction.entries[byteBuf.readByte().toInt()],
-                allowAimAssist = byteBuf.readBoolean(),
+                cameraPresetID = Proto.String.deserialize(stream),
+                action = ClientCameraAimAssistPacketAction.deserialize(stream),
+                allowAimAssist = Proto.Boolean.deserialize(stream),
             )
+        }
+
+        override fun serialize(value: ClientCameraAimAssistPacket, stream: Sink) {
+            Proto.String.serialize(value.cameraPresetID, stream)
+            ClientCameraAimAssistPacketAction.serialize(value.action, stream)
+            Proto.Boolean.serialize(value.allowAimAssist, stream)
         }
     }
 }
