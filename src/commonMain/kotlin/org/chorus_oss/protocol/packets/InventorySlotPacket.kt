@@ -6,7 +6,7 @@ import org.chorus_oss.protocol.types.inventory.FullContainerName
 import org.chorus_oss.protocol.types.itemstack.ContainerSlotType
 
 
-class InventorySlotPacket : DataPacket(), PacketEncoder {
+class InventorySlotPacket : Packet(id) {
     var inventoryId: Int = 0
     var slot: Int = 0
     var fullContainerName: FullContainerName = FullContainerName(ContainerSlotType.ANVIL_INPUT, null)

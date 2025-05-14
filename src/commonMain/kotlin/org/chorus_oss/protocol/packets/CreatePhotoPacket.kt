@@ -5,7 +5,7 @@ data class CreatePhotoPacket(
     val rawID: Long,
     val photoName: String,
     val photoItemName: String,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeLongLE(this.rawID)
         byteBuf.writeString(this.photoName)

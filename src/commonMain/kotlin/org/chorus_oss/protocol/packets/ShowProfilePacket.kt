@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ShowProfilePacket : DataPacket() {
+class ShowProfilePacket : Packet(id) {
     @JvmField
     var xuid: String? = null
 

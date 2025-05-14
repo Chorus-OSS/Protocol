@@ -11,7 +11,7 @@ data class ClientMovementPredictionSyncPacket(
     val movementAttributesComponent: MovementAttributesComponent,
     val actorUniqueID: ActorUniqueID,
     val actorFlyingState: Boolean,
-) : DataPacket() {
+) : Packet(id) {
     data class MovementAttributesComponent(
         val movementSpeed: Float,
         val underwaterMovementSpeed: Float,

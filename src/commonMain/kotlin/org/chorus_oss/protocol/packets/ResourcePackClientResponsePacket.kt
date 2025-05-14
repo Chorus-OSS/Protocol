@@ -6,7 +6,7 @@ import org.chorus_oss.chorus.utils.UUIDValidator
 import java.util.*
 
 
-class ResourcePackClientResponsePacket : DataPacket() {
+class ResourcePackClientResponsePacket : Packet(id) {
     var responseStatus: Byte = 0
     var packEntries: Array<Entry> = emptyArray()
 

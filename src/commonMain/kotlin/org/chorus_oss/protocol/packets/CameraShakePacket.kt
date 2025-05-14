@@ -3,10 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 
@@ -16,7 +13,7 @@ data class CameraShakePacket(
     val duration: Float,
     val type: Type,
     val action: Action,
-) {
+) : Packet(id) {
     companion object : PacketCodec<CameraShakePacket> {
         enum class Action {
             ADD,

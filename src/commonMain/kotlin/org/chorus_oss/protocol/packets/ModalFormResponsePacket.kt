@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ModalFormResponsePacket : DataPacket() {
+class ModalFormResponsePacket : Packet(id) {
     var formId: Int = 0
     var data: String = "null"
     var cancelReason: Int = 0

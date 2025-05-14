@@ -9,7 +9,7 @@ data class ContainerOpenPacket(
     val containerType: Int,
     val position: BlockVector3,
     val targetActorID: ActorUniqueID,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeByte(containerID.toByte().toInt())
         byteBuf.writeByte(containerType.toByte().toInt())

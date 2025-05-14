@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class TransferPacket : DataPacket() {
+class TransferPacket : Packet(id) {
     @JvmField
     var address: String? = null
 

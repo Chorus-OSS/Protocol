@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ServerboundDiagnosticsPacket : DataPacket() {
+class ServerboundDiagnosticsPacket : Packet(id) {
     var avgFps: Float = 0f
     var avgServerSimTickTimeMS: Float = 0f
     var avgClientSimTickTimeMS: Float = 0f

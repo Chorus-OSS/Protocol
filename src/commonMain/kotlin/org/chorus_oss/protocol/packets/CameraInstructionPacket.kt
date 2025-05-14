@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -17,7 +18,7 @@ data class CameraInstructionPacket(
     var fade: CameraFadeInstruction? = null,
     var target: CameraTargetInstruction? = null,
     var removeTarget: Boolean? = null,
-) {
+) : Packet(id) {
     companion object : PacketCodec<CameraInstructionPacket> {
         override val id: Int
             get() = ProtocolInfo.CAMERA_INSTRUCTION_PACKET

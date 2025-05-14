@@ -5,7 +5,7 @@ class HurtArmorPacket(
     val cause: Int,
     val damage: Int,
     val armorSlots: Long,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeVarInt(this.cause)
         byteBuf.writeVarInt(this.damage)

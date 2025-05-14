@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetHealthPacket : DataPacket() {
+class SetHealthPacket : Packet(id) {
     var health: Int = 0
 
     override fun encode(byteBuf: ByteBuf) {

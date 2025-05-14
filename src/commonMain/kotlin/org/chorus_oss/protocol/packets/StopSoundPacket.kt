@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class StopSoundPacket : DataPacket() {
+class StopSoundPacket : Packet(id) {
     var name: String? = null
     var stopAll: Boolean = false
     var stopMusicLegacy: Boolean = false

@@ -6,7 +6,7 @@ import org.chorus_oss.chorus.resourcepacks.ResourcePack
 import java.util.*
 
 
-class ResourcePacksInfoPacket : DataPacket() {
+class ResourcePacksInfoPacket : Packet(id) {
     var isForcedToAccept: Boolean = false
     var hasAddonPacks: Boolean = false
     var isScriptingEnabled: Boolean = false

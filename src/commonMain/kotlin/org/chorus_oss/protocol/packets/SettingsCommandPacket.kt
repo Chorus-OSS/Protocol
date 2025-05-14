@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SettingsCommandPacket : DataPacket() {
+class SettingsCommandPacket : Packet(id) {
     lateinit var command: String
     var suppressOutput: Boolean = false
 

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetCommandsEnabledPacket : DataPacket() {
+class SetCommandsEnabledPacket : Packet(id) {
     var enabled: Boolean = false
 
     override fun encode(byteBuf: ByteBuf) {

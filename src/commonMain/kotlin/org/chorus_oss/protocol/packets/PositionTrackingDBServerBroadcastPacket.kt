@@ -10,7 +10,7 @@ import org.chorus_oss.chorus.nbt.tag.ListTag
 
 import java.io.IOException
 
-class PositionTrackingDBServerBroadcastPacket : DataPacket() {
+class PositionTrackingDBServerBroadcastPacket : Packet(id) {
     var action: Action? = null
     var trackingId = 0
         set(value) {

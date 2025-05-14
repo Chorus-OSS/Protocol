@@ -3,9 +3,10 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 
-class ClientboundCloseFormPacket() {
+class ClientboundCloseFormPacket() : Packet(id) {
     companion object : PacketCodec<ClientboundCloseFormPacket> {
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_CLOSE_FORM_PACKET

@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
 import java.util.*
 
 
-class PlayerAuthInputPacket : DataPacket() {
+class PlayerAuthInputPacket : Packet(id) {
     var yaw: Float = 0f
     var pitch: Float = 0f
     var headYaw: Float = 0f

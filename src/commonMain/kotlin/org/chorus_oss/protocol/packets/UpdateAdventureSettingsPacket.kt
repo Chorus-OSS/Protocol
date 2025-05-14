@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class UpdateAdventureSettingsPacket : DataPacket() {
+class UpdateAdventureSettingsPacket : Packet(id) {
     @JvmField
     var noPvM: Boolean = false
 

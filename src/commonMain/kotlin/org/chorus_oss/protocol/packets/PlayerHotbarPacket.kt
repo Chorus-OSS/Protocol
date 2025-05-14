@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.inventory.SpecialWindowId
 
-class PlayerHotbarPacket : DataPacket() {
+class PlayerHotbarPacket : Packet(id) {
     var selectedHotbarSlot: Int = 0
     var windowId: Int = SpecialWindowId.PLAYER.id
     var selectHotbarSlot: Boolean = true

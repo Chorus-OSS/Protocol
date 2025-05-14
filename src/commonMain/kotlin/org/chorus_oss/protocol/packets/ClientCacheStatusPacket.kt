@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 
 data class ClientCacheStatusPacket(
     val isCacheSupported: Boolean
-) : DataPacket() {
+) : Packet(id) {
     override fun pid(): Int {
         return ProtocolInfo.CLIENT_CACHE_STATUS_PACKET
     }

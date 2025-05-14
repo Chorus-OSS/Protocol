@@ -5,7 +5,7 @@ import org.chorus_oss.protocol.types.AbilityType
 import org.chorus_oss.protocol.types.PlayerAbility
 
 
-class RequestAbilityPacket : DataPacket() {
+class RequestAbilityPacket : Packet(id) {
     var ability: PlayerAbility? = null
     var type: AbilityType? = null
     var boolValue: Boolean = false

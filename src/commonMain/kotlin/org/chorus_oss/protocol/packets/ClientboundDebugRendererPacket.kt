@@ -3,10 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
@@ -16,7 +13,7 @@ import org.chorus_oss.protocol.shared.types.Vector3f
 data class ClientboundDebugRendererPacket(
     val type: Type,
     val data: Data? = null,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ClientboundDebugRendererPacket> {
         enum class Type {
             Clear,

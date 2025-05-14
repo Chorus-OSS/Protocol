@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class TickingAreasLoadStatusPacket : DataPacket() {
+class TickingAreasLoadStatusPacket : Packet(id) {
     var waitingForPreload: Boolean = false
 
     override fun encode(byteBuf: ByteBuf) {

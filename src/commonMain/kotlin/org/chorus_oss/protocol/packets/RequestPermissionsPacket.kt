@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.types.PlayerAbility
 import org.chorus_oss.protocol.types.PlayerPermission
 
 
-class RequestPermissionsPacket : DataPacket() {
+class RequestPermissionsPacket : Packet(id) {
     var uniqueEntityId: Long = 0
     var permissions: PlayerPermission? = null
     var customPermissions: Int = 0

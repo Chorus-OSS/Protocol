@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetDefaultGameTypePacket : DataPacket() {
+class SetDefaultGameTypePacket : Packet(id) {
     var gamemode: Int = 0
 
     override fun encode(byteBuf: ByteBuf) {

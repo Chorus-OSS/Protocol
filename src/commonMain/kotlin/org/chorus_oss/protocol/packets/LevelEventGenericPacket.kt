@@ -7,7 +7,7 @@ import java.io.IOException
 import java.nio.ByteOrder
 
 
-class LevelEventGenericPacket : DataPacket() {
+class LevelEventGenericPacket : Packet(id) {
     var eventId: Int = 0
     var tag: CompoundTag? = null
 

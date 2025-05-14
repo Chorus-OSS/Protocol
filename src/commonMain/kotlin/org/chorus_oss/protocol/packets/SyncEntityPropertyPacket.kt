@@ -10,7 +10,7 @@ import java.nio.ByteOrder
 
 class SyncEntityPropertyPacket(
     var data: CompoundTag? = null
-) : DataPacket() {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         try {
             byteBuf.writeBytes(write(data!!, ByteOrder.BIG_ENDIAN, true))

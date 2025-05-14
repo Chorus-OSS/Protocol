@@ -7,7 +7,7 @@ import org.chorus_oss.chorus.utils.MainLogger
 import java.io.IOException
 import java.nio.ByteOrder
 
-class ItemRegistryPacket : DataPacket() {
+class ItemRegistryPacket : Packet(id) {
     var entries: Array<Entry>? = emptyArray()
 
     override fun encode(byteBuf: ByteBuf) {

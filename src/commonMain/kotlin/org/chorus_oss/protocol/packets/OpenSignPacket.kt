@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.BlockVector3
 
-class OpenSignPacket : DataPacket() {
+class OpenSignPacket : Packet(id) {
     @JvmField
     var position: BlockVector3? = null
 

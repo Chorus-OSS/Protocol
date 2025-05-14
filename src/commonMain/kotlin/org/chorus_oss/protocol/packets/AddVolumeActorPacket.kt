@@ -6,6 +6,7 @@ import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
@@ -24,7 +25,7 @@ data class AddVolumeActorPacket(
     val maxBounds: IVector3,
     val dimension: Int,
     val engineVersion: String,
-) {
+) : Packet(id) {
     companion object : PacketCodec<AddVolumeActorPacket> {
         override val id: Int
             get() = ProtocolInfo.ADD_VOLUME_ENTITY_PACKET

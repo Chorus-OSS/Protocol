@@ -8,7 +8,7 @@ data class PlayerLocationPacket(
     val type: Type,
     val targetActorID: ActorRuntimeID,
     val position: Vector3f? = null,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun pid(): Int {
         return ProtocolInfo.PLAYER_LOCATION_PACKET
     }

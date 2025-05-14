@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class RequestChunkRadiusPacket : DataPacket() {
+class RequestChunkRadiusPacket : Packet(id) {
     var radius: Int = 0
 
     private var maxRadius = 0

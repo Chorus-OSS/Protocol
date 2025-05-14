@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.EduSharedUriResource
 
 
-class EduUriResourcePacket : DataPacket() {
+class EduUriResourcePacket : Packet(id) {
     var eduSharedUriResource: EduSharedUriResource? = null
 
     override fun encode(byteBuf: ByteBuf) {

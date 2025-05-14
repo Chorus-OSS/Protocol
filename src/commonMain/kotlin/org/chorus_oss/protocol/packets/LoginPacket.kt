@@ -11,7 +11,7 @@ import java.util.*
 
 class LoginPacket(
     var protocol: Int,
-) : DataPacket() {
+) : Packet(id) {
     var username: String? = null
     var titleId: String? = null
 

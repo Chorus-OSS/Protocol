@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class EmotePacket : DataPacket() {
+class EmotePacket : Packet(id) {
     var runtimeId: Long = 0
     var xuid: String = ""
     var platformId: String = ""

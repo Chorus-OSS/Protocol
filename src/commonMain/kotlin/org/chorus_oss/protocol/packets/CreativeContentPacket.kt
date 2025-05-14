@@ -8,7 +8,7 @@ import org.chorus_oss.chorus.registry.CreativeItemRegistry
 data class CreativeContentPacket(
     val groups: List<CreativeItemGroup> = CreativeItemRegistry.creativeGroups.toList(),
     val writeEntries: List<CreativeItemData> = CreativeItemRegistry.creativeItemData.toList()
-) : DataPacket() {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeVarInt(0)
         byteBuf.writeVarInt(0)

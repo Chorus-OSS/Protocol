@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ModalFormRequestPacket : DataPacket() {
+class ModalFormRequestPacket : Packet(id) {
     @JvmField
     var formId: Int = 0
 

@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.entity.Attribute
 
 
-class UpdateAttributesPacket : DataPacket() {
+class UpdateAttributesPacket : Packet(id) {
     var entries: Array<Attribute> = emptyArray()
 
     @JvmField

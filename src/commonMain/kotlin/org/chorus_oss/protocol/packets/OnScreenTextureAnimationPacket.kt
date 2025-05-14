@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class OnScreenTextureAnimationPacket : DataPacket() {
+class OnScreenTextureAnimationPacket : Packet(id) {
     var effectId: Int = 0
 
     override fun encode(byteBuf: ByteBuf) {

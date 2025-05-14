@@ -9,7 +9,7 @@ import java.io.IOException
 import java.nio.ByteOrder
 
 
-class UpdateTradePacket : DataPacket() {
+class UpdateTradePacket : Packet(id) {
     var containerId: Byte = 0
     var containerType: Byte = 15 //trading id
     var size: Int = 0 // hardcoded to 0

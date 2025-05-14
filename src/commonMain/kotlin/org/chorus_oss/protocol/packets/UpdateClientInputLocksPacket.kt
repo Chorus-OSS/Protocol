@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.protocol.shared.types.Vector3f
 
-class UpdateClientInputLocksPacket : DataPacket() {
+class UpdateClientInputLocksPacket : Packet(id) {
     var lockComponentData: Int = 0
     lateinit var serverPosition: Vector3f
 

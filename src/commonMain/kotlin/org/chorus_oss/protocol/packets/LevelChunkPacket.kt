@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class LevelChunkPacket : DataPacket() {
+class LevelChunkPacket : Packet(id) {
     @JvmField
     var chunkX: Int = 0
 

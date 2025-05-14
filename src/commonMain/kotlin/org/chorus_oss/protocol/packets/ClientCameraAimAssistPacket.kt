@@ -7,7 +7,7 @@ data class ClientCameraAimAssistPacket(
     val cameraPresetID: String,
     val action: ClientCameraAimAssistPacketAction,
     val allowAimAssist: Boolean,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeString(this.cameraPresetID)
         byteBuf.writeByte(this.action.ordinal)

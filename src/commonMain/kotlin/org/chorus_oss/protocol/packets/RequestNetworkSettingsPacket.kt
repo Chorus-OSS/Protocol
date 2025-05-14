@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class RequestNetworkSettingsPacket : DataPacket() {
+class RequestNetworkSettingsPacket : Packet(id) {
     var protocolVersion: Int = 0
 
     override fun pid(): Int {

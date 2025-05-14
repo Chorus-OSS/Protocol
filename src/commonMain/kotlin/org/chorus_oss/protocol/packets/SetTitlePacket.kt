@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetTitlePacket : DataPacket() {
+class SetTitlePacket : Packet(id) {
     @JvmField
     var type: Int = 0
 

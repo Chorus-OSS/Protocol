@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.LessonAction
 
 
-class LessonProgressPacket : DataPacket() {
+class LessonProgressPacket : Packet(id) {
     var action: LessonAction? = null
     var score: Int = 0
     var activityId: String? = null

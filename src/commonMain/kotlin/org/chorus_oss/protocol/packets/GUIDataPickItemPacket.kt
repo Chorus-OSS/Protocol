@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class GUIDataPickItemPacket : DataPacket() {
+class GUIDataPickItemPacket : Packet(id) {
     var hotbarSlot: Int = 0
 
     override fun decode(byteBuf: ByteBuf) {

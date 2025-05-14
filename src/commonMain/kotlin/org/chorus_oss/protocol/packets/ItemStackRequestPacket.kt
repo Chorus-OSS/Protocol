@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
 
 
-class ItemStackRequestPacket : DataPacket() {
+class ItemStackRequestPacket : Packet(id) {
     val requests: MutableList<ItemStackRequest> = ArrayList()
 
     override fun pid(): Int {

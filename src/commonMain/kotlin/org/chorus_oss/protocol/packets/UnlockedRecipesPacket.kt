@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class UnlockedRecipesPacket : DataPacket() {
+class UnlockedRecipesPacket : Packet(id) {
     var unlockedNotification: Boolean = false
     val unlockedRecipes: MutableList<String> = mutableListOf()
 

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import java.util.*
 
 
-class PlayerArmorDamagePacket : DataPacket() {
+class PlayerArmorDamagePacket : Packet(id) {
     val flags: MutableSet<PlayerArmorDamageFlag> = EnumSet.noneOf(
         PlayerArmorDamageFlag::class.java
     )

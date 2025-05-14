@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
@@ -13,7 +14,7 @@ data class BlockPickRequestPacket(
     val position: IVector3,
     var withData: Boolean,
     var maxSlots: Byte,
-) {
+) : Packet(id) {
     companion object : PacketCodec<BlockPickRequestPacket> {
         override val id: Int
             get() = ProtocolInfo.BLOCK_PICK_REQUEST_PACKET

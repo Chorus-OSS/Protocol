@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ServerToClientHandshakePacket : DataPacket() {
+class ServerToClientHandshakePacket : Packet(id) {
     var jwt: String? = null
 
     override fun encode(byteBuf: ByteBuf) {

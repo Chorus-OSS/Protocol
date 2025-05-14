@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetSpawnPositionPacket : DataPacket() {
+class SetSpawnPositionPacket : Packet(id) {
     @JvmField
     var spawnType: Int = 0
 

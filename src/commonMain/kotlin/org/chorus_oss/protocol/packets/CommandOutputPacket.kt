@@ -11,7 +11,7 @@ data class CommandOutputPacket(
     val successCount: Int,
     val outputMessages: List<CommandOutputMessage>,
     val dataSet: String? = null,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeCommandOriginData(this.originData)
 

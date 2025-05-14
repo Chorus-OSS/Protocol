@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.ServerboundLoadingScreenPacketType
 
 
-class ServerboundLoadingScreenPacket : DataPacket() {
+class ServerboundLoadingScreenPacket : Packet(id) {
     private var type: ServerboundLoadingScreenPacketType? = null
 
     /**

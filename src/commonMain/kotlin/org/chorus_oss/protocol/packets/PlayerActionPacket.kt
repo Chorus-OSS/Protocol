@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.math.BlockVector3
 
 
-class PlayerActionPacket : DataPacket() {
+class PlayerActionPacket : Packet(id) {
     @JvmField
     var entityId: Long = 0
 

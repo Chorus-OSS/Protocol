@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class InitiateWebSocketConnectionPacket : DataPacket() {
+class InitiateWebSocketConnectionPacket : Packet(id) {
     override fun decode(byteBuf: ByteBuf) {
     }
 

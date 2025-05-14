@@ -6,7 +6,7 @@ import org.chorus_oss.protocol.types.LabTableReactionType
 import org.chorus_oss.protocol.types.LabTableType
 
 
-class LabTablePacket : DataPacket() {
+class LabTablePacket : Packet(id) {
     var actionType: LabTableType? = null
     var blockPosition: BlockVector3? = null
     var reactionType: LabTableReactionType? = null

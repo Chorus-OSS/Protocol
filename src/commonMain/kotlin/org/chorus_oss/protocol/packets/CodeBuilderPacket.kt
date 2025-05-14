@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 data class CodeBuilderPacket(
     val url: String,
     val shouldOpenCodeBuilder: Boolean,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeString(url)
         byteBuf.writeBoolean(shouldOpenCodeBuilder)

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ToastRequestPacket : DataPacket() {
+class ToastRequestPacket : Packet(id) {
     @JvmField
     var title: String = ""
 

@@ -5,7 +5,7 @@ import org.chorus_oss.protocol.shared.types.Vector3f
 import java.util.*
 
 
-class SpawnParticleEffectPacket : DataPacket() {
+class SpawnParticleEffectPacket : Packet(id) {
     var dimensionId: Int = 0
     var uniqueEntityId: Long = -1
     var position: Vector3f? = null

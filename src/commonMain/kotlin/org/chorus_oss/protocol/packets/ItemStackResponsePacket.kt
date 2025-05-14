@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseSlot
 import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseStatus
 
 
-class ItemStackResponsePacket : DataPacket() {
+class ItemStackResponsePacket : Packet(id) {
     val entries: MutableList<ItemStackResponse> = ArrayList()
 
     override fun encode(byteBuf: ByteBuf) {

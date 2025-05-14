@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.utils.MainLogger
 
 
-class PacketViolationWarningPacket : DataPacket() {
+class PacketViolationWarningPacket : Packet(id) {
     lateinit var type: PacketViolationType
     lateinit var severity: PacketViolationSeverity
     var packetId: Int = 0

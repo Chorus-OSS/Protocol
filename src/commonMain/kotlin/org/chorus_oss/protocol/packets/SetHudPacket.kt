@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.hud.HudElement
 import org.chorus_oss.protocol.types.hud.HudVisibility
 
-class SetHudPacket : DataPacket() {
+class SetHudPacket : Packet(id) {
     val elements: MutableSet<HudElement> = mutableSetOf()
     var visibility: HudVisibility? = null
 

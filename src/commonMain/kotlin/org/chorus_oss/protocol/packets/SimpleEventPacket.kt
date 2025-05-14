@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SimpleEventPacket : DataPacket() {
+class SimpleEventPacket : Packet(id) {
     var type: Short = 0
 
     override fun decode(byteBuf: ByteBuf) {

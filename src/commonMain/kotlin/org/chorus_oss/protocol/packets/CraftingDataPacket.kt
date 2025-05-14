@@ -14,7 +14,7 @@ data class CraftingDataPacket(
     val potionMixes: List<BrewingRecipe>,
     val containerMixes: List<ContainerRecipe>,
     val materialReducers: List<MaterialReducerDataEntry>
-) : DataPacket() {
+) : Packet(id) {
     private val entries: MutableList<Recipe> = mutableListOf()
     private val brewingEntries: MutableList<BrewingRecipe> = mutableListOf()
     private val containerEntries: MutableList<ContainerRecipe> = mutableListOf()

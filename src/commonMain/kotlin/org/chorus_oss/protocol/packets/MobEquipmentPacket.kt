@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.item.Item
 
 
-class MobEquipmentPacket : DataPacket() {
+class MobEquipmentPacket : Packet(id) {
     var eid: Long = 0
     lateinit var item: Item
     var slot: Int = 0

@@ -15,7 +15,7 @@ data class BossEventPacket(
     var targetActorID: ActorUniqueID,
     var eventType: EventType,
     val eventData: EventType.Companion.EventData?,
-) {
+) : Packet(id) {
     companion object : PacketCodec<BossEventPacket> {
         enum class EventType {
             ADD,

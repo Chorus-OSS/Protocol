@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class PlayerStartItemCoolDownPacket : DataPacket() {
+class PlayerStartItemCoolDownPacket : Packet(id) {
     @JvmField
     var itemCategory: String? = null
 

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class MobEffectPacket : DataPacket() {
+class MobEffectPacket : Packet(id) {
     var eid: Long = 0
 
     var eventId: Int = 0

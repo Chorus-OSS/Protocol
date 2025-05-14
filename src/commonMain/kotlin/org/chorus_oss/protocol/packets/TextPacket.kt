@@ -4,7 +4,7 @@ import io.netty.util.internal.EmptyArrays
 
 import java.util.function.Function
 
-class TextPacket : DataPacket() {
+class TextPacket : Packet(id) {
     @JvmField
     var type: Byte = 0
 

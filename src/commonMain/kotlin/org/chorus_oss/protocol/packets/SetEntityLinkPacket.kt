@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.protocol.types.ActorLink
 
-class SetEntityLinkPacket : DataPacket() {
+class SetEntityLinkPacket : Packet(id) {
     var vehicleUniqueId: Long = 0 //from
     var riderUniqueId: Long = 0 //to
     var type: ActorLink.Type? = null

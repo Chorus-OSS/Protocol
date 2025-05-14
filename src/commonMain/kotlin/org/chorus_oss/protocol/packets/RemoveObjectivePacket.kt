@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class RemoveObjectivePacket : DataPacket() {
+class RemoveObjectivePacket : Packet(id) {
     @JvmField
     var objectiveName: String? = null
 

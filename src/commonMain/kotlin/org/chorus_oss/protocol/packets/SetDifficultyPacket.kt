@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetDifficultyPacket : DataPacket() {
+class SetDifficultyPacket : Packet(id) {
     var difficulty: Int = 0
 
     override fun encode(byteBuf: ByteBuf) {

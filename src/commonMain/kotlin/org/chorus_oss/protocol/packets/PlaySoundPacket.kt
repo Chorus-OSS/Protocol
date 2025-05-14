@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class PlaySoundPacket : DataPacket() {
+class PlaySoundPacket : Packet(id) {
     var name: String? = null
     var x: Int = 0
     var y: Int = 0

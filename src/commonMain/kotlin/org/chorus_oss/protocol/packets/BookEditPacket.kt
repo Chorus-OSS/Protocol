@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
@@ -14,7 +15,7 @@ data class BookEditPacket(
     var action: Action,
     var bookSlot: Byte,
     val actionData: ActionData,
-) {
+) : Packet(id) {
     enum class Action {
         REPLACE_PAGE,
         ADD_PAGE,

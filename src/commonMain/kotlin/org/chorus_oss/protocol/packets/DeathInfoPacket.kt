@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.lang.TranslationContainer
 
 
-class DeathInfoPacket : DataPacket() {
+class DeathInfoPacket : Packet(id) {
     @JvmField
     var translation: TranslationContainer? = null
 

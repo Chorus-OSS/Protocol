@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.item.Item
 
-class MobArmorEquipmentPacket : DataPacket() {
+class MobArmorEquipmentPacket : Packet(id) {
     var eid: Long = 0
     lateinit var slots: Array<Item>
     var body: Item = Item.AIR

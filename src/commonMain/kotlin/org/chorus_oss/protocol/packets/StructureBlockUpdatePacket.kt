@@ -6,7 +6,7 @@ import org.chorus_oss.chorus.math.BlockVector3
 import org.chorus_oss.protocol.types.*
 
 
-class StructureBlockUpdatePacket : DataPacket() {
+class StructureBlockUpdatePacket : Packet(id) {
     lateinit var blockPosition: BlockVector3
     lateinit var editorData: StructureEditorData
     var powered: Boolean = false

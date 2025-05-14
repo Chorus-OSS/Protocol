@@ -4,10 +4,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.Int
@@ -21,7 +18,7 @@ data class ChangeMobPropertyPacket(
     val stringValue: String,
     val intValue: Int,
     val floatValue: Float,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ChangeMobPropertyPacket> {
         override val id: Int
             get() = ProtocolInfo.CHANGE_MOB_PROPERTY_PACKET

@@ -6,7 +6,7 @@ import org.chorus_oss.protocol.types.ActorProperties
 import org.chorus_oss.chorus.utils.Binary
 import org.chorus_oss.chorus.utils.Loggable
 
-class SetEntityDataPacket : DataPacket() {
+class SetEntityDataPacket : Packet(id) {
     @JvmField
     var eid: Long = 0
 

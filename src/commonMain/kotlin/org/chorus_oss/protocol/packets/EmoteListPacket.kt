@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import java.util.*
 
 
-class EmoteListPacket : DataPacket() {
+class EmoteListPacket : Packet(id) {
     var runtimeId: Long = 0
     val pieceIds: MutableList<UUID> = mutableListOf()
 

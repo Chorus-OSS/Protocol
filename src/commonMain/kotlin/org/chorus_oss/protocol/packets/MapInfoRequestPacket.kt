@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class MapInfoRequestPacket : DataPacket() {
+class MapInfoRequestPacket : Packet(id) {
     var mapId: Long = 0
 
     override fun pid(): Int {

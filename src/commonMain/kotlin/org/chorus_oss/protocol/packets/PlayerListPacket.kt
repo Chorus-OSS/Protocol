@@ -8,7 +8,7 @@ import java.awt.Color
 import java.util.*
 
 
-class PlayerListPacket : DataPacket() {
+class PlayerListPacket : Packet(id) {
     @JvmField
     var type: Byte = 0
 

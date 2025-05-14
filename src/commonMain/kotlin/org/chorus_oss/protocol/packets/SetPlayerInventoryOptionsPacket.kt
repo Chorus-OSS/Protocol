@@ -5,7 +5,7 @@ import org.chorus_oss.protocol.types.inventory.InventoryLayout
 import org.chorus_oss.protocol.types.inventory.InventoryTabLeft
 import org.chorus_oss.protocol.types.inventory.InventoryTabRight
 
-class SetPlayerInventoryOptionsPacket : DataPacket() {
+class SetPlayerInventoryOptionsPacket : Packet(id) {
     var leftTab: InventoryTabLeft? = null
     var rightTab: InventoryTabRight? = null
     var filtering: Boolean = false

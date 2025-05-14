@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.PacketCompressionAlgorithm
 
 
-class NetworkSettingsPacket : DataPacket() {
+class NetworkSettingsPacket : Packet(id) {
     var compressionThreshold: Int = 0
     var compressionAlgorithm: PacketCompressionAlgorithm? = null
     var clientThrottleEnabled: Boolean = false

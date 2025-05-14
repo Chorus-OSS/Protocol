@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ServerSettingsRequestPacket : DataPacket() {
+class ServerSettingsRequestPacket : Packet(id) {
     override fun pid(): Int {
         return ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET
     }

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.utils.Identifier
 
 
-class PlayerFogPacket : DataPacket() {
+class PlayerFogPacket : Packet(id) {
     //Fog stack containing fog effects from the /fog command
     @JvmField
     var fogStack: List<Fog> = ArrayList()

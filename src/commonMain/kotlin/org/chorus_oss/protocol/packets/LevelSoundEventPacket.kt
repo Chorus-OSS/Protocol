@@ -4,7 +4,7 @@ import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
 import org.chorus_oss.chorus.network.protocol.types.ActorUniqueID
 import org.chorus_oss.chorus.utils.Utils
 
-open class LevelSoundEventPacket : DataPacket() {
+open class LevelSoundEventPacket : Packet(id) {
     var sound: Int = 0
     var x: Float = 0f
     var y: Float = 0f

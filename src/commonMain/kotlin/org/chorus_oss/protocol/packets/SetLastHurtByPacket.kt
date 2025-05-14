@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetLastHurtByPacket : DataPacket() {
+class SetLastHurtByPacket : Packet(id) {
     override fun decode(byteBuf: ByteBuf) {
     }
 

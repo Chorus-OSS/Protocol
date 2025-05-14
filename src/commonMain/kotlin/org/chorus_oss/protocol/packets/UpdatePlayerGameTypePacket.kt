@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.GameType
 
 
-class UpdatePlayerGameTypePacket : DataPacket() {
+class UpdatePlayerGameTypePacket : Packet(id) {
     @JvmField
     var gameType: GameType? = null
 

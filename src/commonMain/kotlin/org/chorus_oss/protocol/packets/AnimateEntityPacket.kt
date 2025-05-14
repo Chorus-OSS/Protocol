@@ -15,7 +15,7 @@ data class AnimateEntityPacket(
     val controller: String,
     val blendOutTime: Float,
     val runtimeIDs: List<ActorRuntimeID>,
-) {
+) : Packet(id) {
     data class Animation(
         val animation: String,
         val nextState: String = DEFAULT_NEXT_STATE,

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.scoreboard.data.ScorerType
 
 
-class SetScorePacket : DataPacket() {
+class SetScorePacket : Packet(id) {
     @JvmField
     var action: Action? = null
 

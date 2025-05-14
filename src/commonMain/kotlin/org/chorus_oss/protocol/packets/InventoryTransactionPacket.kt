@@ -12,7 +12,7 @@ class InventoryTransactionPacket(
     val transactionType: TransactionType,
     val actions: Array<NetworkInventoryAction>,
     val transactionData: TransactionData?,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
 
     enum class TransactionType {
         NORMAL,

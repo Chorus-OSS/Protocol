@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetTimePacket : DataPacket() {
+class SetTimePacket : Packet(id) {
     @JvmField
     var time: Int = 0
 

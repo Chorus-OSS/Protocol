@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import java.util.*
 
 
-class SetScoreboardIdentityPacket : DataPacket() {
+class SetScoreboardIdentityPacket : Packet(id) {
     val entries: List<Entry> = listOf()
     var action: Action? = null
 

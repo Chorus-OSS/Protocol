@@ -22,7 +22,7 @@ data class ClientboundMapItemDataPacket(
     val creationData: CreationData? = null,
     val decorationUpdateData: DecorationUpdateData? = null,
     val textureUpdateData: TextureUpdateData? = null,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ClientboundMapItemDataPacket> {
         enum class Type(val bit: UInt) {
             INVALID(0u),

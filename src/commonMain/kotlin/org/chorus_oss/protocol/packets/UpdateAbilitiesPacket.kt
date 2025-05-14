@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.types.PlayerPermission
 import java.util.*
 
 
-class UpdateAbilitiesPacket : DataPacket() {
+class UpdateAbilitiesPacket : Packet(id) {
     @JvmField
     var entityId: Long = 0
 

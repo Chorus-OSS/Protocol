@@ -3,10 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoHelper
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UByte
 import org.chorus_oss.protocol.core.types.UInt
@@ -22,7 +19,7 @@ data class AvailableCommandsPacket(
     val commands: List<Command>,
     val dynamicEnums: List<CommandDynamicEnum>,
     val constraints: List<CommandEnumConstraint>
-) {
+) : Packet(id) {
     companion object : PacketCodec<AvailableCommandsPacket> {
         override val id: Int
             get() = ProtocolInfo.AVAILABLE_COMMANDS_PACKET

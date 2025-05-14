@@ -13,7 +13,7 @@ data class ChangeDimensionPacket(
     val position: Vector3f,
     val respawn: Boolean,
     val loadingScreenID: Int? = null,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ChangeDimensionPacket> {
         override val id: Int
             get() = ProtocolInfo.CHANGE_DIMENSION_PACKET

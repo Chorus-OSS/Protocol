@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class PositionTrackingDBClientRequestPacket : DataPacket() {
+class PositionTrackingDBClientRequestPacket : Packet(id) {
     var action: Action? = null
     var trackingId: Int = 0
 

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SimulationTypePacket : DataPacket() {
+class SimulationTypePacket : Packet(id) {
     var type: SimulationType = SimulationType.GAME
 
     override fun encode(byteBuf: ByteBuf) {

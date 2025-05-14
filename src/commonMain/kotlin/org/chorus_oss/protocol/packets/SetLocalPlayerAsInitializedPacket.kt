@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetLocalPlayerAsInitializedPacket : DataPacket() {
+class SetLocalPlayerAsInitializedPacket : Packet(id) {
     var eid: Long = 0
 
     override fun encode(byteBuf: ByteBuf) {

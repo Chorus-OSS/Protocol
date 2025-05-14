@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class UpdateSoftEnumPacket : DataPacket() {
+class UpdateSoftEnumPacket : Packet(id) {
     var values: List<String> = listOf()
     var name: String = ""
     var type: Type = Type.SET

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 data class CompletedUsingItemPacket(
     val itemID: Short,
     val itemUseMethod: ItemUseMethod,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     enum class ItemUseMethod(val id: Int) {
         UNKNOWN(-1),
         EQUIP_ARMOR(0),

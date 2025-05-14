@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetEntityMotionPacket : DataPacket() {
+class SetEntityMotionPacket : Packet(id) {
     @JvmField
     var eid: Long = 0
 

@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.level.GameRules
 
 
-class GameRulesChangedPacket : DataPacket() {
+class GameRulesChangedPacket : Packet(id) {
     @JvmField
     var gameRules: GameRules? = null
 

@@ -5,7 +5,7 @@ class ContainerSetDataPacket(
     val containerID: Byte,
     val property: Int,
     val value: Int,
-) : DataPacket() {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeByte(this.containerID.toInt())
         byteBuf.writeVarInt(this.property)

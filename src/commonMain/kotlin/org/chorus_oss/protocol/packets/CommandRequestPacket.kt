@@ -8,7 +8,7 @@ data class CommandRequestPacket(
     val commandOrigin: CommandOriginData,
     val isInternalSource: Boolean,
     val version: Int,
-) : DataPacket() {
+) : Packet(id) {
     override fun pid(): Int {
         return ProtocolInfo.COMMAND_REQUEST_PACKET
     }

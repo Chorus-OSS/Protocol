@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SubClientLoginPacket : DataPacket() {
+class SubClientLoginPacket : Packet(id) {
     override fun decode(byteBuf: ByteBuf) {
     }
 

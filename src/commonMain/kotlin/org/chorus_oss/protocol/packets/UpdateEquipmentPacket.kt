@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class UpdateEquipmentPacket : DataPacket() {
+class UpdateEquipmentPacket : Packet(id) {
     var windowId: Int = 0
     var windowType: Int = 0
     var size: Int = 0

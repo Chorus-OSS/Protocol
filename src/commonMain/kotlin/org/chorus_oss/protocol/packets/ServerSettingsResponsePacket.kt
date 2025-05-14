@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ServerSettingsResponsePacket : DataPacket() {
+class ServerSettingsResponsePacket : Packet(id) {
     @JvmField
     var formId: Int = 0
 

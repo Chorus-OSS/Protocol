@@ -6,7 +6,7 @@ data class ContainerClosePacket(
     val containerID: Int,
     val containerType: InventoryType,
     val serverInitiatedClose: Boolean,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeByte(containerID)
         byteBuf.writeByte(containerType.networkType)

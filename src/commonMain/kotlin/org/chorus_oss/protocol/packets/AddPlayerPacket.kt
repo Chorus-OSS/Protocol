@@ -31,7 +31,7 @@ data class AddPlayerPacket(
     val actorLinks: List<ActorLink>,
     val deviceID: String,
     val buildPlatform: Platform,
-) {
+) : Packet(id) {
     companion object : PacketCodec<AddPlayerPacket> {
         override val id: Int
             get() = ProtocolInfo.ADD_PLAYER_PACKET

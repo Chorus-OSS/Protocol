@@ -6,7 +6,7 @@ import org.chorus_oss.chorus.entity.data.Skin
 import java.util.*
 
 
-class PlayerSkinPacket : DataPacket() {
+class PlayerSkinPacket : Packet(id) {
     lateinit var uuid: UUID
     lateinit var skin: Skin
     lateinit var newSkinName: String

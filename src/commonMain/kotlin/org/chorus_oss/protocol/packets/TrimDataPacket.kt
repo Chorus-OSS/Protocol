@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.TrimMaterial
 import org.chorus_oss.protocol.types.TrimPattern
 
-class TrimDataPacket : DataPacket() {
+class TrimDataPacket : Packet(id) {
     val patterns: MutableList<TrimPattern> = mutableListOf()
     val materials: MutableList<TrimMaterial> = mutableListOf()
 
@@ -32,7 +32,7 @@ class TrimDataPacket : DataPacket() {
 
     companion object : PacketDecoder<TrimDataPacket> {
         override fun decode(byteBuf: ByteBuf): TrimDataPacket {
-            val packet = TrimDataPacket()
+            val packet = TrimPacket(id)
 
             val length1 = byteBuf.readUnsignedVarInt()
             for (i in 0..<length1) {

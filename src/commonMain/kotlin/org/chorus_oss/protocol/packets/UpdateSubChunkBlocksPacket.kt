@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.types.BlockChangeEntry
 
 
-class UpdateSubChunkBlocksPacket : DataPacket() {
+class UpdateSubChunkBlocksPacket : Packet(id) {
     var chunkX: Int = 0
     var chunkY: Int = 0
     var chunkZ: Int = 0

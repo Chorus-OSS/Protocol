@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-open class UpdateBlockPacket : DataPacket() {
+open class UpdateBlockPacket : Packet(id) {
     @JvmField
     var x: Int = 0
 

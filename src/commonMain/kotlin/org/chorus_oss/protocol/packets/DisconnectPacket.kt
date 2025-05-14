@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.protocol.types.DisconnectFailReason
 
-class DisconnectPacket : DataPacket() {
+class DisconnectPacket : Packet(id) {
     var reason: DisconnectFailReason = DisconnectFailReason.UNKNOWN
 
     @JvmField

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class SetPlayerGameTypePacket : DataPacket() {
+class SetPlayerGameTypePacket : Packet(id) {
     @JvmField
     var gamemode: Int = 0
 

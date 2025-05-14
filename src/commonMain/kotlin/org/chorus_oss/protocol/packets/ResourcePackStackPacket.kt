@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.resourcepacks.ResourcePack
 
-class ResourcePackStackPacket : DataPacket() {
+class ResourcePackStackPacket : Packet(id) {
     var mustAccept: Boolean = false
     var behaviourPackStack: Array<ResourcePack> = emptyArray()
     var resourcePackStack: Array<ResourcePack> = emptyArray()

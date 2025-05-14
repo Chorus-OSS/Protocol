@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.protocol.shared.types.Vector3f
 
 
-class ToggleCrafterSlotRequestPacket : DataPacket() {
+class ToggleCrafterSlotRequestPacket : Packet(id) {
     var blockPosition: Vector3f? = null
     var slot: Byte = 0
     var disabled: Boolean = false

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ClientToServerHandshakePacket : DataPacket() {
+class ClientToServerHandshakePacket : Packet(id) {
     override fun pid(): Int {
         return ProtocolInfo.CLIENT_TO_SERVER_HANDSHAKE_PACKET
     }

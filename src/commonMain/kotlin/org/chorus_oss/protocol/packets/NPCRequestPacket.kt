@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class NPCRequestPacket : DataPacket() {
+class NPCRequestPacket : Packet(id) {
     var entityRuntimeId: Long = 0
     var requestType: RequestType = RequestType.SET_SKIN
     var data: String = ""

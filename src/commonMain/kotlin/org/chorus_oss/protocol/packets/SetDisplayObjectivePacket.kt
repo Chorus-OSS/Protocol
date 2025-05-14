@@ -5,7 +5,7 @@ import org.chorus_oss.chorus.scoreboard.data.DisplaySlot
 import org.chorus_oss.chorus.scoreboard.data.SortOrder
 
 
-class SetDisplayObjectivePacket : DataPacket() {
+class SetDisplayObjectivePacket : Packet(id) {
     @JvmField
     var displaySlot: DisplaySlot? = null
 

@@ -11,7 +11,7 @@ import java.io.IOException
 import java.nio.ByteOrder
 import java.util.*
 
-class StartGamePacket : DataPacket() {
+class StartGamePacket : Packet(id) {
     var entityUniqueId: Long = 0
     var entityRuntimeId: Long = 0
     var playerGamemode: Int = 0

@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
@@ -20,7 +21,7 @@ data class AddItemActorPacket(
     val velocity: Vector3f,
     val actorData: ActorDataMap,
     val fromFishing: Boolean,
-) {
+) : Packet(id) {
     companion object : PacketCodec<AddItemActorPacket> {
         override val id: Int
             get() = ProtocolInfo.ADD_ITEM_ACTOR_PACKET

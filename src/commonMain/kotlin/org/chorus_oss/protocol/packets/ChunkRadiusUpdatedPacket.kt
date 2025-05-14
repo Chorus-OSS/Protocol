@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
@@ -10,7 +11,7 @@ import org.chorus_oss.protocol.core.types.Int
 
 data class ChunkRadiusUpdatedPacket(
     val radius: Int
-) {
+) : Packet(id) {
     companion object : PacketCodec<ChunkRadiusUpdatedPacket> {
         override val id: Int
             get() = ProtocolInfo.CHUNK_RADIUS_UPDATED_PACKET

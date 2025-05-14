@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class MoveEntityAbsolutePacket : DataPacket() {
+class MoveEntityAbsolutePacket : Packet(id) {
     @JvmField
     var eid: Long = 0
 

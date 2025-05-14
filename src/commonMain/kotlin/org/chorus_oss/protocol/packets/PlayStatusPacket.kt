@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class PlayStatusPacket : DataPacket() {
+class PlayStatusPacket : Packet(id) {
     @JvmField
     var status: Int = 0
 

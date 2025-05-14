@@ -3,12 +3,13 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.ControlScheme
 
 data class ClientboundControlSchemeSetPacket(
     val controlScheme: ControlScheme
-) {
+) : Packet(id) {
     companion object : PacketCodec<ClientboundControlSchemeSetPacket> {
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_CONTROL_SCHEME_SET_PACKET

@@ -4,6 +4,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
@@ -15,7 +16,7 @@ data class AgentActionEventPacket(
     val requestId: String,
     val action: AgentActionType,
     val response: String,
-) {
+) : Packet(id) {
     companion object : PacketCodec<AgentActionEventPacket> {
         override val id: Int
             get() = ProtocolInfo.AGENT_ACTION_EVENT_PACKET

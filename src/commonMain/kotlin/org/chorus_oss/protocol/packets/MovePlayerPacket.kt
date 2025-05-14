@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class MovePlayerPacket : DataPacket() {
+class MovePlayerPacket : Packet(id) {
     @JvmField
     var eid: Long = 0
 

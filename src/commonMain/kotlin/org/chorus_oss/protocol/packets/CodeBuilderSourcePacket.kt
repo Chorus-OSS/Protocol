@@ -9,7 +9,7 @@ data class CodeBuilderSourcePacket(
     val operation: CodeBuilderOperationType,
     val category: CodeBuilderCategoryType,
     val codeStatus: CodeBuilderCodeStatus,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     override fun encode(byteBuf: ByteBuf) {
         byteBuf.writeByte(operation.ordinal)
         byteBuf.writeByte(category.ordinal)

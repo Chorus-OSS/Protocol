@@ -7,7 +7,7 @@ class InteractPacket(
     val action: Action,
     val targetRuntimeID: ActorRuntimeID,
     val actionData: Action.ActionData?,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
 
     enum class Action(val netOrdinal: Byte) {
         INVALID(0),

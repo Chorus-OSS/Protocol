@@ -15,7 +15,7 @@ data class CommandBlockUpdatePacket(
     val trackOutput: Boolean,
     val tickDelay: Int,
     val shouldExecuteOnFirstTick: Boolean,
-) : DataPacket(), PacketEncoder {
+) : Packet(id) {
     interface CommandBlockHolderData
 
     data class CommandBlockActorData(

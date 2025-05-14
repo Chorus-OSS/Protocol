@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.utils.Utils
 
 
-class LevelEventPacket : DataPacket() {
+class LevelEventPacket : Packet(id) {
     @JvmField
     var evid: Int = 0
 

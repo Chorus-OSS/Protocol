@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ShowCreditsPacket : DataPacket() {
+class ShowCreditsPacket : Packet(id) {
     @JvmField
     var eid: Long = 0
 

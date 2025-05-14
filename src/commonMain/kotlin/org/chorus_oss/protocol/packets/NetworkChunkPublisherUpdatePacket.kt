@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.math.BlockVector3
 
 
-class NetworkChunkPublisherUpdatePacket : DataPacket() {
+class NetworkChunkPublisherUpdatePacket : Packet(id) {
     var position: BlockVector3? = null
     var radius: Int = 0
 

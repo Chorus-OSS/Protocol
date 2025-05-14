@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class RespawnPacket : DataPacket() {
+class RespawnPacket : Packet(id) {
     @JvmField
     var x: Float = 0f
 

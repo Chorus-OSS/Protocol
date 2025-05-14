@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class ScriptMessagePacket : DataPacket() {
+class ScriptMessagePacket : Packet(id) {
     lateinit var channel: String
     lateinit var message: String
 

@@ -4,17 +4,14 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.types.biome.BiomeDefinitionData
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoHelper
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Short
 import org.chorus_oss.protocol.core.types.String
 
 data class BiomeDefinitionListPacket(
     val biomeDefinitions: Map<Short, BiomeDefinitionData>,
     val biomeStringList: List<String>,
-) {
+) : Packet(id) {
     companion object : PacketCodec<BiomeDefinitionListPacket> {
         override val id: Int
             get() = ProtocolInfo.BIOME_DEFINITION_LIST_PACKET

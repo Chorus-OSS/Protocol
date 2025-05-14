@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class DebugInfoPacket : DataPacket() {
+class DebugInfoPacket : Packet(id) {
     var entityId: Long = 0
     var data: String? = null
 

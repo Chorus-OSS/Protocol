@@ -3,7 +3,7 @@ package org.chorus_oss.protocol.packets
 import org.chorus_oss.chorus.math.BlockVector3
 
 
-class LecternUpdatePacket : DataPacket() {
+class LecternUpdatePacket : Packet(id) {
     var page: Int = 0
     var totalPages: Int = 0
     lateinit var blockPosition: BlockVector3

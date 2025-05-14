@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class PlayerEnchantOptionsPacket : DataPacket() {
+class PlayerEnchantOptionsPacket : Packet(id) {
     var options: List<EnchantOptionData> = ArrayList()
 
     override fun encode(byteBuf: ByteBuf) {

@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class MoveEntityDeltaPacket : DataPacket() {
+class MoveEntityDeltaPacket : Packet(id) {
     var runtimeEntityId: Long = 0
 
     // Unused fields have to be set to true

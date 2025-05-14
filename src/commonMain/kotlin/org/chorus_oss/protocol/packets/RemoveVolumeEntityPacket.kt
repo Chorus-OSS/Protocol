@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.packets
 
 
-class RemoveVolumeEntityPacket : DataPacket() {
+class RemoveVolumeEntityPacket : Packet(id) {
     var id: Long = 0
 
     var dimension: Int = 0
