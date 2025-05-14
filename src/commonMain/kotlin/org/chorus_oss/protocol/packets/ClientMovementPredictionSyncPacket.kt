@@ -1,59 +1,57 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.entity.data.EntityFlag
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.BitSet
+import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.shared.types.Vector3f
-
 import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.MovementAttributesComponent
+import org.chorus_oss.protocol.types.actor_data.ActorDataFlag
 
 data class ClientMovementPredictionSyncPacket(
-    val flags: MutableSet<EntityFlag>,
+    val flags: Set<ActorDataFlag>,
     val actorBoundingBox: Vector3f,
     val movementAttributesComponent: MovementAttributesComponent,
     val actorUniqueID: ActorUniqueID,
     val actorFlyingState: Boolean,
 ) : Packet(id) {
-    data class MovementAttributesComponent(
-        val movementSpeed: Float,
-        val underwaterMovementSpeed: Float,
-        val lavaMovementSpeed: Float,
-        val jumpStrength: Float,
-        val health: Float,
-        val hunger: Float
-    )
+    companion object : PacketCodec<ClientMovementPredictionSyncPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CLIENT_MOVEMENT_PREDICTION_SYNC_PACKET
 
-    override fun pid(): Int {
-        return ProtocolInfo.CLIENT_MOVEMENT_PREDICTION_SYNC_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<ClientMovementPredictionSyncPacket> {
-        override fun decode(byteBuf: ByteBuf): ClientMovementPredictionSyncPacket {
+        override fun deserialize(stream: Source): ClientMovementPredictionSyncPacket {
             return ClientMovementPredictionSyncPacket(
                 flags = run {
-                    val flagBits = byteBuf.readUnsignedBigVarInt(EntityFlag.entries.size)
-                    EntityFlag.entries.filter {
-                        flagBits.testBit(it.ordinal)
+                    val bitSet = BitSet.deserialize(stream)
+                    ActorDataFlag.entries.filter {
+                        bitSet.getOrElse(it.ordinal) { false }
                     }.toMutableSet()
                 },
-                actorBoundingBox = byteBuf.readVector3f(),
-                movementAttributesComponent = readMovementAttributesComponent(byteBuf),
-                actorUniqueID = byteBuf.readActorUniqueID(),
-                actorFlyingState = byteBuf.readBoolean(),
+                actorBoundingBox = Vector3f.deserialize(stream),
+                movementAttributesComponent = MovementAttributesComponent.deserialize(stream),
+                actorUniqueID = ActorUniqueID.deserialize(stream),
+                actorFlyingState = Proto.Boolean.deserialize(stream),
             )
         }
 
-        private fun readMovementAttributesComponent(byteBuf: ByteBuf): MovementAttributesComponent {
-            return MovementAttributesComponent(
-                movementSpeed = byteBuf.readFloatLE(),
-                underwaterMovementSpeed = byteBuf.readFloatLE(),
-                lavaMovementSpeed = byteBuf.readFloatLE(),
-                jumpStrength = byteBuf.readFloatLE(),
-                health = byteBuf.readFloatLE(),
-                hunger = byteBuf.readFloatLE()
-            )
+        override fun serialize(value: ClientMovementPredictionSyncPacket, stream: Sink) {
+            run {
+                val bitSet = BitSet(
+                    MutableList(value.flags.maxOf { it.ordinal } + 1) { false }.apply {
+                        value.flags.forEach {
+                            this[it.ordinal] = true
+                        }
+                    }
+                )
+                BitSet.serialize(bitSet, stream)
+            }
+            Vector3f.serialize(value.actorBoundingBox, stream)
+            MovementAttributesComponent.serialize(value.movementAttributesComponent, stream)
+            ActorUniqueID.serialize(value.actorUniqueID, stream)
+            Proto.Boolean.serialize(value.actorFlyingState, stream)
         }
     }
 }
