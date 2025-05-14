@@ -12,7 +12,5 @@ class ServerToClientHandshakePacket : Packet(id) {
         return ProtocolInfo.SERVER_TO_CLIENT_HANDSHAKE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

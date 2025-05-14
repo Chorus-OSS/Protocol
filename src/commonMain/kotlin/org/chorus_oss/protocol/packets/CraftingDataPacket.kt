@@ -206,9 +206,7 @@ data class CraftingDataPacket(
         return ProtocolInfo.CRAFTING_DATA_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val CRAFTING_TAG_CRAFTING_TABLE: String = "crafting_table"

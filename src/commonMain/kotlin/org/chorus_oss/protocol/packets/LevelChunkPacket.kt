@@ -51,7 +51,5 @@ class LevelChunkPacket : Packet(id) {
         return ProtocolInfo.LEVEL_CHUNK_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

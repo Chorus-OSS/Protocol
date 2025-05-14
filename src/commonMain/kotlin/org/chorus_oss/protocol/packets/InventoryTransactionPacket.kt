@@ -90,12 +90,10 @@ class InventoryTransactionPacket(
         return ProtocolInfo.INVENTORY_TRANSACTION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<InventoryTransactionPacket> {
-        override fun decode(byteBuf: ByteBuf): InventoryTransactionPacket {
+
+    companion object : PacketCodec<InventoryTransactionPacket> {
+        override fun deserialize(stream: Source): InventoryTransactionPacket {
             val legacyRequestID: Int
             val transactionType: TransactionType
             return InventoryTransactionPacket(
@@ -104,7 +102,7 @@ class InventoryTransactionPacket(
                 legacySetItemSlots = when (legacyRequestID != 0) {
                     true -> List(byteBuf.readUnsignedVarInt()) {
                         LegacySetItemSlotData(
-                            byteBuf.readByte().toInt(),
+                            Proto.Byte.deserialize(stream).toInt(),
                             byteBuf.readByteArray()
                         )
                     }
@@ -124,8 +122,8 @@ class InventoryTransactionPacket(
                         face = byteBuf.readBlockFace(),
                         hotbarSlot = byteBuf.readVarInt(),
                         itemInHand = byteBuf.readSlot(),
-                        playerPos = byteBuf.readVector3f().asVector3(),
-                        clickPos = byteBuf.readVector3f(),
+                        playerPos = Vector3f.deserialize(stream).asVector3(),
+                        clickPos = Vector3f.deserialize(stream),
                         blockRuntimeId = byteBuf.readUnsignedVarInt(),
                         clientInteractPrediction = PredictedResult.entries[byteBuf.readUnsignedVarInt()],
                     )
@@ -135,15 +133,15 @@ class InventoryTransactionPacket(
                         actionType = byteBuf.readUnsignedVarInt(),
                         hotbarSlot = byteBuf.readVarInt(),
                         itemInHand = byteBuf.readSlot(),
-                        playerPos = byteBuf.readVector3f().asVector3(),
-                        clickPos = byteBuf.readVector3f().asVector3(),
+                        playerPos = Vector3f.deserialize(stream).asVector3(),
+                        clickPos = Vector3f.deserialize(stream).asVector3(),
                     )
 
                     TransactionType.RELEASE_ITEM -> ReleaseItemData(
                         actionType = byteBuf.readUnsignedVarInt(),
                         hotbarSlot = byteBuf.readVarInt(),
                         itemInHand = byteBuf.readSlot(),
-                        headRot = byteBuf.readVector3f().asVector3()
+                        headRot = Vector3f.deserialize(stream).asVector3()
                     )
 
                     else -> null

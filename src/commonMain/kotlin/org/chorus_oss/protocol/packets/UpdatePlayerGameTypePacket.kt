@@ -22,12 +22,10 @@ class UpdatePlayerGameTypePacket : Packet(id) {
         return ProtocolInfo.UPDATE_PLAYER_GAME_TYPE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<UpdatePlayerGameTypePacket> {
-        override fun decode(byteBuf: ByteBuf): UpdatePlayerGameTypePacket {
+
+    companion object : PacketCodec<UpdatePlayerGameTypePacket> {
+        override fun deserialize(stream: Source): UpdatePlayerGameTypePacket {
             val packet = UpdatePlayerGameTypePacket()
 
             packet.gameType = GameType.from(byteBuf.readVarInt())

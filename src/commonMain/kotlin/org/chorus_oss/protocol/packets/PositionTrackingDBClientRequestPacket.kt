@@ -18,15 +18,13 @@ class PositionTrackingDBClientRequestPacket : Packet(id) {
         QUERY
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PositionTrackingDBClientRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): PositionTrackingDBClientRequestPacket {
+
+    companion object : PacketCodec<PositionTrackingDBClientRequestPacket> {
+        override fun deserialize(stream: Source): PositionTrackingDBClientRequestPacket {
             val packet = PositionTrackingDBClientRequestPacket()
 
-            packet.action = ACTIONS[byteBuf.readByte().toInt()]
+            packet.action = ACTIONS[Proto.Byte.deserialize(stream).toInt()]
             packet.trackingId = byteBuf.readVarInt()
 
             return packet

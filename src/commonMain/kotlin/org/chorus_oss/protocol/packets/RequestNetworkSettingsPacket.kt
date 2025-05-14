@@ -8,12 +8,10 @@ class RequestNetworkSettingsPacket : Packet(id) {
         return ProtocolInfo.REQUEST_NETWORK_SETTINGS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RequestNetworkSettingsPacket> {
-        override fun decode(byteBuf: ByteBuf): RequestNetworkSettingsPacket {
+
+    companion object : PacketCodec<RequestNetworkSettingsPacket> {
+        override fun deserialize(stream: Source): RequestNetworkSettingsPacket {
             val packet = RequestNetworkSettingsPacket()
 
             packet.protocolVersion = byteBuf.readInt()

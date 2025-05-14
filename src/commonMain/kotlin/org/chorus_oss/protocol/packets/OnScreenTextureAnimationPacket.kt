@@ -12,12 +12,10 @@ class OnScreenTextureAnimationPacket : Packet(id) {
         return ProtocolInfo.ON_SCREEN_TEXTURE_ANIMATION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<OnScreenTextureAnimationPacket> {
-        override fun decode(byteBuf: ByteBuf): OnScreenTextureAnimationPacket {
+
+    companion object : PacketCodec<OnScreenTextureAnimationPacket> {
+        override fun deserialize(stream: Source): OnScreenTextureAnimationPacket {
             val packet = OnScreenTextureAnimationPacket()
 
             packet.effectId = byteBuf.readIntLE()

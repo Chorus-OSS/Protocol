@@ -6,7 +6,7 @@ class StopSoundPacket : Packet(id) {
     var stopAll: Boolean = false
     var stopMusicLegacy: Boolean = false
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -19,7 +19,5 @@ class StopSoundPacket : Packet(id) {
         return ProtocolInfo.STOP_SOUND_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

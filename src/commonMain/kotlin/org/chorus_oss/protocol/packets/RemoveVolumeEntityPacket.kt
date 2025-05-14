@@ -14,12 +14,10 @@ class RemoveVolumeEntityPacket : Packet(id) {
         return ProtocolInfo.REMOVE_VOLUME_ENTITY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RemoveVolumeEntityPacket> {
-        override fun decode(byteBuf: ByteBuf): RemoveVolumeEntityPacket {
+
+    companion object : PacketCodec<RemoveVolumeEntityPacket> {
+        override fun deserialize(stream: Source): RemoveVolumeEntityPacket {
             val packet = RemoveVolumeEntityPacket()
 
             packet.id = byteBuf.readUnsignedVarInt().toLong()

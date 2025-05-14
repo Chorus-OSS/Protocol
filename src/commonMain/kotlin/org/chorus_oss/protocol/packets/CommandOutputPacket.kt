@@ -39,7 +39,5 @@ data class CommandOutputPacket(
         return ProtocolInfo.COMMAND_OUTPUT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

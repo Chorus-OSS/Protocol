@@ -9,10 +9,10 @@ class TransferPacket : Packet(id) {
     var port: Int = 19132
     private var reloadWorld = false
 
-    override fun decode(byteBuf: ByteBuf) {
-        this.address = byteBuf.readString()
+    override fun deserialize(stream: Source) {
+        this.address = Proto.String.deserialize(stream)
         this.port = byteBuf.readShortLE().toInt()
-        this.reloadWorld = byteBuf.readBoolean()
+        this.reloadWorld = Proto.Boolean.deserialize(stream)
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -25,7 +25,5 @@ class TransferPacket : Packet(id) {
         return ProtocolInfo.TRANSFER_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

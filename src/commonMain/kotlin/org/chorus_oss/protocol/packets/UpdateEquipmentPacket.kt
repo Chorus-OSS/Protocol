@@ -8,7 +8,7 @@ class UpdateEquipmentPacket : Packet(id) {
     var eid: Long = 0
     var namedtag: ByteArray = byteArrayOf()
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -23,7 +23,5 @@ class UpdateEquipmentPacket : Packet(id) {
         return ProtocolInfo.UPDATE_EQUIPMENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -25,9 +25,7 @@ class SetEntityDataPacket : Packet(id) {
         return ProtocolInfo.SET_ENTITY_DATA_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object : Loggable
 }

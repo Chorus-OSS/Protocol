@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 
 class SubClientLoginPacket : Packet(id) {
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -13,7 +13,5 @@ class SubClientLoginPacket : Packet(id) {
         return ProtocolInfo.SUB_CLIENT_LOGIN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -14,16 +14,14 @@ class ScriptMessagePacket : Packet(id) {
         return ProtocolInfo.SCRIPT_MESSAGE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ScriptMessagePacket> {
-        override fun decode(byteBuf: ByteBuf): ScriptMessagePacket {
+
+    companion object : PacketCodec<ScriptMessagePacket> {
+        override fun deserialize(stream: Source): ScriptMessagePacket {
             val packet = ScriptMessagePacket()
 
-            packet.channel = byteBuf.readString()
-            packet.message = byteBuf.readString()
+            packet.channel = Proto.String.deserialize(stream)
+            packet.message = Proto.String.deserialize(stream)
 
             return packet
         }

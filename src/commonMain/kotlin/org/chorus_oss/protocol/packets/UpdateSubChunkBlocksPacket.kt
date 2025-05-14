@@ -55,7 +55,5 @@ class UpdateSubChunkBlocksPacket : Packet(id) {
         return ProtocolInfo.UPDATE_SUB_CHUNK_BLOCKS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

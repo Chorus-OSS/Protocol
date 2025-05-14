@@ -5,8 +5,8 @@ class ShowProfilePacket : Packet(id) {
     @JvmField
     var xuid: String? = null
 
-    override fun decode(byteBuf: ByteBuf) {
-        this.xuid = byteBuf.readString()
+    override fun deserialize(stream: Source) {
+        this.xuid = Proto.String.deserialize(stream)
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -17,7 +17,5 @@ class ShowProfilePacket : Packet(id) {
         return ProtocolInfo.SHOW_PROFILE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

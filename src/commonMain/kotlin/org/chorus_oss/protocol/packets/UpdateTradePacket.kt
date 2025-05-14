@@ -42,9 +42,7 @@ class UpdateTradePacket : Packet(id) {
         return ProtocolInfo.UPDATE_TRADE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object : Loggable
 }

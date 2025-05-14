@@ -26,7 +26,5 @@ class DisconnectPacket : Packet(id) {
         return ProtocolInfo.DISCONNECT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

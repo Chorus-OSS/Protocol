@@ -34,15 +34,13 @@ class PlayerArmorDamagePacket : Packet(id) {
         return ProtocolInfo.PLAYER_ARMOR_DAMAGE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerArmorDamagePacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerArmorDamagePacket {
+
+    companion object : PacketCodec<PlayerArmorDamagePacket> {
+        override fun deserialize(stream: Source): PlayerArmorDamagePacket {
             val packet = PlayerArmorDamagePacket()
 
-            val flags = byteBuf.readByte().toInt()
+            val flags = Proto.Byte.deserialize(stream).toInt()
             for (i in 0..4) {
                 if ((flags and (1 shl i)) != 0) {
                     packet.flags.add(PlayerArmorDamageFlag.entries[i])

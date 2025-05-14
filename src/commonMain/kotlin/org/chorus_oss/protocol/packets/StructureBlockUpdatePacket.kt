@@ -20,11 +20,11 @@ class StructureBlockUpdatePacket : Packet(id) {
     }
 
     private fun readEditorData(byteBuf: ByteBuf): StructureEditorData {
-        val name = byteBuf.readString()
-        val filteredName = byteBuf.readString()
-        val dataField = byteBuf.readString()
-        val isIncludingPlayers = byteBuf.readBoolean()
-        val isBoundingBoxVisible = byteBuf.readBoolean()
+        val name = Proto.String.deserialize(stream)
+        val filteredName = Proto.String.deserialize(stream)
+        val dataField = Proto.String.deserialize(stream)
+        val isIncludingPlayers = Proto.Boolean.deserialize(stream)
+        val isBoundingBoxVisible = Proto.Boolean.deserialize(stream)
         val type = byteBuf.readVarInt()
         val structureSettings = readStructureSettings(byteBuf)
         val redstoneSaveMode = byteBuf.readVarInt()
@@ -41,20 +41,20 @@ class StructureBlockUpdatePacket : Packet(id) {
     }
 
     private fun readStructureSettings(byteBuf: ByteBuf): StructureSettings {
-        val paletteName = byteBuf.readString()
-        val isIgnoringEntities = byteBuf.readBoolean()
-        val isIgnoringBlocks = byteBuf.readBoolean()
-        val isNonTickingPlayersAndTickingAreasEnabled = byteBuf.readBoolean()
+        val paletteName = Proto.String.deserialize(stream)
+        val isIgnoringEntities = Proto.Boolean.deserialize(stream)
+        val isIgnoringBlocks = Proto.Boolean.deserialize(stream)
+        val isNonTickingPlayersAndTickingAreasEnabled = Proto.Boolean.deserialize(stream)
         val size = byteBuf.readBlockVector3()
         val offset = byteBuf.readBlockVector3()
         val lastEditedByEntityId = byteBuf.readVarLong()
-        val rotation = byteBuf.readByte()
-        val mirror = byteBuf.readByte()
-        val animationMode = byteBuf.readByte()
+        val rotation = Proto.Byte.deserialize(stream)
+        val mirror = Proto.Byte.deserialize(stream)
+        val animationMode = Proto.Byte.deserialize(stream)
         val animationSeconds = byteBuf.readFloatLE()
         val integrityValue = byteBuf.readFloatLE()
         val integritySeed = byteBuf.readIntLE()
-        val pivot = byteBuf.readVector3f()
+        val pivot = Vector3f.deserialize(stream)
         return StructureSettings(
             paletteName,
             isIgnoringEntities,
@@ -105,18 +105,16 @@ class StructureBlockUpdatePacket : Packet(id) {
         return ProtocolInfo.STRUCTURE_BLOCK_UPDATE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<StructureBlockUpdatePacket> {
-        override fun decode(byteBuf: ByteBuf): StructureBlockUpdatePacket {
+
+    companion object : PacketCodec<StructureBlockUpdatePacket> {
+        override fun deserialize(stream: Source): StructureBlockUpdatePacket {
             val packet = StructureBlockUpdatePacket()
 
             packet.blockPosition = byteBuf.readBlockVector3()
             packet.editorData = packet.readEditorData(byteBuf)
-            packet.powered = byteBuf.readBoolean()
-            packet.waterlogged = byteBuf.readBoolean()
+            packet.powered = Proto.Boolean.deserialize(stream)
+            packet.waterlogged = Proto.Boolean.deserialize(stream)
 
             return packet
         }

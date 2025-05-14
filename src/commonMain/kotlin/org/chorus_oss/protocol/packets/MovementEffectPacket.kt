@@ -10,7 +10,7 @@ class MovementEffectPacket : Packet(id) {
     var effectDuration: Int = 0
     var tick: Long = 0
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -24,7 +24,5 @@ class MovementEffectPacket : Packet(id) {
         return ProtocolInfo.MOVEMENT_EFFECT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

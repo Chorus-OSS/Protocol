@@ -28,9 +28,7 @@ class SetSpawnPositionPacket : Packet(id) {
         return ProtocolInfo.SET_SPAWN_POSITION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val TYPE_PLAYER_SPAWN: Int = 0

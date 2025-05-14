@@ -49,25 +49,23 @@ class MoveEntityAbsolutePacket : Packet(id) {
         return ProtocolInfo.MOVE_ENTITY_ABSOLUTE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MoveEntityAbsolutePacket> {
-        override fun decode(byteBuf: ByteBuf): MoveEntityAbsolutePacket {
+
+    companion object : PacketCodec<MoveEntityAbsolutePacket> {
+        override fun deserialize(stream: Source): MoveEntityAbsolutePacket {
             val packet = MoveEntityAbsolutePacket()
             packet.eid = byteBuf.readActorRuntimeID()
-            val flags = byteBuf.readByte().toInt()
+            val flags = Proto.Byte.deserialize(stream).toInt()
             packet.onGround = (flags and 0x01) != 0
             packet.teleport = (flags and 0x02) != 0
             packet.forceMoveLocalEntity = (flags and 0x04) != 0
-            val v = byteBuf.readVector3f()
+            val v = Vector3f.deserialize(stream)
             packet.x = v.x.toDouble()
             packet.y = v.y.toDouble()
             packet.z = v.z.toDouble()
-            packet.pitch = byteBuf.readByte() * (360.0 / 256.0)
-            packet.headYaw = byteBuf.readByte() * (360.0 / 256.0)
-            packet.yaw = byteBuf.readByte() * (360.0 / 256.0)
+            packet.pitch = Proto.Byte.deserialize(stream) * (360.0 / 256.0)
+            packet.headYaw = Proto.Byte.deserialize(stream) * (360.0 / 256.0)
+            packet.yaw = Proto.Byte.deserialize(stream) * (360.0 / 256.0)
             return packet
         }
 

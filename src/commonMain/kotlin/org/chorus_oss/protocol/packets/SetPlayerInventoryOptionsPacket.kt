@@ -24,17 +24,15 @@ class SetPlayerInventoryOptionsPacket : Packet(id) {
         return ProtocolInfo.SET_PLAYER_INVENTORY_OPTIONS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetPlayerInventoryOptionsPacket> {
-        override fun decode(byteBuf: ByteBuf): SetPlayerInventoryOptionsPacket {
+
+    companion object : PacketCodec<SetPlayerInventoryOptionsPacket> {
+        override fun deserialize(stream: Source): SetPlayerInventoryOptionsPacket {
             val packet = SetPlayerInventoryOptionsPacket()
 
             packet.leftTab = InventoryTabLeft.VALUES[byteBuf.readVarInt()]
             packet.rightTab = InventoryTabRight.VALUES[byteBuf.readVarInt()]
-            packet.filtering = byteBuf.readBoolean()
+            packet.filtering = Proto.Boolean.deserialize(stream)
             packet.layout = InventoryLayout.VALUES[byteBuf.readVarInt()]
             packet.craftingLayout = InventoryLayout.VALUES[byteBuf.readVarInt()]
 

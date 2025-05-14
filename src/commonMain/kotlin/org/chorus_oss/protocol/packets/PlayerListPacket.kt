@@ -82,9 +82,7 @@ class PlayerListPacket : Packet(id) {
         return ProtocolInfo.PLAYER_LIST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val TYPE_ADD: Byte = 0

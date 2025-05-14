@@ -6,12 +6,10 @@ class ServerSettingsRequestPacket : Packet(id) {
         return ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ServerSettingsRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): ServerSettingsRequestPacket {
+
+    companion object : PacketCodec<ServerSettingsRequestPacket> {
+        override fun deserialize(stream: Source): ServerSettingsRequestPacket {
             return ServerSettingsRequestPacket()
         }
     }

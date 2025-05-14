@@ -8,14 +8,12 @@ class MapInfoRequestPacket : Packet(id) {
         return ProtocolInfo.MAP_INFO_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MapInfoRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): MapInfoRequestPacket {
+
+    companion object : PacketCodec<MapInfoRequestPacket> {
+        override fun deserialize(stream: Source): MapInfoRequestPacket {
             val packet = MapInfoRequestPacket()
-            packet.mapId = byteBuf.readActorUniqueID()
+            packet.mapId = ActorUniqueID.deserialize(stream)
             return packet
         }
     }

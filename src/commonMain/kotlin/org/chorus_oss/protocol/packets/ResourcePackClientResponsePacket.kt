@@ -25,17 +25,15 @@ class ResourcePackClientResponsePacket : Packet(id) {
         return ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ResourcePackClientResponsePacket> {
-        override fun decode(byteBuf: ByteBuf): ResourcePackClientResponsePacket {
+
+    companion object : PacketCodec<ResourcePackClientResponsePacket> {
+        override fun deserialize(stream: Source): ResourcePackClientResponsePacket {
             val packet = ResourcePackClientResponsePacket()
 
-            packet.responseStatus = byteBuf.readByte()
+            packet.responseStatus = Proto.Byte.deserialize(stream)
             packet.packEntries = Array(byteBuf.readShortLE().toInt()) {
-                val entry = byteBuf.readString().split("_")
+                val entry = Proto.String.deserialize(stream).split("_")
 
                 if (UUIDValidator.isValidUUID(entry[0])) {
                     Entry(

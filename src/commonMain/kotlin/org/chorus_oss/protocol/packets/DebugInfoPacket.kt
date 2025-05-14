@@ -14,16 +14,14 @@ class DebugInfoPacket : Packet(id) {
         return ProtocolInfo.DEBUG_INFO_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<DebugInfoPacket> {
-        override fun decode(byteBuf: ByteBuf): DebugInfoPacket {
+
+    companion object : PacketCodec<DebugInfoPacket> {
+        override fun deserialize(stream: Source): DebugInfoPacket {
             val packet = DebugInfoPacket()
 
             packet.entityId = byteBuf.readLong()
-            packet.data = byteBuf.readString()
+            packet.data = Proto.String.deserialize(stream)
 
             return packet
         }

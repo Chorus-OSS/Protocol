@@ -21,7 +21,5 @@ data class ContainerOpenPacket(
         return ProtocolInfo.CONTAINER_OPEN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

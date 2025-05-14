@@ -19,9 +19,7 @@ class EntityEventPacket : Packet(id) {
         return ProtocolInfo.ENTITY_EVENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val NONE: Int = 0

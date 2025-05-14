@@ -14,16 +14,14 @@ class SettingsCommandPacket : Packet(id) {
         return ProtocolInfo.SETTINGS_COMMAND_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SettingsCommandPacket> {
-        override fun decode(byteBuf: ByteBuf): SettingsCommandPacket {
+
+    companion object : PacketCodec<SettingsCommandPacket> {
+        override fun deserialize(stream: Source): SettingsCommandPacket {
             val packet = SettingsCommandPacket()
 
-            packet.command = byteBuf.readString()
-            packet.suppressOutput = byteBuf.readBoolean()
+            packet.command = Proto.String.deserialize(stream)
+            packet.suppressOutput = Proto.Boolean.deserialize(stream)
 
             return packet
         }

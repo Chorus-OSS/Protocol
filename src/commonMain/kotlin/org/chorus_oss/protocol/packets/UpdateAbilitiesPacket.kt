@@ -39,9 +39,7 @@ class UpdateAbilitiesPacket : Packet(id) {
         return ProtocolInfo.UPDATE_ABILITIES_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         val VALID_FLAGS: Array<PlayerAbility> = arrayOf(

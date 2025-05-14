@@ -17,17 +17,15 @@ class PlayerHotbarPacket : Packet(id) {
         return ProtocolInfo.PLAYER_HOTBAR_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerHotbarPacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerHotbarPacket {
+
+    companion object : PacketCodec<PlayerHotbarPacket> {
+        override fun deserialize(stream: Source): PlayerHotbarPacket {
             val packet = PlayerHotbarPacket()
 
             packet.selectedHotbarSlot = byteBuf.readUnsignedVarInt()
-            packet.windowId = byteBuf.readByte().toInt()
-            packet.selectHotbarSlot = byteBuf.readBoolean()
+            packet.windowId = Proto.Byte.deserialize(stream).toInt()
+            packet.selectHotbarSlot = Proto.Boolean.deserialize(stream)
 
             return packet
         }

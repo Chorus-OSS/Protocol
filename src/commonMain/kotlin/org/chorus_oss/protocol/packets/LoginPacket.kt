@@ -162,12 +162,10 @@ class LoginPacket(
         return ProtocolInfo.LOGIN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<LoginPacket> {
-        override fun decode(byteBuf: ByteBuf): LoginPacket {
+
+    companion object : PacketCodec<LoginPacket> {
+        override fun deserialize(stream: Source): LoginPacket {
             val packet = LoginPacket(
                 protocol = run {
                     var protocol = byteBuf.readInt()

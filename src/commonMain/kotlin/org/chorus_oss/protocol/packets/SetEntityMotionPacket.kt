@@ -25,7 +25,5 @@ class SetEntityMotionPacket : Packet(id) {
         return ProtocolInfo.SET_ENTITY_MOTION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

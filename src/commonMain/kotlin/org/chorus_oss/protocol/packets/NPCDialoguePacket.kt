@@ -56,20 +56,18 @@ class NPCDialoguePacket : Packet(id) {
         return ProtocolInfo.NPC_DIALOGUE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<NPCDialoguePacket> {
-        override fun decode(byteBuf: ByteBuf): NPCDialoguePacket {
+
+    companion object : PacketCodec<NPCDialoguePacket> {
+        override fun deserialize(stream: Source): NPCDialoguePacket {
             val packet = NPCDialoguePacket()
 
             packet.runtimeEntityId = byteBuf.readLongLE()
             packet.action = ACTIONS[byteBuf.readVarInt()]
-            packet.dialogue = byteBuf.readString()
-            packet.sceneName = byteBuf.readString()
-            packet.npcName = byteBuf.readString()
-            packet.actionJson = byteBuf.readString()
+            packet.dialogue = Proto.String.deserialize(stream)
+            packet.sceneName = Proto.String.deserialize(stream)
+            packet.npcName = Proto.String.deserialize(stream)
+            packet.actionJson = Proto.String.deserialize(stream)
 
             return packet
         }

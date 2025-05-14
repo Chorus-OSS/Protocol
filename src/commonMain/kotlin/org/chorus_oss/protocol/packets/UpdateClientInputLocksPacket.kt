@@ -15,17 +15,15 @@ class UpdateClientInputLocksPacket : Packet(id) {
         return ProtocolInfo.UPDATE_CLIENT_INPUT_LOCKS
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
 
-    companion object : PacketDecoder<UpdateClientInputLocksPacket> {
-        override fun decode(byteBuf: ByteBuf): UpdateClientInputLocksPacket {
+
+    companion object : PacketCodec<UpdateClientInputLocksPacket> {
+        override fun deserialize(stream: Source): UpdateClientInputLocksPacket {
             val packet = UpdateClientInputLocksPacket()
 
             packet.lockComponentData = byteBuf.readVarInt()
-            packet.serverPosition = byteBuf.readVector3f()
+            packet.serverPosition = Vector3f.deserialize(stream)
 
             return packet
         }

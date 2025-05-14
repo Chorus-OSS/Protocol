@@ -111,15 +111,13 @@ class PositionTrackingDBServerBroadcastPacket : Packet(id) {
         return ProtocolInfo.POS_TRACKING_SERVER_BROADCAST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PositionTrackingDBServerBroadcastPacket> {
-        override fun decode(byteBuf: ByteBuf): PositionTrackingDBServerBroadcastPacket {
+
+    companion object : PacketCodec<PositionTrackingDBServerBroadcastPacket> {
+        override fun deserialize(stream: Source): PositionTrackingDBServerBroadcastPacket {
             val packet = PositionTrackingDBServerBroadcastPacket()
 
-            packet.action = ACTIONS[byteBuf.readByte().toInt()]
+            packet.action = ACTIONS[Proto.Byte.deserialize(stream).toInt()]
             packet.trackingId = byteBuf.readVarInt()
             try {
                 ByteBufInputStream(byteBuf).use { inputStream ->

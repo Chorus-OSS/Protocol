@@ -13,9 +13,7 @@ data class PlayerLocationPacket(
         return ProtocolInfo.PLAYER_LOCATION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     override fun encode(byteBuf: HandleByteBuf) {
         byteBuf.writeIntLE(this.type.ordinal)
@@ -30,13 +28,13 @@ data class PlayerLocationPacket(
         HIDE,
     }
 
-    companion object : PacketDecoder<PlayerLocationPacket> {
+    companion object : PacketCodec<PlayerLocationPacket> {
         override fun decode(byteBuf: HandleByteBuf): PlayerLocationPacket {
             val type: Type
             return PlayerLocationPacket(
-                type = Type.entries[byteBuf.readByte().toInt()].also { type = it },
+                type = Type.entries[Proto.Byte.deserialize(stream).toInt()].also { type = it },
                 targetActorID = byteBuf.readActorRuntimeID(),
-                position = if (type == Type.COORDINATES) byteBuf.readVector3f() else null
+                position = if (type == Type.COORDINATES) Vector3f.deserialize(stream) else null
             )
         }
     }

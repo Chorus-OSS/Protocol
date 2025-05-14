@@ -11,12 +11,10 @@ class ItemStackRequestPacket : Packet(id) {
         return ProtocolInfo.ITEM_STACK_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ItemStackRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): ItemStackRequestPacket {
+
+    companion object : PacketCodec<ItemStackRequestPacket> {
+        override fun deserialize(stream: Source): ItemStackRequestPacket {
             val packet = ItemStackRequestPacket()
 
             packet.requests.addAll(

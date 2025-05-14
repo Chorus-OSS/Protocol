@@ -18,15 +18,13 @@ class SimulationTypePacket : Packet(id) {
         return ProtocolInfo.SIMULATION_TYPE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SimulationTypePacket> {
-        override fun decode(byteBuf: ByteBuf): SimulationTypePacket {
+
+    companion object : PacketCodec<SimulationTypePacket> {
+        override fun deserialize(stream: Source): SimulationTypePacket {
             val packet = SimulationTypePacket()
 
-            packet.type = TYPES[byteBuf.readByte().toInt()]
+            packet.type = TYPES[Proto.Byte.deserialize(stream).toInt()]
 
             return packet
         }

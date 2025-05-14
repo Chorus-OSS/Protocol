@@ -14,12 +14,10 @@ class MapCreateLockedCopyPacket : Packet(id) {
         return ProtocolInfo.MAP_CREATE_LOCKED_COPY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MapCreateLockedCopyPacket> {
-        override fun decode(byteBuf: ByteBuf): MapCreateLockedCopyPacket {
+
+    companion object : PacketCodec<MapCreateLockedCopyPacket> {
+        override fun deserialize(stream: Source): MapCreateLockedCopyPacket {
             val packet = MapCreateLockedCopyPacket()
 
             packet.originalMapId = byteBuf.readVarLong()

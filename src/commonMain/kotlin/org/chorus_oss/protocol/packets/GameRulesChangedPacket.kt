@@ -15,7 +15,5 @@ class GameRulesChangedPacket : Packet(id) {
         return ProtocolInfo.GAME_RULES_CHANGED_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -56,24 +56,22 @@ class MovePlayerPacket : Packet(id) {
         return ProtocolInfo.MOVE_PLAYER_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MovePlayerPacket> {
-        override fun decode(byteBuf: ByteBuf): MovePlayerPacket {
+
+    companion object : PacketCodec<MovePlayerPacket> {
+        override fun deserialize(stream: Source): MovePlayerPacket {
             val packet = MovePlayerPacket()
 
             packet.eid = byteBuf.readActorRuntimeID()
-            val v = byteBuf.readVector3f()
+            val v = Vector3f.deserialize(stream)
             packet.x = v.x
             packet.y = v.y
             packet.z = v.z
             packet.pitch = byteBuf.readFloatLE()
             packet.yaw = byteBuf.readFloatLE()
             packet.headYaw = byteBuf.readFloatLE()
-            packet.mode = byteBuf.readByte().toInt()
-            packet.onGround = byteBuf.readBoolean()
+            packet.mode = Proto.Byte.deserialize(stream).toInt()
+            packet.onGround = Proto.Boolean.deserialize(stream)
             packet.ridingEid = byteBuf.readActorRuntimeID()
             if (packet.mode == MODE_TELEPORT) {
                 packet.teleportationCause = byteBuf.readIntLE()

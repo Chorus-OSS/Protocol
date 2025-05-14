@@ -15,17 +15,15 @@ class RequestAbilityPacket : Packet(id) {
         return ProtocolInfo.REQUEST_ABILITY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RequestAbilityPacket> {
-        override fun decode(byteBuf: ByteBuf): RequestAbilityPacket {
+
+    companion object : PacketCodec<RequestAbilityPacket> {
+        override fun deserialize(stream: Source): RequestAbilityPacket {
             val packet = RequestAbilityPacket()
 
             packet.ability = ABILITIES[byteBuf.readVarInt()]
-            packet.type = ABILITY_TYPES[byteBuf.readByte().toInt()]
-            packet.boolValue = byteBuf.readBoolean()
+            packet.type = ABILITY_TYPES[Proto.Byte.deserialize(stream).toInt()]
+            packet.boolValue = Proto.Boolean.deserialize(stream)
             packet.floatValue = byteBuf.readFloatLE()
 
             return packet

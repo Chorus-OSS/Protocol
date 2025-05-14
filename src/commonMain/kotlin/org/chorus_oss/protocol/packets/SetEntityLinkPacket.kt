@@ -24,7 +24,5 @@ class SetEntityLinkPacket : Packet(id) {
         return ProtocolInfo.SET_ENTITY_LINK_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -24,7 +24,5 @@ class LevelEventGenericPacket : Packet(id) {
         return ProtocolInfo.LEVEL_EVENT_GENERIC_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

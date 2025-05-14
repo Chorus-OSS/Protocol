@@ -13,12 +13,10 @@ class SetPlayerGameTypePacket : Packet(id) {
         return ProtocolInfo.SET_PLAYER_GAME_TYPE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetPlayerGameTypePacket> {
-        override fun decode(byteBuf: ByteBuf): SetPlayerGameTypePacket {
+
+    companion object : PacketCodec<SetPlayerGameTypePacket> {
+        override fun deserialize(stream: Source): SetPlayerGameTypePacket {
             val packet = SetPlayerGameTypePacket()
 
             packet.gamemode = byteBuf.readVarInt()

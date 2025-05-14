@@ -40,9 +40,7 @@ class PlayerEnchantOptionsPacket : Packet(id) {
         return ProtocolInfo.PLAYER_ENCHANT_OPTIONS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val ENCH_RECIPEID: Int = 100000

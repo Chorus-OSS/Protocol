@@ -17,7 +17,5 @@ class ServerSettingsResponsePacket : Packet(id) {
         return ProtocolInfo.SERVER_SETTINGS_RESPONSE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

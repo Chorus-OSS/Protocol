@@ -49,7 +49,7 @@ class MoveEntityDeltaPacket : Packet(id) {
     }
 
     private fun getRotation(byteBuf: ByteBuf): Float {
-        return byteBuf.readByte() * (360f / 256f)
+        return Proto.Byte.deserialize(stream) * (360f / 256f)
     }
 
     private fun putRotation(byteBuf: ByteBuf, value: Float) {
@@ -60,12 +60,10 @@ class MoveEntityDeltaPacket : Packet(id) {
         return (flags.toInt() and flag) != 0
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MoveEntityDeltaPacket> {
-        override fun decode(byteBuf: ByteBuf): MoveEntityDeltaPacket {
+
+    companion object : PacketCodec<MoveEntityDeltaPacket> {
+        override fun deserialize(stream: Source): MoveEntityDeltaPacket {
             val packet = MoveEntityDeltaPacket()
 
             packet.runtimeEntityId = byteBuf.readActorRuntimeID()

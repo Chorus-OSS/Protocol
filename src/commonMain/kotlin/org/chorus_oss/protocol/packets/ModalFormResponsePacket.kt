@@ -10,19 +10,17 @@ class ModalFormResponsePacket : Packet(id) {
         return ProtocolInfo.MODAL_FORM_RESPONSE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ModalFormResponsePacket> {
-        override fun decode(byteBuf: ByteBuf): ModalFormResponsePacket {
+
+    companion object : PacketCodec<ModalFormResponsePacket> {
+        override fun deserialize(stream: Source): ModalFormResponsePacket {
             val packet = ModalFormResponsePacket()
             packet.formId = byteBuf.readVarInt()
-            if (byteBuf.readBoolean()) {
-                packet.data = byteBuf.readString()
+            if (Proto.Boolean.deserialize(stream)) {
+                packet.data = Proto.String.deserialize(stream)
             }
-            if (byteBuf.readBoolean()) {
-                packet.cancelReason = byteBuf.readByte().toInt()
+            if (Proto.Boolean.deserialize(stream)) {
+                packet.cancelReason = Proto.Byte.deserialize(stream).toInt()
             }
             return packet
         }

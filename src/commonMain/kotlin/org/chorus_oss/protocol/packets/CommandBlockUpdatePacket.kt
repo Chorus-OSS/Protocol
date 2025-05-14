@@ -60,34 +60,32 @@ data class CommandBlockUpdatePacket(
         return ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<CommandBlockUpdatePacket> {
-        override fun decode(byteBuf: ByteBuf): CommandBlockUpdatePacket {
+
+    companion object : PacketCodec<CommandBlockUpdatePacket> {
+        override fun deserialize(stream: Source): CommandBlockUpdatePacket {
             val isBlock: Boolean
             return CommandBlockUpdatePacket(
-                isBlock = byteBuf.readBoolean().also { isBlock = it },
+                isBlock = Proto.Boolean.deserialize(stream).also { isBlock = it },
                 commandBlockHolderData = when (isBlock) {
                     true -> CommandBlockData(
                         blockPosition = byteBuf.readBlockVector3(),
                         commandBlockMode = CommandBlockMode.entries[byteBuf.readUnsignedVarInt()],
-                        redstoneMode = byteBuf.readBoolean(),
-                        isConditional = byteBuf.readBoolean(),
+                        redstoneMode = Proto.Boolean.deserialize(stream),
+                        isConditional = Proto.Boolean.deserialize(stream),
                     )
 
                     false -> CommandBlockActorData(
                         targetRuntimeID = byteBuf.readActorRuntimeID(),
                     )
                 },
-                command = byteBuf.readString(),
-                lastOutput = byteBuf.readString(),
-                name = byteBuf.readString(),
-                filteredName = byteBuf.readString(),
-                trackOutput = byteBuf.readBoolean(),
+                command = Proto.String.deserialize(stream),
+                lastOutput = Proto.String.deserialize(stream),
+                name = Proto.String.deserialize(stream),
+                filteredName = Proto.String.deserialize(stream),
+                trackOutput = Proto.Boolean.deserialize(stream),
                 tickDelay = byteBuf.readIntLE(),
-                shouldExecuteOnFirstTick = byteBuf.readBoolean()
+                shouldExecuteOnFirstTick = Proto.Boolean.deserialize(stream)
             )
         }
     }

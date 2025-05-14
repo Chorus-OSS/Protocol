@@ -31,7 +31,5 @@ class UpdateAttributesPacket : Packet(id) {
         return ProtocolInfo.UPDATE_ATTRIBUTES_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

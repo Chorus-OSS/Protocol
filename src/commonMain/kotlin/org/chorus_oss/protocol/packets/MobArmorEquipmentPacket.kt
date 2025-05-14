@@ -20,12 +20,10 @@ class MobArmorEquipmentPacket : Packet(id) {
         return ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MobArmorEquipmentPacket> {
-        override fun decode(byteBuf: ByteBuf): MobArmorEquipmentPacket {
+
+    companion object : PacketCodec<MobArmorEquipmentPacket> {
+        override fun deserialize(stream: Source): MobArmorEquipmentPacket {
             val packet = MobArmorEquipmentPacket()
             packet.eid = byteBuf.readActorRuntimeID()
             packet.slots = Array(4) {

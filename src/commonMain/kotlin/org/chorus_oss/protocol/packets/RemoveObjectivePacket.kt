@@ -13,7 +13,5 @@ class RemoveObjectivePacket : Packet(id) {
         return ProtocolInfo.REMOVE_OBJECTIVE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

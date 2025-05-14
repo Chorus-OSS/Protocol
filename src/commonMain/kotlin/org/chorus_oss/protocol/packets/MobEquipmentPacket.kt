@@ -22,18 +22,16 @@ class MobEquipmentPacket : Packet(id) {
         return ProtocolInfo.MOB_EQUIPMENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<MobEquipmentPacket> {
-        override fun decode(byteBuf: ByteBuf): MobEquipmentPacket {
+
+    companion object : PacketCodec<MobEquipmentPacket> {
+        override fun deserialize(stream: Source): MobEquipmentPacket {
             val packet = MobEquipmentPacket()
             packet.eid = byteBuf.readActorRuntimeID()
             packet.item = byteBuf.readSlot()
-            packet.slot = byteBuf.readByte().toInt()
-            packet.selectedSlot = byteBuf.readByte().toInt()
-            packet.containerId = byteBuf.readByte().toInt()
+            packet.slot = Proto.Byte.deserialize(stream).toInt()
+            packet.selectedSlot = Proto.Byte.deserialize(stream).toInt()
+            packet.containerId = Proto.Byte.deserialize(stream).toInt()
             return packet
         }
     }

@@ -51,35 +51,33 @@ class TextPacket : Packet(id) {
         return ProtocolInfo.TEXT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<TextPacket> {
-        override fun decode(byteBuf: ByteBuf): TextPacket {
+
+    companion object : PacketCodec<TextPacket> {
+        override fun deserialize(stream: Source): TextPacket {
             val packet = TextPacket()
 
-            packet.type = byteBuf.readByte()
-            packet.isLocalized = byteBuf.readBoolean() || packet.type == TYPE_TRANSLATION
+            packet.type = Proto.Byte.deserialize(stream)
+            packet.isLocalized = Proto.Boolean.deserialize(stream) || packet.type == TYPE_TRANSLATION
             when (packet.type) {
                 TYPE_CHAT, TYPE_WHISPER, TYPE_ANNOUNCEMENT -> {
-                    packet.source = byteBuf.readString()
-                    packet.message = byteBuf.readString()
+                    packet.source = Proto.String.deserialize(stream)
+                    packet.message = Proto.String.deserialize(stream)
                 }
 
                 TYPE_RAW, TYPE_TIP, TYPE_SYSTEM, TYPE_OBJECT, TYPE_OBJECT_WHISPER -> packet.message =
-                    byteBuf.readString()
+                    Proto.String.deserialize(stream)
 
                 TYPE_TRANSLATION, TYPE_POPUP, TYPE_JUKEBOX_POPUP -> {
-                    packet.message = byteBuf.readString()
+                    packet.message = Proto.String.deserialize(stream)
                     packet.parameters = byteBuf.readArray<String>(
                         String::class.java,
                         Function { obj: ByteBuf -> obj.readString() })
                 }
             }
-            packet.xboxUserId = byteBuf.readString()
-            packet.platformChatId = byteBuf.readString()
-            packet.filteredMessage = byteBuf.readString()
+            packet.xboxUserId = Proto.String.deserialize(stream)
+            packet.platformChatId = Proto.String.deserialize(stream)
+            packet.filteredMessage = Proto.String.deserialize(stream)
 
             return packet
         }

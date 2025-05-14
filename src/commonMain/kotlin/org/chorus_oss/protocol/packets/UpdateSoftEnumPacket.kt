@@ -26,7 +26,5 @@ class UpdateSoftEnumPacket : Packet(id) {
         return ProtocolInfo.UPDATE_SOFT_ENUM_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

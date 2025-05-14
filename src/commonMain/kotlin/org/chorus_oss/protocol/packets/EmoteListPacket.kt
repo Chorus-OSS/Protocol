@@ -20,12 +20,10 @@ class EmoteListPacket : Packet(id) {
         return ProtocolInfo.EMOTE_LIST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<EmoteListPacket> {
-        override fun decode(byteBuf: ByteBuf): EmoteListPacket {
+
+    companion object : PacketCodec<EmoteListPacket> {
+        override fun deserialize(stream: Source): EmoteListPacket {
             val packet = EmoteListPacket()
 
             packet.runtimeId = byteBuf.readActorRuntimeID()

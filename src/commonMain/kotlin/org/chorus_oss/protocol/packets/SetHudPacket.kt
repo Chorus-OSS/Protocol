@@ -19,12 +19,10 @@ class SetHudPacket : Packet(id) {
         return ProtocolInfo.SET_HUD
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetHudPacket> {
-        override fun decode(byteBuf: ByteBuf): SetHudPacket {
+
+    companion object : PacketCodec<SetHudPacket> {
+        override fun deserialize(stream: Source): SetHudPacket {
             val packet = SetHudPacket()
 
             packet.elements.clear()

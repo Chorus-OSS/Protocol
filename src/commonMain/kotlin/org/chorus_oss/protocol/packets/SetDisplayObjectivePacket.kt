@@ -33,7 +33,5 @@ class SetDisplayObjectivePacket : Packet(id) {
         return ProtocolInfo.SET_DISPLAY_OBJECTIVE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

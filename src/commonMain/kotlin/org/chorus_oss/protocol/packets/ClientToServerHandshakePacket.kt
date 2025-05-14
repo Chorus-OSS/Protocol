@@ -1,18 +1,19 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+
 
 class ClientToServerHandshakePacket : Packet(id) {
-    override fun pid(): Int {
-        return ProtocolInfo.CLIENT_TO_SERVER_HANDSHAKE_PACKET
-    }
+    companion object : PacketCodec<ClientToServerHandshakePacket> {
+        override val id: Int
+            get() = ProtocolInfo.CLIENT_TO_SERVER_HANDSHAKE_PACKET
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+        override fun serialize(value: ClientToServerHandshakePacket, stream: Sink) = Unit
 
-    companion object : PacketDecoder<ClientToServerHandshakePacket> {
-        override fun decode(byteBuf: ByteBuf): ClientToServerHandshakePacket {
-            return ClientToServerHandshakePacket()
-        }
+        override fun deserialize(stream: Source): ClientToServerHandshakePacket = ClientToServerHandshakePacket()
     }
 }

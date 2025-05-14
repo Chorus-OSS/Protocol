@@ -47,7 +47,5 @@ class ResourcePackStackPacket : Packet(id) {
         return ProtocolInfo.RESOURCE_PACK_STACK_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

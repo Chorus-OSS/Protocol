@@ -37,7 +37,5 @@ data class CreativeContentPacket(
         return ProtocolInfo.CREATIVE_CONTENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

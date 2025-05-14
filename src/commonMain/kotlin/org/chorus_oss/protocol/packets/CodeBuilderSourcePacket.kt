@@ -1,6 +1,11 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.CodeBuilderCategoryType
 import org.chorus_oss.protocol.types.CodeBuilderCodeStatus
 import org.chorus_oss.protocol.types.CodeBuilderOperationType
@@ -10,27 +15,22 @@ data class CodeBuilderSourcePacket(
     val category: CodeBuilderCategoryType,
     val codeStatus: CodeBuilderCodeStatus,
 ) : Packet(id) {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(operation.ordinal)
-        byteBuf.writeByte(category.ordinal)
-        byteBuf.writeByte(codeStatus.ordinal)
-    }
+    companion object : PacketCodec<CodeBuilderSourcePacket> {
+        override val id: Int
+            get() = ProtocolInfo.CODE_BUILDER_SOURCE_PACKET
 
-    override fun pid(): Int {
-        return ProtocolInfo.CODE_BUILDER_SOURCE_PACKET
-    }
-
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
-
-    companion object : PacketDecoder<CodeBuilderSourcePacket> {
-        override fun decode(byteBuf: ByteBuf): CodeBuilderSourcePacket {
+        override fun deserialize(stream: Source): CodeBuilderSourcePacket {
             return CodeBuilderSourcePacket(
-                operation = CodeBuilderOperationType.entries[byteBuf.readByte().toInt()],
-                category = CodeBuilderCategoryType.entries[byteBuf.readByte().toInt()],
-                codeStatus = CodeBuilderCodeStatus.entries[byteBuf.readByte().toInt()],
+                operation = CodeBuilderOperationType.deserialize(stream),
+                category = CodeBuilderCategoryType.deserialize(stream),
+                codeStatus = CodeBuilderCodeStatus.deserialize(stream),
             )
+        }
+
+        override fun serialize(value: CodeBuilderSourcePacket, stream: Sink) {
+            CodeBuilderOperationType.serialize(value.operation, stream)
+            CodeBuilderCategoryType.serialize(value.category, stream)
+            CodeBuilderCodeStatus.serialize(value.codeStatus, stream)
         }
     }
 }

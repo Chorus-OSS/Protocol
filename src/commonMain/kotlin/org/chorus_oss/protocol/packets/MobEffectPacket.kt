@@ -15,7 +15,7 @@ class MobEffectPacket : Packet(id) {
      */
     var tick: Long = 0
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -32,9 +32,7 @@ class MobEffectPacket : Packet(id) {
         return ProtocolInfo.MOB_EFFECT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val EVENT_ADD: Byte = 1

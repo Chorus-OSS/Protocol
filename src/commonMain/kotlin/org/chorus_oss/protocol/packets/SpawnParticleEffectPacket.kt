@@ -29,7 +29,5 @@ class SpawnParticleEffectPacket : Packet(id) {
         return ProtocolInfo.SPAWN_PARTICLE_EFFECT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

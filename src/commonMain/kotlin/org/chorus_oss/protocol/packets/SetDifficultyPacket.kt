@@ -12,12 +12,10 @@ class SetDifficultyPacket : Packet(id) {
         return ProtocolInfo.SET_DIFFICULTY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetDifficultyPacket> {
-        override fun decode(byteBuf: ByteBuf): SetDifficultyPacket {
+
+    companion object : PacketCodec<SetDifficultyPacket> {
+        override fun deserialize(stream: Source): SetDifficultyPacket {
             val packet = SetDifficultyPacket()
 
             packet.difficulty = byteBuf.readUnsignedVarInt()

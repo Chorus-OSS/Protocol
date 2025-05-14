@@ -21,7 +21,5 @@ class LabTablePacket : Packet(id) {
         return ProtocolInfo.LAB_TABLE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

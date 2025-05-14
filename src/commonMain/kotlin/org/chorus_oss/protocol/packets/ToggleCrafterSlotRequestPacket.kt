@@ -18,17 +18,15 @@ class ToggleCrafterSlotRequestPacket : Packet(id) {
         return ProtocolInfo.TOGGLE_CRAFTER_SLOT_REQUEST
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ToggleCrafterSlotRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): ToggleCrafterSlotRequestPacket {
+
+    companion object : PacketCodec<ToggleCrafterSlotRequestPacket> {
+        override fun deserialize(stream: Source): ToggleCrafterSlotRequestPacket {
             val packet = ToggleCrafterSlotRequestPacket()
 
-            packet.blockPosition = byteBuf.readVector3f()
-            packet.slot = byteBuf.readByte()
-            packet.disabled = byteBuf.readBoolean()
+            packet.blockPosition = Vector3f.deserialize(stream)
+            packet.slot = Proto.Byte.deserialize(stream)
+            packet.disabled = Proto.Boolean.deserialize(stream)
 
             return packet
         }

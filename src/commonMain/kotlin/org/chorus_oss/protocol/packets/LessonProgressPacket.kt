@@ -19,17 +19,15 @@ class LessonProgressPacket : Packet(id) {
         return ProtocolInfo.LESSON_PROGRESS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<LessonProgressPacket> {
-        override fun decode(byteBuf: ByteBuf): LessonProgressPacket {
+
+    companion object : PacketCodec<LessonProgressPacket> {
+        override fun deserialize(stream: Source): LessonProgressPacket {
             val packet = LessonProgressPacket()
 
             packet.action = LessonAction.entries[byteBuf.readVarInt()]
             packet.score = byteBuf.readVarInt()
-            packet.activityId = byteBuf.readString()
+            packet.activityId = Proto.String.deserialize(stream)
 
             return packet
         }

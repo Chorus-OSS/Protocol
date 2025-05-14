@@ -25,7 +25,5 @@ class InventorySlotPacket : Packet(id) {
         return ProtocolInfo.INVENTORY_SLOT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

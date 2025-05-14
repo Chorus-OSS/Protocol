@@ -31,7 +31,5 @@ class SetScoreboardIdentityPacket : Packet(id) {
         return ProtocolInfo.SET_SCOREBOARD_IDENTITY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

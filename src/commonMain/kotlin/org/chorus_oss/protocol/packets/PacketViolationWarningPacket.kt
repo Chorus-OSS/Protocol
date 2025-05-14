@@ -33,18 +33,16 @@ class PacketViolationWarningPacket : Packet(id) {
         return ProtocolInfo.PACKET_VIOLATION_WARNING_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PacketViolationWarningPacket> {
-        override fun decode(byteBuf: ByteBuf): PacketViolationWarningPacket {
+
+    companion object : PacketCodec<PacketViolationWarningPacket> {
+        override fun deserialize(stream: Source): PacketViolationWarningPacket {
             val packet = PacketViolationWarningPacket()
 
             packet.type = PacketViolationType.entries[byteBuf.readVarInt() + 1]
             packet.severity = PacketViolationSeverity.entries[byteBuf.readVarInt()]
             packet.packetId = byteBuf.readVarInt()
-            packet.context = byteBuf.readString()
+            packet.context = Proto.String.deserialize(stream)
 
             MainLogger.log.warn("Packet violation warning: {}", packet)
 

@@ -12,7 +12,5 @@ class TickingAreasLoadStatusPacket : Packet(id) {
         return ProtocolInfo.TICKING_AREAS_LOAD_STATUS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

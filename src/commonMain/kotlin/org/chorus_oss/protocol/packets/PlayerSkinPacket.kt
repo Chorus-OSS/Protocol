@@ -24,20 +24,18 @@ class PlayerSkinPacket : Packet(id) {
         return ProtocolInfo.PLAYER_SKIN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerSkinPacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerSkinPacket {
+
+    companion object : PacketCodec<PlayerSkinPacket> {
+        override fun deserialize(stream: Source): PlayerSkinPacket {
             val packet = PlayerSkinPacket()
 
             packet.uuid = byteBuf.readUUID()
             packet.skin = byteBuf.readSkin()
-            packet.newSkinName = byteBuf.readString()
-            packet.oldSkinName = byteBuf.readString()
+            packet.newSkinName = Proto.String.deserialize(stream)
+            packet.oldSkinName = Proto.String.deserialize(stream)
             if (byteBuf.isReadable) { // -facepalm-
-                packet.skin.setTrusted(byteBuf.readBoolean())
+                packet.skin.setTrusted(Proto.Boolean.deserialize(stream))
             }
 
             return packet

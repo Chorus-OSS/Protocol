@@ -12,7 +12,5 @@ class SetCommandsEnabledPacket : Packet(id) {
         return ProtocolInfo.SET_COMMANDS_ENABLED_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 class SimpleEventPacket : Packet(id) {
     var type: Short = 0
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -15,7 +15,5 @@ class SimpleEventPacket : Packet(id) {
         return ProtocolInfo.SIMPLE_EVENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

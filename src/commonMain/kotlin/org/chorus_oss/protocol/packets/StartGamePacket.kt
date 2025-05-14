@@ -228,9 +228,7 @@ class StartGamePacket : Packet(id) {
         return ProtocolInfo.START_GAME_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object : Loggable {
         const val GAME_PUBLISH_SETTING_NO_MULTI_PLAY: Int = 0

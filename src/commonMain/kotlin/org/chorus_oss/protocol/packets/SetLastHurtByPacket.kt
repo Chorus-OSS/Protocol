@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 
 class SetLastHurtByPacket : Packet(id) {
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -13,7 +13,5 @@ class SetLastHurtByPacket : Packet(id) {
         return ProtocolInfo.SET_LAST_HURT_BY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

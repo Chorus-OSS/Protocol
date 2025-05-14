@@ -20,7 +20,5 @@ class PlaySoundPacket : Packet(id) {
         return ProtocolInfo.PLAY_SOUND_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

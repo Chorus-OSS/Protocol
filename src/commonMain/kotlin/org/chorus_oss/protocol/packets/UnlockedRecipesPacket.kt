@@ -17,17 +17,15 @@ class UnlockedRecipesPacket : Packet(id) {
         return ProtocolInfo.UNLOCKED_RECIPES_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<UnlockedRecipesPacket> {
-        override fun decode(byteBuf: ByteBuf): UnlockedRecipesPacket {
+
+    companion object : PacketCodec<UnlockedRecipesPacket> {
+        override fun deserialize(stream: Source): UnlockedRecipesPacket {
             val packet = UnlockedRecipesPacket()
 
-            packet.unlockedNotification = byteBuf.readBoolean()
+            packet.unlockedNotification = Proto.Boolean.deserialize(stream)
             for (i in 0..<byteBuf.readUnsignedVarInt()) {
-                packet.unlockedRecipes.add(byteBuf.readString())
+                packet.unlockedRecipes.add(Proto.String.deserialize(stream))
             }
 
             return packet

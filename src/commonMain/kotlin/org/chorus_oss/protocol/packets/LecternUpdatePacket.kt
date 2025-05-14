@@ -12,12 +12,10 @@ class LecternUpdatePacket : Packet(id) {
         return ProtocolInfo.LECTERN_UPDATE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<LecternUpdatePacket> {
-        override fun decode(byteBuf: ByteBuf): LecternUpdatePacket {
+
+    companion object : PacketCodec<LecternUpdatePacket> {
+        override fun deserialize(stream: Source): LecternUpdatePacket {
             val packet = LecternUpdatePacket()
 
             packet.page = byteBuf.readUnsignedByte().toInt()

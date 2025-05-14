@@ -22,20 +22,18 @@ class EmotePacket : Packet(id) {
         byteBuf.writeByte(flags.toInt())
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<EmotePacket> {
-        override fun decode(byteBuf: ByteBuf): EmotePacket {
+
+    companion object : PacketCodec<EmotePacket> {
+        override fun deserialize(stream: Source): EmotePacket {
             val packet = EmotePacket()
 
             packet.runtimeId = byteBuf.readActorRuntimeID()
-            packet.emoteID = byteBuf.readString()
+            packet.emoteID = Proto.String.deserialize(stream)
             packet.emoteDuration = byteBuf.readUnsignedVarInt()
-            packet.xuid = byteBuf.readString()
-            packet.platformId = byteBuf.readString()
-            packet.flags = byteBuf.readByte()
+            packet.xuid = Proto.String.deserialize(stream)
+            packet.platformId = Proto.String.deserialize(stream)
+            packet.flags = Proto.Byte.deserialize(stream)
 
             return packet
         }

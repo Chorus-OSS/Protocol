@@ -30,9 +30,7 @@ class LevelEventPacket : Packet(id) {
         return ProtocolInfo.LEVEL_EVENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         val EVENT_UNDEFINED: Int = Utils.dynamic(0)

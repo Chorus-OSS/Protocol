@@ -17,15 +17,13 @@ class PlayerStartItemCoolDownPacket : Packet(id) {
         return ProtocolInfo.PLAYER_START_ITEM_COOL_DOWN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerStartItemCoolDownPacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerStartItemCoolDownPacket {
+
+    companion object : PacketCodec<PlayerStartItemCoolDownPacket> {
+        override fun deserialize(stream: Source): PlayerStartItemCoolDownPacket {
             val packet = PlayerStartItemCoolDownPacket()
 
-            packet.itemCategory = byteBuf.readString()
+            packet.itemCategory = Proto.String.deserialize(stream)
             packet.coolDownDuration = byteBuf.readVarInt()
 
             return packet

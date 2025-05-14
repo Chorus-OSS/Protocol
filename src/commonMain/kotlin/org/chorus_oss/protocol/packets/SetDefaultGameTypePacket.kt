@@ -12,12 +12,10 @@ class SetDefaultGameTypePacket : Packet(id) {
         return ProtocolInfo.SET_DEFAULT_GAME_TYPE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetDefaultGameTypePacket> {
-        override fun decode(byteBuf: ByteBuf): SetDefaultGameTypePacket {
+
+    companion object : PacketCodec<SetDefaultGameTypePacket> {
+        override fun deserialize(stream: Source): SetDefaultGameTypePacket {
             val packet = SetDefaultGameTypePacket()
 
             packet.gamemode = byteBuf.readUnsignedVarInt()

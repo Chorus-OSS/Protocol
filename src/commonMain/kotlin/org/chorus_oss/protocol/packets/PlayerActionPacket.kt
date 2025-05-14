@@ -15,7 +15,7 @@ class PlayerActionPacket : Packet(id) {
     var resultPosition: BlockVector3? = null
     var face: Int = 0
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
 
     }
 
@@ -31,12 +31,10 @@ class PlayerActionPacket : Packet(id) {
         return ProtocolInfo.PLAYER_ACTION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerActionPacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerActionPacket {
+
+    companion object : PacketCodec<PlayerActionPacket> {
+        override fun deserialize(stream: Source): PlayerActionPacket {
             val packet = PlayerActionPacket()
 
             packet.entityId = byteBuf.readActorRuntimeID()

@@ -36,9 +36,7 @@ open class UpdateBlockPacket : Packet(id) {
         return ProtocolInfo.UPDATE_BLOCK_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val FLAG_NONE: Int = 0

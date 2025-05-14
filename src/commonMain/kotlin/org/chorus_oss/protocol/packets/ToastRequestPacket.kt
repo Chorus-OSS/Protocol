@@ -17,16 +17,14 @@ class ToastRequestPacket : Packet(id) {
         return ProtocolInfo.TOAST_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ToastRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): ToastRequestPacket {
+
+    companion object : PacketCodec<ToastRequestPacket> {
+        override fun deserialize(stream: Source): ToastRequestPacket {
             val packet = ToastRequestPacket()
 
-            packet.title = byteBuf.readString()
-            packet.content = byteBuf.readString()
+            packet.title = Proto.String.deserialize(stream)
+            packet.content = Proto.String.deserialize(stream)
 
             return packet
         }

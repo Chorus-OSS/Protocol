@@ -2,7 +2,7 @@ package org.chorus_oss.protocol.packets
 
 
 class InitiateWebSocketConnectionPacket : Packet(id) {
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
     }
 
     override fun encode(byteBuf: ByteBuf) {
@@ -13,7 +13,5 @@ class InitiateWebSocketConnectionPacket : Packet(id) {
         return ProtocolInfo.INITIATE_WEB_SOCKET_CONNECTION_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

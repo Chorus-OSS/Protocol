@@ -23,12 +23,10 @@ class SyncEntityPropertyPacket(
         return ProtocolInfo.SYNC_ENTITY_PROPERTY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SyncEntityPropertyPacket>, Loggable {
-        override fun decode(byteBuf: ByteBuf): SyncEntityPropertyPacket {
+
+    companion object : PacketCodec<SyncEntityPropertyPacket>, Loggable {
+        override fun deserialize(stream: Source): SyncEntityPropertyPacket {
             val packet = SyncEntityPropertyPacket()
 
             try {

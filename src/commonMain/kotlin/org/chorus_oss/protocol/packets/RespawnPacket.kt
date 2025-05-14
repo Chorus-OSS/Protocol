@@ -27,19 +27,17 @@ class RespawnPacket : Packet(id) {
         return ProtocolInfo.RESPAWN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RespawnPacket> {
-        override fun decode(byteBuf: ByteBuf): RespawnPacket {
+
+    companion object : PacketCodec<RespawnPacket> {
+        override fun deserialize(stream: Source): RespawnPacket {
             val packet = RespawnPacket()
 
-            val v = byteBuf.readVector3f()
+            val v = Vector3f.deserialize(stream)
             packet.x = v.x
             packet.y = v.y
             packet.z = v.z
-            packet.respawnState = byteBuf.readByte().toInt()
+            packet.respawnState = Proto.Byte.deserialize(stream).toInt()
             packet.runtimeEntityId = byteBuf.readActorRuntimeID()
 
             return packet

@@ -13,16 +13,14 @@ data class CommandRequestPacket(
         return ProtocolInfo.COMMAND_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<CommandRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): CommandRequestPacket {
+
+    companion object : PacketCodec<CommandRequestPacket> {
+        override fun deserialize(stream: Source): CommandRequestPacket {
             return CommandRequestPacket(
-                command = byteBuf.readString(),
+                command = Proto.String.deserialize(stream),
                 commandOrigin = byteBuf.readCommandOriginData(),
-                isInternalSource = byteBuf.readBoolean(),
+                isInternalSource = Proto.Boolean.deserialize(stream),
                 version = byteBuf.readVarInt()
             )
         }

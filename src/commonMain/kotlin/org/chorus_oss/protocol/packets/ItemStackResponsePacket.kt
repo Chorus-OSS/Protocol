@@ -38,7 +38,5 @@ class ItemStackResponsePacket : Packet(id) {
         return ProtocolInfo.ITEM_STACK_RESPONSE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

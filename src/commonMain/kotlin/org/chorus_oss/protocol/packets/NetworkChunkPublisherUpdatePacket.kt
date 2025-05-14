@@ -17,12 +17,10 @@ class NetworkChunkPublisherUpdatePacket : Packet(id) {
         return ProtocolInfo.NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<NetworkChunkPublisherUpdatePacket> {
-        override fun decode(byteBuf: ByteBuf): NetworkChunkPublisherUpdatePacket {
+
+    companion object : PacketCodec<NetworkChunkPublisherUpdatePacket> {
+        override fun deserialize(stream: Source): NetworkChunkPublisherUpdatePacket {
             val packet = NetworkChunkPublisherUpdatePacket()
 
             packet.position = byteBuf.readSignedBlockPosition()

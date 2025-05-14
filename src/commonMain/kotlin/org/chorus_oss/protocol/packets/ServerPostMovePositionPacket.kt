@@ -14,7 +14,5 @@ class ServerPostMovePositionPacket : Packet(id) {
         return ProtocolInfo.SERVER_POST_MOVE_POSITION
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

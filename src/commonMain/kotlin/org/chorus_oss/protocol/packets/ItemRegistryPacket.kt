@@ -37,7 +37,5 @@ class ItemRegistryPacket : Packet(id) {
         return ProtocolInfo.ITEM_REGISTRY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

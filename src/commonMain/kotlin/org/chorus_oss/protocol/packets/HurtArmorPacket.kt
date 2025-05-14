@@ -16,12 +16,10 @@ class HurtArmorPacket(
         return ProtocolInfo.HURT_ARMOR_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<HurtArmorPacket> {
-        override fun decode(byteBuf: ByteBuf): HurtArmorPacket {
+
+    companion object : PacketCodec<HurtArmorPacket> {
+        override fun deserialize(stream: Source): HurtArmorPacket {
             return HurtArmorPacket(
                 cause = byteBuf.readVarInt(),
                 damage = byteBuf.readVarInt(),

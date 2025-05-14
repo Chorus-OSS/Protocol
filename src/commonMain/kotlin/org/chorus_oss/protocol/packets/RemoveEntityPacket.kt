@@ -13,7 +13,5 @@ class RemoveEntityPacket : Packet(id) {
         return ProtocolInfo.REMOVE_ENTITY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

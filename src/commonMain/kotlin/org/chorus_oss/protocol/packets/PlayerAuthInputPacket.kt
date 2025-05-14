@@ -40,17 +40,15 @@ class PlayerAuthInputPacket : Packet(id) {
         return ProtocolInfo.PLAYER_AUTH_INPUT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<PlayerAuthInputPacket> {
-        override fun decode(byteBuf: ByteBuf): PlayerAuthInputPacket {
+
+    companion object : PacketCodec<PlayerAuthInputPacket> {
+        override fun deserialize(stream: Source): PlayerAuthInputPacket {
             val packet = PlayerAuthInputPacket()
 
             packet.pitch = byteBuf.readFloatLE()
             packet.yaw = byteBuf.readFloatLE()
-            packet.position = byteBuf.readVector3f()
+            packet.position = Vector3f.deserialize(stream)
             packet.motion = Vector2(byteBuf.readFloatLE().toDouble(), byteBuf.readFloatLE().toDouble())
             packet.headYaw = byteBuf.readFloatLE()
 
@@ -68,7 +66,7 @@ class PlayerAuthInputPacket : Packet(id) {
             packet.interactRotation = byteBuf.readVector2f()
 
             packet.tick = byteBuf.readPlayerInputTick()
-            packet.delta = byteBuf.readVector3f()
+            packet.delta = Vector3f.deserialize(stream)
 
             if (packet.inputData.contains(AuthInputAction.PERFORM_ITEM_STACK_REQUEST)) {
                 packet.itemStackRequest = byteBuf.readItemStackRequest()
@@ -97,7 +95,7 @@ class PlayerAuthInputPacket : Packet(id) {
             }
 
             packet.analogMoveVector = byteBuf.readVector2f()
-            packet.cameraOrientation = byteBuf.readVector3f()
+            packet.cameraOrientation = Vector3f.deserialize(stream)
             packet.rawMoveVector = byteBuf.readVector2f()
 
             return packet

@@ -10,7 +10,5 @@ class DimensionDataPacket : Packet(id) {
         return ProtocolInfo.DIMENSION_DATA_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -16,7 +16,5 @@ class ModalFormRequestPacket : Packet(id) {
         return ProtocolInfo.MODAL_FORM_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

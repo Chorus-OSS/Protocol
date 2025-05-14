@@ -17,12 +17,10 @@ class TakeItemEntityPacket : Packet(id) {
         return ProtocolInfo.TAKE_ITEM_ENTITY_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<TakeItemEntityPacket> {
-        override fun decode(byteBuf: ByteBuf): TakeItemEntityPacket {
+
+    companion object : PacketCodec<TakeItemEntityPacket> {
+        override fun deserialize(stream: Source): TakeItemEntityPacket {
             val packet = TakeItemEntityPacket()
 
             packet.target = byteBuf.readActorRuntimeID()

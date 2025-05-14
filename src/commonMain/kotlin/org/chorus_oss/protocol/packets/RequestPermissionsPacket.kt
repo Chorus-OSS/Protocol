@@ -32,16 +32,14 @@ class RequestPermissionsPacket : Packet(id) {
         return ProtocolInfo.REQUEST_PERMISSIONS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RequestPermissionsPacket> {
-        override fun decode(byteBuf: ByteBuf): RequestPermissionsPacket {
+
+    companion object : PacketCodec<RequestPermissionsPacket> {
+        override fun deserialize(stream: Source): RequestPermissionsPacket {
             val packet = RequestPermissionsPacket()
 
             packet.uniqueEntityId = byteBuf.readLongLE()
-            packet.permissions = PlayerPermission.entries[byteBuf.readByte() / 2]
+            packet.permissions = PlayerPermission.entries[Proto.Byte.deserialize(stream) / 2]
             packet.customPermissions = byteBuf.readShortLE().toInt()
 
             return packet

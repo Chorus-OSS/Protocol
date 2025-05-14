@@ -16,12 +16,10 @@ class ServerboundDiagnosticsPacket : Packet(id) {
         return ProtocolInfo.SERVERBOUND_DIAGNOSTICS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ServerboundDiagnosticsPacket> {
-        override fun decode(byteBuf: ByteBuf): ServerboundDiagnosticsPacket {
+
+    companion object : PacketCodec<ServerboundDiagnosticsPacket> {
+        override fun deserialize(stream: Source): ServerboundDiagnosticsPacket {
             val packet = ServerboundDiagnosticsPacket()
 
             packet.avgFps = byteBuf.readFloatLE()

@@ -23,18 +23,16 @@ class NetworkSettingsPacket : Packet(id) {
         return ProtocolInfo.NETWORK_SETTINGS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<NetworkSettingsPacket> {
-        override fun decode(byteBuf: ByteBuf): NetworkSettingsPacket {
+
+    companion object : PacketCodec<NetworkSettingsPacket> {
+        override fun deserialize(stream: Source): NetworkSettingsPacket {
             val packet = NetworkSettingsPacket()
 
             packet.compressionThreshold = byteBuf.readShortLE().toInt()
             packet.compressionAlgorithm = PacketCompressionAlgorithm.entries[byteBuf.readShortLE().toInt()]
-            packet.clientThrottleEnabled = byteBuf.readBoolean()
-            packet.clientThrottleThreshold = byteBuf.readByte()
+            packet.clientThrottleEnabled = Proto.Boolean.deserialize(stream)
+            packet.clientThrottleThreshold = Proto.Byte.deserialize(stream)
             packet.clientThrottleScalar = byteBuf.readFloatLE()
 
             return packet

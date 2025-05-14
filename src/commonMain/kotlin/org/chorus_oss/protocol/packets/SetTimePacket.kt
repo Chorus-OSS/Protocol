@@ -13,7 +13,5 @@ class SetTimePacket : Packet(id) {
         return ProtocolInfo.SET_TIME_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

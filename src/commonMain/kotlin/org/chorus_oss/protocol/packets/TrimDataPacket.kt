@@ -26,21 +26,19 @@ class TrimDataPacket : Packet(id) {
         return ProtocolInfo.TRIM_DATA
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<TrimDataPacket> {
-        override fun decode(byteBuf: ByteBuf): TrimDataPacket {
+
+    companion object : PacketCodec<TrimDataPacket> {
+        override fun deserialize(stream: Source): TrimDataPacket {
             val packet = TrimPacket(id)
 
             val length1 = byteBuf.readUnsignedVarInt()
             for (i in 0..<length1) {
-                packet.patterns.add(TrimPattern(byteBuf.readString(), byteBuf.readString()))
+                packet.patterns.add(TrimPattern(Proto.String.deserialize(stream), Proto.String.deserialize(stream)))
             }
             val length2 = byteBuf.readUnsignedVarInt()
             for (i in 0..<length2) {
-                packet.materials.add(TrimMaterial(byteBuf.readString(), byteBuf.readString(), byteBuf.readString()))
+                packet.materials.add(TrimMaterial(Proto.String.deserialize(stream), Proto.String.deserialize(stream), Proto.String.deserialize(stream)))
             }
 
             return packet

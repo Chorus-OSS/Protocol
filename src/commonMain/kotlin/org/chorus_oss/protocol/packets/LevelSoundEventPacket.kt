@@ -29,23 +29,21 @@ open class LevelSoundEventPacket : Packet(id) {
         return ProtocolInfo.Companion.LEVEL_SOUND_EVENT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<LevelSoundEventPacket> {
+
+    companion object : PacketCodec<LevelSoundEventPacket> {
         override fun decode(byteBuf: HandleByteBuf): LevelSoundEventPacket {
             val packet = LevelSoundEventPacket()
 
             packet.sound = byteBuf.readUnsignedVarInt()
-            val v = byteBuf.readVector3f()
+            val v = Vector3f.deserialize(stream)
             packet.x = v.x
             packet.y = v.y
             packet.z = v.z
             packet.extraData = byteBuf.readVarInt()
-            packet.entityIdentifier = byteBuf.readString()
-            packet.isBabyMob = byteBuf.readBoolean()
-            packet.isGlobal = byteBuf.readBoolean()
+            packet.entityIdentifier = Proto.String.deserialize(stream)
+            packet.isBabyMob = Proto.Boolean.deserialize(stream)
+            packet.isGlobal = Proto.Boolean.deserialize(stream)
 
             return packet
         }

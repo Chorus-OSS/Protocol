@@ -29,7 +29,5 @@ class PlayerFogPacket : Packet(id) {
         return ProtocolInfo.PLAYER_FOG_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

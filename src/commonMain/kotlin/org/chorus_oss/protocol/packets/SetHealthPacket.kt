@@ -12,7 +12,5 @@ class SetHealthPacket : Packet(id) {
         return ProtocolInfo.SET_HEALTH_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

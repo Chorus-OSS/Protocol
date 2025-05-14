@@ -18,7 +18,5 @@ class DeathInfoPacket : Packet(id) {
         return ProtocolInfo.DEATH_INFO_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

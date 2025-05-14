@@ -17,16 +17,14 @@ data class ContainerClosePacket(
         return ProtocolInfo.CONTAINER_CLOSE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ContainerClosePacket> {
-        override fun decode(byteBuf: ByteBuf): ContainerClosePacket {
+
+    companion object : PacketCodec<ContainerClosePacket> {
+        override fun deserialize(stream: Source): ContainerClosePacket {
             return ContainerClosePacket(
-                containerID = byteBuf.readByte().toInt(),
-                containerType = InventoryType.from(byteBuf.readByte().toInt()),
-                serverInitiatedClose = byteBuf.readBoolean()
+                containerID = Proto.Byte.deserialize(stream).toInt(),
+                containerType = InventoryType.from(Proto.Byte.deserialize(stream).toInt()),
+                serverInitiatedClose = Proto.Boolean.deserialize(stream)
             )
         }
     }

@@ -16,16 +16,14 @@ class ServerboundLoadingScreenPacket : Packet(id) {
         return ProtocolInfo.SERVERBOUND_LOADING_SCREEN_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ServerboundLoadingScreenPacket> {
-        override fun decode(byteBuf: ByteBuf): ServerboundLoadingScreenPacket {
+
+    companion object : PacketCodec<ServerboundLoadingScreenPacket> {
+        override fun deserialize(stream: Source): ServerboundLoadingScreenPacket {
             val packet = ServerboundLoadingScreenPacket()
 
             packet.type = ServerboundLoadingScreenPacketType.entries[byteBuf.readVarInt()]
-            if (byteBuf.readBoolean()) {
+            if (Proto.Boolean.deserialize(stream)) {
                 packet.loadingScreenId = byteBuf.readIntLE()
             }
 

@@ -29,7 +29,5 @@ class UpdateAdventureSettingsPacket : Packet(id) {
         return ProtocolInfo.UPDATE_ADVENTURE_SETTINGS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

@@ -41,13 +41,11 @@ class InteractPacket(
         return ProtocolInfo.INTERACT_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<InteractPacket> {
-        override fun decode(byteBuf: ByteBuf): InteractPacket {
-            val action = Action.fromOrdinal(byteBuf.readByte())
+
+    companion object : PacketCodec<InteractPacket> {
+        override fun deserialize(stream: Source): InteractPacket {
+            val action = Action.fromOrdinal(Proto.Byte.deserialize(stream))
             return InteractPacket(
                 action = action,
                 targetRuntimeID = byteBuf.readActorRuntimeID(),

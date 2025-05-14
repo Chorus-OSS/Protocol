@@ -18,16 +18,14 @@ class OpenSignPacket : Packet(id) {
         return ProtocolInfo.OPEN_SIGN
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<OpenSignPacket> {
-        override fun decode(byteBuf: ByteBuf): OpenSignPacket {
+
+    companion object : PacketCodec<OpenSignPacket> {
+        override fun deserialize(stream: Source): OpenSignPacket {
             val packet = OpenSignPacket()
 
             packet.position = byteBuf.readBlockVector3()
-            packet.frontSide = byteBuf.readBoolean()
+            packet.frontSide = Proto.Boolean.deserialize(stream)
 
             return packet
         }

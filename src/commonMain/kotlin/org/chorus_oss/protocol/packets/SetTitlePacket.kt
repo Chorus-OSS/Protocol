@@ -59,22 +59,20 @@ class SetTitlePacket : Packet(id) {
         return ProtocolInfo.SET_TITLE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<SetTitlePacket> {
-        override fun decode(byteBuf: ByteBuf): SetTitlePacket {
+
+    companion object : PacketCodec<SetTitlePacket> {
+        override fun deserialize(stream: Source): SetTitlePacket {
             val packet = SetTitlePacket()
 
             packet.type = byteBuf.readVarInt()
-            packet.text = byteBuf.readString()
+            packet.text = Proto.String.deserialize(stream)
             packet.fadeInTime = byteBuf.readVarInt()
             packet.stayTime = byteBuf.readVarInt()
             packet.fadeOutTime = byteBuf.readVarInt()
-            packet.xuid = byteBuf.readString()
-            packet.platformOnlineId = byteBuf.readString()
-            packet.filteredTitleText = byteBuf.readString()
+            packet.xuid = Proto.String.deserialize(stream)
+            packet.platformOnlineId = Proto.String.deserialize(stream)
+            packet.filteredTitleText = Proto.String.deserialize(stream)
 
             return packet
         }

@@ -4,7 +4,7 @@ package org.chorus_oss.protocol.packets
 class GUIDataPickItemPacket : Packet(id) {
     var hotbarSlot: Int = 0
 
-    override fun decode(byteBuf: ByteBuf) {
+    override fun deserialize(stream: Source) {
         this.hotbarSlot = byteBuf.readIntLE()
     }
 
@@ -16,7 +16,5 @@ class GUIDataPickItemPacket : Packet(id) {
         return ProtocolInfo.GUI_DATA_PICK_ITEM_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

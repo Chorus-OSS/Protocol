@@ -17,12 +17,10 @@ class ShowCreditsPacket : Packet(id) {
         return ProtocolInfo.SHOW_CREDITS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<ShowCreditsPacket> {
-        override fun decode(byteBuf: ByteBuf): ShowCreditsPacket {
+
+    companion object : PacketCodec<ShowCreditsPacket> {
+        override fun deserialize(stream: Source): ShowCreditsPacket {
             val packet = ShowCreditsPacket()
 
             packet.eid = byteBuf.readActorRuntimeID()

@@ -30,19 +30,17 @@ class NPCRequestPacket : Packet(id) {
         return ProtocolInfo.NPC_REQUEST_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<NPCRequestPacket> {
-        override fun decode(byteBuf: ByteBuf): NPCRequestPacket {
+
+    companion object : PacketCodec<NPCRequestPacket> {
+        override fun deserialize(stream: Source): NPCRequestPacket {
             val packet = NPCRequestPacket()
 
             packet.entityRuntimeId = byteBuf.readActorRuntimeID()
-            packet.requestType = RequestType.entries[byteBuf.readByte().toInt()]
-            packet.data = byteBuf.readString()
-            packet.skinType = byteBuf.readByte().toInt()
-            packet.sceneName = byteBuf.readString()
+            packet.requestType = RequestType.entries[Proto.Byte.deserialize(stream).toInt()]
+            packet.data = Proto.String.deserialize(stream)
+            packet.skinType = Proto.Byte.deserialize(stream).toInt()
+            packet.sceneName = Proto.String.deserialize(stream)
 
             return packet
         }

@@ -75,7 +75,5 @@ class SetScorePacket : Packet(id) {
         return ProtocolInfo.SET_SCORE_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

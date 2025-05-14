@@ -10,16 +10,14 @@ class RequestChunkRadiusPacket : Packet(id) {
         return ProtocolInfo.REQUEST_CHUNK_RADIUS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
 
-    companion object : PacketDecoder<RequestChunkRadiusPacket> {
-        override fun decode(byteBuf: ByteBuf): RequestChunkRadiusPacket {
+
+    companion object : PacketCodec<RequestChunkRadiusPacket> {
+        override fun deserialize(stream: Source): RequestChunkRadiusPacket {
             val packet = RequestChunkRadiusPacket()
 
             packet.radius = byteBuf.readVarInt()
-            packet.maxRadius = byteBuf.readByte().toInt()
+            packet.maxRadius = Proto.Byte.deserialize(stream).toInt()
 
             return packet
         }

@@ -13,9 +13,7 @@ class PlayStatusPacket : Packet(id) {
         return ProtocolInfo.PLAY_STATUS_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 
     companion object {
         const val LOGIN_SUCCESS: Int = 0

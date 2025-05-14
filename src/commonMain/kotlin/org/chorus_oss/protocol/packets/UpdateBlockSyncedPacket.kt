@@ -18,7 +18,5 @@ class UpdateBlockSyncedPacket : UpdateBlockPacket() {
         return ProtocolInfo.UPDATE_BLOCK_SYNCED_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }

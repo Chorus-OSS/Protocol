@@ -16,7 +16,5 @@ data class CreatePhotoPacket(
         return ProtocolInfo.CREATE_PHOTO_PACKET
     }
 
-    override fun handle(handler: PacketHandler) {
-        handler.handle(this)
-    }
+
 }
