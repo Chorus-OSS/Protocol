@@ -39,7 +39,7 @@ object ProtocolInfo {
     // UNUSED                                           = 24
     const val LEVEL_EVENT_PACKET = 25
     const val BLOCK_EVENT_PACKET = 26
-    const val ENTITY_EVENT_PACKET = 27
+    const val ACTOR_EVENT_PACKET = 27
     const val MOB_EFFECT_PACKET = 28
     const val UPDATE_ATTRIBUTES_PACKET = 29
     const val INVENTORY_TRANSACTION_PACKET = 30

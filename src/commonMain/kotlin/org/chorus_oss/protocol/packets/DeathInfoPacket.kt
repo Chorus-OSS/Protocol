@@ -1,22 +1,33 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.lang.TranslationContainer
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.String
 
 
-class DeathInfoPacket : Packet(id) {
-    @JvmField
-    var translation: TranslationContainer? = null
+data class DeathInfoPacket(
+    val cause: String,
+    val messages: List<String>,
+) : Packet(id) {
+    companion object : PacketCodec<DeathInfoPacket> {
+        override val id: Int
+            get() = ProtocolInfo.DEATH_INFO_PACKET
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(translation!!.text)
-        byteBuf.writeArray(
-            translation!!.parameters
-        ) { str: String? -> byteBuf.writeString(str!!) }
+        override fun serialize(value: DeathInfoPacket, stream: Sink) {
+            Proto.String.serialize(value.cause, stream)
+            ProtoHelper.serializeList(value.messages, stream, Proto.String::serialize)
+        }
+
+        override fun deserialize(stream: Source): DeathInfoPacket {
+            return DeathInfoPacket(
+                cause = Proto.String.deserialize(stream),
+                messages = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.DEATH_INFO_PACKET
-    }
-
-
 }

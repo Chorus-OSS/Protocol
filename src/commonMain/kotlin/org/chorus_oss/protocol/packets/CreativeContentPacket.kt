@@ -1,41 +1,33 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.types.inventory.creative.CreativeItemData
-import org.chorus_oss.protocol.types.inventory.creative.CreativeItemGroup
-import org.chorus_oss.chorus.registry.CreativeItemRegistry
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.types.creative.CreativeGroup
+import org.chorus_oss.protocol.types.creative.CreativeItem
 
 data class CreativeContentPacket(
-    val groups: List<CreativeItemGroup> = CreativeItemRegistry.creativeGroups.toList(),
-    val writeEntries: List<CreativeItemData> = CreativeItemRegistry.creativeItemData.toList()
+    val groups: List<CreativeGroup>,
+    val items: List<CreativeItem>,
 ) : Packet(id) {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(0)
-        byteBuf.writeVarInt(0)
-        // TODO: FIX PACKET
-//        byteBuf.writeArray(this.groups) { buf, group ->
-//            this.writeGroup(buf, group)
-//        }
-//        byteBuf.writeArray(this.writeEntries) { buf, data ->
-//            this.writeItem(buf, data)
-//        }
+    companion object : PacketCodec<CreativeContentPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CREATIVE_CONTENT_PACKET
+
+        override fun serialize(value: CreativeContentPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.groups, stream, CreativeGroup::serialize)
+            ProtoHelper.serializeList(value.items, stream, CreativeItem::serialize)
+        }
+
+        override fun deserialize(stream: Source): CreativeContentPacket {
+            return CreativeContentPacket(
+                groups = ProtoHelper.deserializeList(stream, CreativeGroup::deserialize),
+                items = ProtoHelper.deserializeList(stream, CreativeItem::deserialize),
+            )
+        }
     }
-
-    private fun writeGroup(byteBuf: ByteBuf, group: CreativeItemGroup) {
-        byteBuf.writeIntLE(group.category.ordinal)
-        byteBuf.writeString(group.name)
-        byteBuf.writeSlot(group.icon, true)
-    }
-
-    private fun writeItem(byteBuf: ByteBuf, data: CreativeItemData) {
-        byteBuf.writeUnsignedVarInt(data.netID)
-        byteBuf.writeSlot(data.item, true)
-        byteBuf.writeUnsignedVarInt(data.groupId)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.CREATIVE_CONTENT_PACKET
-    }
-
-
 }

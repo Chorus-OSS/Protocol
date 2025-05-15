@@ -1,38 +1,38 @@
 package org.chorus_oss.protocol.packets
 
 
-import java.util.*
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Uuid
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 
-class EmoteListPacket : Packet(id) {
-    var runtimeId: Long = 0
-    val pieceIds: MutableList<UUID> = mutableListOf()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(runtimeId)
-        byteBuf.writeUnsignedVarInt(pieceIds.size)
-        for (id in pieceIds) {
-            byteBuf.writeUUID(id)
-        }
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.EMOTE_LIST_PACKET
-    }
-
-
-
+@OptIn(ExperimentalUuidApi::class)
+class EmoteListPacket(
+    val playerRuntimeID: ActorRuntimeID,
+    val emotePieces: List<Uuid>,
+) : Packet(id) {
     companion object : PacketCodec<EmoteListPacket> {
+        override val id: Int
+            get() = ProtocolInfo.EMOTE_LIST_PACKET
+
+        override fun serialize(value: EmoteListPacket, stream: Sink) {
+            ActorRuntimeID.serialize(value.playerRuntimeID, stream)
+            ProtoHelper.serializeList(value.emotePieces, stream, Proto.Uuid::serialize)
+        }
+
         override fun deserialize(stream: Source): EmoteListPacket {
-            val packet = EmoteListPacket()
-
-            packet.runtimeId = byteBuf.readActorRuntimeID()
-            for (i in 0..<byteBuf.readUnsignedVarInt()) {
-                val id = byteBuf.readUUID()
-                packet.pieceIds.add(id)
-            }
-
-            return packet
+            return EmoteListPacket(
+                playerRuntimeID = ActorRuntimeID.deserialize(stream),
+                emotePieces = ProtoHelper.deserializeList(stream, Proto.Uuid::deserialize)
+            )
         }
     }
 }

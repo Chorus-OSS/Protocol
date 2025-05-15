@@ -1,41 +1,51 @@
 package org.chorus_oss.protocol.packets
 
-
-class EmotePacket : Packet(id) {
-    var runtimeId: Long = 0
-    var xuid: String = ""
-    var platformId: String = ""
-    var emoteID: String? = null
-    var flags: Byte = 0
-    var emoteDuration: Int = 0
-
-    override fun pid(): Int {
-        return ProtocolInfo.EMOTE_PACKET
-    }
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(this.runtimeId)
-        byteBuf.writeString(emoteID!!)
-        byteBuf.writeUnsignedVarInt(this.emoteDuration)
-        byteBuf.writeString(this.xuid)
-        byteBuf.writeString(this.platformId)
-        byteBuf.writeByte(flags.toInt())
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
+import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
-
+class EmotePacket(
+    val actorRuntimeID: ActorRuntimeID,
+    val emoteID: String,
+    val emoteLength: UInt,
+    val xuid: String,
+    val platformID: String,
+    val flags: Byte
+) : Packet(id) {
     companion object : PacketCodec<EmotePacket> {
+        const val FLAG_SERVER_SIDE: Byte = 0x1
+        const val FLAG_MUTE_CHAT: Byte = 0x2
+
+        override val id: Int
+            get() = ProtocolInfo.EMOTE_PACKET
+
+        override fun serialize(value: EmotePacket, stream: Sink) {
+            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
+            Proto.String.serialize(value.emoteID, stream)
+            ProtoVAR.UInt.serialize(value.emoteLength, stream)
+            Proto.String.serialize(value.xuid, stream)
+            Proto.String.serialize(value.platformID, stream)
+            Proto.Byte.serialize(value.flags, stream)
+        }
+
         override fun deserialize(stream: Source): EmotePacket {
-            val packet = EmotePacket()
-
-            packet.runtimeId = byteBuf.readActorRuntimeID()
-            packet.emoteID = Proto.String.deserialize(stream)
-            packet.emoteDuration = byteBuf.readUnsignedVarInt()
-            packet.xuid = Proto.String.deserialize(stream)
-            packet.platformId = Proto.String.deserialize(stream)
-            packet.flags = Proto.Byte.deserialize(stream)
-
-            return packet
+            return EmotePacket(
+                actorRuntimeID = ActorRuntimeID.deserialize(stream),
+                emoteID = Proto.String.deserialize(stream),
+                emoteLength = ProtoVAR.UInt.deserialize(stream),
+                xuid = Proto.String.deserialize(stream),
+                platformID = Proto.String.deserialize(stream),
+                flags = Proto.Byte.deserialize(stream),
+            )
         }
     }
 }

@@ -1,5 +1,11 @@
 package org.chorus_oss.protocol.types
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+
 enum class DisconnectFailReason {
     UNKNOWN,
     CANT_CONNECT_NO_INTERNET,
@@ -100,6 +106,16 @@ enum class DisconnectFailReason {
     BAD_PACKET,
     CONN_CLIENT_SIGNALING_ERROR,
     SUB_CLIENT_LOGIN_DISABLED,
-    DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN
+    DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN;
+
+    companion object : ProtoCodec<DisconnectFailReason> {
+        override fun serialize(value: DisconnectFailReason, stream: Sink) {
+            ProtoVAR.Int.serialize(value.ordinal, stream)
+        }
+
+        override fun deserialize(stream: Source): DisconnectFailReason {
+            return entries[ProtoVAR.Int.deserialize(stream)]
+        }
+    }
 }
 

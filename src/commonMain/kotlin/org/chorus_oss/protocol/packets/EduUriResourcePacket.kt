@@ -1,32 +1,29 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.EduSharedUriResource
 
 
-class EduUriResourcePacket : Packet(id) {
-    var eduSharedUriResource: EduSharedUriResource? = null
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(eduSharedUriResource!!.buttonName)
-        byteBuf.writeString(eduSharedUriResource!!.linkUri)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.EDU_URI_RESOURCE_PACKET
-    }
-
-
-
+class EduUriResourcePacket(
+    val resource: EduSharedUriResource,
+) : Packet(id) {
     companion object : PacketCodec<EduUriResourcePacket> {
+        override val id: Int
+            get() = ProtocolInfo.EDU_URI_RESOURCE_PACKET
+
+        override fun serialize(value: EduUriResourcePacket, stream: Sink) {
+            EduSharedUriResource.serialize(value.resource, stream)
+        }
+
         override fun deserialize(stream: Source): EduUriResourcePacket {
-            val packet = EduUriResourcePacket()
-
-            val buttonName = Proto.String.deserialize(stream)
-            val linkUri = Proto.String.deserialize(stream)
-            packet.eduSharedUriResource = EduSharedUriResource(buttonName, linkUri)
-
-            return packet
+            return EduUriResourcePacket(
+                resource = EduSharedUriResource.deserialize(stream),
+            )
         }
     }
 }
