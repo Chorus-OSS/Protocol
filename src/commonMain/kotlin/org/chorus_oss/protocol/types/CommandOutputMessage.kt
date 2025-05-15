@@ -1,32 +1,32 @@
 package org.chorus_oss.protocol.types
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.String
+
 
 data class CommandOutputMessage(
     var internal: Boolean,
     var messageId: String,
-    var parameters: Array<String>
+    var parameters: List<String>
 ) {
-    constructor(messageId: String) : this(false, messageId, arrayOf())
+    companion object : ProtoCodec<CommandOutputMessage> {
+        override fun serialize(value: CommandOutputMessage, stream: Sink) {
+            Proto.Boolean.serialize(value.internal, stream)
+            Proto.String.serialize(value.messageId, stream)
+            ProtoHelper.serializeList(value.parameters, stream, Proto.String::serialize)
+        }
 
-    constructor(messageId: String, vararg parameters: String) : this(false, messageId, arrayOf(*parameters))
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CommandOutputMessage
-
-        if (internal != other.internal) return false
-        if (messageId != other.messageId) return false
-        if (!parameters.contentEquals(other.parameters)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = internal.hashCode()
-        result = 31 * result + messageId.hashCode()
-        result = 31 * result + parameters.contentHashCode()
-        return result
+        override fun deserialize(stream: Source): CommandOutputMessage {
+            return CommandOutputMessage(
+                internal = Proto.Boolean.deserialize(stream),
+                messageId = Proto.String.deserialize(stream),
+                parameters = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+            )
+        }
     }
 }

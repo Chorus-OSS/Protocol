@@ -1,6 +1,16 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.CommandOriginData
 import org.chorus_oss.protocol.types.CommandOutputMessage
 import org.chorus_oss.protocol.types.CommandOutputType
@@ -8,36 +18,39 @@ import org.chorus_oss.protocol.types.CommandOutputType
 data class CommandOutputPacket(
     val originData: CommandOriginData,
     val outputType: CommandOutputType,
-    val successCount: Int,
+    val successCount: UInt,
     val outputMessages: List<CommandOutputMessage>,
     val dataSet: String? = null,
 ) : Packet(id) {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeCommandOriginData(this.originData)
+    companion object : PacketCodec<CommandOutputPacket> {
+        override val id: Int
+            get() = ProtocolInfo.COMMAND_OUTPUT_PACKET
 
-        byteBuf.writeByte(this.outputType.ordinal)
-        byteBuf.writeUnsignedVarInt(this.successCount)
-        byteBuf.writeArray(outputMessages) { buf, msg ->
-            buf.writeBoolean(msg.internal)
-            buf.writeString(msg.messageId)
-            buf.writeArray(msg.parameters.toList()) { buf1, param ->
-                buf1.writeString(param)
-            }
+        override fun deserialize(stream: Source): CommandOutputPacket {
+            val outputType: CommandOutputType
+            return CommandOutputPacket(
+                originData = CommandOriginData.deserialize(stream),
+                outputType = CommandOutputType.deserialize(stream).also { outputType = it },
+                successCount = ProtoVAR.UInt.deserialize(stream),
+                outputMessages = ProtoHelper.deserializeList(stream, CommandOutputMessage::deserialize),
+                dataSet = when (outputType) {
+                    CommandOutputType.DATA_SET -> Proto.String.deserialize(stream)
+
+                    else -> null
+                }
+            )
         }
 
-        when (this.outputType) {
-            CommandOutputType.DATA_SET -> {
-                val dataSet = this.dataSet as String
-                byteBuf.writeString(dataSet)
-            }
+        override fun serialize(value: CommandOutputPacket, stream: Sink) {
+            CommandOriginData.serialize(value.originData, stream)
+            CommandOutputType.serialize(value.outputType, stream)
+            ProtoVAR.UInt.serialize(value.successCount, stream)
+            ProtoHelper.serializeList(value.outputMessages, stream, CommandOutputMessage::serialize)
+            when (value.outputType) {
+                CommandOutputType.DATA_SET -> (value.dataSet as String).let { Proto.String.serialize(it, stream) }
 
-            else -> Unit
+                else -> Unit
+            }
         }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.COMMAND_OUTPUT_PACKET
-    }
-
-
 }
