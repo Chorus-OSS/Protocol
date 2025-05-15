@@ -1,6 +1,12 @@
 package org.chorus_oss.protocol.types.itemstack
 
-enum class ContainerSlotType(val id: Int) {
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.types.Byte
+
+enum class ContainerSlotType(val id: Byte) {
     ANVIL_INPUT(0),
     ANVIL_MATERIAL(1),
     ANVIL_RESULT(2),
@@ -67,11 +73,18 @@ enum class ContainerSlotType(val id: Int) {
     DYNAMIC_CONTAINER(63);
 
 
-    companion object {
-        private val VALUES = entries.associateBy { it.id }
+    companion object : ProtoCodec<ContainerSlotType> {
+        override fun serialize(
+            value: ContainerSlotType,
+            stream: Sink
+        ) {
+            Proto.Byte.serialize(value.id, stream)
+        }
 
-        fun fromId(id: Int): ContainerSlotType {
-            return VALUES[id] ?: throw RuntimeException("Unknown ContainerSlotType ID: $id")
+        override fun deserialize(stream: Source): ContainerSlotType {
+            return Proto.Byte.deserialize(stream).let {
+                entries.find { e -> e.id == it }!!
+            }
         }
     }
 }

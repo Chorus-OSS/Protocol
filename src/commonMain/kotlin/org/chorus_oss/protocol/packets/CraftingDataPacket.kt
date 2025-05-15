@@ -1,11 +1,16 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.protocol.types.MaterialReducerDataEntry
 import org.chorus_oss.protocol.types.RecipeUnlockingRequirement
 import org.chorus_oss.protocol.types.RecipeUnlockingRequirement.UnlockingContext
 import org.chorus_oss.chorus.recipe.*
 import org.chorus_oss.chorus.recipe.descriptor.DefaultDescriptor
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
 
 import java.util.*
 
@@ -19,7 +24,6 @@ data class CraftingDataPacket(
     private val brewingEntries: MutableList<BrewingRecipe> = mutableListOf()
     private val containerEntries: MutableList<ContainerRecipe> = mutableListOf()
 
-    @JvmField
     var cleanRecipes: Boolean = false
 
     override fun encode(byteBuf: ByteBuf) {
@@ -202,13 +206,7 @@ data class CraftingDataPacket(
         }
     }
 
-    override fun pid(): Int {
-        return ProtocolInfo.CRAFTING_DATA_PACKET
-    }
-
-
-
-    companion object {
+    companion object : PacketCodec<CraftingDataPacket> {
         const val CRAFTING_TAG_CRAFTING_TABLE: String = "crafting_table"
         const val CRAFTING_TAG_CARTOGRAPHY_TABLE: String = "cartography_table"
         const val CRAFTING_TAG_STONECUTTER: String = "stonecutter"
@@ -218,5 +216,16 @@ data class CraftingDataPacket(
         const val CRAFTING_TAG_BLAST_FURNACE: String = "blast_furnace"
         const val CRAFTING_TAG_SMOKER: String = "smoker"
         const val CRAFTING_TAG_SMITHING_TABLE: String = "smithing_table"
+
+        override val id: Int
+            get() = ProtocolInfo.CRAFTING_DATA_PACKET
+
+        override fun serialize(value: CraftingDataPacket, stream: Sink) {
+            TODO("Not yet implemented")
+        }
+
+        override fun deserialize(stream: Source): CraftingDataPacket {
+            TODO("Not yet implemented")
+        }
     }
 }

@@ -1,25 +1,41 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.BlockVector3
-
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.shared.types.UIVector3
 import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.ContainerType
 
 data class ContainerOpenPacket(
-    val containerID: Int,
-    val containerType: Int,
-    val position: BlockVector3,
+    val containerID: Byte,
+    val containerType: ContainerType,
+    val position: IVector3,
     val targetActorID: ActorUniqueID,
 ) : Packet(id) {
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(containerID.toByte().toInt())
-        byteBuf.writeByte(containerType.toByte().toInt())
-        byteBuf.writeBlockVector3(this.position)
-        byteBuf.writeActorUniqueID(this.targetActorID)
+    companion object : PacketCodec<ContainerOpenPacket> {
+        override val id: Int
+            get() = ProtocolInfo.CONTAINER_OPEN_PACKET
+
+        override fun serialize(value: ContainerOpenPacket, stream: Sink) {
+            Proto.Byte.serialize(value.containerID, stream)
+            ContainerType.serialize(value.containerType, stream)
+            UIVector3.serialize(value.position, stream)
+            ActorUniqueID.serialize(value.targetActorID, stream)
+        }
+
+        override fun deserialize(stream: Source): ContainerOpenPacket {
+            return ContainerOpenPacket(
+                containerID = Proto.Byte.deserialize(stream),
+                containerType = ContainerType.deserialize(stream),
+                position = UIVector3.deserialize(stream),
+                targetActorID = ActorUniqueID.deserialize(stream)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.CONTAINER_OPEN_PACKET
-    }
-
-
 }
