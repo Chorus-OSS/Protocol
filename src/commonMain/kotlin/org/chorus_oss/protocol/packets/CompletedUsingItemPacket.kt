@@ -1,43 +1,74 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.Short
+
 
 data class CompletedUsingItemPacket(
     val itemID: Short,
     val itemUseMethod: ItemUseMethod,
 ) : Packet(id) {
-    enum class ItemUseMethod(val id: Int) {
-        UNKNOWN(-1),
-        EQUIP_ARMOR(0),
-        EAT(1),
-        ATTACK(2),
-        CONSUME(3),
-        THROW(4),
-        SHOOT(5),
-        PLACE(6),
-        FILL_BOTTLE(7),
-        FILL_BUCKET(8),
-        POUR_BUCKET(9),
-        USE_TOOL(10),
-        INTERACT(11),
-        RETRIEVED(12),
-        DYED(13),
-        TRADED(14),
-        BRUSHING_COMPLETED(15),
-        OPENED_VAULT(16)
-    }
+    companion object : PacketCodec<CompletedUsingItemPacket> {
+        enum class ItemUseMethod(val id: Int) {
+            UNKNOWN(-1),
+            EQUIP_ARMOR(0),
+            EAT(1),
+            ATTACK(2),
+            CONSUME(3),
+            THROW(4),
+            SHOOT(5),
+            PLACE(6),
+            FILL_BOTTLE(7),
+            FILL_BUCKET(8),
+            POUR_BUCKET(9),
+            USE_TOOL(10),
+            INTERACT(11),
+            RETRIEVED(12),
+            DYED(13),
+            TRADED(14),
+            BRUSHING_COMPLETED(15),
+            OPENED_VAULT(16);
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeShortLE(this.itemID.toInt())
-        byteBuf.writeIntLE(this.itemUseMethod.id)
-    }
+            companion object : ProtoCodec<ItemUseMethod> {
+                override fun serialize(
+                    value: ItemUseMethod,
+                    stream: Sink
+                ) {
+                    ProtoLE.Int.serialize(value.id, stream)
+                }
 
-    override fun pid(): Int {
-        return ProtocolInfo.COMPLETED_USING_ITEM_PACKET
-    }
+                override fun deserialize(stream: Source): ItemUseMethod {
+                    return ProtoLE.Int.deserialize(stream).let {
+                        entries.find { e -> e.id == it }!!
+                    }
+                }
 
+            }
+        }
 
+        override val id: Int
+            get() = ProtocolInfo.COMPLETED_USING_ITEM_PACKET
 
-    companion object {
-        const val ACTION_EAT: Int = 1
+        override fun serialize(
+            value: CompletedUsingItemPacket,
+            stream: Sink
+        ) {
+            ProtoLE.Short.serialize(value.itemID, stream)
+            ItemUseMethod.serialize(value.itemUseMethod, stream)
+        }
+
+        override fun deserialize(stream: Source): CompletedUsingItemPacket {
+            return CompletedUsingItemPacket(
+                itemID = ProtoLE.Short.deserialize(stream),
+                itemUseMethod = ItemUseMethod.deserialize(stream),
+            )
+        }
     }
 }
