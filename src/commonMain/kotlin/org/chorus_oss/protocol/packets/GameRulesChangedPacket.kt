@@ -1,19 +1,29 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.level.GameRules
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.types.GameRule
 
 
-class GameRulesChangedPacket : Packet(id) {
-    @JvmField
-    var gameRules: GameRules? = null
+class GameRulesChangedPacket(
+    val gameRules: List<GameRule<*>>
+) : Packet(id) {
+    companion object : PacketCodec<GameRulesChangedPacket> {
+        override val id: Int
+            get() = ProtocolInfo.GAME_RULES_CHANGED_PACKET
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeGameRules(gameRules!!)
+        override fun serialize(value: GameRulesChangedPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.gameRules, stream) { value, stream -> GameRule.serialize(value, stream) }
+        }
+
+        override fun deserialize(stream: Source): GameRulesChangedPacket {
+            return GameRulesChangedPacket(
+                gameRules = ProtoHelper.deserializeList(stream) { stream -> GameRule.deserialize(stream) }
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.GAME_RULES_CHANGED_PACKET
-    }
-
-
 }

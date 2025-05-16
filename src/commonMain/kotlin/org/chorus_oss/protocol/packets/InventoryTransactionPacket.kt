@@ -1,168 +1,86 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.LegacySetItemSlotData
 import org.chorus_oss.protocol.types.inventory.transaction.*
-import org.chorus_oss.protocol.types.inventory.transaction.UseItemData.PredictedResult
-import org.chorus_oss.protocol.types.inventory.transaction.UseItemData.TriggerType
 
-class InventoryTransactionPacket(
+data class InventoryTransactionPacket(
     val legacyRequestID: Int,
-    val legacySetItemSlots: List<LegacySetItemSlotData>,
+    val legacySetItemSlots: List<LegacySetItemSlotData>?,
     val transactionType: TransactionType,
-    val actions: Array<NetworkInventoryAction>,
-    val transactionData: TransactionData?,
+    val actions: List<InventoryAction>,
+    val transactionData: InventoryTransactionData?,
 ) : Packet(id) {
-
-    enum class TransactionType {
-        NORMAL,
-        MISMATCH,
-        USE_ITEM,
-        USE_ITEM_ON_ENTITY,
-        RELEASE_ITEM;
-
-        companion object {
-            fun fromOrdinal(ordinal: Int): TransactionType {
-                return entries.find { it.ordinal == ordinal }
-                    ?: throw RuntimeException("Unknown TransactionType Ordinal: $ordinal")
-            }
-        }
-    }
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(this.legacyRequestID)
-        byteBuf.writeUnsignedVarInt(this.transactionType.ordinal)
-
-        if (legacyRequestID != 0) {
-            byteBuf.writeUnsignedVarInt(legacySetItemSlots.size)
-            for (slot in legacySetItemSlots) {
-                byteBuf.writeByte(slot.containerId)
-                byteBuf.writeByteArray(slot.slots)
-            }
-        }
-
-        byteBuf.writeUnsignedVarInt(actions.size)
-        for (action in this.actions) {
-            action.write(byteBuf)
-        }
-
-        when (this.transactionType) {
-            TransactionType.USE_ITEM -> {
-                val useItemData = transactionData as UseItemData
-
-                byteBuf.writeUnsignedVarInt(useItemData.actionType)
-                byteBuf.writeUnsignedVarInt(useItemData.triggerType.ordinal)
-                byteBuf.writeBlockVector3(useItemData.blockPos)
-                byteBuf.writeBlockFace(useItemData.face)
-                byteBuf.writeVarInt(useItemData.hotbarSlot)
-                byteBuf.writeSlot(useItemData.itemInHand)
-                byteBuf.writeVector3f(useItemData.playerPos.asVector3f())
-                byteBuf.writeVector3f(useItemData.clickPos)
-                byteBuf.writeUnsignedVarInt(useItemData.blockRuntimeId)
-                byteBuf.writeUnsignedVarInt(useItemData.clientInteractPrediction.ordinal)
-            }
-
-            TransactionType.USE_ITEM_ON_ENTITY -> {
-                val useItemOnEntityData = transactionData as UseItemOnEntityData
-
-                byteBuf.writeActorRuntimeID(useItemOnEntityData.entityRuntimeId)
-                byteBuf.writeUnsignedVarInt(useItemOnEntityData.actionType)
-                byteBuf.writeVarInt(useItemOnEntityData.hotbarSlot)
-                byteBuf.writeSlot(useItemOnEntityData.itemInHand)
-                byteBuf.writeVector3f(useItemOnEntityData.playerPos.asVector3f())
-                byteBuf.writeVector3f(useItemOnEntityData.clickPos.asVector3f())
-            }
-
-            TransactionType.RELEASE_ITEM -> {
-                val releaseItemData = transactionData as ReleaseItemData
-
-                byteBuf.writeUnsignedVarInt(releaseItemData.actionType)
-                byteBuf.writeVarInt(releaseItemData.hotbarSlot)
-                byteBuf.writeSlot(releaseItemData.itemInHand)
-                byteBuf.writeVector3f(releaseItemData.headRot.asVector3f())
-            }
-
-            else -> Unit
-        }
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.INVENTORY_TRANSACTION_PACKET
-    }
-
-
-
     companion object : PacketCodec<InventoryTransactionPacket> {
+        enum class TransactionType {
+            NORMAL,
+            MISMATCH,
+            USE_ITEM,
+            USE_ITEM_ON_ENTITY,
+            RELEASE_ITEM;
+
+            companion object : ProtoCodec<TransactionType> {
+                override fun serialize(
+                    value: TransactionType,
+                    stream: Sink
+                ) {
+                    ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
+                }
+
+                override fun deserialize(stream: Source): TransactionType {
+                    return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.INVENTORY_TRANSACTION_PACKET
+
+        override fun serialize(
+            value: InventoryTransactionPacket,
+            stream: Sink
+        ) {
+            ProtoVAR.Int.serialize(value.legacyRequestID, stream)
+            when (value.legacyRequestID != 0) {
+                true -> (value.legacySetItemSlots as List<LegacySetItemSlotData>).let {
+                    ProtoHelper.serializeList(it, stream, LegacySetItemSlotData::serialize)
+                }
+                false -> Unit
+            }
+            TransactionType.serialize(value.transactionType, stream)
+            ProtoHelper.serializeList(value.actions, stream, InventoryAction::serialize)
+            when (value.transactionType) {
+                TransactionType.USE_ITEM -> (value.transactionData as UseItemTransactionData).let { UseItemTransactionData.serialize(it, stream) }
+                TransactionType.USE_ITEM_ON_ENTITY -> (value.transactionData as UseItemOnEntityTransactionData).let { UseItemOnEntityTransactionData.serialize(it, stream) }
+                TransactionType.RELEASE_ITEM -> (value.transactionData as ReleaseItemTransactionData).let { ReleaseItemTransactionData.serialize(it, stream) }
+                else -> Unit
+            }
+        }
+
         override fun deserialize(stream: Source): InventoryTransactionPacket {
             val legacyRequestID: Int
             val transactionType: TransactionType
             return InventoryTransactionPacket(
-                legacyRequestID = byteBuf.readUnsignedVarInt()
-                    .also { legacyRequestID = it },
+                legacyRequestID = ProtoVAR.Int.deserialize(stream).also { legacyRequestID = it },
                 legacySetItemSlots = when (legacyRequestID != 0) {
-                    true -> List(byteBuf.readUnsignedVarInt()) {
-                        LegacySetItemSlotData(
-                            Proto.Byte.deserialize(stream).toInt(),
-                            byteBuf.readByteArray()
-                        )
-                    }
-
-                    false -> emptyList()
+                    true -> ProtoHelper.deserializeList(stream, LegacySetItemSlotData::deserialize)
+                    false -> null
                 },
-                transactionType = TransactionType.fromOrdinal(byteBuf.readUnsignedVarInt())
-                    .also { transactionType = it },
-                actions = Array(byteBuf.readUnsignedVarInt()) {
-                    NetworkInventoryAction.read(byteBuf)
-                },
+                transactionType = TransactionType.deserialize(stream).also { transactionType = it },
+                actions = ProtoHelper.deserializeList(stream, InventoryAction::deserialize),
                 transactionData = when (transactionType) {
-                    TransactionType.USE_ITEM -> UseItemData(
-                        actionType = byteBuf.readUnsignedVarInt(),
-                        triggerType = TriggerType.entries[byteBuf.readUnsignedVarInt()],
-                        blockPos = byteBuf.readBlockVector3(),
-                        face = byteBuf.readBlockFace(),
-                        hotbarSlot = byteBuf.readVarInt(),
-                        itemInHand = byteBuf.readSlot(),
-                        playerPos = Vector3f.deserialize(stream).asVector3(),
-                        clickPos = Vector3f.deserialize(stream),
-                        blockRuntimeId = byteBuf.readUnsignedVarInt(),
-                        clientInteractPrediction = PredictedResult.entries[byteBuf.readUnsignedVarInt()],
-                    )
-
-                    TransactionType.USE_ITEM_ON_ENTITY -> UseItemOnEntityData(
-                        entityRuntimeId = byteBuf.readActorRuntimeID(),
-                        actionType = byteBuf.readUnsignedVarInt(),
-                        hotbarSlot = byteBuf.readVarInt(),
-                        itemInHand = byteBuf.readSlot(),
-                        playerPos = Vector3f.deserialize(stream).asVector3(),
-                        clickPos = Vector3f.deserialize(stream).asVector3(),
-                    )
-
-                    TransactionType.RELEASE_ITEM -> ReleaseItemData(
-                        actionType = byteBuf.readUnsignedVarInt(),
-                        hotbarSlot = byteBuf.readVarInt(),
-                        itemInHand = byteBuf.readSlot(),
-                        headRot = Vector3f.deserialize(stream).asVector3()
-                    )
-
+                    TransactionType.USE_ITEM -> UseItemTransactionData.deserialize(stream)
+                    TransactionType.USE_ITEM_ON_ENTITY -> UseItemOnEntityTransactionData.deserialize(stream)
+                    TransactionType.RELEASE_ITEM -> ReleaseItemTransactionData.deserialize(stream)
                     else -> null
                 }
             )
         }
-
-        const val USE_ITEM_ACTION_CLICK_BLOCK: Int = 0
-        const val USE_ITEM_ACTION_CLICK_AIR: Int = 1
-        const val USE_ITEM_ACTION_BREAK_BLOCK: Int = 2
-
-        const val RELEASE_ITEM_ACTION_RELEASE: Int = 0 // bow shoot
-        const val RELEASE_ITEM_ACTION_CONSUME: Int = 1 // eat food, drink potion
-
-        const val USE_ITEM_ON_ENTITY_ACTION_INTERACT: Int = 0
-        const val USE_ITEM_ON_ENTITY_ACTION_ATTACK: Int = 1
-
-        const val ACTION_MAGIC_SLOT_DROP_ITEM: Int = 0
-        const val ACTION_MAGIC_SLOT_PICKUP_ITEM: Int = 1
-
-        const val ACTION_MAGIC_SLOT_CREATIVE_DELETE_ITEM: Int = 0
-        const val ACTION_MAGIC_SLOT_CREATIVE_CREATE_ITEM: Int = 1
     }
 }

@@ -1,29 +1,30 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
 
 
-class ItemStackRequestPacket : Packet(id) {
-    val requests: MutableList<ItemStackRequest> = ArrayList()
-
-    override fun pid(): Int {
-        return ProtocolInfo.ITEM_STACK_REQUEST_PACKET
-    }
-
-
-
+data class ItemStackRequestPacket(
+    val requests: List<ItemStackRequest>
+) : Packet(id) {
     companion object : PacketCodec<ItemStackRequestPacket> {
+        override val id: Int
+            get() = ProtocolInfo.ITEM_STACK_REQUEST_PACKET
+
+        override fun serialize(value: ItemStackRequestPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.requests, stream, ItemStackRequest::serialize)
+        }
+
         override fun deserialize(stream: Source): ItemStackRequestPacket {
-            val packet = ItemStackRequestPacket()
-
-            packet.requests.addAll(
-                byteBuf.readArray(
-                    ItemStackRequest::class.java
-                ) { it.readItemStackRequest() }
+            return ItemStackRequestPacket(
+                requests = ProtoHelper.deserializeList(stream, ItemStackRequest::deserialize)
             )
-
-            return packet
         }
     }
 }

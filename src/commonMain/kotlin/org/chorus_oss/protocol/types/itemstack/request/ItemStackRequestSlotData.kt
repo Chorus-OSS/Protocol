@@ -1,29 +1,35 @@
 package org.chorus_oss.protocol.types.itemstack.request
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.inventory.FullContainerName
-import org.chorus_oss.protocol.types.itemstack.ContainerSlotType
 
-/**
- * Holds information on a specific slot client-side.
- */
 data class ItemStackRequestSlotData(
-    /**
-     * container that the slots that follow are in.
-     *
-     */
-    @Deprecated("since v712 - FullContainerName#getContainer should be preferred")
-    val container: ContainerSlotType,
+    val container: FullContainerName,
+    val slot: Byte,
+    val stackNetworkID: Int,
+) {
+    companion object : ProtoCodec<ItemStackRequestSlotData> {
+        override fun serialize(
+            value: ItemStackRequestSlotData,
+            stream: Sink
+        ) {
+            FullContainerName.serialize(value.container, stream)
+            Proto.Byte.serialize(value.slot, stream)
+            ProtoVAR.Int.serialize(value.stackNetworkID, stream)
+        }
 
-    /**
-     * slot is the index of the slot within the container
-     */
-    val slot: Int,
-
-    /**
-     * stackNetworkId is the unique stack ID that the client assumes to be present in this slot. The server
-     * must check if these IDs match. If they do not match, servers should reject the stack request that the
-     * action holding this info was in.
-     */
-    val stackNetworkId: Int,
-    val containerName: FullContainerName,
-)
+        override fun deserialize(stream: Source): ItemStackRequestSlotData {
+            return ItemStackRequestSlotData(
+                container = FullContainerName.deserialize(stream),
+                slot = Proto.Byte.deserialize(stream),
+                stackNetworkID = ProtoVAR.Int.deserialize(stream)
+            )
+        }
+    }
+}

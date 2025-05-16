@@ -1,22 +1,29 @@
 package org.chorus_oss.protocol.types.itemstack.response
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.inventory.FullContainerName
-import org.chorus_oss.protocol.types.itemstack.ContainerSlotType
 
-/**
- * ContainerEntry holds information on what slots in a container have what item stack in them.
- */
 data class ItemStackResponseContainer(
-    /**
-     * container that the slots that follow are in.
-     *
-     */
-    @Deprecated("since v712 - FullContainerName#getContainer should be preferred")
-    val container: ContainerSlotType,
+    val container: FullContainerName,
+    val slots: List<ItemStackResponseSlot>,
+) {
+    companion object : ProtoCodec<ItemStackResponseContainer> {
+        override fun serialize(
+            value: ItemStackResponseContainer,
+            stream: Sink
+        ) {
+            FullContainerName.serialize(value.container, stream)
+            ProtoHelper.serializeList(value.slots, stream, ItemStackResponseSlot::serialize)
+        }
 
-    /**
-     * items holds information on what item stack should be present in specific slots in the container.
-     */
-    val items: MutableList<ItemStackResponseSlot>,
-    val containerName: FullContainerName,
-)
+        override fun deserialize(stream: Source): ItemStackResponseContainer {
+            return ItemStackResponseContainer(
+                container = FullContainerName.deserialize(stream),
+                slots = ProtoHelper.deserializeList(stream, ItemStackResponseSlot::deserialize)
+            )
+        }
+    }
+}

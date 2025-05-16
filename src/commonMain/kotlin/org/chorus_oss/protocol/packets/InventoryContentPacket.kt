@@ -1,29 +1,40 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.item.Item
-
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.inventory.FullContainerName
-import org.chorus_oss.protocol.types.itemstack.ContainerSlotType
+import org.chorus_oss.protocol.types.item.ItemStack
 
-class InventoryContentPacket : Packet(id) {
-    var inventoryId: Int = 0
-    var slots: Array<Item> = Item.EMPTY_ARRAY
-    var fullContainerName: FullContainerName = FullContainerName(ContainerSlotType.ANVIL_INPUT, null)
-    var storageItem: Item = Item.AIR // is air if the item is not a bundle
+class InventoryContentPacket(
+    val windowID: UInt,
+    val content: List<ItemStack>,
+    val container: FullContainerName,
+    val storageItem: ItemStack,
+) : Packet(id) {
+    companion object : PacketCodec<InventoryContentPacket> {
+        override val id: Int
+            get() = ProtocolInfo.INVENTORY_CONTENT_PACKET
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(this.inventoryId)
-        byteBuf.writeUnsignedVarInt(slots.size)
-        for (slot in this.slots) {
-            byteBuf.writeSlot(slot)
+        override fun serialize(value: InventoryContentPacket, stream: Sink) {
+            ProtoVAR.UInt.serialize(value.windowID, stream)
+            ProtoHelper.serializeList(value.content, stream, ItemStack::serialize)
+            FullContainerName.serialize(value.container, stream)
+            ItemStack.serialize(value.storageItem, stream)
         }
-        byteBuf.writeFullContainerName(this.fullContainerName)
-        byteBuf.writeSlot(this.storageItem)
+
+        override fun deserialize(stream: Source): InventoryContentPacket {
+            return InventoryContentPacket(
+                windowID = ProtoVAR.UInt.deserialize(stream),
+                content = ProtoHelper.deserializeList(stream, ItemStack::deserialize),
+                container = FullContainerName.deserialize(stream),
+                storageItem = ItemStack.deserialize(stream)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.INVENTORY_CONTENT_PACKET
-    }
-
-
 }

@@ -1,41 +1,28 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.nbt.tag.CompoundTag
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.types.item.ItemEntry
 
-import org.chorus_oss.chorus.utils.MainLogger
+data class ItemRegistryPacket(
+    val items: List<ItemEntry>
+) : Packet(id) {
+    companion object : PacketCodec<ItemRegistryPacket> {
+        override val id: Int
+            get() = ProtocolInfo.ITEM_REGISTRY_PACKET
 
-import java.io.IOException
-import java.nio.ByteOrder
+        override fun serialize(value: ItemRegistryPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.items, stream, ItemEntry::serialize)
+        }
 
-class ItemRegistryPacket : Packet(id) {
-    var entries: Array<Entry>? = emptyArray()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(entries!!.size)
-        try {
-            for (entry in entries!!) {
-                byteBuf.writeString(entry.name)
-                byteBuf.writeShortLE(entry.runtimeId)
-                byteBuf.writeBoolean(entry.componentBased)
-                byteBuf.writeVarInt(entry.version)
-                byteBuf.writeBytes(write(entry.data, ByteOrder.LITTLE_ENDIAN, true))
-            }
-        } catch (e: IOException) {
-            MainLogger.logger.error("Error while encoding NBT data of ItemRegistryPacket", e)
+        override fun deserialize(stream: Source): ItemRegistryPacket {
+            return ItemRegistryPacket(
+                items = ProtoHelper.deserializeList(stream, ItemEntry::deserialize)
+            )
         }
     }
-
-    class Entry(
-        val name: String,
-        val runtimeId: Int,
-        val version: Int,
-        val componentBased: Boolean,
-        val data: CompoundTag
-    )
-
-    override fun pid(): Int {
-        return ProtocolInfo.ITEM_REGISTRY_PACKET
-    }
-
-
 }

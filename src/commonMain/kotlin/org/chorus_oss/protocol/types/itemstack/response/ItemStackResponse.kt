@@ -1,25 +1,41 @@
 package org.chorus_oss.protocol.types.itemstack.response
 
-import org.chorus_oss.protocol.packets.ItemStackResponsePacket
-import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
 
-/**
- * Represents an individual response to a [ItemStackRequest]
- * sent as part of [ItemStackResponsePacket].
- */
 data class ItemStackResponse(
-    /**
-     * Replaces the success boolean as of v419
-     */
-    var result: ItemStackResponseStatus,
-    /**
-     * requestId is the unique ID of the request that this response is in reaction to. If rejected, the client
-     * will undo the actions from the request with this ID.
-     */
-    val requestId: Int,
-    /**
-     * containers holds information on the containers that had their contents changed as a result of the
-     * request.
-     */
-    val containers: MutableList<ItemStackResponseContainer>,
-)
+    val result: ItemStackResponseStatus,
+    val requestID: Int,
+    val containers: List<ItemStackResponseContainer>,
+) {
+    companion object : ProtoCodec<ItemStackResponse> {
+        override fun serialize(
+            value: ItemStackResponse,
+            stream: Sink
+        ) {
+            ItemStackResponseStatus.serialize(value.result, stream)
+            ProtoVAR.Int.serialize(value.requestID, stream)
+            when (value.result) {
+                ItemStackResponseStatus.OK -> ProtoHelper.serializeList(value.containers, stream, ItemStackResponseContainer::serialize)
+                else -> Unit
+            }
+        }
+
+        override fun deserialize(stream: Source): ItemStackResponse {
+            val result: ItemStackResponseStatus
+            return ItemStackResponse(
+                result = ItemStackResponseStatus.deserialize(stream).also { result = it },
+                requestID = ProtoVAR.Int.deserialize(stream),
+                containers = when (result) {
+                    ItemStackResponseStatus.OK -> ProtoHelper.deserializeList(stream, ItemStackResponseContainer::deserialize)
+                    else -> emptyList()
+                }
+            )
+        }
+
+    }
+}
