@@ -1,55 +1,73 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.UInt
+import org.chorus_oss.protocol.core.types.ULong
+import org.chorus_oss.protocol.core.types.UShort
+import org.chorus_oss.protocol.types.ChunkPos
 
-class LevelChunkPacket : Packet(id) {
-    @JvmField
-    var chunkX: Int = 0
 
-    @JvmField
-    var chunkZ: Int = 0
+data class LevelChunkPacket(
+    val position: ChunkPos,
+    val dimension: Int,
+    val subChunkCount: UInt,
+    val subChunkLimit: UShort,
+    val cacheEnabled: Boolean,
+    val blobHashes: List<ULong>,
+    val data: List<Byte>
+) : Packet(id) {
+    companion object : PacketCodec<LevelChunkPacket> {
+        val LIMITLESS: UInt = UInt.MAX_VALUE
+        val LIMITED: UInt = UInt.MAX_VALUE - 1u
 
-    @JvmField
-    var subChunkCount: Int = 0
-    var cacheEnabled: Boolean = false
-    var requestSubChunks: Boolean = false
-    var subChunkLimit: Int = 0
-    lateinit var blobIds: LongArray
-    lateinit var data: ByteArray
+        override val id: Int
+            get() = ProtocolInfo.LEVEL_CHUNK_PACKET
 
-    /**
-     * @since v649
-     */
-    @JvmField
-    var dimension: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(this.chunkX)
-        byteBuf.writeVarInt(this.chunkZ)
-        byteBuf.writeVarInt(this.dimension)
-        if (this.requestSubChunks) {
-            if (this.subChunkLimit < 0) {
-                byteBuf.writeUnsignedVarInt(-1)
-            } else {
-                byteBuf.writeUnsignedVarInt(-2)
-                byteBuf.writeUnsignedVarInt(this.subChunkLimit)
+        override fun serialize(value: LevelChunkPacket, stream: Sink) {
+            ChunkPos.serialize(value.position, stream)
+            ProtoVAR.Int.serialize(value.dimension, stream)
+            ProtoVAR.UInt.serialize(value.subChunkCount, stream)
+            when (value.subChunkCount == LIMITED) {
+                true -> ProtoLE.UShort.serialize(value.subChunkLimit, stream)
+                false -> Unit
             }
-        } else {
-            byteBuf.writeUnsignedVarInt(this.subChunkCount)
-        }
-        byteBuf.writeBoolean(cacheEnabled)
-        if (this.cacheEnabled) {
-            byteBuf.writeUnsignedVarInt(blobIds.size)
-
-            for (blobId in blobIds) {
-                byteBuf.writeLongLE(blobId)
+            Proto.Boolean.serialize(value.cacheEnabled, stream)
+            when (value.cacheEnabled) {
+                true -> ProtoHelper.serializeList(value.blobHashes, stream, ProtoLE.ULong::serialize)
+                false -> Unit
             }
+            ProtoHelper.serializeList(value.data, stream, Proto.Byte::serialize)
         }
-        byteBuf.writeByteArray(this.data)
+
+        override fun deserialize(stream: Source): LevelChunkPacket {
+            val subChunkCount: UInt
+            val cacheEnabled: Boolean
+            return LevelChunkPacket(
+                position = ChunkPos.deserialize(stream),
+                dimension = ProtoVAR.Int.deserialize(stream),
+                subChunkCount = ProtoVAR.UInt.deserialize(stream).also { subChunkCount = it },
+                subChunkLimit = when (subChunkCount == LIMITED) {
+                    true -> ProtoLE.UShort.deserialize(stream)
+                    false -> 0u
+                },
+                cacheEnabled = Proto.Boolean.deserialize(stream).also { cacheEnabled = it },
+                blobHashes = when (cacheEnabled) {
+                    true -> ProtoHelper.deserializeList(stream, ProtoLE.ULong::deserialize)
+                    false -> emptyList()
+                },
+                data = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.LEVEL_CHUNK_PACKET
-    }
-
-
 }

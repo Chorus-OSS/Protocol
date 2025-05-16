@@ -1,201 +1,164 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.chorus.utils.Utils
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.shared.types.Vector3f
 
+data class LevelEventPacket(
+    val eventType: Int,
+    val position: Vector3f,
+    val eventData: Int,
+) : Packet(id) {
+    companion object : PacketCodec<LevelEventPacket> {
+        const val EVENT_UNDEFINED: Int = 0
+        const val EVENT_SOUND_CLICK: Int = 1000
+        const val EVENT_SOUND_CLICK_FAIL: Int = 1001
+        const val EVENT_SOUND_LAUNCH: Int = 1002
+        const val EVENT_SOUND_DOOR_OPEN: Int = 1003
+        const val EVENT_SOUND_FIZZ: Int = 1004
+        const val EVENT_SOUND_FUSE: Int = 1005
+        const val EVENT_SOUND_PLAY_RECORDING: Int = 1006
+        const val EVENT_SOUND_GHAST_WARNING: Int = 1007
+        const val EVENT_SOUND_GHAST_FIREBALL: Int = 1008
+        const val EVENT_SOUND_BLAZE_FIREBALL: Int = 1009
+        const val EVENT_SOUND_ZOMBIE_DOOR_BUMP: Int = 1010
+        const val EVENT_SOUND_ZOMBIE_DOOR_CRASH: Int = 1012
+        const val EVENT_SOUND_ZOMBIE_INFECTED: Int = 1016
+        const val EVENT_SOUND_ZOMBIE_CONVERTED: Int = 1017
+        const val EVENT_SOUND_ENDERMAN_TELEPORT: Int = 1018
+        const val EVENT_SOUND_ANVIL_BROKEN: Int = 1020
+        const val EVENT_SOUND_ANVIL_USED: Int = 1021
+        const val EVENT_SOUND_ANVIL_LAND: Int = 1022
+        const val EVENT_SOUND_INFINITY_ARROW_PICKUP: Int = 1030
+        const val EVENT_SOUND_TELEPORT_ENDERPEARL: Int = 1032
+        const val EVENT_SOUND_ITEMFRAME_ITEM_ADD: Int = 1040
+        const val EVENT_SOUND_ITEMFRAME_BREAK: Int = 1041
+        const val EVENT_SOUND_ITEMFRAME_PLACE: Int = 1042
+        const val EVENT_SOUND_ITEMFRAME_ITEM_REMOVE: Int = 1043
+        const val EVENT_SOUND_ITEMFRAME_ITEM_ROTATE: Int = 1044
+        const val EVENT_SOUND_CAMERA: Int = 1050
+        const val EVENT_SOUND_EXPERIENCE_ORB_PICKUP: Int = 1051
+        const val EVENT_SOUND_TOTEM_USED: Int = 1052
+        const val EVENT_SOUND_ARMOR_STAND_BREAK: Int = 1060
+        const val EVENT_SOUND_ARMOR_STAND_HIT: Int = 1061
+        const val EVENT_SOUND_ARMOR_STAND_LAND: Int = 1062
+        const val EVENT_SOUND_ARMOR_STAND_PLACE: Int = 1063
+        const val EVENT_SOUND_POINTED_DRIPSTONE_LAND: Int = 1064
+        const val EVENT_SOUND_DYE_USED: Int = 1065
+        const val EVENT_SOUND_INK_SACE_USED: Int = 1066
+        const val EVENT_SOUND_AMETHYST_RESONATE: Int = 1067
+        const val EVENT_PARTICLE_SHOOT: Int = 2000
+        const val EVENT_PARTICLE_DESTROY_BLOCK: Int = 2001
+        const val EVENT_PARTICLE_POTION_SPLASH: Int = 2002
+        const val EVENT_PARTICLE_EYE_OF_ENDER_DEATH: Int = 2003
+        const val EVENT_PARTICLE_MOB_BLOCK_SPAWN: Int = 2004
+        const val EVENT_PARTICLE_CROP_GROWTH: Int = 2005
+        const val EVENT_PARTICLE_SOUND_GUARDIAN_GHOST: Int = 2006
+        const val EVENT_PARTICLE_DEATH_SMOKE: Int = 2007
+        const val EVENT_PARTICLE_DENY_BLOCK: Int = 2008
+        const val EVENT_PARTICLE_GENERIC_SPAWN: Int = 2009
+        const val EVENT_PARTICLE_DRAGON_EGG: Int = 2010
+        const val EVENT_PARTICLE_CROP_EATEN: Int = 2011
+        const val EVENT_PARTICLE_CRIT: Int = 2012
+        const val EVENT_PARTICLE_TELEPORT: Int = 2013
+        const val EVENT_PARTICLE_CRACK_BLOCK: Int = 2014
+        const val EVENT_PARTICLE_BUBBLES: Int = 2015
+        const val EVENT_PARTICLE_EVAPORATE: Int = 2016
+        const val EVENT_PARTICLE_DESTROY_ARMOR_STAND: Int = 2017
+        const val EVENT_PARTICLE_BREAKING_EGG: Int = 2018
+        const val EVENT_PARTICLE_DESTROY_EGG: Int = 2019
+        const val EVENT_PARTICLE_EVAPORATE_WATER: Int = 2020
+        const val EVENT_PARTICLE_DESTROY_BLOCK_NO_SOUND: Int = 2021
+        const val EVENT_PARTICLE_KNOCKBACK_ROAR: Int = 2022
+        const val EVENT_PARTICLE_TELEPORT_TRAIL: Int = 2023
+        const val EVENT_PARTICLE_POINT_CLOUD: Int = 2024
+        const val EVENT_PARTICLE_EXPLOSION: Int = 2025
+        const val EVENT_PARTICLE_BLOCK_EXPLOSION: Int = 2026
+        const val EVENT_PARTICLE_VIBRATION_SIGNAL: Int = 2027
+        const val EVENT_PARTICLE_DRIPSTONE_DRIP: Int = 2028
+        const val EVENT_PARTICLE_FIZZ_EFFECT: Int = 2029
+        const val EVENT_PARTICLE_WAX_ON: Int = 2030
+        const val EVENT_PARTICLE_WAX_OFF: Int = 2031
+        const val EVENT_PARTICLE_SCRAPE: Int = 2032
+        const val EVENT_PARTICLE_ELECTRIC_SPARK: Int = 2033
+        const val EVENT_PARTICLE_TURTLE_EGG: Int = 2034
+        const val EVENT_PARTICLE_SCULK_SHRIEK: Int = 2035
+        const val EVENT_SCULK_CATALYST_BLOOM: Int = 2036
+        const val EVENT_SCULK_CHARGE: Int = 2037
+        const val EVENT_SCULK_CHARGE_POP: Int = 2038
+        const val EVENT_SONIC_EXPLOSION: Int = 2039
+        const val EVENT_DUST_PLUME: Int = 2040
+        const val EVENT_START_RAINING: Int = 3001
+        const val EVENT_START_THUNDERSTORM: Int = 3002
+        const val EVENT_STOP_RAINING: Int = 3003
+        const val EVENT_STOP_THUNDERSTORM: Int = 3004
+        const val EVENT_GLOBAL_PAUSE: Int = 3005
+        const val EVENT_SIM_TIME_STEP: Int = 3006
+        const val EVENT_SIM_TIME_SCALE: Int = 3007
+        const val EVENT_ACTIVATE_BLOCK: Int = 3500
+        const val EVENT_CAULDRON_EXPLODE: Int = 3501
+        const val EVENT_CAULDRON_DYE_ARMOR: Int = 3502
+        const val EVENT_CAULDRON_CLEAN_ARMOR: Int = 3503
+        const val EVENT_CAULDRON_FILL_POTION: Int = 3504
+        const val EVENT_CAULDRON_TAKE_POTION: Int = 3505
+        const val EVENT_CAULDRON_FILL_WATER: Int = 3506
+        const val EVENT_CAULDRON_TAKE_WATER: Int = 3507
+        const val EVENT_CAULDRON_ADD_DYE: Int = 3508
+        const val EVENT_CAULDRON_CLEAN_BANNER: Int = 3509
+        const val EVENT_CAULDRON_FLUSH: Int = 3510
+        const val EVENT_AGENT_SPAWN_EFFECT: Int = 3511
+        const val EVENT_CAULDRON_FILL_LAVA: Int = 3512
+        const val EVENT_CAULDRON_TAKE_LAVA: Int = 3513
+        const val EVENT_CAULDRON_FILL_POWDER_SNOW: Int = 3514
+        const val EVENT_CAULDRON_TAKE_POWDER_SNOW: Int = 3515
+        const val EVENT_BLOCK_START_BREAK: Int = 3600
+        const val EVENT_BLOCK_STOP_BREAK: Int = 3601
+        const val EVENT_BLOCK_UPDATE_BREAK: Int = 3602
+        const val EVENT_PARTICLE_BREAK_BLOCK_DOWN: Int = 3603
+        const val EVENT_PARTICLE_BREAK_BLOCK_UP: Int = 3604
+        const val EVENT_PARTICLE_BREAK_BLOCK_NORTH: Int = 3605
+        const val EVENT_PARTICLE_BREAK_BLOCK_SOUTH: Int = 3606
+        const val EVENT_PARTICLE_BREAK_BLOCK_WEST: Int = 3607
+        const val EVENT_PARTICLE_BREAK_BLOCK_EAST: Int = 3608
+        const val EVENT_PARTICLE_SHOOT_WHITE_SMOKE: Int = 3609
+        const val EVENT_PARTICLE_BREEZE_WIND_EXPLOSION: Int = 3610
+        const val EVENT_PARTICLE_TRAIL_SPAWNER_DETECTION: Int = 3611
+        const val EVENT_PARTICLE_TRAIL_SPAWNER_SPAWNING: Int = 3612
+        const val EVENT_PARTICLE_TRAIL_SPAWNER_EJECTING: Int = 3613
+        const val EVENT_PARTICLE_WIND_EXPLOSION: Int = 3614
+        const val EVENT_PARTICLE_TRIAL_SPAWNER_DETECTION_CHARGED: Int = 3615
+        const val EVENT_PARTICLE_TRIAL_SPAWNER_BECOME_CHARGED: Int = 3616
+        const val EVENT_SLEEPING_PLAYERS: Int = 9801
+        const val EVENT_JUMP_PREVENTED: Int = 9810
+        const val EVENT_ANIMATION_VAULT_ACTIVATE: Int = 9811
+        const val EVENT_ANIMATION_VAULT_DEACTIVATE: Int = 9812
+        const val EVENT_ANIMATION_VAULT_EJECT_ITEM: Int = 9813
+        const val EVENT_ANIMATION_SPAWN_COBWEB: Int = 9814
+        const val EVENT_PARTICLE_SMASH_ATTACK_GROUND_DUST: Int = 9815
+        const val EVENT_PARTICLE_CREAKING_HEART_TRAIL: Int = 9816
+        const val EVENT_ADD_PARTICLE_MASK: Int = 0x4000
 
-class LevelEventPacket : Packet(id) {
-    @JvmField
-    var evid: Int = 0
+        override val id: Int
+            get() = ProtocolInfo.LEVEL_EVENT_PACKET
 
-    @JvmField
-    var x: Float = 0f
+        override fun serialize(value: LevelEventPacket, stream: Sink) {
+            ProtoVAR.Int.serialize(value.eventType, stream)
+            Vector3f.serialize(value.position, stream)
+            ProtoVAR.Int.serialize(value.eventData, stream)
+        }
 
-    @JvmField
-    var y: Float = 0f
-
-    @JvmField
-    var z: Float = 0f
-
-    @JvmField
-    var data: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(this.evid)
-        byteBuf.writeVector3f(this.x, this.y, this.z)
-        byteBuf.writeVarInt(this.data)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.LEVEL_EVENT_PACKET
-    }
-
-
-
-    companion object {
-        val EVENT_UNDEFINED: Int = Utils.dynamic(0)
-        val EVENT_SOUND_CLICK: Int = Utils.dynamic(1000)
-        val EVENT_SOUND_CLICK_FAIL: Int = Utils.dynamic(1001)
-        val EVENT_SOUND_LAUNCH: Int = Utils.dynamic(1002)
-        val EVENT_SOUND_DOOR_OPEN: Int = Utils.dynamic(1003)
-
-        @JvmField
-        val EVENT_SOUND_FIZZ: Int = Utils.dynamic(1004)
-        val EVENT_SOUND_FUSE: Int = Utils.dynamic(1005)
-        val EVENT_SOUND_PLAY_RECORDING: Int = Utils.dynamic(1006)
-        val EVENT_SOUND_GHAST_WARNING: Int = Utils.dynamic(1007)
-        val EVENT_SOUND_GHAST_FIREBALL: Int = Utils.dynamic(1008)
-        val EVENT_SOUND_BLAZE_FIREBALL: Int = Utils.dynamic(1009)
-        val EVENT_SOUND_ZOMBIE_DOOR_BUMP: Int = Utils.dynamic(1010)
-        val EVENT_SOUND_ZOMBIE_DOOR_CRASH: Int = Utils.dynamic(1012)
-        val EVENT_SOUND_ZOMBIE_INFECTED: Int = Utils.dynamic(1016)
-        val EVENT_SOUND_ZOMBIE_CONVERTED: Int = Utils.dynamic(1017)
-        val EVENT_SOUND_ENDERMAN_TELEPORT: Int = Utils.dynamic(1018)
-        val EVENT_SOUND_ANVIL_BROKEN: Int = Utils.dynamic(1020)
-        val EVENT_SOUND_ANVIL_USED: Int = Utils.dynamic(1021)
-        val EVENT_SOUND_ANVIL_LAND: Int = Utils.dynamic(1022)
-        val EVENT_SOUND_INFINITY_ARROW_PICKUP: Int = Utils.dynamic(1030)
-        val EVENT_SOUND_TELEPORT_ENDERPEARL: Int = Utils.dynamic(1032)
-
-        @JvmField
-        val EVENT_SOUND_ITEMFRAME_ITEM_ADD: Int = Utils.dynamic(1040)
-
-        @JvmField
-        val EVENT_SOUND_ITEMFRAME_BREAK: Int = Utils.dynamic(1041)
-        val EVENT_SOUND_ITEMFRAME_PLACE: Int = Utils.dynamic(1042)
-        val EVENT_SOUND_ITEMFRAME_ITEM_REMOVE: Int = Utils.dynamic(1043)
-
-        @JvmField
-        val EVENT_SOUND_ITEMFRAME_ITEM_ROTATE: Int = Utils.dynamic(1044)
-        val EVENT_SOUND_CAMERA: Int = Utils.dynamic(1050)
-
-        @JvmField
-        val EVENT_SOUND_EXPERIENCE_ORB_PICKUP: Int = Utils.dynamic(1051)
-        val EVENT_SOUND_TOTEM_USED: Int = Utils.dynamic(1052)
-        val EVENT_SOUND_ARMOR_STAND_BREAK: Int = Utils.dynamic(1060)
-        val EVENT_SOUND_ARMOR_STAND_HIT: Int = Utils.dynamic(1061)
-        val EVENT_SOUND_ARMOR_STAND_LAND: Int = Utils.dynamic(1062)
-        val EVENT_SOUND_ARMOR_STAND_PLACE: Int = Utils.dynamic(1063)
-        val EVENT_SOUND_POINTED_DRIPSTONE_LAND: Int = Utils.dynamic(1064)
-
-        @JvmField
-        val EVENT_SOUND_DYE_USED: Int = Utils.dynamic(1065)
-
-        @JvmField
-        val EVENT_SOUND_INK_SACE_USED: Int = Utils.dynamic(1066)
-        val EVENT_SOUND_AMETHYST_RESONATE: Int = Utils.dynamic(1067)
-
-        @JvmField
-        val EVENT_PARTICLE_SHOOT: Int = Utils.dynamic(2000)
-
-        @JvmField
-        val EVENT_PARTICLE_DESTROY_BLOCK: Int = Utils.dynamic(2001)
-        val EVENT_PARTICLE_POTION_SPLASH: Int = Utils.dynamic(2002)
-        val EVENT_PARTICLE_EYE_OF_ENDER_DEATH: Int = Utils.dynamic(2003)
-        val EVENT_PARTICLE_MOB_BLOCK_SPAWN: Int = Utils.dynamic(2004)
-        val EVENT_PARTICLE_CROP_GROWTH: Int = Utils.dynamic(2005)
-        val EVENT_PARTICLE_SOUND_GUARDIAN_GHOST: Int = Utils.dynamic(2006)
-        val EVENT_PARTICLE_DEATH_SMOKE: Int = Utils.dynamic(2007)
-        val EVENT_PARTICLE_DENY_BLOCK: Int = Utils.dynamic(2008)
-        val EVENT_PARTICLE_GENERIC_SPAWN: Int = Utils.dynamic(2009)
-
-        @JvmField
-        val EVENT_PARTICLE_DRAGON_EGG: Int = Utils.dynamic(2010)
-        val EVENT_PARTICLE_CROP_EATEN: Int = Utils.dynamic(2011)
-        val EVENT_PARTICLE_CRIT: Int = Utils.dynamic(2012)
-        val EVENT_PARTICLE_TELEPORT: Int = Utils.dynamic(2013)
-        val EVENT_PARTICLE_CRACK_BLOCK: Int = Utils.dynamic(2014)
-        val EVENT_PARTICLE_BUBBLES: Int = Utils.dynamic(2015)
-        val EVENT_PARTICLE_EVAPORATE: Int = Utils.dynamic(2016)
-        val EVENT_PARTICLE_DESTROY_ARMOR_STAND: Int = Utils.dynamic(2017)
-        val EVENT_PARTICLE_BREAKING_EGG: Int = Utils.dynamic(2018)
-        val EVENT_PARTICLE_DESTROY_EGG: Int = Utils.dynamic(2019)
-        val EVENT_PARTICLE_EVAPORATE_WATER: Int = Utils.dynamic(2020)
-        val EVENT_PARTICLE_DESTROY_BLOCK_NO_SOUND: Int = Utils.dynamic(2021)
-        val EVENT_PARTICLE_KNOCKBACK_ROAR: Int = Utils.dynamic(2022)
-        val EVENT_PARTICLE_TELEPORT_TRAIL: Int = Utils.dynamic(2023)
-        val EVENT_PARTICLE_POINT_CLOUD: Int = Utils.dynamic(2024)
-        val EVENT_PARTICLE_EXPLOSION: Int = Utils.dynamic(2025)
-        val EVENT_PARTICLE_BLOCK_EXPLOSION: Int = Utils.dynamic(2026)
-        val EVENT_PARTICLE_VIBRATION_SIGNAL: Int = Utils.dynamic(2027)
-        val EVENT_PARTICLE_DRIPSTONE_DRIP: Int = Utils.dynamic(2028)
-        val EVENT_PARTICLE_FIZZ_EFFECT: Int = Utils.dynamic(2029)
-        val EVENT_PARTICLE_WAX_ON: Int = Utils.dynamic(2030)
-        val EVENT_PARTICLE_WAX_OFF: Int = Utils.dynamic(2031)
-        val EVENT_PARTICLE_SCRAPE: Int = Utils.dynamic(2032)
-        val EVENT_PARTICLE_ELECTRIC_SPARK: Int = Utils.dynamic(2033)
-        val EVENT_PARTICLE_TURTLE_EGG: Int = Utils.dynamic(2034)
-        val EVENT_PARTICLE_SCULK_SHRIEK: Int = Utils.dynamic(2035)
-        val EVENT_SCULK_CATALYST_BLOOM: Int = Utils.dynamic(2036)
-        val EVENT_SCULK_CHARGE: Int = Utils.dynamic(2037)
-        val EVENT_SCULK_CHARGE_POP: Int = Utils.dynamic(2038)
-        val EVENT_SONIC_EXPLOSION: Int = Utils.dynamic(2039)
-        val EVENT_DUST_PLUME: Int = Utils.dynamic(2040)
-        val EVENT_START_RAINING: Int = Utils.dynamic(3001)
-        val EVENT_START_THUNDERSTORM: Int = Utils.dynamic(3002)
-        val EVENT_STOP_RAINING: Int = Utils.dynamic(3003)
-        val EVENT_STOP_THUNDERSTORM: Int = Utils.dynamic(3004)
-        val EVENT_GLOBAL_PAUSE: Int = Utils.dynamic(3005)
-        val EVENT_SIM_TIME_STEP: Int = Utils.dynamic(3006)
-        val EVENT_SIM_TIME_SCALE: Int = Utils.dynamic(3007)
-
-        @JvmField
-        val EVENT_ACTIVATE_BLOCK: Int = Utils.dynamic(3500)
-
-        @JvmField
-        val EVENT_CAULDRON_EXPLODE: Int = Utils.dynamic(3501)
-        val EVENT_CAULDRON_DYE_ARMOR: Int = Utils.dynamic(3502)
-        val EVENT_CAULDRON_CLEAN_ARMOR: Int = Utils.dynamic(3503)
-
-        @JvmField
-        val EVENT_CAULDRON_FILL_POTION: Int = Utils.dynamic(3504)
-
-        @JvmField
-        val EVENT_CAULDRON_TAKE_POTION: Int = Utils.dynamic(3505)
-        val EVENT_CAULDRON_FILL_WATER: Int = Utils.dynamic(3506)
-
-        @JvmField
-        val EVENT_CAULDRON_TAKE_WATER: Int = Utils.dynamic(3507)
-        val EVENT_CAULDRON_ADD_DYE: Int = Utils.dynamic(3508)
-        val EVENT_CAULDRON_CLEAN_BANNER: Int = Utils.dynamic(3509)
-        val EVENT_CAULDRON_FLUSH: Int = Utils.dynamic(3510)
-        val EVENT_AGENT_SPAWN_EFFECT: Int = Utils.dynamic(3511)
-        val EVENT_CAULDRON_FILL_LAVA: Int = Utils.dynamic(3512)
-        val EVENT_CAULDRON_TAKE_LAVA: Int = Utils.dynamic(3513)
-        val EVENT_CAULDRON_FILL_POWDER_SNOW: Int = Utils.dynamic(3514)
-        val EVENT_CAULDRON_TAKE_POWDER_SNOW: Int = Utils.dynamic(3515)
-
-        @JvmField
-        val EVENT_BLOCK_START_BREAK: Int = Utils.dynamic(3600)
-
-        @JvmField
-        val EVENT_BLOCK_STOP_BREAK: Int = Utils.dynamic(3601)
-
-        @JvmField
-        val EVENT_BLOCK_UPDATE_BREAK: Int = Utils.dynamic(3602)
-        val EVENT_PARTICLE_BREAK_BLOCK_DOWN: Int = Utils.dynamic(3603)
-        val EVENT_PARTICLE_BREAK_BLOCK_UP: Int = Utils.dynamic(3604)
-        val EVENT_PARTICLE_BREAK_BLOCK_NORTH: Int = Utils.dynamic(3605)
-        val EVENT_PARTICLE_BREAK_BLOCK_SOUTH: Int = Utils.dynamic(3606)
-        val EVENT_PARTICLE_BREAK_BLOCK_WEST: Int = Utils.dynamic(3607)
-        val EVENT_PARTICLE_BREAK_BLOCK_EAST: Int = Utils.dynamic(3608)
-        val EVENT_PARTICLE_SHOOT_WHITE_SMOKE: Int = Utils.dynamic(3609)
-        val EVENT_PARTICLE_BREEZE_WIND_EXPLOSION: Int = Utils.dynamic(3610)
-        val EVENT_PARTICLE_TRAIL_SPAWNER_DETECTION: Int = Utils.dynamic(3611)
-        val EVENT_PARTICLE_TRAIL_SPAWNER_SPAWNING: Int = Utils.dynamic(3612)
-        val EVENT_PARTICLE_TRAIL_SPAWNER_EJECTING: Int = Utils.dynamic(3613)
-        val EVENT_PARTICLE_WIND_EXPLOSION: Int = Utils.dynamic(3614)
-        val EVENT_ALL_PLAYERS_SLEEPING: Int = Utils.dynamic(3615)
-        val EVENT_SET_DATA: Int = Utils.dynamic(4000)
-        val EVENT_SLEEPING_PLAYERS: Int = Utils.dynamic(9801)
-        val EVENT_JUMP_PREVENTED: Int = Utils.dynamic(9810)
-        val EVENT_ANIMATION_VAULT_ACTIVATE: Int = Utils.dynamic(9811)
-        val EVENT_ANIMATION_VAULT_DEACTIVATE: Int = Utils.dynamic(9812)
-        val EVENT_ANIMATION_VAULT_EJECT_ITEM: Int = Utils.dynamic(9813)
-        val EVENT_ANIMATION_SPAWN_COBWEB: Int = Utils.dynamic(9814)
-        val EVENT_PARTICLE_SMASH_ATTACK_GROUND_DUST: Int = Utils.dynamic(9815)
-        val EVENT_PARTICLE_CREAKING_HEART_TRIAL: Int = Utils.dynamic(9816)
-
-        val EVENT_ADD_PARTICLE_MASK: Int = Utils.dynamic(0x4000)
+        override fun deserialize(stream: Source): LevelEventPacket {
+            return LevelEventPacket(
+                eventType = ProtoVAR.Int.deserialize(stream),
+                position = Vector3f.deserialize(stream),
+                eventData = ProtoVAR.Int.deserialize(stream),
+            )
+        }
     }
 }

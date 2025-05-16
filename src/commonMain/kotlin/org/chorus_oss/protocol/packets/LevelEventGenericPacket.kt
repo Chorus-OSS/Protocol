@@ -1,28 +1,33 @@
 package org.chorus_oss.protocol.packets
 
-import io.netty.handler.codec.EncoderException
-import org.chorus_oss.chorus.nbt.tag.CompoundTag
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
 
-import java.io.IOException
-import java.nio.ByteOrder
+class LevelEventGenericPacket(
+    val eventID: Int,
+    val serializedEventData: List<Byte>
+) : Packet(id) {
+    companion object : PacketCodec<LevelEventGenericPacket> {
+        override val id: Int
+            get() = ProtocolInfo.LEVEL_EVENT_GENERIC_PACKET
 
+        override fun serialize(
+            value: LevelEventGenericPacket,
+            stream: Sink
+        ) {
+            ProtoVAR.Int.serialize(value.eventID, stream)
+            ProtoHelper.serializeList(value.serializedEventData, stream, Proto.Byte::serialize)
+        }
 
-class LevelEventGenericPacket : Packet(id) {
-    var eventId: Int = 0
-    var tag: CompoundTag? = null
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(eventId)
-        try {
-            byteBuf.writeBytes(writeValue(tag!!, ByteOrder.LITTLE_ENDIAN, true))
-        } catch (e: IOException) {
-            throw EncoderException(e)
+        override fun deserialize(stream: Source): LevelEventGenericPacket {
+            return LevelEventGenericPacket(
+                eventID = ProtoVAR.Int.deserialize(stream),
+                serializedEventData = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+            )
         }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.LEVEL_EVENT_GENERIC_PACKET
-    }
-
-
 }

@@ -1,28 +1,37 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.BlockVector3
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.shared.types.UIVector3
 
 
-class LecternUpdatePacket : Packet(id) {
-    var page: Int = 0
-    var totalPages: Int = 0
-    lateinit var blockPosition: BlockVector3
-
-    override fun pid(): Int {
-        return ProtocolInfo.LECTERN_UPDATE_PACKET
-    }
-
-
-
+data class LecternUpdatePacket(
+    val page: Byte,
+    val totalPages: Byte,
+    val blockPosition: IVector3,
+) : Packet(id) {
     companion object : PacketCodec<LecternUpdatePacket> {
+        override val id: Int
+            get() = ProtocolInfo.LECTERN_UPDATE_PACKET
+
+        override fun serialize(value: LecternUpdatePacket, stream: Sink) {
+            Proto.Byte.serialize(value.page, stream)
+            Proto.Byte.serialize(value.totalPages, stream)
+            UIVector3.serialize(value.blockPosition, stream)
+        }
+
         override fun deserialize(stream: Source): LecternUpdatePacket {
-            val packet = LecternUpdatePacket()
-
-            packet.page = byteBuf.readUnsignedByte().toInt()
-            packet.totalPages = byteBuf.readUnsignedByte().toInt()
-            packet.blockPosition = byteBuf.readBlockVector3()
-
-            return packet
+            return LecternUpdatePacket(
+                page = Proto.Byte.deserialize(stream),
+                totalPages = Proto.Byte.deserialize(stream),
+                blockPosition = UIVector3.deserialize(stream)
+            )
         }
     }
 }

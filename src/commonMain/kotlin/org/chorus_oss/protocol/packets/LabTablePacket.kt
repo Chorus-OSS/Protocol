@@ -1,25 +1,57 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.BlockVector3
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.shared.types.UIVector3
 
-import org.chorus_oss.protocol.types.LabTableReactionType
-import org.chorus_oss.protocol.types.LabTableType
 
+data class LabTablePacket(
+    val actionType: ActionType,
+    val blockPosition: IVector3,
+    val reactionType: Byte
+) : Packet(id) {
+    companion object : PacketCodec<LabTablePacket> {
+        enum class ActionType {
+            Combine,
+            React,
+            Reset;
 
-class LabTablePacket : Packet(id) {
-    var actionType: LabTableType? = null
-    var blockPosition: BlockVector3? = null
-    var reactionType: LabTableReactionType? = null
+            companion object : ProtoCodec<ActionType> {
+                override fun serialize(
+                    value: ActionType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(actionType!!.ordinal.toByte().toInt())
-        byteBuf.writeBlockVector3(blockPosition!!)
-        byteBuf.writeByte(reactionType!!.ordinal.toByte().toInt())
+                override fun deserialize(stream: Source): ActionType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.LAB_TABLE_PACKET
+
+        override fun serialize(value: LabTablePacket, stream: Sink) {
+            ActionType.serialize(value.actionType, stream)
+            IVector3.serialize(value.blockPosition, stream)
+            Proto.Byte.serialize(value.reactionType, stream)
+        }
+
+        override fun deserialize(stream: Source): LabTablePacket {
+            return LabTablePacket(
+                actionType = ActionType.deserialize(stream),
+                blockPosition = IVector3.deserialize(stream),
+                reactionType = Proto.Byte.deserialize(stream)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.LAB_TABLE_PACKET
-    }
-
-
 }
