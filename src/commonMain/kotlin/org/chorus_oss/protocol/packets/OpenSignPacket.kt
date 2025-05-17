@@ -1,33 +1,33 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.BlockVector3
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
-class OpenSignPacket : Packet(id) {
-    @JvmField
-    var position: BlockVector3? = null
-
-    @JvmField
-    var frontSide: Boolean = false
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeBlockVector3(position!!)
-        byteBuf.writeBoolean(frontSide)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.OPEN_SIGN
-    }
-
-
-
+data class OpenSignPacket(
+    val position: IVector3,
+    val frontSide: Boolean,
+) : Packet(id) {
     companion object : PacketCodec<OpenSignPacket> {
+        override val id: Int
+            get() = ProtocolInfo.OPEN_SIGN_PACKET
+
+        override fun serialize(value: OpenSignPacket, stream: Sink) {
+            UIVector3.serialize(value.position, stream)
+            Proto.Boolean.serialize(value.frontSide, stream)
+        }
+
         override fun deserialize(stream: Source): OpenSignPacket {
-            val packet = OpenSignPacket()
-
-            packet.position = byteBuf.readBlockVector3()
-            packet.frontSide = Proto.Boolean.deserialize(stream)
-
-            return packet
+            return OpenSignPacket(
+                position = UIVector3.deserialize(stream),
+                frontSide = Proto.Boolean.deserialize(stream),
+            )
         }
     }
 }

@@ -15,7 +15,7 @@ data class AgentAnimationPacket(
 ) : Packet(id) {
     companion object : PacketCodec<AgentAnimationPacket> {
         override val id: Int
-            get() = ProtocolInfo.AGENT_ANIMATION
+            get() = ProtocolInfo.AGENT_ANIMATION_PACKET
 
         override fun deserialize(stream: Source): AgentAnimationPacket {
             return AgentAnimationPacket(
