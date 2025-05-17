@@ -1,41 +1,47 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.PacketCompressionAlgorithm
 
 
-class NetworkSettingsPacket : Packet(id) {
-    var compressionThreshold: Int = 0
-    var compressionAlgorithm: PacketCompressionAlgorithm? = null
-    var clientThrottleEnabled: Boolean = false
-    var clientThrottleThreshold: Byte = 0
-    var clientThrottleScalar: Float = 0f
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeShortLE(this.compressionThreshold)
-        byteBuf.writeShortLE(compressionAlgorithm!!.ordinal)
-        byteBuf.writeBoolean(this.clientThrottleEnabled)
-        byteBuf.writeByte(clientThrottleThreshold.toInt())
-        byteBuf.writeFloatLE(this.clientThrottleScalar)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.NETWORK_SETTINGS_PACKET
-    }
-
-
-
+data class NetworkSettingsPacket(
+    val compressionThreshold: UShort,
+    val compressionAlgorithm: PacketCompressionAlgorithm,
+    val clientThrottle: Boolean,
+    val clientThrottleThreshold: Byte,
+    val clientThrottleScalar: Float,
+) : Packet(id) {
     companion object : PacketCodec<NetworkSettingsPacket> {
+        override val id: Int
+            get() = ProtocolInfo.NETWORK_SETTINGS_PACKET
+
+        override fun serialize(value: NetworkSettingsPacket, stream: Sink) {
+            ProtoLE.UShort.serialize(value.compressionThreshold, stream)
+            PacketCompressionAlgorithm.serialize(value.compressionAlgorithm, stream)
+            Proto.Boolean.serialize(value.clientThrottle, stream)
+            Proto.Byte.serialize(value.clientThrottleThreshold, stream)
+            ProtoLE.Float.serialize(value.clientThrottleScalar, stream)
+        }
+
         override fun deserialize(stream: Source): NetworkSettingsPacket {
-            val packet = NetworkSettingsPacket()
-
-            packet.compressionThreshold = byteBuf.readShortLE().toInt()
-            packet.compressionAlgorithm = PacketCompressionAlgorithm.entries[byteBuf.readShortLE().toInt()]
-            packet.clientThrottleEnabled = Proto.Boolean.deserialize(stream)
-            packet.clientThrottleThreshold = Proto.Byte.deserialize(stream)
-            packet.clientThrottleScalar = byteBuf.readFloatLE()
-
-            return packet
+            return NetworkSettingsPacket(
+                compressionThreshold = ProtoLE.UShort.deserialize(stream),
+                compressionAlgorithm = PacketCompressionAlgorithm.deserialize(stream),
+                clientThrottle = Proto.Boolean.deserialize(stream),
+                clientThrottleThreshold = Proto.Byte.deserialize(stream),
+                clientThrottleScalar = ProtoLE.Float.deserialize(stream),
+            )
         }
     }
 }
