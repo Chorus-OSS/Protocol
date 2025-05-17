@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.shared.types.Vector2f
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector2f
+import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.camera.CameraEase
 
 data class CameraSetInstruction(

@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector3f
 
 data class LevelSoundEventPacket(
     val soundType: SoundType,

@@ -9,8 +9,8 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.Vector3f
 
 class ActorDataMap() : MutableMap<ActorDataKey, Any> {
     private val map = mutableMapOf<ActorDataKey, Any>()

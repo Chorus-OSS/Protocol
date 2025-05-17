@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.shared.types.Vector2f
+import org.chorus_oss.protocol.types.Vector2f
 import org.chorus_oss.protocol.types.camera.CameraAimAssistTargetMode
 
 data class CameraPresetAimAssist(

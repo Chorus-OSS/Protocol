@@ -1,4 +1,4 @@
-package org.chorus_oss.protocol.shared.types
+package org.chorus_oss.protocol.types
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
@@ -7,6 +7,7 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import kotlin.math.floor
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sqrt
 
 
@@ -45,7 +46,7 @@ data class Vector2f(
     }
 
     fun round(): Vector2f {
-        return Vector2f(Math.round(this.x).toFloat(), Math.round(this.y).toFloat())
+        return Vector2f(round(this.x), round(this.y))
     }
 
     fun abs(): Vector2f {

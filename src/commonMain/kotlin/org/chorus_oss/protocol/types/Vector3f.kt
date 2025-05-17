@@ -1,4 +1,4 @@
-package org.chorus_oss.protocol.shared.types
+package org.chorus_oss.protocol.types
 
 import kotlinx.io.Sink
 import kotlinx.io.Source

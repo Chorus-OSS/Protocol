@@ -1,8 +1,8 @@
 package org.chorus_oss.protocol.types.actor_data
 
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.Vector3f
 import kotlin.reflect.KClass
 
 sealed class ActorDataType<T : Any>(

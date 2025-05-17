@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.core.types.ULong
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector3f
 
 data class ClientboundDebugRendererPacket(
     val type: Type,

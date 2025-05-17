@@ -5,8 +5,8 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.shared.types.Vector2f
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector2f
+import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.*
 import org.chorus_oss.protocol.types.actor_data.ActorDataMap
 import org.chorus_oss.protocol.types.item.ItemStack

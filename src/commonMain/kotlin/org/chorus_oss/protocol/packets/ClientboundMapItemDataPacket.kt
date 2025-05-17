@@ -5,8 +5,8 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.UIVector3
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.Color

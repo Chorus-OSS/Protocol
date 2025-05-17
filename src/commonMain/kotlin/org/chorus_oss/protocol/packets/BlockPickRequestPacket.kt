@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.shared.types.IVector3
+import org.chorus_oss.protocol.types.IVector3
 
 data class BlockPickRequestPacket(
     val position: IVector3,

@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.shared.types.Vector2f
+import org.chorus_oss.protocol.types.Vector2f
 import org.chorus_oss.protocol.types.camera.CameraAimAssistTargetMode
 
 data class CameraAimAssistPacket(

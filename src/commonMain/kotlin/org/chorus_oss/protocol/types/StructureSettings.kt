@@ -1,7 +1,6 @@
 package org.chorus_oss.protocol.types
 
 import org.chorus_oss.chorus.math.BlockVector3
-import org.chorus_oss.protocol.shared.types.Vector3f
 
 data class StructureSettings(
     val paletteName: String,

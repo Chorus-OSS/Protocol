@@ -7,8 +7,8 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.UIVector3
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 
 data class LecternUpdatePacket(

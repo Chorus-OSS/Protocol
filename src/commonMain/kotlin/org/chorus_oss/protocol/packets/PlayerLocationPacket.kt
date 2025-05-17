@@ -1,6 +1,6 @@
 package org.chorus_oss.chorus.network.protocol
 
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
 import org.chorus_oss.chorus.network.protocol.types.ActorRuntimeID
 

@@ -6,9 +6,9 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.UIVector3
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.item.ItemStack
 
 data class UseItemTransactionData(

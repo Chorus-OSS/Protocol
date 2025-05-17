@@ -6,8 +6,8 @@ import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.Vector3f
 
 enum class ActorDataFormat {
     BYTE,

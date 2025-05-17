@@ -8,8 +8,8 @@ import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.shared.types.IVector3
-import org.chorus_oss.protocol.shared.types.UIVector3
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 data class BlockActorDataPacket(
     var blockPosition: IVector3,

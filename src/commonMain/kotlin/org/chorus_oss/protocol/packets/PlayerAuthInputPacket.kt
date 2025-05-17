@@ -1,8 +1,8 @@
 package org.chorus_oss.protocol.packets
 
 import org.chorus_oss.chorus.math.Vector2
-import org.chorus_oss.protocol.shared.types.Vector2f
-import org.chorus_oss.protocol.shared.types.Vector3f
+import org.chorus_oss.protocol.types.Vector2f
+import org.chorus_oss.protocol.types.Vector3f
 
 import org.chorus_oss.protocol.types.*
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
