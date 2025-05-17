@@ -1,50 +1,32 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.item.enchantment.Enchantment
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.types.EnchantmentOption
 
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
 
+data class PlayerEnchantOptionsPacket(
+    val options: List<EnchantmentOption>
+) : Packet(id) {
+    companion object : PacketCodec<PlayerEnchantOptionsPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_ENCHANT_OPTIONS_PACKET
 
-class PlayerEnchantOptionsPacket : Packet(id) {
-    var options: List<EnchantOptionData> = ArrayList()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(options.size)
-        for (option in this.options) {
-            byteBuf.writeUnsignedVarInt(option.minLevel)
-            byteBuf.writeInt(0)
-            byteBuf.writeUnsignedVarInt(option.enchantments.size)
-            for (data in option.enchantments) {
-                byteBuf.writeByte(data.id.toByte().toInt())
-                byteBuf.writeByte(data.level.toByte().toInt())
-            }
-            byteBuf.writeUnsignedVarInt(0)
-            byteBuf.writeUnsignedVarInt(0)
-            byteBuf.writeString(option.enchantName)
-            val netid = ENCH_RECIPE_NETID.getAndIncrement()
-            byteBuf.writeUnsignedVarInt(netid)
-            RECIPE_MAP[netid] = option
+        override fun serialize(
+            value: PlayerEnchantOptionsPacket,
+            stream: Sink
+        ) {
+            ProtoHelper.serializeList(value.options, stream, EnchantmentOption)
         }
-    }
 
-    @JvmRecord
-    data class EnchantOptionData(
-        val minLevel: Int,
-        val enchantName: String,
-        val enchantments: List<Enchantment>,
-        val entry: Int
-    )
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_ENCHANT_OPTIONS_PACKET
-    }
-
-
-
-    companion object {
-        const val ENCH_RECIPEID: Int = 100000
-        val RECIPE_MAP: ConcurrentHashMap<Int, EnchantOptionData> = ConcurrentHashMap()
-        private val ENCH_RECIPE_NETID = AtomicInteger(ENCH_RECIPEID)
+        override fun deserialize(stream: Source): PlayerEnchantOptionsPacket {
+            return PlayerEnchantOptionsPacket(
+                options = ProtoHelper.deserializeList(stream, EnchantmentOption),
+            )
+        }
     }
 }

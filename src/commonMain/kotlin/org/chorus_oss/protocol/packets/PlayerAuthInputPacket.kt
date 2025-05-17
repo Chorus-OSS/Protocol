@@ -1,104 +1,139 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.math.Vector2
-import org.chorus_oss.protocol.types.Vector2f
-import org.chorus_oss.protocol.types.Vector3f
-
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.BitSet
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.types.*
+import org.chorus_oss.protocol.types.inventory.transaction.UseItemTransactionData
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequest
-import java.util.*
 
 
-class PlayerAuthInputPacket : Packet(id) {
-    var yaw: Float = 0f
-    var pitch: Float = 0f
-    var headYaw: Float = 0f
-    var position: Vector3f? = null
-    var motion: Vector2? = null
-    var inputData: MutableSet<AuthInputAction> = EnumSet.noneOf(AuthInputAction::class.java)
-    var inputMode: InputMode? = null
-    var playMode: ClientPlayMode? = null
-    var interactionModel: AuthInteractionModel? = null
-    var interactRotation: Vector2f? = null
-    var tick: PlayerInputTick? = null
-    var delta: Vector3f? = null
-
-    /**
-     * [.inputData] must contain [AuthInputAction.PERFORM_ITEM_STACK_REQUEST] in order for this to not be null.
-     */
-    var itemStackRequest: ItemStackRequest? = null
-    val blockActionData: MutableMap<PlayerActionType, PlayerBlockActionData> = EnumMap(
-        PlayerActionType::class.java
-    )
-    var analogMoveVector: Vector2f? = null
-    var predictedVehicle: Long = 0
-    var vehicleRotation: Vector2f? = null
-    var cameraOrientation: Vector3f? = null
-    var rawMoveVector: Vector2f? = null
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_AUTH_INPUT_PACKET
-    }
-
-
-
+data class PlayerAuthInputPacket(
+    val pitch: Float,
+    val yaw: Float,
+    val position: Vector3f,
+    val moveVector: Vector2f,
+    val headYaw: Float,
+    val inputData: BitSet,
+    val inputMode: InputMode,
+    val playMode: PlayMode,
+    val interactionModel: InteractionModel,
+    val interactPitch: Float,
+    val interactYaw: Float,
+    val tick: ULong,
+    val delta: Vector3f,
+    val itemInteractionData: UseItemTransactionData?,
+    val itemStackRequest: ItemStackRequest?,
+    val blockActions: List<PlayerBlockActionData>?,
+    val vehicleRotation: Vector2f?,
+    val clientPredictedVehicle: ActorUniqueID?,
+    val analogMoveVector: Vector2f,
+    val cameraOrientation: Vector3f,
+    val rawMoveVector: Vector2f,
+) : Packet(id) {
     companion object : PacketCodec<PlayerAuthInputPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_AUTH_INPUT_PACKET
+
+        override fun serialize(value: PlayerAuthInputPacket, stream: Sink) {
+            ProtoLE.Float.serialize(value.pitch, stream)
+            ProtoLE.Float.serialize(value.yaw, stream)
+            Vector3f.serialize(value.position, stream)
+            Vector2f.serialize(value.moveVector, stream)
+            ProtoLE.Float.serialize(value.headYaw, stream)
+            BitSet.serialize(value.inputData, stream)
+            InputMode.serialize(value.inputMode, stream)
+            PlayMode.serialize(value.playMode, stream)
+            InteractionModel.serialize(value.interactionModel, stream)
+            ProtoLE.Float.serialize(value.interactPitch, stream)
+            ProtoLE.Float.serialize(value.interactYaw, stream)
+            ProtoVAR.ULong.serialize(value.tick, stream)
+            Vector3f.serialize(value.delta, stream)
+
+            when (value.inputData.getOrElse(InputFlag.PerformItemInteraction.ordinal) { false }) {
+                true -> UseItemTransactionData.serialize(value.itemInteractionData as UseItemTransactionData, stream)
+                false -> Unit
+            }
+
+            when (value.inputData.getOrElse(InputFlag.PerformItemStackRequest.ordinal) { false }) {
+                true -> ItemStackRequest.serialize(value.itemStackRequest as ItemStackRequest, stream)
+                false -> Unit
+            }
+
+            when (value.inputData.getOrElse(InputFlag.PerformBlockActions.ordinal) { false }) {
+                true -> {
+                    val blockActions = value.blockActions as List<PlayerBlockActionData>
+                    ProtoVAR.Int.serialize(blockActions.size, stream)
+                    blockActions.forEach { PlayerBlockActionData.serialize(it, stream) }
+                }
+                false -> Unit
+            }
+
+            when (value.inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {
+                true -> Vector2f.serialize(value.vehicleRotation as Vector2f, stream)
+                false -> Unit
+            }
+
+            when (value.inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {
+                true -> ActorUniqueID.serialize(value.clientPredictedVehicle as ActorUniqueID, stream)
+                false -> Unit
+            }
+
+            Vector2f.serialize(value.analogMoveVector, stream)
+            Vector3f.serialize(value.cameraOrientation, stream)
+            Vector2f.serialize(value.rawMoveVector, stream)
+        }
+
         override fun deserialize(stream: Source): PlayerAuthInputPacket {
-            val packet = PlayerAuthInputPacket()
-
-            packet.pitch = byteBuf.readFloatLE()
-            packet.yaw = byteBuf.readFloatLE()
-            packet.position = Vector3f.deserialize(stream)
-            packet.motion = Vector2(byteBuf.readFloatLE().toDouble(), byteBuf.readFloatLE().toDouble())
-            packet.headYaw = byteBuf.readFloatLE()
-
-            val inputData = byteBuf.readUnsignedBigVarInt(AuthInputAction.Companion.size())
-            for (i in 0..<AuthInputAction.Companion.size()) {
-                if (inputData.testBit(i)) {
-                    packet.inputData.add(AuthInputAction.Companion.from(i))
-                }
-            }
-
-            packet.inputMode = InputMode.Companion.fromOrdinal(byteBuf.readUnsignedVarInt())
-            packet.playMode = ClientPlayMode.Companion.fromOrdinal(byteBuf.readUnsignedVarInt())
-            packet.interactionModel = AuthInteractionModel.Companion.fromOrdinal(byteBuf.readUnsignedVarInt())
-
-            packet.interactRotation = byteBuf.readVector2f()
-
-            packet.tick = byteBuf.readPlayerInputTick()
-            packet.delta = Vector3f.deserialize(stream)
-
-            if (packet.inputData.contains(AuthInputAction.PERFORM_ITEM_STACK_REQUEST)) {
-                packet.itemStackRequest = byteBuf.readItemStackRequest()
-            }
-
-            if (packet.inputData.contains(AuthInputAction.PERFORM_BLOCK_ACTIONS)) {
-                val arraySize = byteBuf.readVarInt()
-                for (i in 0..<arraySize) {
-                    when (val type: PlayerActionType = PlayerActionType.from(byteBuf.readVarInt())) {
-                        PlayerActionType.START_DESTROY_BLOCK,
-                        PlayerActionType.ABORT_DESTROY_BLOCK,
-                        PlayerActionType.CRACK_BLOCK,
-                        PlayerActionType.PREDICT_DESTROY_BLOCK,
-                        PlayerActionType.CONTINUE_DESTROY_BLOCK ->
-                            packet.blockActionData[type] =
-                                PlayerBlockActionData(type, byteBuf.readSignedBlockPosition(), byteBuf.readVarInt())
-
-                        else -> Unit
+            val inputData: BitSet
+            return PlayerAuthInputPacket(
+                pitch = ProtoLE.Float.deserialize(stream),
+                yaw = ProtoLE.Float.deserialize(stream),
+                position = Vector3f.deserialize(stream),
+                moveVector = Vector2f.deserialize(stream),
+                headYaw = ProtoLE.Float.deserialize(stream),
+                inputData = BitSet.deserialize(stream).also { inputData = it },
+                inputMode = InputMode.deserialize(stream),
+                playMode = PlayMode.deserialize(stream),
+                interactionModel = InteractionModel.deserialize(stream),
+                interactPitch = ProtoLE.Float.deserialize(stream),
+                interactYaw = ProtoLE.Float.deserialize(stream),
+                tick = ProtoVAR.ULong.deserialize(stream),
+                delta = Vector3f.deserialize(stream),
+                itemInteractionData = when (inputData.getOrElse(InputFlag.PerformItemInteraction.ordinal) { false }) {
+                    true -> UseItemTransactionData.deserialize(stream)
+                    false -> null
+                },
+                itemStackRequest = when (inputData.getOrElse(InputFlag.PerformItemStackRequest.ordinal) { false }) {
+                    true -> ItemStackRequest.deserialize(stream)
+                    false -> null
+                },
+                blockActions = when (inputData.getOrElse(InputFlag.PerformBlockActions.ordinal) { false }) {
+                    true -> List(ProtoVAR.Int.deserialize(stream)) {
+                        PlayerBlockActionData.deserialize(stream)
                     }
-                }
-            }
-
-            if (packet.inputData.contains(AuthInputAction.IN_CLIENT_PREDICTED_IN_VEHICLE)) {
-                packet.vehicleRotation = byteBuf.readVector2f()
-                packet.predictedVehicle = byteBuf.readVarLong()
-            }
-
-            packet.analogMoveVector = byteBuf.readVector2f()
-            packet.cameraOrientation = Vector3f.deserialize(stream)
-            packet.rawMoveVector = byteBuf.readVector2f()
-
-            return packet
+                    false -> null
+                },
+                vehicleRotation = when (inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {
+                    true -> Vector2f.deserialize(stream)
+                    false -> null
+                },
+                clientPredictedVehicle = when (inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {
+                    true -> ActorUniqueID.deserialize(stream)
+                    false -> null
+                },
+                analogMoveVector = Vector2f.deserialize(stream),
+                cameraOrientation = Vector3f.deserialize(stream),
+                rawMoveVector = Vector2f.deserialize(stream),
+            )
         }
     }
 }

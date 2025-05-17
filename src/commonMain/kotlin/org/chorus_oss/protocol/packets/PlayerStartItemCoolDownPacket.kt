@@ -1,32 +1,37 @@
 package org.chorus_oss.protocol.packets
 
-
-class PlayerStartItemCoolDownPacket : Packet(id) {
-    @JvmField
-    var itemCategory: String? = null
-
-    @JvmField
-    var coolDownDuration: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(itemCategory!!)
-        byteBuf.writeVarInt(coolDownDuration)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_START_ITEM_COOL_DOWN_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.String
 
 
-
+data class PlayerStartItemCoolDownPacket(
+    val category: String,
+    val duration: Int
+) : Packet(id) {
     companion object : PacketCodec<PlayerStartItemCoolDownPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_START_ITEM_COOL_DOWN_PACKET
+
+        override fun serialize(
+            value: PlayerStartItemCoolDownPacket,
+            stream: Sink
+        ) {
+            Proto.String.serialize(value.category, stream)
+            ProtoVAR.Int.serialize(value.duration, stream)
+        }
+
         override fun deserialize(stream: Source): PlayerStartItemCoolDownPacket {
-            val packet = PlayerStartItemCoolDownPacket()
-
-            packet.itemCategory = Proto.String.deserialize(stream)
-            packet.coolDownDuration = byteBuf.readVarInt()
-
-            return packet
+            return PlayerStartItemCoolDownPacket(
+                category = Proto.String.deserialize(stream),
+                duration = ProtoVAR.Int.deserialize(stream),
+            )
         }
     }
 }

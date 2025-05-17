@@ -1,44 +1,47 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.Server
-import org.chorus_oss.chorus.entity.data.Skin
-
-import java.util.*
-
-
-class PlayerSkinPacket : Packet(id) {
-    lateinit var uuid: UUID
-    lateinit var skin: Skin
-    lateinit var newSkinName: String
-    lateinit var oldSkinName: String
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUUID(uuid)
-        byteBuf.writeSkin(skin)
-        byteBuf.writeString(newSkinName)
-        byteBuf.writeString(oldSkinName)
-        byteBuf.writeBoolean(skin.isTrusted() || Server.instance.settings.playerSettings.forceSkinTrusted)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_SKIN_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.Uuid
+import org.chorus_oss.protocol.types.skin.Skin
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 
-
+@OptIn(ExperimentalUuidApi::class)
+class PlayerSkinPacket(
+    val uuid: Uuid,
+    val skin: Skin,
+    val newSkinName: String,
+    val oldSkinName: String,
+    val isTrusted: Boolean,
+) : Packet(id) {
     companion object : PacketCodec<PlayerSkinPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_SKIN_PACKET
+
+        override fun serialize(value: PlayerSkinPacket, stream: Sink) {
+            Proto.Uuid.serialize(value.uuid, stream)
+            Skin.serialize(value.skin, stream)
+            Proto.String.serialize(value.newSkinName, stream)
+            Proto.String.serialize(value.oldSkinName, stream)
+            Proto.Boolean.serialize(value.isTrusted, stream)
+        }
+
         override fun deserialize(stream: Source): PlayerSkinPacket {
-            val packet = PlayerSkinPacket()
-
-            packet.uuid = byteBuf.readUUID()
-            packet.skin = byteBuf.readSkin()
-            packet.newSkinName = Proto.String.deserialize(stream)
-            packet.oldSkinName = Proto.String.deserialize(stream)
-            if (byteBuf.isReadable) { // -facepalm-
-                packet.skin.setTrusted(Proto.Boolean.deserialize(stream))
-            }
-
-            return packet
+            return PlayerSkinPacket(
+                uuid = Proto.Uuid.deserialize(stream),
+                skin = Skin.deserialize(stream),
+                newSkinName = Proto.String.deserialize(stream),
+                oldSkinName = Proto.String.deserialize(stream),
+                isTrusted = Proto.Boolean.deserialize(stream),
+            )
         }
     }
 }

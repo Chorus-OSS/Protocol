@@ -35,8 +35,9 @@ enum class Platform(val platformName: String, val id: Int) {
         }
 
         override fun deserialize(stream: Source): Platform {
-            val id = ProtoLE.Int.deserialize(stream)
-            return entries.find { it.id == id }!!
+            return ProtoLE.Int.deserialize(stream).let {
+                entries.find { e -> e.id == it }!!
+            }
         }
     }
 }

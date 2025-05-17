@@ -6,19 +6,23 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 
-enum class InputMode {
-    Undefined,
-    Mouse,
-    Touch,
-    GamePad,
-    MotionController;
+enum class PlayMode {
+    Normal,
+    Teaser,
+    Screen,
+    Viewer,
+    Reality,
+    Placement,
+    LivingRoom,
+    ExitLevel,
+    ExitLevelLivingRoom;
 
-    companion object : ProtoCodec<InputMode> {
-        override fun serialize(value: InputMode, stream: Sink) {
+    companion object : ProtoCodec<PlayMode> {
+        override fun serialize(value: PlayMode, stream: Sink) {
             ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
         }
 
-        override fun deserialize(stream: Source): InputMode {
+        override fun deserialize(stream: Source): PlayMode {
             return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
         }
     }

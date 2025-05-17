@@ -1,30 +1,56 @@
 package org.chorus_oss.protocol.packets
 
-
-class PlayStatusPacket : Packet(id) {
-    @JvmField
-    var status: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeInt(this.status)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAY_STATUS_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoBE
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.types.Int
 
 
+data class PlayStatusPacket(
+    val status: Status
+) : Packet(id) {
+    companion object : PacketCodec<PlayStatusPacket> {
+        enum class Status {
+            LoginSuccess,
+            LoginFailedClient,
+            LoginFailedServer,
+            PlayerSpawn,
+            LoginFailedInvalidTenant,
+            LoginFailedVanillaToEduMismatch,
+            LoginFailedEduToVanillaMismatch,
+            LoginFailedServerFull,
+            LoginFailedEditorToVanillaMismatch,
+            LoginFailedVanillaToEditorMismatch;
 
-    companion object {
-        const val LOGIN_SUCCESS: Int = 0
-        const val LOGIN_FAILED_CLIENT: Int = 1
-        const val LOGIN_FAILED_SERVER: Int = 2
-        const val PLAYER_SPAWN: Int = 3
-        const val LOGIN_FAILED_INVALID_TENANT: Int = 4
-        const val LOGIN_FAILED_VANILLA_EDU: Int = 5
-        const val LOGIN_FAILED_EDU_VANILLA: Int = 6
-        const val LOGIN_FAILED_SERVER_FULL: Int = 7
-        const val LOGIN_FAILED_EDITOR_TO_VANILLA_MISMATCH: Int = 8
-        const val LOGIN_FAILED_VANILLA_TO_EDITOR_MISMATCH: Int = 9
+            companion object : ProtoCodec<Status> {
+                override fun serialize(
+                    value: Status,
+                    stream: Sink
+                ) {
+                    ProtoBE.Int.serialize(value.ordinal, stream)
+                }
+
+                override fun deserialize(stream: Source): Status {
+                    return entries[ProtoBE.Int.deserialize(stream)]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.PLAY_STATUS_PACKET
+
+        override fun serialize(value: PlayStatusPacket, stream: Sink) {
+            Status.serialize(value.status, stream)
+        }
+
+        override fun deserialize(stream: Source): PlayStatusPacket {
+            return PlayStatusPacket(
+                status = Status.deserialize(stream),
+            )
+        }
     }
 }

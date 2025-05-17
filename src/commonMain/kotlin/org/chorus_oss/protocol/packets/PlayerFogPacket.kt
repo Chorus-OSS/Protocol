@@ -1,33 +1,31 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.chorus.utils.Identifier
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.String
 
 
-class PlayerFogPacket : Packet(id) {
-    //Fog stack containing fog effects from the /fog command
-    @JvmField
-    var fogStack: List<Fog> = ArrayList()
+data class PlayerFogPacket(
+    val stack: List<String>
+) : Packet(id) {
+    companion object : PacketCodec<PlayerFogPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_FOG_PACKET
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeArray(
-            fogStack
-        ) { fog: Fog -> byteBuf.writeString(fog.identifier.toString()) }
+        override fun serialize(value: PlayerFogPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.stack, stream, Proto.String)
+        }
+
+        override fun deserialize(stream: Source): PlayerFogPacket {
+            return PlayerFogPacket(
+                stack = ProtoHelper.deserializeList(stream, Proto.String),
+            )
+        }
     }
-
-    /**
-     * @param identifier The namespace id of this fog
-     * @param userProvidedId User-specified feature id
-     */
-    @JvmRecord
-    data class Fog(
-        val identifier: Identifier,
-        val userProvidedId: String
-    )
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_FOG_PACKET
-    }
-
-
 }

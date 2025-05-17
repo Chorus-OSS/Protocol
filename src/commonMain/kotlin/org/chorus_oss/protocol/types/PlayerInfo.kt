@@ -2,6 +2,7 @@ package org.chorus_oss.protocol.types
 
 import org.chorus_oss.chorus.entity.data.Skin
 import org.chorus_oss.chorus.utils.ClientChainData
+import org.chorus_oss.protocol.types.skin.Skin
 
 
 import java.util.*

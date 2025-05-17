@@ -1,91 +1,141 @@
-package packets
+package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.Server
-import org.chorus_oss.chorus.entity.data.Skin
-import org.chorus_oss.chorus.network.connection.util.HandleByteBuf
-import java.awt.Color
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.Uuid
+import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.Color
+import org.chorus_oss.protocol.types.IColorRGBA
+import org.chorus_oss.protocol.types.Platform
+import org.chorus_oss.protocol.types.skin.Skin
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-import java.util.*
 
+@OptIn(ExperimentalUuidApi::class)
+data class PlayerListPacket(
+    val actionType: ActionType,
+    val addPlayerList: List<AddPlayerEntry>?,
+    val trustedSkinList: List<Boolean>?,
+    val removePlayerList: List<Uuid>?,
+) : Packet(id) {
+    companion object : PacketCodec<PlayerListPacket> {
+        enum class ActionType {
+            Add,
+            Remove;
 
-class PlayerListPacket : Packet(id) {
-    @JvmField
-    var type: Byte = 0
+            companion object : ProtoCodec<ActionType> {
+                override fun serialize(
+                    value: ActionType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    @JvmField
-    var entries: Array<Entry> = emptyArray()
-
-    override fun encode(byteBuf: HandleByteBuf) {
-        byteBuf.writeByte(type.toInt())
-        byteBuf.writeUnsignedVarInt(entries.size)
-
-        if (this.type == TYPE_ADD) {
-            for (entry in this.entries) {
-                byteBuf.writeUUID(entry.uuid)
-
-                byteBuf.writeVarLong(entry.entityId)
-                byteBuf.writeString(entry.name)
-                byteBuf.writeString(entry.xboxUserId)
-                byteBuf.writeString(entry.platformChatId)
-                byteBuf.writeIntLE(entry.buildPlatform)
-                byteBuf.writeSkin(entry.skin!!)
-                byteBuf.writeBoolean(entry.isTeacher)
-                byteBuf.writeBoolean(entry.isHost)
-                byteBuf.writeBoolean(entry.subClient)
-                byteBuf.writeIntLE(entry.color.rgb)
-            }
-
-            for (entry in this.entries) {
-                byteBuf.writeBoolean(
-                    entry.trustedSkin || Server.instance.settings.playerSettings.forceSkinTrusted
-                )
-            }
-        } else {
-            for (entry in this.entries) {
-                byteBuf.writeUUID(entry.uuid)
+                override fun deserialize(stream: Source): ActionType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
             }
         }
-    }
 
+        @OptIn(ExperimentalUuidApi::class)
+        data class AddPlayerEntry(
+            val uuid: Uuid,
+            val actorUniqueID: ActorUniqueID,
+            val playerName: String,
+            val xuid: String,
+            val platformChatID: String,
+            val buildPlatform: Platform,
+            val skin: Skin,
+            val isTeacher: Boolean,
+            val isHost: Boolean,
+            val isSubClient: Boolean,
+            val playerColor: Color,
+        ) {
+            companion object : ProtoCodec<AddPlayerEntry> {
+                override fun serialize(
+                    value: AddPlayerEntry,
+                    stream: Sink
+                ) {
+                    Proto.Uuid.serialize(value.uuid, stream)
+                    ActorUniqueID.serialize(value.actorUniqueID, stream)
+                    Proto.String.serialize(value.playerName, stream)
+                    Proto.String.serialize(value.xuid, stream)
+                    Proto.String.serialize(value.platformChatID, stream)
+                    Platform.serialize(value.buildPlatform, stream)
+                    Skin.serialize(value.skin, stream)
+                    Proto.Boolean.serialize(value.isTeacher, stream)
+                    Proto.Boolean.serialize(value.isHost, stream)
+                    Proto.Boolean.serialize(value.isSubClient, stream)
+                    IColorRGBA.serialize(value.playerColor, stream)
+                }
 
-    class Entry {
-        val uuid: UUID
-
-        var entityId: Long = 0
-        var name: String = ""
-        var xboxUserId: String = "" // TODO
-        var platformChatId: String = "" // TODO
-        var buildPlatform: Int = -1
-        var skin: Skin? = null
-        var isTeacher: Boolean = false
-        var isHost: Boolean = false
-        var subClient: Boolean = false
-        var trustedSkin: Boolean = false
-        var color: Color = Color.WHITE
-
-        constructor(uuid: UUID) {
-            this.uuid = uuid
+                override fun deserialize(stream: Source): AddPlayerEntry {
+                    return AddPlayerEntry(
+                        uuid = Proto.Uuid.deserialize(stream),
+                        actorUniqueID = ActorUniqueID.deserialize(stream),
+                        playerName = Proto.String.deserialize(stream),
+                        xuid = Proto.String.deserialize(stream),
+                        platformChatID = Proto.String.deserialize(stream),
+                        buildPlatform = Platform.deserialize(stream),
+                        skin = Skin.deserialize(stream),
+                        isTeacher = Proto.Boolean.deserialize(stream),
+                        isHost = Proto.Boolean.deserialize(stream),
+                        isSubClient = Proto.Boolean.deserialize(stream),
+                        playerColor = IColorRGBA.deserialize(stream),
+                    )
+                }
+            }
         }
 
-        @JvmOverloads
-        constructor(uuid: UUID, entityId: Long, name: String, skin: Skin, xboxUserId: String? = "") {
-            this.uuid = uuid
-            this.entityId = entityId
-            this.name = name
-            this.skin = skin
-            this.trustedSkin = skin.isTrusted()
-            this.xboxUserId = xboxUserId ?: ""
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_LIST_PACKET
+
+        override fun serialize(value: PlayerListPacket, stream: Sink) {
+            ActionType.serialize(value.actionType, stream)
+            when (value.actionType) {
+                ActionType.Add -> {
+                    ProtoHelper.serializeList(
+                        value.addPlayerList as List<AddPlayerEntry>, stream,
+                        AddPlayerEntry
+                    )
+                    ProtoHelper.serializeList(
+                        value.trustedSkinList as List<Boolean>,
+                        stream,
+                        Proto.Boolean
+                    )
+                }
+
+                ActionType.Remove -> ProtoHelper.serializeList(value.removePlayerList as List<Uuid>, stream, Proto.Uuid)
+            }
         }
-    }
 
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_LIST_PACKET
-    }
-
-
-
-    companion object {
-        const val TYPE_ADD: Byte = 0
-        const val TYPE_REMOVE: Byte = 1
+        override fun deserialize(stream: Source): PlayerListPacket {
+            val actionType: ActionType
+            return PlayerListPacket(
+                actionType = ActionType.deserialize(stream).also { actionType = it },
+                addPlayerList = when (actionType) {
+                    ActionType.Add -> ProtoHelper.deserializeList(stream, AddPlayerEntry)
+                    else -> null
+                },
+                trustedSkinList = when (actionType) {
+                    ActionType.Add -> ProtoHelper.deserializeList(stream, Proto.Boolean)
+                    else -> null
+                },
+                removePlayerList = when (actionType) {
+                    ActionType.Remove -> ProtoHelper.deserializeList(stream, Proto.Uuid)
+                    else -> null
+                }
+            )
+        }
     }
 }

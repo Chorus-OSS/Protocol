@@ -1,33 +1,37 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.inventory.SpecialWindowId
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.UInt
 
-class PlayerHotbarPacket : Packet(id) {
-    var selectedHotbarSlot: Int = 0
-    var windowId: Int = SpecialWindowId.PLAYER.id
-    var selectHotbarSlot: Boolean = true
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(this.selectedHotbarSlot)
-        byteBuf.writeByte(windowId.toByte().toInt())
-        byteBuf.writeBoolean(this.selectHotbarSlot)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.PLAYER_HOTBAR_PACKET
-    }
-
-
-
+data class PlayerHotbarPacket(
+    val selectedHotbarSlot: UInt,
+    val windowID: Byte,
+    val selectHotbarSlot: Boolean
+) : Packet(id) {
     companion object : PacketCodec<PlayerHotbarPacket> {
+        override val id: Int
+            get() = ProtocolInfo.PLAYER_HOTBAR_PACKET
+
+        override fun serialize(value: PlayerHotbarPacket, stream: Sink) {
+            ProtoVAR.UInt.serialize(value.selectedHotbarSlot, stream)
+            Proto.Byte.serialize(value.windowID, stream)
+            Proto.Boolean.serialize(value.selectHotbarSlot, stream)
+        }
+
         override fun deserialize(stream: Source): PlayerHotbarPacket {
-            val packet = PlayerHotbarPacket()
-
-            packet.selectedHotbarSlot = byteBuf.readUnsignedVarInt()
-            packet.windowId = Proto.Byte.deserialize(stream).toInt()
-            packet.selectHotbarSlot = Proto.Boolean.deserialize(stream)
-
-            return packet
+            return PlayerHotbarPacket(
+                selectedHotbarSlot = ProtoVAR.UInt.deserialize(stream),
+                windowID = Proto.Byte.deserialize(stream),
+                selectHotbarSlot = Proto.Boolean.deserialize(stream),
+            )
         }
     }
 }
