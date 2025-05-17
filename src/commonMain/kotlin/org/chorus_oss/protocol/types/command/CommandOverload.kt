@@ -14,13 +14,13 @@ data class CommandOverload(
     companion object : ProtoCodec<CommandOverload> {
         override fun serialize(value: CommandOverload, stream: Sink) {
             Proto.Boolean.serialize(value.chaining, stream)
-            ProtoHelper.serializeList(value.parameters, stream, CommandParameter::serialize)
+            ProtoHelper.serializeList(value.parameters, stream, CommandParameter)
         }
 
         override fun deserialize(stream: Source): CommandOverload {
             return CommandOverload(
                 chaining = Proto.Boolean.deserialize(stream),
-                parameters = ProtoHelper.deserializeList(stream, CommandParameter::deserialize)
+                parameters = ProtoHelper.deserializeList(stream, CommandParameter)
             )
         }
     }

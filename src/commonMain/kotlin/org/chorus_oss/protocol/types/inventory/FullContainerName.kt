@@ -18,13 +18,13 @@ data class FullContainerName(
             stream: Sink
         ) {
             ContainerSlotType.serialize(value.container, stream)
-            ProtoHelper.serializeNullable(value.dynamicId, stream, ProtoLE.Int::serialize)
+            ProtoHelper.serializeNullable(value.dynamicId, stream, ProtoLE.Int)
         }
 
         override fun deserialize(stream: Source): FullContainerName {
             return FullContainerName(
                 container = ContainerSlotType.deserialize(stream),
-                dynamicId = ProtoHelper.deserializeNullable(stream, ProtoLE.Int::deserialize)
+                dynamicId = ProtoHelper.deserializeNullable(stream, ProtoLE.Int)
             )
         }
     }

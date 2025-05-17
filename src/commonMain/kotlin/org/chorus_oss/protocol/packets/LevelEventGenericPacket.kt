@@ -20,13 +20,13 @@ class LevelEventGenericPacket(
             stream: Sink
         ) {
             ProtoVAR.Int.serialize(value.eventID, stream)
-            ProtoHelper.serializeList(value.serializedEventData, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.serializedEventData, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): LevelEventGenericPacket {
             return LevelEventGenericPacket(
                 eventID = ProtoVAR.Int.deserialize(stream),
-                serializedEventData = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                serializedEventData = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

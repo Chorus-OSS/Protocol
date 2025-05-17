@@ -42,8 +42,8 @@ data class ItemStack(
                 ProtoLE.Short.serialize(0, userDataBuffer)
             }
 
-            ProtoHelper.serializeList(value.item.canBePlacedOn, userDataBuffer, Proto.String::serialize)
-            ProtoHelper.serializeList(value.item.canBreak, userDataBuffer, Proto.String::serialize)
+            ProtoHelper.serializeList(value.item.canBePlacedOn, userDataBuffer, Proto.String)
+            ProtoHelper.serializeList(value.item.canBreak, userDataBuffer, Proto.String)
 
             if (value.item.netID == ItemInstance.ShieldID) {
                 ProtoLE.Long.serialize(0, userDataBuffer)
@@ -101,8 +101,8 @@ data class ItemStack(
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 
-            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String::deserialize)
-            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String::deserialize)
+            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
+            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
 
             if (netID == ShieldID) {
                 ProtoLE.Long.deserialize(userDataBuffer) // BlockingTicks (UNUSED?)

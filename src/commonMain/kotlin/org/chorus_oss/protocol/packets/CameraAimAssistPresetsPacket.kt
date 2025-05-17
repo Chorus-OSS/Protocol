@@ -20,15 +20,15 @@ data class CameraAimAssistPresetsPacket(
 
         override fun deserialize(stream: Source): CameraAimAssistPresetsPacket {
             return CameraAimAssistPresetsPacket(
-                categories = ProtoHelper.deserializeList(stream, CameraAimAssistCategory::deserialize),
-                presets = ProtoHelper.deserializeList(stream, CameraAimAssistPreset::deserialize),
+                categories = ProtoHelper.deserializeList(stream, CameraAimAssistCategory),
+                presets = ProtoHelper.deserializeList(stream, CameraAimAssistPreset),
                 operation = CameraAimAssistPresetsPacketOperation.deserialize(stream)
             )
         }
 
         override fun serialize(value: CameraAimAssistPresetsPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.categories, stream, CameraAimAssistCategory::serialize)
-            ProtoHelper.serializeList(value.presets, stream, CameraAimAssistPreset::serialize)
+            ProtoHelper.serializeList(value.categories, stream, CameraAimAssistCategory)
+            ProtoHelper.serializeList(value.presets, stream, CameraAimAssistPreset)
             CameraAimAssistPresetsPacketOperation.serialize(value.operation, stream)
         }
     }

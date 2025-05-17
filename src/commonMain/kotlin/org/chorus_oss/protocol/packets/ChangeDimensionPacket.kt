@@ -23,7 +23,7 @@ data class ChangeDimensionPacket(
                 dimension = ProtoVAR.Int.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 respawn = Proto.Boolean.deserialize(stream),
-                loadingScreenID = ProtoHelper.deserializeNullable(stream, ProtoLE.Int::deserialize)
+                loadingScreenID = ProtoHelper.deserializeNullable(stream, ProtoLE.Int)
             )
         }
 
@@ -31,7 +31,7 @@ data class ChangeDimensionPacket(
             ProtoVAR.Int.serialize(value.dimension, stream)
             Vector3f.serialize(value.position, stream)
             Proto.Boolean.serialize(value.respawn, stream)
-            ProtoHelper.serializeNullable(value.loadingScreenID, stream, ProtoLE.Int::serialize)
+            ProtoHelper.serializeNullable(value.loadingScreenID, stream, ProtoLE.Int)
         }
     }
 }

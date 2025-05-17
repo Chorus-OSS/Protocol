@@ -18,21 +18,21 @@ data class CameraAimAssistPreset(
     companion object : ProtoCodec<CameraAimAssistPreset> {
         override fun serialize(value: CameraAimAssistPreset, stream: Sink) {
             Proto.String.serialize(value.identifier, stream)
-            ProtoHelper.serializeList(value.exclusionList, stream, Proto.String::serialize)
-            ProtoHelper.serializeList(value.liquidTargetingList, stream, Proto.String::serialize)
-            ProtoHelper.serializeList(value.itemSettings, stream, CameraAimAssistItemSettings::serialize)
-            ProtoHelper.serializeNullable(value.defaultItemSettings, stream, Proto.String::serialize)
-            ProtoHelper.serializeNullable(value.handSettings, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.exclusionList, stream, Proto.String)
+            ProtoHelper.serializeList(value.liquidTargetingList, stream, Proto.String)
+            ProtoHelper.serializeList(value.itemSettings, stream, CameraAimAssistItemSettings)
+            ProtoHelper.serializeNullable(value.defaultItemSettings, stream, Proto.String)
+            ProtoHelper.serializeNullable(value.handSettings, stream, Proto.String)
         }
 
         override fun deserialize(stream: Source): CameraAimAssistPreset {
             return CameraAimAssistPreset(
                 identifier = Proto.String.deserialize(stream),
-                exclusionList = ProtoHelper.deserializeList(stream, Proto.String::deserialize),
-                liquidTargetingList = ProtoHelper.deserializeList(stream, Proto.String::deserialize),
-                itemSettings = ProtoHelper.deserializeList(stream, CameraAimAssistItemSettings::deserialize),
-                defaultItemSettings = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
-                handSettings = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
+                exclusionList = ProtoHelper.deserializeList(stream, Proto.String),
+                liquidTargetingList = ProtoHelper.deserializeList(stream, Proto.String),
+                itemSettings = ProtoHelper.deserializeList(stream, CameraAimAssistItemSettings),
+                defaultItemSettings = ProtoHelper.deserializeNullable(stream, Proto.String),
+                handSettings = ProtoHelper.deserializeNullable(stream, Proto.String),
             )
         }
     }

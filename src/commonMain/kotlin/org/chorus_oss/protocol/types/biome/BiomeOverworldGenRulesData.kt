@@ -16,24 +16,24 @@ data class BiomeOverworldGenRulesData(
 ) {
     companion object : ProtoCodec<BiomeOverworldGenRulesData> {
         override fun serialize(value: BiomeOverworldGenRulesData, stream: Sink) {
-            ProtoHelper.serializeList(value.hillsTransformations, stream, BiomeWeightedData::serialize)
-            ProtoHelper.serializeList(value.mutateTransformations, stream, BiomeWeightedData::serialize)
-            ProtoHelper.serializeList(value.riverTransformations, stream, BiomeWeightedData::serialize)
-            ProtoHelper.serializeList(value.shoreTransformations, stream, BiomeWeightedData::serialize)
-            ProtoHelper.serializeList(value.preHillsEdge, stream, BiomeConditionalTransformationData::serialize)
-            ProtoHelper.serializeList(value.postShoreEdge, stream, BiomeConditionalTransformationData::serialize)
-            ProtoHelper.serializeList(value.climate, stream, BiomeWeightedTemperatureData::serialize)
+            ProtoHelper.serializeList(value.hillsTransformations, stream, BiomeWeightedData)
+            ProtoHelper.serializeList(value.mutateTransformations, stream, BiomeWeightedData)
+            ProtoHelper.serializeList(value.riverTransformations, stream, BiomeWeightedData)
+            ProtoHelper.serializeList(value.shoreTransformations, stream, BiomeWeightedData)
+            ProtoHelper.serializeList(value.preHillsEdge, stream, BiomeConditionalTransformationData)
+            ProtoHelper.serializeList(value.postShoreEdge, stream, BiomeConditionalTransformationData)
+            ProtoHelper.serializeList(value.climate, stream, BiomeWeightedTemperatureData)
         }
 
         override fun deserialize(stream: Source): BiomeOverworldGenRulesData {
             return BiomeOverworldGenRulesData(
-                hillsTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
-                mutateTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
-                riverTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
-                shoreTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
-                preHillsEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData::deserialize),
-                postShoreEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData::deserialize),
-                climate = ProtoHelper.deserializeList(stream, BiomeWeightedTemperatureData::deserialize),
+                hillsTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData),
+                mutateTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData),
+                riverTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData),
+                shoreTransformations = ProtoHelper.deserializeList(stream, BiomeWeightedData),
+                preHillsEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData),
+                postShoreEdge = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData),
+                climate = ProtoHelper.deserializeList(stream, BiomeWeightedTemperatureData),
             )
         }
     }

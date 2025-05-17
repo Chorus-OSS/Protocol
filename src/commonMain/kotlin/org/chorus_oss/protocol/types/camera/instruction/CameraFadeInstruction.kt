@@ -37,14 +37,14 @@ data class CameraFadeInstruction(
         }
 
         override fun serialize(value: CameraFadeInstruction, stream: Sink) {
-            ProtoHelper.serializeNullable(value.timeData, stream, TimeData::serialize)
-            ProtoHelper.serializeNullable(value.color, stream, FColorRGB::serialize)
+            ProtoHelper.serializeNullable(value.timeData, stream, TimeData)
+            ProtoHelper.serializeNullable(value.color, stream, FColorRGB)
         }
 
         override fun deserialize(stream: Source): CameraFadeInstruction {
             return CameraFadeInstruction(
-                timeData = ProtoHelper.deserializeNullable(stream, TimeData::deserialize),
-                color = ProtoHelper.deserializeNullable(stream, FColorRGB::deserialize)
+                timeData = ProtoHelper.deserializeNullable(stream, TimeData),
+                color = ProtoHelper.deserializeNullable(stream, FColorRGB)
             )
         }
     }

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import kotlinx.io.readString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
@@ -38,10 +37,10 @@ data class EducationSettingsPacket(
             Proto.Boolean.serialize(value.disableLegacyTitleBar, stream)
             Proto.String.serialize(value.postProcessFilter, stream)
             Proto.String.serialize(value.screenshotBorderPath, stream)
-            ProtoHelper.serializeNullable(value.canModifyBlocks, stream, Proto.Boolean::serialize)
-            ProtoHelper.serializeNullable(value.overrideURI, stream, Proto.String::serialize)
+            ProtoHelper.serializeNullable(value.canModifyBlocks, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.overrideURI, stream, Proto.String)
             Proto.Boolean.serialize(value.hasQuiz, stream)
-            ProtoHelper.serializeNullable(value.externalLinkSettings, stream, EducationExternalLinkSettings::serialize)
+            ProtoHelper.serializeNullable(value.externalLinkSettings, stream, EducationExternalLinkSettings)
         }
 
         override fun deserialize(stream: Source): EducationSettingsPacket {
@@ -52,10 +51,10 @@ data class EducationSettingsPacket(
                 disableLegacyTitleBar = Proto.Boolean.deserialize(stream),
                 postProcessFilter = Proto.String.deserialize(stream),
                 screenshotBorderPath = Proto.String.deserialize(stream),
-                canModifyBlocks = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
-                overrideURI = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
+                canModifyBlocks = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                overrideURI = ProtoHelper.deserializeNullable(stream, Proto.String),
                 hasQuiz = Proto.Boolean.deserialize(stream),
-                externalLinkSettings = ProtoHelper.deserializeNullable(stream, EducationExternalLinkSettings::deserialize),
+                externalLinkSettings = ProtoHelper.deserializeNullable(stream, EducationExternalLinkSettings),
             )
         }
     }

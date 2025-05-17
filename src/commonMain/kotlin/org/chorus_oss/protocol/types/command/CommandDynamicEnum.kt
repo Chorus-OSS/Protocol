@@ -14,13 +14,13 @@ data class CommandDynamicEnum(
     companion object : ProtoCodec<CommandDynamicEnum> {
         override fun serialize(value: CommandDynamicEnum, stream: Sink) {
             Proto.String.serialize(value.type, stream)
-            ProtoHelper.serializeList(value.values, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.values, stream, Proto.String)
         }
 
         override fun deserialize(stream: Source): CommandDynamicEnum {
             return CommandDynamicEnum(
                 type = Proto.String.deserialize(stream),
-                values = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+                values = ProtoHelper.deserializeList(stream, Proto.String)
             )
         }
     }

@@ -25,13 +25,13 @@ class EmoteListPacket(
 
         override fun serialize(value: EmoteListPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.playerRuntimeID, stream)
-            ProtoHelper.serializeList(value.emotePieces, stream, Proto.Uuid::serialize)
+            ProtoHelper.serializeList(value.emotePieces, stream, Proto.Uuid)
         }
 
         override fun deserialize(stream: Source): EmoteListPacket {
             return EmoteListPacket(
                 playerRuntimeID = ActorRuntimeID.deserialize(stream),
-                emotePieces = ProtoHelper.deserializeList(stream, Proto.Uuid::deserialize)
+                emotePieces = ProtoHelper.deserializeList(stream, Proto.Uuid)
             )
         }
     }

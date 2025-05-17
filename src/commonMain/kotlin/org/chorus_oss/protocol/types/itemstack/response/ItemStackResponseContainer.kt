@@ -16,13 +16,13 @@ data class ItemStackResponseContainer(
             stream: Sink
         ) {
             FullContainerName.serialize(value.container, stream)
-            ProtoHelper.serializeList(value.slots, stream, ItemStackResponseSlot::serialize)
+            ProtoHelper.serializeList(value.slots, stream, ItemStackResponseSlot)
         }
 
         override fun deserialize(stream: Source): ItemStackResponseContainer {
             return ItemStackResponseContainer(
                 container = FullContainerName.deserialize(stream),
-                slots = ProtoHelper.deserializeList(stream, ItemStackResponseSlot::deserialize)
+                slots = ProtoHelper.deserializeList(stream, ItemStackResponseSlot)
             )
         }
     }

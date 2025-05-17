@@ -16,12 +16,12 @@ data class ItemRegistryPacket(
             get() = ProtocolInfo.ITEM_REGISTRY_PACKET
 
         override fun serialize(value: ItemRegistryPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.items, stream, ItemEntry::serialize)
+            ProtoHelper.serializeList(value.items, stream, ItemEntry)
         }
 
         override fun deserialize(stream: Source): ItemRegistryPacket {
             return ItemRegistryPacket(
-                items = ProtoHelper.deserializeList(stream, ItemEntry::deserialize)
+                items = ProtoHelper.deserializeList(stream, ItemEntry)
             )
         }
     }

@@ -23,7 +23,7 @@ class InventoryContentPacket(
 
         override fun serialize(value: InventoryContentPacket, stream: Sink) {
             ProtoVAR.UInt.serialize(value.windowID, stream)
-            ProtoHelper.serializeList(value.content, stream, ItemStack::serialize)
+            ProtoHelper.serializeList(value.content, stream, ItemStack)
             FullContainerName.serialize(value.container, stream)
             ItemStack.serialize(value.storageItem, stream)
         }
@@ -31,7 +31,7 @@ class InventoryContentPacket(
         override fun deserialize(stream: Source): InventoryContentPacket {
             return InventoryContentPacket(
                 windowID = ProtoVAR.UInt.deserialize(stream),
-                content = ProtoHelper.deserializeList(stream, ItemStack::deserialize),
+                content = ProtoHelper.deserializeList(stream, ItemStack),
                 container = FullContainerName.deserialize(stream),
                 storageItem = ItemStack.deserialize(stream)
             )

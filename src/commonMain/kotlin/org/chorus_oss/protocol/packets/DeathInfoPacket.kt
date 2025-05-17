@@ -20,13 +20,13 @@ data class DeathInfoPacket(
 
         override fun serialize(value: DeathInfoPacket, stream: Sink) {
             Proto.String.serialize(value.cause, stream)
-            ProtoHelper.serializeList(value.messages, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.messages, stream, Proto.String)
         }
 
         override fun deserialize(stream: Source): DeathInfoPacket {
             return DeathInfoPacket(
                 cause = Proto.String.deserialize(stream),
-                messages = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+                messages = ProtoHelper.deserializeList(stream, Proto.String)
             )
         }
     }

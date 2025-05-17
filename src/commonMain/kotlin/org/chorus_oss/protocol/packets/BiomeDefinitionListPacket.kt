@@ -24,7 +24,7 @@ data class BiomeDefinitionListPacket(
                         BiomeDefinitionData.deserialize(buf)
                     )
                 }.toMap(),
-                biomeStringList = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+                biomeStringList = ProtoHelper.deserializeList(stream, Proto.String)
             )
         }
 
@@ -33,7 +33,7 @@ data class BiomeDefinitionListPacket(
                 ProtoLE.Short.serialize(k, buf)
                 BiomeDefinitionData.serialize(v, buf)
             }
-            ProtoHelper.serializeList(value.biomeStringList, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.biomeStringList, stream, Proto.String)
         }
     }
 }

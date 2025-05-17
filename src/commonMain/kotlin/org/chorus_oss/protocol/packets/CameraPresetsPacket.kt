@@ -17,12 +17,12 @@ data class CameraPresetsPacket(
 
         override fun deserialize(stream: Source): CameraPresetsPacket {
             return CameraPresetsPacket(
-                presets = ProtoHelper.deserializeList(stream, CameraPreset::deserialize)
+                presets = ProtoHelper.deserializeList(stream, CameraPreset)
             )
         }
 
         override fun serialize(value: CameraPresetsPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.presets, stream, CameraPreset::serialize)
+            ProtoHelper.serializeList(value.presets, stream, CameraPreset)
         }
     }
 }

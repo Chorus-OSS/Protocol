@@ -12,12 +12,12 @@ data class BiomeTagsData(
 ) {
     companion object : ProtoCodec<BiomeTagsData> {
         override fun serialize(value: BiomeTagsData, stream: Sink) {
-            ProtoHelper.serializeList(value.tags, stream, ProtoLE.Short::serialize)
+            ProtoHelper.serializeList(value.tags, stream, ProtoLE.Short)
         }
 
         override fun deserialize(stream: Source): BiomeTagsData {
             return BiomeTagsData(
-                tags = ProtoHelper.deserializeList(stream, ProtoLE.Short::deserialize)
+                tags = ProtoHelper.deserializeList(stream, ProtoLE.Short)
             )
         }
     }

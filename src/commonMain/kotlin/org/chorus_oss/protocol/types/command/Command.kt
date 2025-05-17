@@ -28,8 +28,8 @@ data class Command(
             ProtoLE.UShort.serialize(value.flags, stream)
             Proto.Byte.serialize(value.permissionLevel.ordinal.toByte(), stream)
             ProtoLE.UInt.serialize(value.aliasesOffset, stream)
-            ProtoHelper.serializeList(value.chainedSubcommandOffsets, stream, ProtoLE.UShort::serialize)
-            ProtoHelper.serializeList(value.overloads, stream, CommandOverload::serialize)
+            ProtoHelper.serializeList(value.chainedSubcommandOffsets, stream, ProtoLE.UShort)
+            ProtoHelper.serializeList(value.overloads, stream, CommandOverload)
         }
 
         override fun deserialize(stream: Source): Command {
@@ -39,8 +39,8 @@ data class Command(
                 flags = ProtoLE.UShort.deserialize(stream),
                 permissionLevel = CommandPermission.entries[Proto.Byte.deserialize(stream).toInt()],
                 aliasesOffset = ProtoLE.UInt.deserialize(stream),
-                chainedSubcommandOffsets = ProtoHelper.deserializeList(stream, ProtoLE.UShort::deserialize),
-                overloads = ProtoHelper.deserializeList(stream, CommandOverload::deserialize)
+                chainedSubcommandOffsets = ProtoHelper.deserializeList(stream, ProtoLE.UShort),
+                overloads = ProtoHelper.deserializeList(stream, CommandOverload)
             )
         }
     }

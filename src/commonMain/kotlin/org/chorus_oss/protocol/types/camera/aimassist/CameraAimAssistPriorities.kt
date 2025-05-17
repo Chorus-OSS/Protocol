@@ -15,18 +15,18 @@ data class CameraAimAssistPriorities(
 ) {
     companion object : ProtoCodec<CameraAimAssistPriorities> {
         override fun serialize(value: CameraAimAssistPriorities, stream: Sink) {
-            ProtoHelper.serializeList(value.entities, stream, CameraAimAssistPriority::serialize)
-            ProtoHelper.serializeList(value.blocks, stream, CameraAimAssistPriority::serialize)
-            ProtoHelper.serializeNullable(value.entityDefault, stream, ProtoLE.Int::serialize)
-            ProtoHelper.serializeNullable(value.blockDefault, stream, ProtoLE.Int::serialize)
+            ProtoHelper.serializeList(value.entities, stream, CameraAimAssistPriority)
+            ProtoHelper.serializeList(value.blocks, stream, CameraAimAssistPriority)
+            ProtoHelper.serializeNullable(value.entityDefault, stream, ProtoLE.Int)
+            ProtoHelper.serializeNullable(value.blockDefault, stream, ProtoLE.Int)
         }
 
         override fun deserialize(stream: Source): CameraAimAssistPriorities {
             return CameraAimAssistPriorities(
-                entities = ProtoHelper.deserializeList(stream, CameraAimAssistPriority::deserialize),
-                blocks = ProtoHelper.deserializeList(stream, CameraAimAssistPriority::deserialize),
-                entityDefault = ProtoHelper.deserializeNullable(stream, ProtoLE.Int::deserialize),
-                blockDefault = ProtoHelper.deserializeNullable(stream, ProtoLE.Int::deserialize)
+                entities = ProtoHelper.deserializeList(stream, CameraAimAssistPriority),
+                blocks = ProtoHelper.deserializeList(stream, CameraAimAssistPriority),
+                entityDefault = ProtoHelper.deserializeNullable(stream, ProtoLE.Int),
+                blockDefault = ProtoHelper.deserializeNullable(stream, ProtoLE.Int)
             )
         }
     }

@@ -43,10 +43,10 @@ data class AddActorPacket(
                 rotation = Vector2f.deserialize(stream),
                 headYaw = ProtoLE.Float.deserialize(stream),
                 bodyYaw = ProtoLE.Float.deserialize(stream),
-                attributes = ProtoHelper.deserializeList(stream, AttributeValue::deserialize),
+                attributes = ProtoHelper.deserializeList(stream, AttributeValue),
                 actorData = ActorDataMap.deserialize(stream),
                 actorProperties = ActorProperties.deserialize(stream),
-                actorLinks = ProtoHelper.deserializeList(stream, ActorLink::deserialize)
+                actorLinks = ProtoHelper.deserializeList(stream, ActorLink)
             )
         }
 
@@ -59,10 +59,10 @@ data class AddActorPacket(
             Vector2f.serialize(value.rotation, stream)
             ProtoLE.Float.serialize(value.headYaw, stream)
             ProtoLE.Float.serialize(value.bodyYaw, stream)
-            ProtoHelper.serializeList(value.attributes, stream, AttributeValue::serialize)
+            ProtoHelper.serializeList(value.attributes, stream, AttributeValue)
             ActorDataMap.serialize(value.actorData, stream)
             ActorProperties.serialize(value.actorProperties, stream)
-            ProtoHelper.serializeList(value.actorLinks, stream, ActorLink::serialize)
+            ProtoHelper.serializeList(value.actorLinks, stream, ActorLink)
         }
     }
 }

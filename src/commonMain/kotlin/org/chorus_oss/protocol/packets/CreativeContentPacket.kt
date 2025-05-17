@@ -19,14 +19,14 @@ data class CreativeContentPacket(
             get() = ProtocolInfo.CREATIVE_CONTENT_PACKET
 
         override fun serialize(value: CreativeContentPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.groups, stream, CreativeGroup::serialize)
-            ProtoHelper.serializeList(value.items, stream, CreativeItem::serialize)
+            ProtoHelper.serializeList(value.groups, stream, CreativeGroup)
+            ProtoHelper.serializeList(value.items, stream, CreativeItem)
         }
 
         override fun deserialize(stream: Source): CreativeContentPacket {
             return CreativeContentPacket(
-                groups = ProtoHelper.deserializeList(stream, CreativeGroup::deserialize),
-                items = ProtoHelper.deserializeList(stream, CreativeItem::deserialize),
+                groups = ProtoHelper.deserializeList(stream, CreativeGroup),
+                items = ProtoHelper.deserializeList(stream, CreativeItem),
             )
         }
     }

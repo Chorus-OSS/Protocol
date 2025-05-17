@@ -10,12 +10,12 @@ data class BiomeLegacyWorldGenRulesData(
 ) {
     companion object : ProtoCodec<BiomeLegacyWorldGenRulesData> {
         override fun serialize(value: BiomeLegacyWorldGenRulesData, stream: Sink) {
-            ProtoHelper.serializeList(value.legacyPreHills, stream, BiomeConditionalTransformationData::serialize)
+            ProtoHelper.serializeList(value.legacyPreHills, stream, BiomeConditionalTransformationData)
         }
 
         override fun deserialize(stream: Source): BiomeLegacyWorldGenRulesData {
             return BiomeLegacyWorldGenRulesData(
-                legacyPreHills = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData::deserialize)
+                legacyPreHills = ProtoHelper.deserializeList(stream, BiomeConditionalTransformationData)
             )
         }
     }

@@ -43,54 +43,54 @@ data class CameraPreset(
         override fun serialize(value: CameraPreset, stream: Sink) {
             Proto.String.serialize(value.name, stream)
             Proto.String.serialize(value.parent, stream)
-            ProtoHelper.serializeNullable(value.posX, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.posY, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.posZ, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.rotX, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.rotY, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.rotSpeed, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.snapToTarget, stream, Proto.Boolean::serialize)
-            ProtoHelper.serializeNullable(value.horizontalRotationLimit, stream, Vector2f::serialize)
-            ProtoHelper.serializeNullable(value.verticalRotationLimit, stream, Vector2f::serialize)
-            ProtoHelper.serializeNullable(value.continueTargeting, stream, Proto.Boolean::serialize)
-            ProtoHelper.serializeNullable(value.trackingRadius, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.viewOffset, stream, Vector2f::serialize)
-            ProtoHelper.serializeNullable(value.entityOffset, stream, Vector3f::serialize)
-            ProtoHelper.serializeNullable(value.radius, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.minYawLimit, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.maxYawLimit, stream, ProtoLE.Float::serialize)
-            ProtoHelper.serializeNullable(value.audioListener, stream, CameraAudioListener::serialize)
-            ProtoHelper.serializeNullable(value.playerEffects, stream, Proto.Boolean::serialize)
-            ProtoHelper.serializeNullable(value.alignTargetAndCameraForward, stream, Proto.Boolean::serialize)
-            ProtoHelper.serializeNullable(value.aimAssist, stream, CameraPresetAimAssist::serialize)
-            ProtoHelper.serializeNullable(value.controlScheme, stream, ControlScheme::serialize)
+            ProtoHelper.serializeNullable(value.posX, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.posY, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.posZ, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.rotX, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.rotY, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.rotSpeed, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.snapToTarget, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.horizontalRotationLimit, stream, Vector2f)
+            ProtoHelper.serializeNullable(value.verticalRotationLimit, stream, Vector2f)
+            ProtoHelper.serializeNullable(value.continueTargeting, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.trackingRadius, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.viewOffset, stream, Vector2f)
+            ProtoHelper.serializeNullable(value.entityOffset, stream, Vector3f)
+            ProtoHelper.serializeNullable(value.radius, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.minYawLimit, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.maxYawLimit, stream, ProtoLE.Float)
+            ProtoHelper.serializeNullable(value.audioListener, stream, CameraAudioListener)
+            ProtoHelper.serializeNullable(value.playerEffects, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.alignTargetAndCameraForward, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.aimAssist, stream, CameraPresetAimAssist)
+            ProtoHelper.serializeNullable(value.controlScheme, stream, ControlScheme)
         }
 
         override fun deserialize(stream: Source): CameraPreset {
             return CameraPreset(
                 name = Proto.String.deserialize(stream),
                 parent = Proto.String.deserialize(stream),
-                posX = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                posY = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                posZ = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                rotX = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                rotY = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                rotSpeed = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                snapToTarget = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
-                horizontalRotationLimit = ProtoHelper.deserializeNullable(stream, Vector2f::deserialize),
-                verticalRotationLimit = ProtoHelper.deserializeNullable(stream, Vector2f::deserialize),
-                continueTargeting = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
-                trackingRadius = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                viewOffset = ProtoHelper.deserializeNullable(stream, Vector2f::deserialize),
-                entityOffset = ProtoHelper.deserializeNullable(stream, Vector3f::deserialize),
-                radius = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                minYawLimit = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                maxYawLimit = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
-                audioListener = ProtoHelper.deserializeNullable(stream, CameraAudioListener::deserialize),
-                playerEffects = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
-                alignTargetAndCameraForward = ProtoHelper.deserializeNullable(stream, Proto.Boolean::deserialize),
-                aimAssist = ProtoHelper.deserializeNullable(stream, CameraPresetAimAssist::deserialize),
-                controlScheme = ProtoHelper.deserializeNullable(stream, ControlScheme::deserialize),
+                posX = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                posY = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                posZ = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                rotX = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                rotY = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                rotSpeed = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                snapToTarget = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                horizontalRotationLimit = ProtoHelper.deserializeNullable(stream, Vector2f),
+                verticalRotationLimit = ProtoHelper.deserializeNullable(stream, Vector2f),
+                continueTargeting = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                trackingRadius = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                viewOffset = ProtoHelper.deserializeNullable(stream, Vector2f),
+                entityOffset = ProtoHelper.deserializeNullable(stream, Vector3f),
+                radius = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                minYawLimit = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                maxYawLimit = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
+                audioListener = ProtoHelper.deserializeNullable(stream, CameraAudioListener),
+                playerEffects = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                alignTargetAndCameraForward = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                aimAssist = ProtoHelper.deserializeNullable(stream, CameraPresetAimAssist),
+                controlScheme = ProtoHelper.deserializeNullable(stream, ControlScheme),
             )
         }
     }

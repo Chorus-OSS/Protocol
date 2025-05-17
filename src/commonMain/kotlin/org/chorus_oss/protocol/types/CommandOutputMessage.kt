@@ -18,14 +18,14 @@ data class CommandOutputMessage(
         override fun serialize(value: CommandOutputMessage, stream: Sink) {
             Proto.Boolean.serialize(value.internal, stream)
             Proto.String.serialize(value.messageId, stream)
-            ProtoHelper.serializeList(value.parameters, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.parameters, stream, Proto.String)
         }
 
         override fun deserialize(stream: Source): CommandOutputMessage {
             return CommandOutputMessage(
                 internal = Proto.Boolean.deserialize(stream),
                 messageId = Proto.String.deserialize(stream),
-                parameters = ProtoHelper.deserializeList(stream, Proto.String::deserialize)
+                parameters = ProtoHelper.deserializeList(stream, Proto.String)
             )
         }
     }

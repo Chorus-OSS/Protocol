@@ -19,12 +19,12 @@ data class AvailableActorIdentifiersPacket(
 
         override fun deserialize(stream: Source): AvailableActorIdentifiersPacket {
             return AvailableActorIdentifiersPacket(
-                tag = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize),
+                tag = ProtoHelper.deserializeList(stream, Proto.Byte),
             )
         }
 
         override fun serialize(value: AvailableActorIdentifiersPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.tag, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.tag, stream, Proto.Byte)
         }
     }
 }

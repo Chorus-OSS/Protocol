@@ -20,13 +20,13 @@ data class CraftResultsDeprecatedRequestAction(
             value: CraftResultsDeprecatedRequestAction,
             stream: Sink
         ) {
-            ProtoHelper.serializeList(value.resultItems, stream, ItemInstance::serialize)
+            ProtoHelper.serializeList(value.resultItems, stream, ItemInstance)
             Proto.Byte.serialize(value.timesCrafted, stream)
         }
 
         override fun deserialize(stream: Source): CraftResultsDeprecatedRequestAction {
             return CraftResultsDeprecatedRequestAction(
-                resultItems = ProtoHelper.deserializeList(stream, ItemInstance::deserialize),
+                resultItems = ProtoHelper.deserializeList(stream, ItemInstance),
                 timesCrafted = Proto.Byte.deserialize(stream),
             )
         }

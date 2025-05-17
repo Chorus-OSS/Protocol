@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 
-class LoginPacket(
+data class LoginPacket(
     val clientProtocol: Int,
     val connectionRequest: List<Byte>
 ) : Packet(id) {
@@ -17,13 +17,13 @@ class LoginPacket(
 
         override fun serialize(value: LoginPacket, stream: Sink) {
             ProtoBE.Int.serialize(value.clientProtocol, stream)
-            ProtoHelper.serializeList(value.connectionRequest, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.connectionRequest, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): LoginPacket {
             return LoginPacket(
                 clientProtocol = ProtoBE.Int.deserialize(stream),
-                connectionRequest = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                connectionRequest = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

@@ -20,12 +20,12 @@ data class ContainerRegistryCleanupPacket(
             value: ContainerRegistryCleanupPacket,
             stream: Sink
         ) {
-            ProtoHelper.serializeList(value.removedContainers, stream, FullContainerName::serialize)
+            ProtoHelper.serializeList(value.removedContainers, stream, FullContainerName)
         }
 
         override fun deserialize(stream: Source): ContainerRegistryCleanupPacket {
             return ContainerRegistryCleanupPacket(
-                removedContainers = ProtoHelper.deserializeList(stream, FullContainerName::deserialize)
+                removedContainers = ProtoHelper.deserializeList(stream, FullContainerName)
             )
         }
     }

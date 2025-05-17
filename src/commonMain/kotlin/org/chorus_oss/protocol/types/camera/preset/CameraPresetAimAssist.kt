@@ -20,22 +20,22 @@ data class CameraPresetAimAssist(
 ) {
     companion object : ProtoCodec<CameraPresetAimAssist> {
         override fun serialize(value: CameraPresetAimAssist, stream: Sink) {
-            ProtoHelper.serializeNullable(value.presetId, stream, Proto.String::serialize)
+            ProtoHelper.serializeNullable(value.presetId, stream, Proto.String)
             ProtoHelper.serializeNullable(value.targetMode, stream) { m, buf ->
                 ProtoLE.Int.serialize(m.ordinal, buf)
             }
-            ProtoHelper.serializeNullable(value.angle, stream, Vector2f::serialize)
-            ProtoHelper.serializeNullable(value.distance, stream, ProtoLE.Float::serialize)
+            ProtoHelper.serializeNullable(value.angle, stream, Vector2f)
+            ProtoHelper.serializeNullable(value.distance, stream, ProtoLE.Float)
         }
 
         override fun deserialize(stream: Source): CameraPresetAimAssist {
             return CameraPresetAimAssist(
-                presetId = ProtoHelper.deserializeNullable(stream, Proto.String::deserialize),
+                presetId = ProtoHelper.deserializeNullable(stream, Proto.String),
                 targetMode = ProtoHelper.deserializeNullable(stream) { buf ->
                     CameraAimAssistTargetMode.entries[ProtoLE.Int.deserialize(buf)]
                 },
-                angle = ProtoHelper.deserializeNullable(stream, Vector2f::deserialize),
-                distance = ProtoHelper.deserializeNullable(stream, ProtoLE.Float::deserialize),
+                angle = ProtoHelper.deserializeNullable(stream, Vector2f),
+                distance = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
             )
         }
     }

@@ -20,7 +20,7 @@ data class ItemStackResponse(
             ItemStackResponseStatus.serialize(value.result, stream)
             ProtoVAR.Int.serialize(value.requestID, stream)
             when (value.result) {
-                ItemStackResponseStatus.OK -> ProtoHelper.serializeList(value.containers, stream, ItemStackResponseContainer::serialize)
+                ItemStackResponseStatus.OK -> ProtoHelper.serializeList(value.containers, stream, ItemStackResponseContainer)
                 else -> Unit
             }
         }
@@ -31,7 +31,7 @@ data class ItemStackResponse(
                 result = ItemStackResponseStatus.deserialize(stream).also { result = it },
                 requestID = ProtoVAR.Int.deserialize(stream),
                 containers = when (result) {
-                    ItemStackResponseStatus.OK -> ProtoHelper.deserializeList(stream, ItemStackResponseContainer::deserialize)
+                    ItemStackResponseStatus.OK -> ProtoHelper.deserializeList(stream, ItemStackResponseContainer)
                     else -> emptyList()
                 }
             )

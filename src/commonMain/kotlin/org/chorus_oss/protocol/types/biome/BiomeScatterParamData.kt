@@ -20,7 +20,7 @@ data class BiomeScatterParamData(
 ) {
     companion object : ProtoCodec<BiomeScatterParamData> {
         override fun serialize(value: BiomeScatterParamData, stream: Sink) {
-            ProtoHelper.serializeList(value.coordinate, stream, BiomeCoordinateData::serialize)
+            ProtoHelper.serializeList(value.coordinate, stream, BiomeCoordinateData)
             CoordinateEvaluationOrder.serialize(value.evalOrder, stream)
             ExpressionOp.serialize(value.chancePercentType, stream)
             ProtoLE.Short.serialize(value.chancePercent, stream)
@@ -32,7 +32,7 @@ data class BiomeScatterParamData(
 
         override fun deserialize(stream: Source): BiomeScatterParamData {
             return BiomeScatterParamData(
-                coordinate = ProtoHelper.deserializeList(stream, BiomeCoordinateData::deserialize),
+                coordinate = ProtoHelper.deserializeList(stream, BiomeCoordinateData),
                 evalOrder = CoordinateEvaluationOrder.deserialize(stream),
                 chancePercentType = ExpressionOp.deserialize(stream),
                 chancePercent = ProtoLE.Short.deserialize(stream),

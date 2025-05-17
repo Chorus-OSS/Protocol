@@ -198,7 +198,7 @@ data class ClientboundMapItemDataPacket(
 
                 creationData = when {
                     typeFlags and Type.CREATION.bit != 0u -> CreationData(
-                        mapIDList = ProtoHelper.deserializeList(stream, ActorUniqueID::deserialize)
+                        mapIDList = ProtoHelper.deserializeList(stream, ActorUniqueID)
                     )
                     else -> null
                 },
@@ -210,8 +210,8 @@ data class ClientboundMapItemDataPacket(
 
                 decorationUpdateData = when {
                     typeFlags and Type.DECORATION_UPDATE.bit != 0u -> DecorationUpdateData(
-                        actorIDs = ProtoHelper.deserializeList(stream, MapItemTrackedActor::deserialize),
-                        decorationList = ProtoHelper.deserializeList(stream, MapDecoration::deserialize)
+                        actorIDs = ProtoHelper.deserializeList(stream, MapItemTrackedActor),
+                        decorationList = ProtoHelper.deserializeList(stream, MapDecoration)
                     )
                     else -> null
                 },
@@ -222,7 +222,7 @@ data class ClientboundMapItemDataPacket(
                         textureHeight = ProtoVAR.Int.deserialize(stream),
                         xTexCoordinate = ProtoVAR.Int.deserialize(stream),
                         yTexCoordinate = ProtoVAR.Int.deserialize(stream),
-                        pixels = ProtoHelper.deserializeList(stream, IVarColorRGBA::deserialize)
+                        pixels = ProtoHelper.deserializeList(stream, IVarColorRGBA)
                     )
                     else -> null
                 }
@@ -238,7 +238,7 @@ data class ClientboundMapItemDataPacket(
 
             if (value.typeFlags and Type.CREATION.bit != 0u) {
                 val creationData = value.creationData as CreationData
-                ProtoHelper.serializeList(creationData.mapIDList, stream, ActorUniqueID::serialize)
+                ProtoHelper.serializeList(creationData.mapIDList, stream, ActorUniqueID)
             }
 
             if (value.typeFlags and (Type.CREATION.bit or Type.DECORATION_UPDATE.bit or Type.TEXTURE_UPDATE.bit) != 0u) {
@@ -248,8 +248,8 @@ data class ClientboundMapItemDataPacket(
 
             if (value.typeFlags and Type.DECORATION_UPDATE.bit != 0u) {
                 val decorationUpdateData = value.decorationUpdateData as DecorationUpdateData
-                ProtoHelper.serializeList(decorationUpdateData.actorIDs, stream, MapItemTrackedActor::serialize)
-                ProtoHelper.serializeList(decorationUpdateData.decorationList, stream, MapDecoration::serialize)
+                ProtoHelper.serializeList(decorationUpdateData.actorIDs, stream, MapItemTrackedActor)
+                ProtoHelper.serializeList(decorationUpdateData.decorationList, stream, MapDecoration)
             }
 
             if (value.typeFlags and Type.TEXTURE_UPDATE.bit != 0u) {
@@ -258,7 +258,7 @@ data class ClientboundMapItemDataPacket(
                 ProtoVAR.Int.serialize(textureUpdateData.textureHeight, stream)
                 ProtoVAR.Int.serialize(textureUpdateData.xTexCoordinate, stream)
                 ProtoVAR.Int.serialize(textureUpdateData.yTexCoordinate, stream)
-                ProtoHelper.serializeList(textureUpdateData.pixels, stream, IVarColorRGBA::serialize)
+                ProtoHelper.serializeList(textureUpdateData.pixels, stream, IVarColorRGBA)
             }
         }
     }

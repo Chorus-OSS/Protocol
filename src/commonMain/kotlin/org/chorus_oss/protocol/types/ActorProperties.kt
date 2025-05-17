@@ -54,14 +54,14 @@ data class ActorProperties(
         }
 
         override fun serialize(value: ActorProperties, stream: Sink) {
-            ProtoHelper.serializeList(value.intProperties, stream, IntProperty::serialize)
-            ProtoHelper.serializeList(value.floatProperties, stream, FloatProperty::serialize)
+            ProtoHelper.serializeList(value.intProperties, stream, IntProperty)
+            ProtoHelper.serializeList(value.floatProperties, stream, FloatProperty)
         }
 
         override fun deserialize(stream: Source): ActorProperties {
             return ActorProperties(
-                intProperties = ProtoHelper.deserializeList(stream, IntProperty::deserialize),
-                floatProperties = ProtoHelper.deserializeList(stream, FloatProperty::deserialize)
+                intProperties = ProtoHelper.deserializeList(stream, IntProperty),
+                floatProperties = ProtoHelper.deserializeList(stream, FloatProperty)
             )
         }
     }

@@ -20,12 +20,12 @@ data class JigsawStructureDataPacket(
             value: JigsawStructureDataPacket,
             stream: Sink
         ) {
-            ProtoHelper.serializeList(value.data, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.data, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): JigsawStructureDataPacket {
             return JigsawStructureDataPacket(
-                data = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                data = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

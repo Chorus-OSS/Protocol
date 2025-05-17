@@ -25,7 +25,7 @@ data class BiomeDefinitionData(
 ) {
     companion object : ProtoCodec<BiomeDefinitionData> {
         override fun serialize(value: BiomeDefinitionData, stream: Sink) {
-            ProtoHelper.serializeNullable(value.id, stream, ProtoLE.UShort::serialize)
+            ProtoHelper.serializeNullable(value.id, stream, ProtoLE.UShort)
             ProtoLE.Float.serialize(value.temperature, stream)
             ProtoLE.Float.serialize(value.downfall, stream)
             ProtoLE.Float.serialize(value.redSporeDensity, stream)
@@ -36,13 +36,13 @@ data class BiomeDefinitionData(
             ProtoLE.Float.serialize(value.scale, stream)
             ProtoLE.Int.serialize(value.mapWaterColorARGB, stream)
             Proto.Boolean.serialize(value.rain, stream)
-            ProtoHelper.serializeNullable(value.tags, stream, BiomeTagsData::serialize)
-            ProtoHelper.serializeNullable(value.chunkGenData, stream, BiomeDefinitionChunkGenData::serialize)
+            ProtoHelper.serializeNullable(value.tags, stream, BiomeTagsData)
+            ProtoHelper.serializeNullable(value.chunkGenData, stream, BiomeDefinitionChunkGenData)
         }
 
         override fun deserialize(stream: Source): BiomeDefinitionData {
             return BiomeDefinitionData(
-                id = ProtoHelper.deserializeNullable(stream, ProtoLE.UShort::deserialize),
+                id = ProtoHelper.deserializeNullable(stream, ProtoLE.UShort),
                 temperature = ProtoLE.Float.deserialize(stream),
                 downfall = ProtoLE.Float.deserialize(stream),
                 redSporeDensity = ProtoLE.Float.deserialize(stream),
@@ -53,8 +53,8 @@ data class BiomeDefinitionData(
                 scale = ProtoLE.Float.deserialize(stream),
                 mapWaterColorARGB = ProtoLE.Int.deserialize(stream),
                 rain = Proto.Boolean.deserialize(stream),
-                tags = ProtoHelper.deserializeNullable(stream, BiomeTagsData::deserialize),
-                chunkGenData = ProtoHelper.deserializeNullable(stream, BiomeDefinitionChunkGenData::deserialize)
+                tags = ProtoHelper.deserializeNullable(stream, BiomeTagsData),
+                chunkGenData = ProtoHelper.deserializeNullable(stream, BiomeDefinitionChunkGenData)
             )
         }
     }

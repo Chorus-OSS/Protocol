@@ -27,7 +27,7 @@ data class AutoCraftRecipeRequestAction(
             ProtoVAR.UInt.serialize(value.recipeNetworkId, stream)
             Proto.Byte.serialize(value.numberOfCrafts, stream)
             Proto.Byte.serialize(value.timesCrafted, stream)
-            ProtoHelper.serializeList(value.ingredients, stream, ItemDescriptorCount::serialize)
+            ProtoHelper.serializeList(value.ingredients, stream, ItemDescriptorCount)
         }
 
         override fun deserialize(stream: Source): AutoCraftRecipeRequestAction {
@@ -35,7 +35,7 @@ data class AutoCraftRecipeRequestAction(
                 recipeNetworkId = ProtoVAR.UInt.deserialize(stream),
                 numberOfCrafts = Proto.Byte.deserialize(stream),
                 timesCrafted = Proto.Byte.deserialize(stream),
-                ingredients = ProtoHelper.deserializeList(stream, ItemDescriptorCount::deserialize)
+                ingredients = ProtoHelper.deserializeList(stream, ItemDescriptorCount)
             )
         }
     }

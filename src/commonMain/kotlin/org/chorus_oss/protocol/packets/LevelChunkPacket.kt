@@ -44,10 +44,10 @@ data class LevelChunkPacket(
             }
             Proto.Boolean.serialize(value.cacheEnabled, stream)
             when (value.cacheEnabled) {
-                true -> ProtoHelper.serializeList(value.blobHashes, stream, ProtoLE.ULong::serialize)
+                true -> ProtoHelper.serializeList(value.blobHashes, stream, ProtoLE.ULong)
                 false -> Unit
             }
-            ProtoHelper.serializeList(value.data, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.data, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): LevelChunkPacket {
@@ -63,10 +63,10 @@ data class LevelChunkPacket(
                 },
                 cacheEnabled = Proto.Boolean.deserialize(stream).also { cacheEnabled = it },
                 blobHashes = when (cacheEnabled) {
-                    true -> ProtoHelper.deserializeList(stream, ProtoLE.ULong::deserialize)
+                    true -> ProtoHelper.deserializeList(stream, ProtoLE.ULong)
                     false -> emptyList()
                 },
-                data = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                data = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

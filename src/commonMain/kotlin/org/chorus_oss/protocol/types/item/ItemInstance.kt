@@ -47,8 +47,8 @@ data class ItemInstance(
                 ProtoLE.Short.serialize(0, userDataBuffer)
             }
 
-            ProtoHelper.serializeList(value.canBePlacedOn, userDataBuffer, Proto.String::serialize)
-            ProtoHelper.serializeList(value.canBreak, userDataBuffer, Proto.String::serialize)
+            ProtoHelper.serializeList(value.canBePlacedOn, userDataBuffer, Proto.String)
+            ProtoHelper.serializeList(value.canBreak, userDataBuffer, Proto.String)
 
             if (value.netID == ShieldID) {
                 ProtoLE.Long.serialize(0, userDataBuffer)
@@ -98,8 +98,8 @@ data class ItemInstance(
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 
-            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String::deserialize)
-            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String::deserialize)
+            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
+            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
 
             if (netID == ShieldID) {
                 ProtoLE.Long.deserialize(userDataBuffer) // BlockingTicks (UNUSED?)

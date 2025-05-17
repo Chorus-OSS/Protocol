@@ -10,12 +10,12 @@ data class BiomeSurfaceMaterialAdjustmentData(
 ) {
     companion object : ProtoCodec<BiomeSurfaceMaterialAdjustmentData> {
         override fun serialize(value: BiomeSurfaceMaterialAdjustmentData, stream: Sink) {
-            ProtoHelper.serializeList(value.adjustment, stream, BiomeElementData::serialize)
+            ProtoHelper.serializeList(value.adjustment, stream, BiomeElementData)
         }
 
         override fun deserialize(stream: Source): BiomeSurfaceMaterialAdjustmentData {
             return BiomeSurfaceMaterialAdjustmentData(
-                adjustment = ProtoHelper.deserializeList(stream, BiomeElementData::deserialize)
+                adjustment = ProtoHelper.deserializeList(stream, BiomeElementData)
             )
         }
     }

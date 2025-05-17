@@ -26,7 +26,7 @@ data class Attribute(
             ProtoLE.Float.serialize(value.defaultMin, stream)
             ProtoLE.Float.serialize(value.defaultMax, stream)
             Proto.String.serialize(value.name, stream)
-            ProtoHelper.serializeList(value.modifiers, stream, AttributeModifier::serialize)
+            ProtoHelper.serializeList(value.modifiers, stream, AttributeModifier)
         }
 
         override fun deserialize(stream: Source): Attribute {
@@ -37,7 +37,7 @@ data class Attribute(
                 defaultMin = ProtoLE.Float.deserialize(stream),
                 defaultMax = ProtoLE.Float.deserialize(stream),
                 name = Proto.String.deserialize(stream),
-                modifiers = ProtoHelper.deserializeList(stream, AttributeModifier::deserialize)
+                modifiers = ProtoHelper.deserializeList(stream, AttributeModifier)
             )
         }
     }

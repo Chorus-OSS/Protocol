@@ -22,16 +22,16 @@ data class ItemStackRequest(
             stream: Sink
         ) {
             ProtoVAR.Int.serialize(value.requestId, stream)
-            ProtoHelper.serializeList(value.actions, stream, ItemStackRequestAction::serialize)
-            ProtoHelper.serializeList(value.filterStrings, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.actions, stream, ItemStackRequestAction)
+            ProtoHelper.serializeList(value.filterStrings, stream, Proto.String)
             FilterCause.serialize(value.textProcessingEventOrigin, stream)
         }
 
         override fun deserialize(stream: Source): ItemStackRequest {
             return ItemStackRequest(
                 requestId = ProtoVAR.Int.deserialize(stream),
-                actions = ProtoHelper.deserializeList(stream, ItemStackRequestAction::deserialize),
-                filterStrings = ProtoHelper.deserializeList(stream, Proto.String::deserialize),
+                actions = ProtoHelper.deserializeList(stream, ItemStackRequestAction),
+                filterStrings = ProtoHelper.deserializeList(stream, Proto.String),
                 textProcessingEventOrigin = FilterCause.deserialize(stream)
             )
         }

@@ -15,14 +15,14 @@ data class BiomeConditionalTransformationData(
 ) {
     companion object : ProtoCodec<BiomeConditionalTransformationData> {
         override fun serialize(value: BiomeConditionalTransformationData, stream: Sink) {
-            ProtoHelper.serializeList(value.weightedBiome, stream, BiomeWeightedData::serialize)
+            ProtoHelper.serializeList(value.weightedBiome, stream, BiomeWeightedData)
             ProtoLE.Short.serialize(value.conditionJSON, stream)
             ProtoLE.UInt.serialize(value.minPassingNeighbors, stream)
         }
 
         override fun deserialize(stream: Source): BiomeConditionalTransformationData {
             return BiomeConditionalTransformationData(
-                weightedBiome = ProtoHelper.deserializeList(stream, BiomeWeightedData::deserialize),
+                weightedBiome = ProtoHelper.deserializeList(stream, BiomeWeightedData),
                 conditionJSON = ProtoLE.Short.deserialize(stream),
                 minPassingNeighbors = ProtoLE.UInt.deserialize(stream)
             )

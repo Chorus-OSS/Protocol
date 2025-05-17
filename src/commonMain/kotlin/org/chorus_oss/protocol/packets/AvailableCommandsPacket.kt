@@ -27,9 +27,9 @@ data class AvailableCommandsPacket(
         override fun deserialize(stream: Source): AvailableCommandsPacket {
             val enumValuesLen: Int
             return AvailableCommandsPacket(
-                enumValues = ProtoHelper.deserializeList(stream, Proto.String::deserialize).also { enumValuesLen = it.size },
-                chainedSubcommandValues = ProtoHelper.deserializeList(stream, Proto.String::deserialize),
-                suffixes = ProtoHelper.deserializeList(stream, Proto.String::deserialize),
+                enumValues = ProtoHelper.deserializeList(stream, Proto.String).also { enumValuesLen = it.size },
+                chainedSubcommandValues = ProtoHelper.deserializeList(stream, Proto.String),
+                suffixes = ProtoHelper.deserializeList(stream, Proto.String),
                 enums = ProtoHelper.deserializeList(stream) { buf ->
                     CommandEnum(
                         type = Proto.String.deserialize(buf),
@@ -50,17 +50,17 @@ data class AvailableCommandsPacket(
                         }
                     )
                 },
-                chainedSubcommands = ProtoHelper.deserializeList(stream, ChainedSubcommand::deserialize),
-                commands = ProtoHelper.deserializeList(stream, Command::deserialize),
-                dynamicEnums = ProtoHelper.deserializeList(stream, CommandDynamicEnum::deserialize),
-                constraints = ProtoHelper.deserializeList(stream, CommandEnumConstraint::deserialize)
+                chainedSubcommands = ProtoHelper.deserializeList(stream, ChainedSubcommand),
+                commands = ProtoHelper.deserializeList(stream, Command),
+                dynamicEnums = ProtoHelper.deserializeList(stream, CommandDynamicEnum),
+                constraints = ProtoHelper.deserializeList(stream, CommandEnumConstraint)
             )
         }
 
         override fun serialize(value: AvailableCommandsPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.enumValues, stream, Proto.String::serialize)
-            ProtoHelper.serializeList(value.chainedSubcommandValues, stream, Proto.String::serialize)
-            ProtoHelper.serializeList(value.suffixes, stream, Proto.String::serialize)
+            ProtoHelper.serializeList(value.enumValues, stream, Proto.String)
+            ProtoHelper.serializeList(value.chainedSubcommandValues, stream, Proto.String)
+            ProtoHelper.serializeList(value.suffixes, stream, Proto.String)
 
             val enumValuesLen = value.enumValues.size
             ProtoHelper.serializeList(value.enums, stream) { enum, buf ->
@@ -82,10 +82,10 @@ data class AvailableCommandsPacket(
                 }
             }
 
-            ProtoHelper.serializeList(value.chainedSubcommands, stream, ChainedSubcommand::serialize)
-            ProtoHelper.serializeList(value.commands, stream, Command::serialize)
-            ProtoHelper.serializeList(value.dynamicEnums, stream, CommandDynamicEnum::serialize)
-            ProtoHelper.serializeList(value.constraints, stream, CommandEnumConstraint::serialize)
+            ProtoHelper.serializeList(value.chainedSubcommands, stream, ChainedSubcommand)
+            ProtoHelper.serializeList(value.commands, stream, Command)
+            ProtoHelper.serializeList(value.dynamicEnums, stream, CommandDynamicEnum)
+            ProtoHelper.serializeList(value.constraints, stream, CommandEnumConstraint)
         }
     }
 }

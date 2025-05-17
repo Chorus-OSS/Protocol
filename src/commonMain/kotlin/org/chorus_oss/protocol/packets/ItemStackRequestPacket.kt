@@ -18,12 +18,12 @@ data class ItemStackRequestPacket(
             get() = ProtocolInfo.ITEM_STACK_REQUEST_PACKET
 
         override fun serialize(value: ItemStackRequestPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.requests, stream, ItemStackRequest::serialize)
+            ProtoHelper.serializeList(value.requests, stream, ItemStackRequest)
         }
 
         override fun deserialize(stream: Source): ItemStackRequestPacket {
             return ItemStackRequestPacket(
-                requests = ProtoHelper.deserializeList(stream, ItemStackRequest::deserialize)
+                requests = ProtoHelper.deserializeList(stream, ItemStackRequest)
             )
         }
     }

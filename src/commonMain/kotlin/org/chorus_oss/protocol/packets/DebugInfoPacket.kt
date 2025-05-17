@@ -21,13 +21,13 @@ class DebugInfoPacket(
 
         override fun serialize(value: DebugInfoPacket, stream: Sink) {
             ActorUniqueID.serialize(value.playerUniqueID, stream)
-            ProtoHelper.serializeList(value.data, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.data, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): DebugInfoPacket {
             return DebugInfoPacket(
                 playerUniqueID = ActorUniqueID.deserialize(stream),
-                data = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                data = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

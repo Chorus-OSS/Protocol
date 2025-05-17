@@ -34,14 +34,14 @@ data class CommandEnumConstraint(
         override fun serialize(value: CommandEnumConstraint, stream: Sink) {
             ProtoLE.UInt.serialize(value.enumValueIndex, stream)
             ProtoLE.UInt.serialize(value.enumIndex, stream)
-            ProtoHelper.serializeList(value.constraints, stream, Type::serialize)
+            ProtoHelper.serializeList(value.constraints, stream, Type)
         }
 
         override fun deserialize(stream: Source): CommandEnumConstraint {
             return CommandEnumConstraint(
                 enumValueIndex = ProtoLE.UInt.deserialize(stream),
                 enumIndex = ProtoLE.UInt.deserialize(stream),
-                constraints = ProtoHelper.deserializeList(stream, Type::deserialize)
+                constraints = ProtoHelper.deserializeList(stream, Type)
             )
         }
     }

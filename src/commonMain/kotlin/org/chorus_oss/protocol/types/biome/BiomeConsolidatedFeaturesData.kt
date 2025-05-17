@@ -10,12 +10,12 @@ data class BiomeConsolidatedFeaturesData(
 ) {
     companion object : ProtoCodec<BiomeConsolidatedFeaturesData> {
         override fun serialize(value: BiomeConsolidatedFeaturesData, stream: Sink) {
-            ProtoHelper.serializeList(value.features, stream, BiomeConsolidatedFeatureData::serialize)
+            ProtoHelper.serializeList(value.features, stream, BiomeConsolidatedFeatureData)
         }
 
         override fun deserialize(stream: Source): BiomeConsolidatedFeaturesData {
             return BiomeConsolidatedFeaturesData(
-                features = ProtoHelper.deserializeList(stream, BiomeConsolidatedFeatureData::deserialize)
+                features = ProtoHelper.deserializeList(stream, BiomeConsolidatedFeatureData)
             )
         }
     }

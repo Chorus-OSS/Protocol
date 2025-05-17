@@ -15,13 +15,13 @@ data class LegacySetItemSlotData(
     companion object : ProtoCodec<LegacySetItemSlotData> {
         override fun serialize(value: LegacySetItemSlotData, stream: Sink) {
             Proto.Byte.serialize(value.containerID, stream)
-            ProtoHelper.serializeList(value.slots, stream, Proto.Byte::serialize)
+            ProtoHelper.serializeList(value.slots, stream, Proto.Byte)
         }
 
         override fun deserialize(stream: Source): LegacySetItemSlotData {
             return LegacySetItemSlotData(
                 containerID = Proto.Byte.deserialize(stream),
-                slots = ProtoHelper.deserializeList(stream, Proto.Byte::deserialize)
+                slots = ProtoHelper.deserializeList(stream, Proto.Byte)
             )
         }
     }

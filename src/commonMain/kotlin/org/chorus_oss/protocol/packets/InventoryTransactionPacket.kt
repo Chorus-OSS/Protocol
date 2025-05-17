@@ -49,12 +49,12 @@ data class InventoryTransactionPacket(
             ProtoVAR.Int.serialize(value.legacyRequestID, stream)
             when (value.legacyRequestID != 0) {
                 true -> (value.legacySetItemSlots as List<LegacySetItemSlotData>).let {
-                    ProtoHelper.serializeList(it, stream, LegacySetItemSlotData::serialize)
+                    ProtoHelper.serializeList(it, stream, LegacySetItemSlotData)
                 }
                 false -> Unit
             }
             TransactionType.serialize(value.transactionType, stream)
-            ProtoHelper.serializeList(value.actions, stream, InventoryAction::serialize)
+            ProtoHelper.serializeList(value.actions, stream, InventoryAction)
             when (value.transactionType) {
                 TransactionType.USE_ITEM -> (value.transactionData as UseItemTransactionData).let { UseItemTransactionData.serialize(it, stream) }
                 TransactionType.USE_ITEM_ON_ENTITY -> (value.transactionData as UseItemOnEntityTransactionData).let { UseItemOnEntityTransactionData.serialize(it, stream) }
@@ -69,11 +69,11 @@ data class InventoryTransactionPacket(
             return InventoryTransactionPacket(
                 legacyRequestID = ProtoVAR.Int.deserialize(stream).also { legacyRequestID = it },
                 legacySetItemSlots = when (legacyRequestID != 0) {
-                    true -> ProtoHelper.deserializeList(stream, LegacySetItemSlotData::deserialize)
+                    true -> ProtoHelper.deserializeList(stream, LegacySetItemSlotData)
                     false -> null
                 },
                 transactionType = TransactionType.deserialize(stream).also { transactionType = it },
-                actions = ProtoHelper.deserializeList(stream, InventoryAction::deserialize),
+                actions = ProtoHelper.deserializeList(stream, InventoryAction),
                 transactionData = when (transactionType) {
                     TransactionType.USE_ITEM -> UseItemTransactionData.deserialize(stream)
                     TransactionType.USE_ITEM_ON_ENTITY -> UseItemOnEntityTransactionData.deserialize(stream)

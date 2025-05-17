@@ -51,7 +51,7 @@ data class AddPlayerPacket(
                 actorData = ActorDataMap.deserialize(stream),
                 actorProperties = ActorProperties.deserialize(stream),
                 abilitiesData = SerializedAbilitiesData.deserialize(stream),
-                actorLinks = ProtoHelper.deserializeList(stream, ActorLink::deserialize),
+                actorLinks = ProtoHelper.deserializeList(stream, ActorLink),
                 deviceID = Proto.String.deserialize(stream),
                 buildPlatform = Platform.deserialize(stream)
             )
@@ -72,7 +72,7 @@ data class AddPlayerPacket(
             ActorDataMap.serialize(value.actorData, stream)
             ActorProperties.serialize(value.actorProperties, stream)
             SerializedAbilitiesData.serialize(value.abilitiesData, stream)
-            ProtoHelper.serializeList(value.actorLinks, stream, ActorLink::serialize)
+            ProtoHelper.serializeList(value.actorLinks, stream, ActorLink)
             Proto.String.serialize(value.deviceID, stream)
             Platform.serialize(value.buildPlatform, stream)
         }

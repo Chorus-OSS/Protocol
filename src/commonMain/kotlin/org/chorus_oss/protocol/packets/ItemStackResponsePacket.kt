@@ -8,9 +8,6 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponse
-import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseContainer
-import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseSlot
-import org.chorus_oss.protocol.types.itemstack.response.ItemStackResponseStatus
 
 
 data class ItemStackResponsePacket(
@@ -24,12 +21,12 @@ data class ItemStackResponsePacket(
             value: ItemStackResponsePacket,
             stream: Sink
         ) {
-            ProtoHelper.serializeList(value.responses, stream, ItemStackResponse::serialize)
+            ProtoHelper.serializeList(value.responses, stream, ItemStackResponse)
         }
 
         override fun deserialize(stream: Source): ItemStackResponsePacket {
             return ItemStackResponsePacket(
-                responses = ProtoHelper.deserializeList(stream, ItemStackResponse::deserialize)
+                responses = ProtoHelper.deserializeList(stream, ItemStackResponse)
             )
         }
     }

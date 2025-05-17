@@ -17,12 +17,12 @@ class DimensionDataPacket(
             get() = ProtocolInfo.DIMENSION_DATA_PACKET
 
         override fun serialize(value: DimensionDataPacket, stream: Sink) {
-            ProtoHelper.serializeList(value.definitions, stream, DimensionDefinition::serialize)
+            ProtoHelper.serializeList(value.definitions, stream, DimensionDefinition)
         }
 
         override fun deserialize(stream: Source): DimensionDataPacket {
             return DimensionDataPacket(
-                definitions = ProtoHelper.deserializeList(stream, DimensionDefinition::deserialize)
+                definitions = ProtoHelper.deserializeList(stream, DimensionDefinition)
             )
         }
     }

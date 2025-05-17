@@ -14,13 +14,13 @@ data class ChainedSubcommand(
     companion object : ProtoCodec<ChainedSubcommand> {
         override fun serialize(value: ChainedSubcommand, stream: Sink) {
             Proto.String.serialize(value.name, stream)
-            ProtoHelper.serializeList(value.values, stream, ChainedSubcommandValue::serialize)
+            ProtoHelper.serializeList(value.values, stream, ChainedSubcommandValue)
         }
 
         override fun deserialize(stream: Source): ChainedSubcommand {
             return ChainedSubcommand(
                 name = Proto.String.deserialize(stream),
-                values = ProtoHelper.deserializeList(stream, ChainedSubcommandValue::deserialize)
+                values = ProtoHelper.deserializeList(stream, ChainedSubcommandValue)
             )
         }
     }

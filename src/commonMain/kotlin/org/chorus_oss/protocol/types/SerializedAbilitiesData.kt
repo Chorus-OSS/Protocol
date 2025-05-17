@@ -19,7 +19,7 @@ data class SerializedAbilitiesData(
             ActorUniqueID.serialize(value.targetPlayerRawID, stream)
             Proto.Byte.serialize(value.playerPermissions.ordinal.toByte(), stream)
             Proto.Byte.serialize(value.commandPermissions.ordinal.toByte(), stream)
-            ProtoHelper.serializeList(value.layers, stream, AbilityLayer::serialize)
+            ProtoHelper.serializeList(value.layers, stream, AbilityLayer)
         }
 
         override fun deserialize(stream: Source): SerializedAbilitiesData {
@@ -27,7 +27,7 @@ data class SerializedAbilitiesData(
                 targetPlayerRawID = ActorUniqueID.deserialize(stream),
                 playerPermissions = PlayerPermission.entries[Proto.Byte.deserialize(stream).toInt()],
                 commandPermissions = CommandPermission.entries[Proto.Byte.deserialize(stream).toInt()],
-                layers = ProtoHelper.deserializeList(stream, AbilityLayer::deserialize)
+                layers = ProtoHelper.deserializeList(stream, AbilityLayer)
             )
         }
     }
