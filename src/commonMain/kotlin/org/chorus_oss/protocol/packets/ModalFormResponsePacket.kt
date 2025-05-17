@@ -1,28 +1,61 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
 
-class ModalFormResponsePacket : Packet(id) {
-    var formId: Int = 0
-    var data: String = "null"
-    var cancelReason: Int = 0
 
-    override fun pid(): Int {
-        return ProtocolInfo.MODAL_FORM_RESPONSE_PACKET
-    }
-
-
-
+data class ModalFormResponsePacket(
+    val formID: UInt,
+    val responseData: String?,
+    val cancelReason: CancelReason?,
+) : Packet(id) {
     companion object : PacketCodec<ModalFormResponsePacket> {
+        enum class CancelReason {
+            UserClosed,
+            UserBusy;
+
+            companion object : ProtoCodec<CancelReason> {
+                override fun serialize(
+                    value: CancelReason,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
+
+                override fun deserialize(stream: Source): CancelReason {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.MODAL_FORM_RESPONSE_PACKET
+
+        override fun serialize(
+            value: ModalFormResponsePacket,
+            stream: Sink
+        ) {
+            ProtoVAR.UInt.serialize(value.formID, stream)
+            ProtoHelper.serializeNullable(value.responseData, stream, Proto.String)
+            ProtoHelper.serializeNullable(value.cancelReason, stream, CancelReason)
+        }
+
         override fun deserialize(stream: Source): ModalFormResponsePacket {
-            val packet = ModalFormResponsePacket()
-            packet.formId = byteBuf.readVarInt()
-            if (Proto.Boolean.deserialize(stream)) {
-                packet.data = Proto.String.deserialize(stream)
-            }
-            if (Proto.Boolean.deserialize(stream)) {
-                packet.cancelReason = Proto.Byte.deserialize(stream).toInt()
-            }
-            return packet
+            return ModalFormResponsePacket(
+                formID = ProtoVAR.UInt.deserialize(stream),
+                responseData = ProtoHelper.deserializeNullable(stream, Proto.String),
+                cancelReason = ProtoHelper.deserializeNullable(stream, CancelReason)
+            )
         }
     }
 }

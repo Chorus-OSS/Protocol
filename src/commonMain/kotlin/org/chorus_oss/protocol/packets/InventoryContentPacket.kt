@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.inventory.FullContainerName
 import org.chorus_oss.protocol.types.item.ItemStack
 
-class InventoryContentPacket(
+data class InventoryContentPacket(
     val windowID: UInt,
     val content: List<ItemStack>,
     val container: FullContainerName,

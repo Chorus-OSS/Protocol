@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.ULong
 
 
-class HurtArmorPacket(
+data class HurtArmorPacket(
     val cause: Int,
     val damage: Int,
     val armorSlots: ULong,

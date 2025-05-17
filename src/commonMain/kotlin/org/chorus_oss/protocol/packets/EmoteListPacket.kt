@@ -15,7 +15,7 @@ import kotlin.uuid.Uuid
 
 
 @OptIn(ExperimentalUuidApi::class)
-class EmoteListPacket(
+data class EmoteListPacket(
     val playerRuntimeID: ActorRuntimeID,
     val emotePieces: List<Uuid>,
 ) : Packet(id) {

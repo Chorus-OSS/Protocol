@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 
-class DebugInfoPacket(
+data class DebugInfoPacket(
     val playerUniqueID: ActorUniqueID,
     val data: List<Byte>
 ) : Packet(id) {

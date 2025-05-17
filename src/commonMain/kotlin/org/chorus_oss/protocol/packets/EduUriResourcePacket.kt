@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.EduSharedUriResource
 
 
-class EduUriResourcePacket(
+data class EduUriResourcePacket(
     val resource: EduSharedUriResource,
 ) : Packet(id) {
     companion object : PacketCodec<EduUriResourcePacket> {

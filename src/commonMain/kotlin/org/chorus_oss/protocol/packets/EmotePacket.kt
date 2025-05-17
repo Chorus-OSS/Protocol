@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
-class EmotePacket(
+data class EmotePacket(
     val actorRuntimeID: ActorRuntimeID,
     val emoteID: String,
     val emoteLength: UInt,

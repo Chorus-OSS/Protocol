@@ -1,90 +1,113 @@
 package org.chorus_oss.protocol.packets
 
-
-class MovePlayerPacket : Packet(id) {
-    @JvmField
-    var eid: Long = 0
-
-    @JvmField
-    var x: Float = 0f
-
-    @JvmField
-    var y: Float = 0f
-
-    @JvmField
-    var z: Float = 0f
-
-    @JvmField
-    var yaw: Float = 0f
-
-    @JvmField
-    var headYaw: Float = 0f
-
-    @JvmField
-    var pitch: Float = 0f
-
-    @JvmField
-    var mode: Int = MODE_NORMAL
-
-    @JvmField
-    var onGround: Boolean = false
-
-    @JvmField
-    var ridingEid: Long = 0
-    var teleportationCause: Int = 0
-    var entityType: Int = 0
-
-    var frame: Long = 0 // tick
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(this.eid)
-        byteBuf.writeVector3f(this.x, this.y, this.z)
-        byteBuf.writeFloatLE(this.pitch)
-        byteBuf.writeFloatLE(this.yaw)
-        byteBuf.writeFloatLE(this.headYaw)
-        byteBuf.writeByte(mode.toByte().toInt())
-        byteBuf.writeBoolean(this.onGround)
-        byteBuf.writeActorRuntimeID(this.ridingEid)
-        if (this.mode == MODE_TELEPORT) {
-            byteBuf.writeIntLE(this.teleportationCause)
-            byteBuf.writeIntLE(this.entityType)
-        }
-        byteBuf.writeUnsignedVarLong(this.frame)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.MOVE_PLAYER_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.*
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.Vector3f
 
 
-
+data class MovePlayerPacket(
+    val entityRuntimeID: ActorRuntimeID,
+    val position: Vector3f,
+    val pitch: Float,
+    val yaw: Float,
+    val headYaw: Float,
+    val mode: Mode,
+    val onGround: Boolean,
+    val riddenEntityRuntimeID: ActorRuntimeID,
+    val teleportCause: TeleportCause,
+    val teleportSourceEntityType: Int,
+    val tick: ULong,
+) : Packet(id) {
     companion object : PacketCodec<MovePlayerPacket> {
-        override fun deserialize(stream: Source): MovePlayerPacket {
-            val packet = MovePlayerPacket()
+        enum class Mode {
+            Normal,
+            Reset,
+            Teleport,
+            Rotation;
 
-            packet.eid = byteBuf.readActorRuntimeID()
-            val v = Vector3f.deserialize(stream)
-            packet.x = v.x
-            packet.y = v.y
-            packet.z = v.z
-            packet.pitch = byteBuf.readFloatLE()
-            packet.yaw = byteBuf.readFloatLE()
-            packet.headYaw = byteBuf.readFloatLE()
-            packet.mode = Proto.Byte.deserialize(stream).toInt()
-            packet.onGround = Proto.Boolean.deserialize(stream)
-            packet.ridingEid = byteBuf.readActorRuntimeID()
-            if (packet.mode == MODE_TELEPORT) {
-                packet.teleportationCause = byteBuf.readIntLE()
-                packet.entityType = byteBuf.readIntLE()
+            companion object : ProtoCodec<Mode> {
+                override fun serialize(
+                    value: Mode,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
+
+                override fun deserialize(stream: Source): Mode {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
             }
-            packet.frame = byteBuf.readUnsignedVarLong()
-
-            return packet
         }
 
-        const val MODE_NORMAL: Int = 0
-        const val MODE_RESET: Int = 1 //MODE_RESPAWN
-        const val MODE_TELEPORT: Int = 2
-        const val MODE_PITCH: Int = 3 //facepalm Mojang MODE_HEAD_ROTATION
+        enum class TeleportCause {
+            Unknown,
+            Projectile,
+            ChorusFruit,
+            Command,
+            Behaviour;
+
+            companion object : ProtoCodec<TeleportCause> {
+                override fun serialize(
+                    value: TeleportCause,
+                    stream: Sink
+                ) {
+                    ProtoLE.Int.serialize(value.ordinal, stream)
+                }
+
+                override fun deserialize(stream: Source): TeleportCause {
+                    return entries[ProtoLE.Int.deserialize(stream)]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.MOVE_PLAYER_PACKET
+
+        override fun serialize(value: MovePlayerPacket, stream: Sink) {
+            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+            Vector3f.serialize(value.position, stream)
+            ProtoLE.Float.serialize(value.pitch, stream)
+            ProtoLE.Float.serialize(value.yaw, stream)
+            ProtoLE.Float.serialize(value.headYaw, stream)
+            Mode.serialize(value.mode, stream)
+            Proto.Boolean.serialize(value.onGround, stream)
+            ActorRuntimeID.serialize(value.riddenEntityRuntimeID, stream)
+            when (value.mode) {
+                Mode.Teleport -> TeleportCause.serialize(value.teleportCause, stream)
+                else -> Unit
+            }
+            when (value.mode) {
+                Mode.Teleport -> ProtoLE.Int.serialize(value.teleportSourceEntityType, stream)
+                else -> Unit
+            }
+            ProtoVAR.ULong.serialize(value.tick, stream)
+        }
+
+        override fun deserialize(stream: Source): MovePlayerPacket {
+            val mode: Mode
+            return MovePlayerPacket(
+                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+                position = Vector3f.deserialize(stream),
+                pitch = ProtoLE.Float.deserialize(stream),
+                yaw = ProtoLE.Float.deserialize(stream),
+                headYaw = ProtoLE.Float.deserialize(stream),
+                mode = Mode.deserialize(stream).also { mode = it },
+                onGround = Proto.Boolean.deserialize(stream),
+                riddenEntityRuntimeID = ActorRuntimeID.deserialize(stream),
+                teleportCause = when (mode) {
+                    Mode.Teleport -> TeleportCause.deserialize(stream)
+                    else -> TeleportCause.Unknown
+                },
+                teleportSourceEntityType = when (mode) {
+                    Mode.Teleport -> ProtoLE.Int.deserialize(stream)
+                    else -> 0
+                },
+                tick = ProtoVAR.ULong.deserialize(stream)
+            )
+        }
     }
 }

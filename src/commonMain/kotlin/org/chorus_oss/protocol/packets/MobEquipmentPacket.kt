@@ -1,38 +1,43 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.item.Item
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.item.ItemStack
 
 
-class MobEquipmentPacket : Packet(id) {
-    var eid: Long = 0
-    lateinit var item: Item
-    var slot: Int = 0
-    var selectedSlot: Int = 0
-    var containerId: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(this.eid)
-        byteBuf.writeSlot(this.item)
-        byteBuf.writeByte(slot)
-        byteBuf.writeByte(selectedSlot)
-        byteBuf.writeByte(containerId)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.MOB_EQUIPMENT_PACKET
-    }
-
-
-
+data class MobEquipmentPacket(
+    val entityRuntimeID: ActorRuntimeID,
+    val newItem: ItemStack,
+    val inventorySlot: Byte,
+    val hotbarSlot: Byte,
+    val windowID: Byte,
+) : Packet(id) {
     companion object : PacketCodec<MobEquipmentPacket> {
+        override val id: Int
+            get() = ProtocolInfo.MOB_EQUIPMENT_PACKET
+
+        override fun serialize(value: MobEquipmentPacket, stream: Sink) {
+            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+            ItemStack.serialize(value.newItem, stream)
+            Proto.Byte.serialize(value.inventorySlot, stream)
+            Proto.Byte.serialize(value.hotbarSlot, stream)
+            Proto.Byte.serialize(value.windowID, stream)
+        }
+
         override fun deserialize(stream: Source): MobEquipmentPacket {
-            val packet = MobEquipmentPacket()
-            packet.eid = byteBuf.readActorRuntimeID()
-            packet.item = byteBuf.readSlot()
-            packet.slot = Proto.Byte.deserialize(stream).toInt()
-            packet.selectedSlot = Proto.Byte.deserialize(stream).toInt()
-            packet.containerId = Proto.Byte.deserialize(stream).toInt()
-            return packet
+            return MobEquipmentPacket(
+                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+                newItem = ItemStack.deserialize(stream),
+                inventorySlot = Proto.Byte.deserialize(stream),
+                hotbarSlot = Proto.Byte.deserialize(stream),
+                windowID = Proto.Byte.deserialize(stream)
+            )
         }
     }
 }

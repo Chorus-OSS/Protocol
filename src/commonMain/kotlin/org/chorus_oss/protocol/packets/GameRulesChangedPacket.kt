@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.GameRule
 
 
-class GameRulesChangedPacket(
+data class GameRulesChangedPacket(
     val gameRules: List<GameRule<*>>
 ) : Packet(id) {
     companion object : PacketCodec<GameRulesChangedPacket> {

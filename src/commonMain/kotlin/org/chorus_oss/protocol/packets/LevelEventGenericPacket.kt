@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 
-class LevelEventGenericPacket(
+data class LevelEventGenericPacket(
     val eventID: Int,
     val serializedEventData: List<Byte>
 ) : Packet(id) {

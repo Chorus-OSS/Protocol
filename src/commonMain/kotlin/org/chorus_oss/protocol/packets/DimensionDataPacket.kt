@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.world.DimensionDefinition
 
 
-class DimensionDataPacket(
+data class DimensionDataPacket(
     val definitions: List<DimensionDefinition>
 ) : Packet(id) {
     companion object : PacketCodec<DimensionDataPacket> {

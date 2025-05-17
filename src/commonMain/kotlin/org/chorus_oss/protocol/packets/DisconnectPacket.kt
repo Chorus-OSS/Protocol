@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.DisconnectFailReason
 
-class DisconnectPacket(
+data class DisconnectPacket(
     val reason: DisconnectFailReason,
     val hideDisconnectionScreen: Boolean,
     val message: String,

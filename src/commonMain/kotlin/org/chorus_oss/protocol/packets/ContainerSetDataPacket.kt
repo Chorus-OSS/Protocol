@@ -12,7 +12,7 @@ import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 
 
-class ContainerSetDataPacket(
+data class ContainerSetDataPacket(
     val containerID: Byte,
     val property: Int,
     val value: Int,

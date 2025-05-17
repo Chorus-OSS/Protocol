@@ -12,8 +12,9 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.Vector3f
 
-class InteractPacket(
+data class InteractPacket(
     val action: Action,
     val targetRuntimeID: ActorRuntimeID,
     val actionData: ActionData?,
@@ -31,11 +32,13 @@ class InteractPacket(
                     value: Action,
                     stream: Sink
                 ) {
-                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                    Proto.Byte.serialize(value.netOrdinal, stream)
                 }
 
                 override fun deserialize(stream: Source): Action {
-                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                    return Proto.Byte.deserialize(stream).let {
+                        entries.find { e -> e.netOrdinal == it }!!
+                    }
                 }
             }
         }
@@ -43,25 +46,19 @@ class InteractPacket(
         interface ActionData
 
         data class PositionData(
-            val positionX: Float,
-            val positionY: Float,
-            val positionZ: Float,
+            val position: Vector3f
         ) : ActionData {
             companion object : ProtoCodec<PositionData> {
                 override fun serialize(
                     value: PositionData,
                     stream: Sink
                 ) {
-                    ProtoLE.Float.serialize(value.positionX, stream)
-                    ProtoLE.Float.serialize(value.positionY, stream)
-                    ProtoLE.Float.serialize(value.positionZ, stream)
+                    Vector3f.serialize(value.position, stream)
                 }
 
                 override fun deserialize(stream: Source): PositionData {
                     return PositionData(
-                        positionX = ProtoLE.Float.deserialize(stream),
-                        positionY = ProtoLE.Float.deserialize(stream),
-                        positionZ = ProtoLE.Float.deserialize(stream)
+                        position = Vector3f.deserialize(stream)
                     )
                 }
             }

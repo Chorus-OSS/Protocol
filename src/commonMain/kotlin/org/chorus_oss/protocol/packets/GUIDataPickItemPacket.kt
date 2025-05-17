@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 
 
-class GUIDataPickItemPacket(
+data class GUIDataPickItemPacket(
     val itemName: String,
     val itemEffects: String,
     val hotbarSlot: Int,

@@ -29,7 +29,7 @@ object ProtocolInfo {
     const val ADD_ITEM_ACTOR_PACKET = 15
     const val SERVER_POST_MOVE_POSITION = 16
     const val TAKE_ITEM_ENTITY_PACKET = 17
-    const val MOVE_ENTITY_ABSOLUTE_PACKET = 18
+    const val MOVE_ACTOR_ABSOLUTE_PACKET = 18
     const val MOVE_PLAYER_PACKET = 19
     // UNUSED                                           = 20
     const val UPDATE_BLOCK_PACKET = 21

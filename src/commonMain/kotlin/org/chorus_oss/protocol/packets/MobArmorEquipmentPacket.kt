@@ -1,36 +1,46 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.item.Item
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.item.ItemStack
 
-class MobArmorEquipmentPacket : Packet(id) {
-    var eid: Long = 0
-    lateinit var slots: Array<Item>
-    var body: Item = Item.AIR
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(this.eid)
-        byteBuf.writeSlot(slots[0])
-        byteBuf.writeSlot(slots[1])
-        byteBuf.writeSlot(slots[2])
-        byteBuf.writeSlot(slots[3])
-        byteBuf.writeSlot(this.body)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET
-    }
-
-
-
+data class MobArmorEquipmentPacket(
+    val entityRuntimeID: ActorRuntimeID,
+    val head: ItemStack,
+    val torso: ItemStack,
+    val legs: ItemStack,
+    val feet: ItemStack,
+    val body: ItemStack,
+) : Packet(id) {
     companion object : PacketCodec<MobArmorEquipmentPacket> {
+        override val id: Int
+            get() = ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET
+
+        override fun serialize(
+            value: MobArmorEquipmentPacket,
+            stream: Sink
+        ) {
+            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+            ItemStack.serialize(value.head, stream)
+            ItemStack.serialize(value.torso, stream)
+            ItemStack.serialize(value.legs, stream)
+            ItemStack.serialize(value.feet, stream)
+            ItemStack.serialize(value.body, stream)
+        }
+
         override fun deserialize(stream: Source): MobArmorEquipmentPacket {
-            val packet = MobArmorEquipmentPacket()
-            packet.eid = byteBuf.readActorRuntimeID()
-            packet.slots = Array(4) {
-                byteBuf.readSlot()
-            }
-            packet.body = byteBuf.readSlot()
-            return packet
+            return MobArmorEquipmentPacket(
+                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+                head = ItemStack.deserialize(stream),
+                torso = ItemStack.deserialize(stream),
+                legs = ItemStack.deserialize(stream),
+                feet = ItemStack.deserialize(stream),
+                body = ItemStack.deserialize(stream)
+            )
         }
     }
 }
