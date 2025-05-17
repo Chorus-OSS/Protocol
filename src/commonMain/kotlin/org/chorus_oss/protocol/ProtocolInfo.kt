@@ -34,7 +34,6 @@ object ProtocolInfo {
     // UNUSED                                           = 20
     const val UPDATE_BLOCK_PACKET = 21
     const val ADD_PAINTING_PACKET = 22
-
     // UNUSED                                           = 23
     // UNUSED                                           = 24
     const val LEVEL_EVENT_PACKET = 25
@@ -49,7 +48,6 @@ object ProtocolInfo {
     const val BLOCK_PICK_REQUEST_PACKET = 34
     const val ACTOR_PICK_REQUEST_PACKET = 35
     const val PLAYER_ACTION_PACKET = 36
-
     // UNUSED                                           = 37
     const val HURT_ARMOR_PACKET = 38
     const val SET_ENTITY_DATA_PACKET = 39
@@ -66,10 +64,8 @@ object ProtocolInfo {
     const val INVENTORY_SLOT_PACKET = 50
     const val CONTAINER_SET_DATA_PACKET = 51
     const val CRAFTING_DATA_PACKET = 52
-
     // UNUSED                                           = 53
     const val GUI_DATA_PICK_ITEM_PACKET = 54
-
     // UNUSED                                           = 55
     const val BLOCK_ACTOR_DATA_PACKET = 56
     // UNUSED                                           = 57
@@ -80,14 +76,12 @@ object ProtocolInfo {
     const val SET_PLAYER_GAME_TYPE_PACKET = 62
     const val PLAYER_LIST_PACKET = 63
     const val SIMPLE_EVENT_PACKET = 64
-
     // DEPRECATED                                       = 65
     // DEPRECATED                                       = 66
     const val CLIENTBOUND_MAP_ITEM_DATA_PACKET = 67
     const val MAP_INFO_REQUEST_PACKET = 68
     const val REQUEST_CHUNK_RADIUS_PACKET = 69
     const val CHUNK_RADIUS_UPDATED_PACKET = 70
-
     // UNUSED                                           = 71
     const val GAME_RULES_CHANGED_PACKET = 72
     const val CAMERA_PACKET = 73
@@ -132,20 +126,17 @@ object ProtocolInfo {
     const val SET_SCOREBOARD_IDENTITY_PACKET = 112
     const val SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET = 113
     const val UPDATE_SOFT_ENUM_PACKET = 114
-
     // DEPRECATED                                       = 115
     // UNUSED                                           = 116
     // UNUSED                                           = 117
     const val SPAWN_PARTICLE_EFFECT_PACKET = 118
     const val AVAILABLE_ACTOR_IDENTIFIERS_PACKET = 119
-
     // UNUSED                                           = 120
     const val NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET = 121
     const val BIOME_DEFINITION_LIST_PACKET = 122
     const val LEVEL_SOUND_EVENT_PACKET = 123
     const val LEVEL_EVENT_GENERIC_PACKET = 124
     const val LECTERN_UPDATE_PACKET = 125
-
     // UNUSED                                           = 126
     // UNUSED                                           = 127
     // UNUSED                                           = 128
@@ -154,7 +145,6 @@ object ProtocolInfo {
     const val MAP_CREATE_LOCKED_COPY_PACKET = 131
     const val STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST = 132
     const val STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE = 133
-
     // UNUSED                                           = 134
     const val CLIENT_CACHE_BLOB_STATUS_PACKET = 135
     const val CLIENT_CACHE_MISS_RESPONSE_PACKET = 136
@@ -184,7 +174,6 @@ object ProtocolInfo {
     const val PLAYER_FOG_PACKET = 160
     const val CORRECT_PLAYER_MOVE_PREDICTION_PACKET = 161
     const val ITEM_REGISTRY_PACKET = 162
-
     // UNUSED                                           = 163
     const val CLIENTBOUND_DEBUG_RENDERER_PACKET = 164
     const val SYNC_ENTITY_PROPERTY_PACKET = 165
@@ -195,7 +184,6 @@ object ProtocolInfo {
     const val EDU_URI_RESOURCE_PACKET = 170
     const val CREATE_PHOTO_PACKET = 171
     const val UPDATE_SUB_CHUNK_BLOCKS_PACKET = 172
-
     // UNUSED                                           = 173
     const val SUB_CHUNK_PACKET = 174
     const val SUB_CHUNK_REQUEST_PACKET = 175
@@ -220,11 +208,9 @@ object ProtocolInfo {
     const val GAME_TEST_REQUEST_PACKET = 194
     const val GAME_TEST_RESULTS_PACKET = 195
     const val UPDATE_CLIENT_INPUT_LOCKS = 196
-
     // UNUSED                                           = 197
     const val CAMERA_PRESETS_PACKET = 198
     const val UNLOCKED_RECIPES_PACKET = 199
-
     // UNUSED                                           = 200
     // UNUSED                                           = ...
     // UNUSED                                           = 299
@@ -239,7 +225,6 @@ object ProtocolInfo {
     const val SET_HUD = 308
     const val AWARD_ACHIEVEMENT_PACKET = 309
     const val CLIENTBOUND_CLOSE_FORM_PACKET = 310
-
     // UNUSED                                           = 311
     const val SERVERBOUND_LOADING_SCREEN_PACKET = 312
     const val JIGSAW_STRUCTURE_DATA_PACKET = 313
