@@ -1,38 +1,56 @@
 package org.chorus_oss.protocol.packets
 
-
-class ServerboundDiagnosticsPacket : Packet(id) {
-    var avgFps: Float = 0f
-    var avgServerSimTickTimeMS: Float = 0f
-    var avgClientSimTickTimeMS: Float = 0f
-    var avgBeginFrameTimeMS: Float = 0f
-    var avgInputTimeMS: Float = 0f
-    var avgRenderTimeMS: Float = 0f
-    var avgEndFrameTimeMS: Float = 0f
-    var avgRemainderTimePercent: Float = 0f
-    var avgUnaccountedTimePercent: Float = 0f
-
-    override fun pid(): Int {
-        return ProtocolInfo.SERVERBOUND_DIAGNOSTICS_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Float
 
 
-
+data class ServerboundDiagnosticsPacket(
+    val avgFps: Float,
+    val avgServerSimTickTimeMS: Float,
+    val avgClientSimTickTimeMS: Float,
+    val avgBeginFrameTimeMS: Float,
+    val avgInputTimeMS: Float,
+    val avgRenderTimeMS: Float,
+    val avgEndFrameTimeMS: Float,
+    val avgRemainderTimePercent: Float,
+    val avgUnaccountedTimePercent: Float,
+) : Packet(id) {
     companion object : PacketCodec<ServerboundDiagnosticsPacket> {
+        override val id: Int
+            get() = ProtocolInfo.SERVERBOUND_DIAGNOSTICS_PACKET
+
+        override fun serialize(
+            value: ServerboundDiagnosticsPacket,
+            stream: Sink
+        ) {
+            ProtoLE.Float.serialize(value.avgFps, stream)
+            ProtoLE.Float.serialize(value.avgServerSimTickTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgClientSimTickTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgBeginFrameTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgInputTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgRenderTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgEndFrameTimeMS, stream)
+            ProtoLE.Float.serialize(value.avgRemainderTimePercent, stream)
+            ProtoLE.Float.serialize(value.avgUnaccountedTimePercent, stream)
+        }
+
         override fun deserialize(stream: Source): ServerboundDiagnosticsPacket {
-            val packet = ServerboundDiagnosticsPacket()
-
-            packet.avgFps = byteBuf.readFloatLE()
-            packet.avgServerSimTickTimeMS = byteBuf.readFloatLE()
-            packet.avgClientSimTickTimeMS = byteBuf.readFloatLE()
-            packet.avgBeginFrameTimeMS = byteBuf.readFloatLE()
-            packet.avgInputTimeMS = byteBuf.readFloatLE()
-            packet.avgRenderTimeMS = byteBuf.readFloatLE()
-            packet.avgEndFrameTimeMS = byteBuf.readFloatLE()
-            packet.avgRemainderTimePercent = byteBuf.readFloatLE()
-            packet.avgUnaccountedTimePercent = byteBuf.readFloatLE()
-
-            return packet
+            return ServerboundDiagnosticsPacket(
+                avgFps = ProtoLE.Float.deserialize(stream),
+                avgServerSimTickTimeMS = ProtoLE.Float.deserialize(stream),
+                avgClientSimTickTimeMS = ProtoLE.Float.deserialize(stream),
+                avgBeginFrameTimeMS = ProtoLE.Float.deserialize(stream),
+                avgInputTimeMS = ProtoLE.Float.deserialize(stream),
+                avgRenderTimeMS = ProtoLE.Float.deserialize(stream),
+                avgEndFrameTimeMS = ProtoLE.Float.deserialize(stream),
+                avgRemainderTimePercent = ProtoLE.Float.deserialize(stream),
+                avgUnaccountedTimePercent = ProtoLE.Float.deserialize(stream),
+            )
         }
     }
 }

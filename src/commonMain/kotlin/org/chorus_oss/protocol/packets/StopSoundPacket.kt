@@ -1,23 +1,36 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.String
 
-class StopSoundPacket : Packet(id) {
-    var name: String? = null
-    var stopAll: Boolean = false
-    var stopMusicLegacy: Boolean = false
 
-    override fun deserialize(stream: Source) {
+data class StopSoundPacket(
+    val soundName: String,
+    val stopAll: Boolean,
+    val stopLegacyMusic: Boolean,
+) : Packet(id) {
+    companion object : PacketCodec<StopSoundPacket> {
+        override val id: Int
+            get() = ProtocolInfo.STOP_SOUND_PACKET
+
+        override fun serialize(value: StopSoundPacket, stream: Sink) {
+            Proto.String.serialize(value.soundName, stream)
+            Proto.Boolean.serialize(value.stopAll, stream)
+            Proto.Boolean.serialize(value.stopLegacyMusic, stream)
+        }
+
+        override fun deserialize(stream: Source): StopSoundPacket {
+            return StopSoundPacket(
+                soundName = Proto.String.deserialize(stream),
+                stopAll = Proto.Boolean.deserialize(stream),
+                stopLegacyMusic = Proto.Boolean.deserialize(stream),
+            )
+        }
     }
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(name!!)
-        byteBuf.writeBoolean(this.stopAll)
-        byteBuf.writeBoolean(this.stopMusicLegacy)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.STOP_SOUND_PACKET
-    }
-
-
 }

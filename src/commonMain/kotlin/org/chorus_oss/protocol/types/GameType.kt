@@ -1,20 +1,27 @@
 package org.chorus_oss.protocol.types
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+
 enum class GameType {
-    SURVIVAL,
-    CREATIVE,
-    ADVENTURE,
-    SURVIVAL_VIEWER,
-    CREATIVE_VIEWER,
-    DEFAULT,
-    SPECTATOR;
+    Survival,
+    Creative,
+    Adventure,
+    SurvivalSpectator,
+    CreativeSpectator,
+    Default,
+    Spectator;
 
-    companion object {
-        private val VALUES = entries.toTypedArray()
+    companion object : ProtoCodec<GameType> {
+        override fun serialize(value: GameType, stream: Sink) {
+            ProtoVAR.Int.serialize(value.ordinal, stream)
+        }
 
-        @JvmStatic
-        fun from(id: Int): GameType {
-            return VALUES[id]
+        override fun deserialize(stream: Source): GameType {
+            return entries[ProtoVAR.Int.deserialize(stream)]
         }
     }
 }

@@ -1,37 +1,33 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.hud.HudElement
 import org.chorus_oss.protocol.types.hud.HudVisibility
 
-class SetHudPacket : Packet(id) {
-    val elements: MutableSet<HudElement> = mutableSetOf()
-    var visibility: HudVisibility? = null
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeArray(this.elements) { buf, element ->
-            buf.writeUnsignedVarInt(element.ordinal)
-        }
-        byteBuf.writeVarInt(visibility!!.ordinal)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_HUD
-    }
-
-
-
+data class SetHudPacket(
+    val elements: List<HudElement>,
+    val visibility: HudVisibility,
+) : Packet(id) {
     companion object : PacketCodec<SetHudPacket> {
+        override val id: Int
+            get() = ProtocolInfo.SET_HUD_PACKET
+
+        override fun serialize(value: SetHudPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.elements, stream, HudElement)
+            HudVisibility.serialize(value.visibility, stream)
+        }
+
         override fun deserialize(stream: Source): SetHudPacket {
-            val packet = SetHudPacket()
-
-            packet.elements.clear()
-            byteBuf.readArray(packet.elements) {
-                HudElement.entries[it.readUnsignedVarInt()]
-            }
-            packet.visibility = HudVisibility.entries[byteBuf.readVarInt()]
-
-            return packet
+            return SetHudPacket(
+                elements = ProtoHelper.deserializeList(stream, HudElement),
+                visibility = HudVisibility.deserialize(stream),
+            )
         }
     }
 }

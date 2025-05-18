@@ -1,33 +1,58 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.protocol.types.ServerboundLoadingScreenPacketType
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
 
 
-class ServerboundLoadingScreenPacket : Packet(id) {
-    private var type: ServerboundLoadingScreenPacketType? = null
-
-    /**
-     * Optional int, not present if null
-     */
-    private var loadingScreenId: Int? = null
-
-    override fun pid(): Int {
-        return ProtocolInfo.SERVERBOUND_LOADING_SCREEN_PACKET
-    }
-
-
-
+data class ServerboundLoadingScreenPacket(
+    val type: Type,
+    val loadingScreenID: Int?,
+) : Packet(id) {
     companion object : PacketCodec<ServerboundLoadingScreenPacket> {
-        override fun deserialize(stream: Source): ServerboundLoadingScreenPacket {
-            val packet = ServerboundLoadingScreenPacket()
+        enum class Type {
+            Unknown,
+            StartLoadingScreen,
+            EndLoadingScreen;
 
-            packet.type = ServerboundLoadingScreenPacketType.entries[byteBuf.readVarInt()]
-            if (Proto.Boolean.deserialize(stream)) {
-                packet.loadingScreenId = byteBuf.readIntLE()
+            companion object : ProtoCodec<Type> {
+                override fun serialize(
+                    value: Type,
+                    stream: Sink
+                ) {
+                    ProtoVAR.Int.serialize(value.ordinal, stream)
+                }
+
+                override fun deserialize(stream: Source): Type {
+                    return entries[ProtoVAR.Int.deserialize(stream)]
+                }
             }
+        }
 
-            return packet
+        override val id: Int
+            get() = ProtocolInfo.SERVERBOUND_LOADING_SCREEN_PACKET
+
+        override fun serialize(
+            value: ServerboundLoadingScreenPacket,
+            stream: Sink
+        ) {
+            Type.serialize(value.type, stream)
+            ProtoHelper.serializeNullable(value.loadingScreenID, stream, ProtoLE.Int)
+        }
+
+        override fun deserialize(stream: Source): ServerboundLoadingScreenPacket {
+            return ServerboundLoadingScreenPacket(
+                type = Type.deserialize(stream),
+                loadingScreenID = ProtoHelper.deserializeNullable(stream, ProtoLE.Int),
+            )
         }
     }
 }

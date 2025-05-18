@@ -50,9 +50,9 @@ object ProtocolInfo {
     const val PLAYER_ACTION_PACKET = 36
     // UNUSED                                           = 37
     const val HURT_ARMOR_PACKET = 38
-    const val SET_ENTITY_DATA_PACKET = 39
-    const val SET_ENTITY_MOTION_PACKET = 40
-    const val SET_ENTITY_LINK_PACKET = 41
+    const val SET_ACTOR_DATA_PACKET = 39
+    const val SET_ACTOR_MOTION_PACKET = 40
+    const val SET_ACTOR_LINK_PACKET = 41
     const val SET_HEALTH_PACKET = 42
     const val SET_SPAWN_POSITION_PACKET = 43
     const val ANIMATE_PACKET = 44

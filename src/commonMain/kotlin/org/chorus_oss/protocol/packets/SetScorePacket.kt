@@ -1,79 +1,71 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.chorus.scoreboard.data.ScorerType
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.types.scoreboard.ScoreboardEntry
+import org.chorus_oss.protocol.types.scoreboard.ScoreboardRemoveEntry
 
 
-class SetScorePacket : Packet(id) {
-    @JvmField
-    var action: Action? = null
+data class SetScorePacket(
+    val actionType: ActionType,
+    val modifyEntries: List<ScoreboardEntry>?,
+    val removeEntries: List<ScoreboardRemoveEntry>?,
+) : Packet(id) {
+    companion object : PacketCodec<SetScorePacket> {
+        enum class ActionType {
+            Modify,
+            Remove;
 
-    @JvmField
-    var infos: MutableList<ScoreInfo> = ArrayList()
+            companion object : ProtoCodec<ActionType> {
+                override fun serialize(
+                    value: ActionType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(action!!.ordinal.toByte().toInt())
-        byteBuf.writeUnsignedVarInt(infos.size)
-
-        for (info in this.infos) {
-            byteBuf.writeVarLong(info.scoreboardId)
-            byteBuf.writeString(info.objectiveId)
-            byteBuf.writeIntLE(info.score)
-            if (this.action == Action.SET) {
-                byteBuf.writeByte(info.type.ordinal.toByte().toInt())
-                when (info.type) {
-                    ScorerType.ENTITY, ScorerType.PLAYER -> byteBuf.writeVarLong(info.entityId)
-                    ScorerType.FAKE -> byteBuf.writeString(info.name!!)
-                    else -> throw IllegalArgumentException("Invalid score info received")
+                override fun deserialize(stream: Source): ActionType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
         }
-    }
 
-    enum class Action {
-        SET,
-        REMOVE
-    }
+        override val id: Int
+            get() = ProtocolInfo.SET_SCORE_PACKET
 
-    class ScoreInfo {
-        var scoreboardId: Long
-        var objectiveId: String
-        var score: Int
-        var type: ScorerType
-        var name: String?
-        var entityId: Long
-
-        constructor(scoreboardId: Long, objectiveId: String, score: Int) {
-            this.scoreboardId = scoreboardId
-            this.objectiveId = objectiveId
-            this.score = score
-            this.type = ScorerType.INVALID
-            this.name = null
-            this.entityId = -1
+        override fun serialize(value: SetScorePacket, stream: Sink) {
+            ActionType.serialize(value.actionType, stream)
+            when (value.actionType) {
+                ActionType.Modify -> ProtoHelper.serializeList(value.modifyEntries as List<ScoreboardEntry>, stream, ScoreboardEntry)
+                else -> Unit
+            }
+            when (value.actionType) {
+                ActionType.Remove -> ProtoHelper.serializeList(value.removeEntries as List<ScoreboardRemoveEntry>, stream, ScoreboardRemoveEntry)
+                else -> Unit
+            }
         }
 
-        constructor(scoreboardId: Long, objectiveId: String, score: Int, name: String?) {
-            this.scoreboardId = scoreboardId
-            this.objectiveId = objectiveId
-            this.score = score
-            this.type = ScorerType.FAKE
-            this.name = name
-            this.entityId = -1
-        }
-
-        constructor(scoreboardId: Long, objectiveId: String, score: Int, type: ScorerType, entityId: Long) {
-            this.scoreboardId = scoreboardId
-            this.objectiveId = objectiveId
-            this.score = score
-            this.type = type
-            this.entityId = entityId
-            this.name = null
+        override fun deserialize(stream: Source): SetScorePacket {
+            val actionType: ActionType
+            return SetScorePacket(
+                actionType = ActionType.deserialize(stream).also { actionType = it },
+                modifyEntries = when (actionType) {
+                    ActionType.Modify -> ProtoHelper.deserializeList(stream, ScoreboardEntry)
+                    else -> null
+                },
+                removeEntries = when (actionType) {
+                    ActionType.Remove -> ProtoHelper.deserializeList(stream, ScoreboardRemoveEntry)
+                    else -> null
+                }
+            )
         }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_SCORE_PACKET
-    }
-
-
 }

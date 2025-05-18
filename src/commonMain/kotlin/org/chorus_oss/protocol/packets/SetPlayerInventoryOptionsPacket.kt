@@ -1,42 +1,47 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.types.inventory.InventoryLayout
 import org.chorus_oss.protocol.types.inventory.InventoryTabLeft
 import org.chorus_oss.protocol.types.inventory.InventoryTabRight
 
-class SetPlayerInventoryOptionsPacket : Packet(id) {
-    var leftTab: InventoryTabLeft? = null
-    var rightTab: InventoryTabRight? = null
-    var filtering: Boolean = false
-    var layout: InventoryLayout? = null
-    var craftingLayout: InventoryLayout? = null
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(leftTab!!.ordinal)
-        byteBuf.writeVarInt(rightTab!!.ordinal)
-        byteBuf.writeBoolean(this.filtering)
-        byteBuf.writeVarInt(layout!!.ordinal)
-        byteBuf.writeVarInt(craftingLayout!!.ordinal)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_PLAYER_INVENTORY_OPTIONS_PACKET
-    }
-
-
-
+data class SetPlayerInventoryOptionsPacket(
+    val leftInventoryTab: InventoryTabLeft,
+    val rightInventoryTab: InventoryTabRight,
+    val filtering: Boolean,
+    val inventoryLayout: InventoryLayout,
+    val craftingLayout: InventoryLayout,
+) : Packet(id) {
     companion object : PacketCodec<SetPlayerInventoryOptionsPacket> {
+        override val id: Int
+            get() = ProtocolInfo.SET_PLAYER_INVENTORY_OPTIONS_PACKET
+
+        override fun serialize(
+            value: SetPlayerInventoryOptionsPacket,
+            stream: Sink
+        ) {
+            InventoryTabLeft.serialize(value.leftInventoryTab, stream)
+            InventoryTabRight.serialize(value.rightInventoryTab, stream)
+            Proto.Boolean.serialize(value.filtering, stream)
+            InventoryLayout.serialize(value.inventoryLayout, stream)
+            InventoryLayout.serialize(value.craftingLayout, stream)
+        }
+
         override fun deserialize(stream: Source): SetPlayerInventoryOptionsPacket {
-            val packet = SetPlayerInventoryOptionsPacket()
-
-            packet.leftTab = InventoryTabLeft.VALUES[byteBuf.readVarInt()]
-            packet.rightTab = InventoryTabRight.VALUES[byteBuf.readVarInt()]
-            packet.filtering = Proto.Boolean.deserialize(stream)
-            packet.layout = InventoryLayout.VALUES[byteBuf.readVarInt()]
-            packet.craftingLayout = InventoryLayout.VALUES[byteBuf.readVarInt()]
-
-            return packet
+            return SetPlayerInventoryOptionsPacket(
+                leftInventoryTab = InventoryTabLeft.deserialize(stream),
+                rightInventoryTab = InventoryTabRight.deserialize(stream),
+                filtering = Proto.Boolean.deserialize(stream),
+                inventoryLayout = InventoryLayout.deserialize(stream),
+                craftingLayout = InventoryLayout.deserialize(stream),
+            )
         }
     }
 }

@@ -1,27 +1,31 @@
 package org.chorus_oss.protocol.packets
 
-
-class SetPlayerGameTypePacket : Packet(id) {
-    @JvmField
-    var gamemode: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(this.gamemode)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_PLAYER_GAME_TYPE_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.types.GameType
 
 
-
+data class SetPlayerGameTypePacket(
+    val gameType: GameType,
+) : Packet(id) {
     companion object : PacketCodec<SetPlayerGameTypePacket> {
+        override val id: Int
+            get() = ProtocolInfo.SET_PLAYER_GAME_TYPE_PACKET
+
+        override fun serialize(
+            value: SetPlayerGameTypePacket,
+            stream: Sink
+        ) {
+            GameType.serialize(value.gameType, stream)
+        }
+
         override fun deserialize(stream: Source): SetPlayerGameTypePacket {
-            val packet = SetPlayerGameTypePacket()
-
-            packet.gamemode = byteBuf.readVarInt()
-
-            return packet
+            return SetPlayerGameTypePacket(
+                gameType = GameType.deserialize(stream),
+            )
         }
     }
 }

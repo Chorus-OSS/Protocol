@@ -1,35 +1,76 @@
 package org.chorus_oss.protocol.packets
 
 
-import java.util.*
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.types.scoreboard.ScoreboardIdentityClearEntry
+import org.chorus_oss.protocol.types.scoreboard.ScoreboardIdentityEntry
 
 
-class SetScoreboardIdentityPacket : Packet(id) {
-    val entries: List<Entry> = listOf()
-    var action: Action? = null
+data class SetScoreboardIdentityPacket(
+    val actionType: ActionType,
+    val registerEntries: List<ScoreboardIdentityEntry>?,
+    val clearEntries: List<ScoreboardIdentityClearEntry>?,
+) : Packet(id) {
+    companion object : PacketCodec<SetScoreboardIdentityPacket> {
+        enum class ActionType {
+            Register,
+            Clear;
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(action!!.ordinal.toByte().toInt())
+            companion object : ProtoCodec<ActionType> {
+                override fun serialize(
+                    value: ActionType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-        for (entry in this.entries) {
-            byteBuf.writeVarLong(entry.scoreboardId)
-            byteBuf.writeUUID(entry.uuid!!)
+                override fun deserialize(stream: Source): ActionType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override val id: Int
+            get() = ProtocolInfo.SET_SCOREBOARD_IDENTITY_PACKET
+
+        override fun serialize(
+            value: SetScoreboardIdentityPacket,
+            stream: Sink
+        ) {
+            ActionType.serialize(value.actionType, stream)
+            when (value.actionType) {
+                ActionType.Register -> ProtoHelper.serializeList(value.registerEntries as List<ScoreboardIdentityEntry>, stream,
+                    ScoreboardIdentityEntry)
+                else -> Unit
+            }
+            when (value.actionType) {
+                ActionType.Clear -> ProtoHelper.serializeList(value.clearEntries as List<ScoreboardIdentityClearEntry>, stream,
+                    ScoreboardIdentityClearEntry)
+                else -> Unit
+            }
+        }
+
+        override fun deserialize(stream: Source): SetScoreboardIdentityPacket {
+            val actionType: ActionType
+            return SetScoreboardIdentityPacket(
+                actionType = ActionType.deserialize(stream).also { actionType = it },
+                registerEntries = when (actionType) {
+                    ActionType.Register -> ProtoHelper.deserializeList(stream, ScoreboardIdentityEntry)
+                    else -> null
+                },
+                clearEntries = when (actionType) {
+                    ActionType.Clear -> ProtoHelper.deserializeList(stream, ScoreboardIdentityClearEntry)
+                    else -> null
+                }
+            )
         }
     }
-
-    enum class Action {
-        ADD,
-        REMOVE
-    }
-
-    class Entry {
-        var scoreboardId: Long = 0
-        var uuid: UUID? = null
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_SCOREBOARD_IDENTITY_PACKET
-    }
-
-
 }

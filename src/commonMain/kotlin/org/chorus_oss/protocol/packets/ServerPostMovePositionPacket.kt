@@ -1,18 +1,31 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.Vector3f
 
 
-class ServerPostMovePositionPacket : Packet(id) {
-    lateinit var position: Vector3f
+data class ServerPostMovePositionPacket(
+    val position: Vector3f
+) : Packet(id) {
+    companion object : PacketCodec<ServerPostMovePositionPacket> {
+        override val id: Int
+            get() = ProtocolInfo.SERVER_POST_MOVE_POSITION_PACKET
 
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVector3f(position)
+        override fun serialize(
+            value: ServerPostMovePositionPacket,
+            stream: Sink
+        ) {
+            Vector3f.serialize(value.position, stream)
+        }
+
+        override fun deserialize(stream: Source): ServerPostMovePositionPacket {
+            return ServerPostMovePositionPacket(
+                position = Vector3f.deserialize(stream)
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SERVER_POST_MOVE_POSITION
-    }
-
-
 }

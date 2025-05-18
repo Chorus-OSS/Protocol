@@ -1,26 +1,29 @@
 package org.chorus_oss.protocol.packets
 
-
-class SetDifficultyPacket : Packet(id) {
-    var difficulty: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(this.difficulty)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_DIFFICULTY_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.UInt
 
 
-
+data class SetDifficultyPacket(
+    val difficulty: UInt
+) : Packet(id) {
     companion object : PacketCodec<SetDifficultyPacket> {
+        override val id: Int
+            get() = ProtocolInfo.SET_DIFFICULTY_PACKET
+
+        override fun serialize(value: SetDifficultyPacket, stream: Sink) {
+            ProtoVAR.UInt.serialize(value.difficulty, stream)
+        }
+
         override fun deserialize(stream: Source): SetDifficultyPacket {
-            val packet = SetDifficultyPacket()
-
-            packet.difficulty = byteBuf.readUnsignedVarInt()
-
-            return packet
+            return SetDifficultyPacket(
+                difficulty = ProtoVAR.UInt.deserialize(stream),
+            )
         }
     }
 }

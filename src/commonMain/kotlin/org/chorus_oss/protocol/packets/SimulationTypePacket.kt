@@ -1,34 +1,50 @@
 package org.chorus_oss.protocol.packets
 
-
-class SimulationTypePacket : Packet(id) {
-    var type: SimulationType = SimulationType.GAME
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(type.ordinal.toByte().toInt())
-    }
-
-    enum class SimulationType {
-        GAME,
-        EDITOR,
-        TEST
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SIMULATION_TYPE_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.types.Byte
 
 
-
+data class SimulationTypePacket(
+    val simulationType: SimulationType,
+) : Packet(id) {
     companion object : PacketCodec<SimulationTypePacket> {
-        override fun deserialize(stream: Source): SimulationTypePacket {
-            val packet = SimulationTypePacket()
+        enum class SimulationType {
+            Game,
+            Editor,
+            Test,
+            Invalid;
 
-            packet.type = TYPES[Proto.Byte.deserialize(stream).toInt()]
+            companion object : ProtoCodec<SimulationType> {
+                override fun serialize(
+                    value: SimulationType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-            return packet
+                override fun deserialize(stream: Source): SimulationType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
         }
 
-        private val TYPES = SimulationType.entries.toTypedArray()
+        override val id: Int
+            get() = ProtocolInfo.SIMULATION_TYPE_PACKET
+
+        override fun serialize(value: SimulationTypePacket, stream: Sink) {
+            SimulationType.serialize(value.simulationType, stream)
+        }
+
+        override fun deserialize(stream: Source): SimulationTypePacket {
+            return SimulationTypePacket(
+                simulationType = SimulationType.deserialize(stream),
+            )
+        }
     }
 }

@@ -1,92 +1,78 @@
 package org.chorus_oss.protocol.packets
 
-
-class SetTitlePacket : Packet(id) {
-    @JvmField
-    var type: Int = 0
-
-    @JvmField
-    var text: String = ""
-
-    @JvmField
-    var fadeInTime: Int = 0
-
-    @JvmField
-    var stayTime: Int = 0
-
-    @JvmField
-    var fadeOutTime: Int = 0
-    var xuid: String = ""
-    var platformOnlineId: String = ""
-    private var filteredTitleText = ""
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVarInt(type)
-        byteBuf.writeString(text)
-        byteBuf.writeVarInt(fadeInTime)
-        byteBuf.writeVarInt(stayTime)
-        byteBuf.writeVarInt(fadeOutTime)
-        byteBuf.writeString(xuid)
-        byteBuf.writeString(platformOnlineId)
-        byteBuf.writeString(this.filteredTitleText)
-    }
-
-    var titleAction: TitleAction
-        get() {
-            val currentType = this.type
-            if (currentType >= 0 && currentType < TITLE_ACTIONS.size) {
-                return TITLE_ACTIONS[currentType]
-            }
-            throw UnsupportedOperationException("Bad type: $currentType")
-        }
-        set(type) {
-            this.type = type.ordinal
-        }
-
-    enum class TitleAction {
-        CLEAR,
-        RESET,
-        SET_TITLE_MESSAGE,
-        SET_SUBTITLE_MESSAGE,
-        SET_ACTION_BAR_MESSAGE,
-        SET_ANIMATION_TIMES,
-        SET_TITLE_JSON,
-        SET_SUBTITLE_JSON,
-        SET_ACTIONBAR_JSON,
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.SET_TITLE_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.String
 
 
-
+data class SetTitlePacket(
+    val actionType: ActionType,
+    val text: String,
+    val fadeInDuration: Int,
+    val remainDuration: Int,
+    val fadeOutDuration: Int,
+    val xuid: String,
+    val platformOnlineID: String,
+    val filteredMessage: String,
+) : Packet(id) {
     companion object : PacketCodec<SetTitlePacket> {
-        override fun deserialize(stream: Source): SetTitlePacket {
-            val packet = SetTitlePacket()
+        enum class ActionType {
+            Clear,
+            Reset,
+            SetTitle,
+            SetSubtitle,
+            SetActionbar,
+            SetDurations,
+            SetTitleJSON,
+            SetSubtitleJSON,
+            SetActionbarJSON;
 
-            packet.type = byteBuf.readVarInt()
-            packet.text = Proto.String.deserialize(stream)
-            packet.fadeInTime = byteBuf.readVarInt()
-            packet.stayTime = byteBuf.readVarInt()
-            packet.fadeOutTime = byteBuf.readVarInt()
-            packet.xuid = Proto.String.deserialize(stream)
-            packet.platformOnlineId = Proto.String.deserialize(stream)
-            packet.filteredTitleText = Proto.String.deserialize(stream)
+            companion object : ProtoCodec<ActionType> {
+                override fun serialize(
+                    value: ActionType,
+                    stream: Sink
+                ) {
+                    ProtoVAR.Int.serialize(value.ordinal, stream)
+                }
 
-            return packet
+                override fun deserialize(stream: Source): ActionType {
+                    return entries[ProtoVAR.Int.deserialize(stream)]
+                }
+            }
         }
 
-        private val TITLE_ACTIONS = TitleAction.entries.toTypedArray()
+        override val id: Int
+            get() = ProtocolInfo.SET_TITLE_PACKET
 
-        const val TYPE_CLEAR: Int = 0
-        const val TYPE_RESET: Int = 1
-        const val TYPE_TITLE: Int = 2
-        const val TYPE_SUBTITLE: Int = 3
-        const val TYPE_ACTION_BAR: Int = 4
-        const val TYPE_ANIMATION_TIMES: Int = 5
-        const val TYPE_TITLE_JSON: Int = 6
-        const val TYPE_SUBTITLE_JSON: Int = 7
-        const val TYPE_ACTIONBAR_JSON: Int = 8
+        override fun serialize(value: SetTitlePacket, stream: Sink) {
+            ActionType.serialize(value.actionType, stream)
+            Proto.String.serialize(value.text, stream)
+            ProtoVAR.Int.serialize(value.fadeInDuration, stream)
+            ProtoVAR.Int.serialize(value.remainDuration, stream)
+            ProtoVAR.Int.serialize(value.fadeOutDuration, stream)
+            Proto.String.serialize(value.xuid, stream)
+            Proto.String.serialize(value.platformOnlineID, stream)
+            Proto.String.serialize(value.filteredMessage, stream)
+        }
+
+        override fun deserialize(stream: Source): SetTitlePacket {
+            return SetTitlePacket(
+                actionType = ActionType.deserialize(stream),
+                text = Proto.String.deserialize(stream),
+                fadeInDuration = ProtoVAR.Int.deserialize(stream),
+                remainDuration = ProtoVAR.Int.deserialize(stream),
+                fadeOutDuration = ProtoVAR.Int.deserialize(stream),
+                xuid = Proto.String.deserialize(stream),
+                platformOnlineID = Proto.String.deserialize(stream),
+                filteredMessage = Proto.String.deserialize(stream),
+            )
+        }
     }
 }
