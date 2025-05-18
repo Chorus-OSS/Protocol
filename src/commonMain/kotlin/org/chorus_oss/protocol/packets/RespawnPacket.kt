@@ -1,50 +1,57 @@
 package org.chorus_oss.protocol.packets
 
-
-class RespawnPacket : Packet(id) {
-    @JvmField
-    var x: Float = 0f
-
-    @JvmField
-    var y: Float = 0f
-
-    @JvmField
-    var z: Float = 0f
-
-    @JvmField
-    var respawnState: Int = STATE_SEARCHING_FOR_SPAWN
-
-    @JvmField
-    var runtimeEntityId: Long = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeVector3f(this.x, this.y, this.z)
-        byteBuf.writeByte(respawnState.toByte().toInt())
-        byteBuf.writeActorRuntimeID(runtimeEntityId)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.RESPAWN_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.Vector3f
 
 
-
+data class RespawnPacket(
+    val position: Vector3f,
+    val state: State,
+    val entityRuntimeID: ActorRuntimeID,
+) : Packet(id) {
     companion object : PacketCodec<RespawnPacket> {
-        override fun deserialize(stream: Source): RespawnPacket {
-            val packet = RespawnPacket()
+        enum class State {
+            SearchingForSpawn,
+            ReadyToSpawn,
+            ClientReadyToSpawn;
 
-            val v = Vector3f.deserialize(stream)
-            packet.x = v.x
-            packet.y = v.y
-            packet.z = v.z
-            packet.respawnState = Proto.Byte.deserialize(stream).toInt()
-            packet.runtimeEntityId = byteBuf.readActorRuntimeID()
+            companion object : ProtoCodec<State> {
+                override fun serialize(
+                    value: State,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-            return packet
+                override fun deserialize(stream: Source): State {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
         }
 
-        const val STATE_SEARCHING_FOR_SPAWN: Int = 0
-        const val STATE_READY_TO_SPAWN: Int = 1
-        const val STATE_CLIENT_READY_TO_SPAWN: Int = 2
+        override val id: Int
+            get() = ProtocolInfo.RESPAWN_PACKET
+
+        override fun serialize(value: RespawnPacket, stream: Sink) {
+            Vector3f.serialize(value.position, stream)
+            State.serialize(value.state, stream)
+            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+        }
+
+        override fun deserialize(stream: Source): RespawnPacket {
+            return RespawnPacket(
+                position = Vector3f.deserialize(stream),
+                state = State.deserialize(stream),
+                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+            )
+        }
     }
 }

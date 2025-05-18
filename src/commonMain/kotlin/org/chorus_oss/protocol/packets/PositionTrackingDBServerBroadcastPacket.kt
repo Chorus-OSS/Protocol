@@ -1,135 +1,62 @@
 package org.chorus_oss.protocol.packets
 
-import io.netty.buffer.ByteBufInputStream
-import io.netty.handler.codec.EncoderException
-import org.chorus_oss.chorus.math.BlockVector3
-import org.chorus_oss.chorus.math.Vector3
-import org.chorus_oss.chorus.nbt.tag.CompoundTag
-import org.chorus_oss.chorus.nbt.tag.IntTag
-import org.chorus_oss.chorus.nbt.tag.ListTag
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagSerialization
+import org.chorus_oss.nbt.tags.CompoundTag
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
 
-import java.io.IOException
-
-class PositionTrackingDBServerBroadcastPacket : Packet(id) {
-    var action: Action? = null
-    var trackingId = 0
-        set(value) {
-            field = value
-            if (tag != null) {
-                tag!!.putString("id", String.format("0x%08x", value))
-            }
-        }
-    var tag: CompoundTag? = null
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(action!!.ordinal.toByte().toInt())
-        byteBuf.writeVarInt(trackingId)
-        try {
-            byteBuf.writeBytes(writeNetwork((if (tag != null) tag else CompoundTag())!!))
-        } catch (e: IOException) {
-            throw EncoderException(e)
-        }
-    }
-
-    private fun requireTag(): CompoundTag? {
-        if (tag == null) {
-            tag = CompoundTag()
-                .putByte("version", 1)
-                .putString("id", String.format("0x%08x", trackingId))
-        }
-        return tag
-    }
-
-    var position: BlockVector3?
-        get() {
-            if (tag == null) {
-                return null
-            }
-            val pos = tag!!.getList("pos", IntTag::class.java)
-            if (pos.size() != 3) {
-                return null
-            }
-            return BlockVector3(pos[0].data, pos[1].data, pos[2].data)
-        }
-        set(position) {
-            setPosition(position!!.x, position.y, position.z)
-        }
-
-    fun setPosition(position: Vector3) {
-        setPosition(position.floorX, position.floorY, position.floorZ)
-    }
-
-    fun setPosition(x: Int, y: Int, z: Int) {
-        requireTag()!!.putList(
-            "pos", ListTag<IntTag>()
-                .add(IntTag(x))
-                .add(IntTag(y))
-                .add(IntTag(z))
-        )
-    }
-
-    var status: Int
-        get() {
-            if (tag == null) {
-                return 0
-            }
-            return tag!!.getByte("status").toInt()
-        }
-        set(status) {
-            requireTag()!!.putByte("status", status)
-        }
-
-    var version: Int
-        get() {
-            if (tag == null) {
-                return 0
-            }
-            return tag!!.getByte("version").toInt()
-        }
-        set(status) {
-            requireTag()!!.putByte("version", status)
-        }
-
-    var dimension: Int
-        get() {
-            if (tag == null) {
-                return 0
-            }
-            return tag!!.getByte("dim").toInt()
-        }
-        set(dimension) {
-            requireTag()!!.putInt("dim", dimension)
-        }
-
-    enum class Action {
-        UPDATE,
-        DESTROY,
-        NOT_FOUND
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.POS_TRACKING_SERVER_BROADCAST_PACKET
-    }
-
-
-
+data class PositionTrackingDBServerBroadcastPacket(
+    val broadcastAction: Action,
+    val trackingID: Int,
+    val payload: CompoundTag,
+) : Packet(id) {
     companion object : PacketCodec<PositionTrackingDBServerBroadcastPacket> {
-        override fun deserialize(stream: Source): PositionTrackingDBServerBroadcastPacket {
-            val packet = PositionTrackingDBServerBroadcastPacket()
+        enum class Action {
+            Update,
+            Destroy,
+            NotFound;
 
-            packet.action = ACTIONS[Proto.Byte.deserialize(stream).toInt()]
-            packet.trackingId = byteBuf.readVarInt()
-            try {
-                ByteBufInputStream(byteBuf).use { inputStream ->
-                    packet.tag = readNetworkCompressed(inputStream)
+            companion object : ProtoCodec<Action> {
+                override fun serialize(
+                    value: Action,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
-            } catch (e: IOException) {
-                throw EncoderException(e)
-            }
 
-            return packet
+                override fun deserialize(stream: Source): Action {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
         }
 
-        private val ACTIONS = Action.entries.toTypedArray()
+        override val id: Int
+            get() = ProtocolInfo.POSITION_TRACKING_DB_SERVER_BROADCAST_PACKET
+
+        override fun serialize(
+            value: PositionTrackingDBServerBroadcastPacket,
+            stream: Sink
+        ) {
+            Action.serialize(value.broadcastAction, stream)
+            ProtoVAR.Int.serialize(value.trackingID, stream)
+            Tag.serialize(value.payload, stream, TagSerialization.NetLE, true)
+        }
+
+        override fun deserialize(stream: Source): PositionTrackingDBServerBroadcastPacket {
+            return PositionTrackingDBServerBroadcastPacket(
+                broadcastAction = Action.deserialize(stream),
+                trackingID = ProtoVAR.Int.deserialize(stream),
+                payload = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
+            )
+        }
     }
 }

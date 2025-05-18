@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.*
 
-class ResourcePackDataInfoPacket(
+data class ResourcePackDataInfoPacket(
     val resourceName: String,
     val chunkSize: UInt,
     val chunkCount: UInt,
@@ -21,15 +21,15 @@ class ResourcePackDataInfoPacket(
 ) {
     companion object : PacketCodec<ResourcePackDataInfoPacket> {
         enum class Type {
-            INVALID,
-            ADDON,
-            CACHED,
-            COPY_PROTECTED,
-            BEHAVIOUR,
-            PERSONA_PIECE,
-            RESOURCE,
-            SKINS,
-            WORLD_TEMPLATE;
+            Invalid,
+            Addon,
+            Cached,
+            CopyProtected,
+            Behaviour,
+            PersonaPiece,
+            Resource,
+            Skins,
+            WorldTemplate;
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(value: Type, stream: Sink) {
@@ -45,6 +45,16 @@ class ResourcePackDataInfoPacket(
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_DATA_INFO_PACKET
 
+        override fun serialize(value: ResourcePackDataInfoPacket, stream: Sink) {
+            Proto.String.serialize(value.resourceName, stream)
+            ProtoLE.UInt.serialize(value.chunkSize, stream)
+            ProtoLE.UInt.serialize(value.chunkCount, stream)
+            ProtoLE.ULong.serialize(value.fileSize, stream)
+            Proto.String.serialize(value.fileHash, stream)
+            Proto.Boolean.serialize(value.premium, stream)
+            Type.serialize(value.type, stream)
+        }
+
         override fun deserialize(stream: Source): ResourcePackDataInfoPacket {
             return ResourcePackDataInfoPacket(
                 resourceName = Proto.String.deserialize(stream),
@@ -55,16 +65,6 @@ class ResourcePackDataInfoPacket(
                 premium = Proto.Boolean.deserialize(stream),
                 type = Type.deserialize(stream),
             )
-        }
-
-        override fun serialize(value: ResourcePackDataInfoPacket, stream: Sink) {
-            Proto.String.serialize(value.resourceName, stream)
-            ProtoLE.UInt.serialize(value.chunkSize, stream)
-            ProtoLE.UInt.serialize(value.chunkCount, stream)
-            ProtoLE.ULong.serialize(value.fileSize, stream)
-            Proto.String.serialize(value.fileHash, stream)
-            Proto.Boolean.serialize(value.premium, stream)
-            Type.serialize(value.type, stream)
         }
     }
 }

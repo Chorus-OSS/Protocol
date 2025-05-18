@@ -1,55 +1,63 @@
 package org.chorus_oss.protocol.packets
 
 
-import org.chorus_oss.chorus.utils.UUIDValidator
-
-import java.util.*
-
-
-class ResourcePackClientResponsePacket : Packet(id) {
-    var responseStatus: Byte = 0
-    var packEntries: Array<Entry> = emptyArray()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(responseStatus.toInt())
-        byteBuf.writeShortLE(packEntries.size)
-        for (entry in this.packEntries) {
-            byteBuf.writeString(entry.uuid.toString() + '_' + entry.version)
-        }
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UShort
 
 
-    class Entry(val uuid: UUID, val version: String)
-
-    override fun pid(): Int {
-        return ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE_PACKET
-    }
-
-
-
+data class ResourcePackClientResponsePacket(
+    val response: Response,
+    val packsToDownload: List<String>
+) : Packet(id) {
     companion object : PacketCodec<ResourcePackClientResponsePacket> {
-        override fun deserialize(stream: Source): ResourcePackClientResponsePacket {
-            val packet = ResourcePackClientResponsePacket()
+        enum class Response(val net: Byte) {
+            Refused(1),
+            SendPacks(2),
+            AllPacksDownloaded(3),
+            Completed(4);
 
-            packet.responseStatus = Proto.Byte.deserialize(stream)
-            packet.packEntries = Array(byteBuf.readShortLE().toInt()) {
-                val entry = Proto.String.deserialize(stream).split("_")
+            companion object : ProtoCodec<Response> {
+                override fun serialize(
+                    value: Response,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.net, stream)
+                }
 
-                if (UUIDValidator.isValidUUID(entry[0])) {
-                    Entry(
-                        UUID.fromString(
-                            entry[0]
-                        ), entry[1]
-                    )
-                } else throw RuntimeException("Invalid UUID format")
+                override fun deserialize(stream: Source): Response {
+                    return Proto.Byte.deserialize(stream).let {
+                        entries.find { e -> e.net == it }!!
+                    }
+                }
             }
-
-            return packet
         }
 
-        const val STATUS_REFUSED: Byte = 1
-        const val STATUS_SEND_PACKS: Byte = 2
-        const val STATUS_HAVE_ALL_PACKS: Byte = 3
-        const val STATUS_COMPLETED: Byte = 4
+        override val id: Int
+            get() = ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE_PACKET
+
+        override fun serialize(
+            value: ResourcePackClientResponsePacket,
+            stream: Sink
+        ) {
+            Response.serialize(value.response, stream)
+            value.packsToDownload.let { packetsToDownload ->
+                ProtoLE.UShort.serialize(packetsToDownload.size.toUShort(), stream)
+                packetsToDownload.forEach { Proto.String.serialize(it, stream) }
+            }
+        }
+
+        override fun deserialize(stream: Source): ResourcePackClientResponsePacket {
+            return ResourcePackClientResponsePacket(
+                response = Response.deserialize(stream),
+                packsToDownload = List(ProtoLE.UShort.deserialize(stream).toInt()) {
+                    Proto.String.deserialize(stream)
+                },
+            )
+        }
     }
 }

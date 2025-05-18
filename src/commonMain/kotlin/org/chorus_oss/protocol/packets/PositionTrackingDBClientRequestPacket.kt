@@ -1,35 +1,55 @@
 package org.chorus_oss.protocol.packets
 
-
-class PositionTrackingDBClientRequestPacket : Packet(id) {
-    var action: Action? = null
-    var trackingId: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(action!!.ordinal.toByte().toInt())
-        byteBuf.writeVarInt(trackingId)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.POS_TRACKING_CLIENT_REQUEST_PACKET
-    }
-
-    enum class Action {
-        QUERY
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
 
 
-
+data class PositionTrackingDBClientRequestPacket(
+    val requestAction: RequestAction,
+    val trackingID: Int,
+) : Packet(id) {
     companion object : PacketCodec<PositionTrackingDBClientRequestPacket> {
-        override fun deserialize(stream: Source): PositionTrackingDBClientRequestPacket {
-            val packet = PositionTrackingDBClientRequestPacket()
+        enum class RequestAction {
+            Query;
 
-            packet.action = ACTIONS[Proto.Byte.deserialize(stream).toInt()]
-            packet.trackingId = byteBuf.readVarInt()
+            companion object : ProtoCodec<RequestAction> {
+                override fun serialize(
+                    value: RequestAction,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                }
 
-            return packet
+                override fun deserialize(stream: Source): RequestAction {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                }
+            }
         }
 
-        private val ACTIONS = Action.entries.toTypedArray()
+        override val id: Int
+            get() = ProtocolInfo.POSITION_TRACKING_DB_CLIENT_REQUEST_PACKET
+
+        override fun serialize(
+            value: PositionTrackingDBClientRequestPacket,
+            stream: Sink
+        ) {
+            RequestAction.serialize(value.requestAction, stream)
+            ProtoVAR.Int.serialize(value.trackingID, stream)
+        }
+
+        override fun deserialize(stream: Source): PositionTrackingDBClientRequestPacket {
+            return PositionTrackingDBClientRequestPacket(
+                requestAction = RequestAction.deserialize(stream),
+                trackingID = ProtoVAR.Int.deserialize(stream),
+            )
+        }
     }
 }

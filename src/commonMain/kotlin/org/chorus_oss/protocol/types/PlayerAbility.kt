@@ -1,32 +1,44 @@
 package org.chorus_oss.protocol.types
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Int
+
 enum class PlayerAbility(
     // Feature bits for RequestPermissionsPacket
-    val bit: Int = 0
+    val bit: UShort = 0u
 ) {
-    BUILD(0x1),
-    MINE(0x2),
-    DOORS_AND_SWITCHES(0x4),
-    OPEN_CONTAINERS(0x8),
-    ATTACK_PLAYERS(0x10),
-    ATTACK_MOBS(0x20),
-    OPERATOR_COMMANDS(0x40),
-    TELEPORT(0x80),
+    Build(0x1u),
+    Mine(0x2u),
+    DoorsAndSwitches(0x4u),
+    OpenContainers(0x8u),
+    AttackPlayers(0x10u),
+    AttackMobs(0x20u),
+    OperatorCommands(0x40u),
+    Teleport(0x80u),
 
-    INVULNERABLE,
-    FLYING,
-    MAY_FLY,
-    INSTABUILD,
-    LIGHTNING,
-    FLY_SPEED,
-    WALK_SPEED,
-    MUTED,
-    WORLD_BUILDER,
-    NO_CLIP,
-    PRIVILEGED_BUILDER,
-    VERTICAL_FLY_SPEED;
+    Invulnerable,
+    Flying,
+    MayFly,
+    Instabuild,
+    Lightning,
+    FlySpeed,
+    WalkSpeed,
+    Muted,
+    WorldBuilder,
+    NoClip,
+    PrivilegedBuilder,
+    VerticalFlySpeed;
 
-    companion object {
-        val VALUES: List<PlayerAbility> = entries.toList()
+    companion object : ProtoCodec<PlayerAbility> {
+        override fun serialize(value: PlayerAbility, stream: Sink) {
+            ProtoVAR.Int.serialize(value.ordinal, stream)
+        }
+
+        override fun deserialize(stream: Source): PlayerAbility {
+            return entries[ProtoVAR.Int.deserialize(stream)]
+        }
     }
 }

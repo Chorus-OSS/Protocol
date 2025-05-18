@@ -1,61 +1,40 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.Player
-import org.chorus_oss.chorus.Server
-
-import org.chorus_oss.protocol.types.PlayerAbility
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.UShort
+import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.PlayerPermission
 
 
-class RequestPermissionsPacket : Packet(id) {
-    var uniqueEntityId: Long = 0
-    var permissions: PlayerPermission? = null
-    var customPermissions: Int = 0
-
-    fun parseCustomPermissions(): Set<PlayerAbility> {
-        val abilities = HashSet<PlayerAbility>()
-        for (controllableAbility in CONTROLLABLE_ABILITIES) {
-            if ((this.customPermissions and controllableAbility.bit) != 0) abilities.add(controllableAbility)
-        }
-        return abilities
-    }
-
-    val targetPlayer: Player?
-        get() {
-            for (player in Server.instance.onlinePlayers.values) {
-                if (player.getUniqueID() == this.uniqueEntityId) return player
-            }
-            return null
-        }
-
-    override fun pid(): Int {
-        return ProtocolInfo.REQUEST_PERMISSIONS_PACKET
-    }
-
-
-
+data class RequestPermissionsPacket(
+    val entityUniqueID: ActorUniqueID,
+    val permissionLevel: PlayerPermission,
+    val requestedPermissions: UShort,
+) : Packet(id) {
     companion object : PacketCodec<RequestPermissionsPacket> {
-        override fun deserialize(stream: Source): RequestPermissionsPacket {
-            val packet = RequestPermissionsPacket()
+        override val id: Int
+            get() = ProtocolInfo.REQUEST_PERMISSIONS_PACKET
 
-            packet.uniqueEntityId = byteBuf.readLongLE()
-            packet.permissions = PlayerPermission.entries[Proto.Byte.deserialize(stream) / 2]
-            packet.customPermissions = byteBuf.readShortLE().toInt()
-
-            return packet
+        override fun serialize(
+            value: RequestPermissionsPacket,
+            stream: Sink
+        ) {
+            ActorUniqueID.serialize(value.entityUniqueID, stream)
+            PlayerPermission.serialize(value.permissionLevel, stream)
+            ProtoLE.UShort.serialize(value.requestedPermissions, stream)
         }
 
-        // Controllable capabilities in the permission list
-        @JvmField
-        val CONTROLLABLE_ABILITIES: Array<PlayerAbility> = arrayOf(
-            PlayerAbility.BUILD,
-            PlayerAbility.MINE,
-            PlayerAbility.DOORS_AND_SWITCHES,
-            PlayerAbility.OPEN_CONTAINERS,
-            PlayerAbility.ATTACK_PLAYERS,
-            PlayerAbility.ATTACK_MOBS,
-            PlayerAbility.OPERATOR_COMMANDS,
-            PlayerAbility.TELEPORT
-        )
+        override fun deserialize(stream: Source): RequestPermissionsPacket {
+            return RequestPermissionsPacket(
+                entityUniqueID = ActorUniqueID.deserialize(stream),
+                permissionLevel = PlayerPermission.deserialize(stream),
+                requestedPermissions = ProtoLE.UShort.deserialize(stream),
+            )
+        }
     }
 }

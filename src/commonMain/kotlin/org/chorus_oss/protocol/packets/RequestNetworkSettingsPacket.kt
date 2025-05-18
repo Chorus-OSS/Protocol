@@ -1,22 +1,32 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoBE
+import org.chorus_oss.protocol.core.types.Int
 
-class RequestNetworkSettingsPacket : Packet(id) {
-    var protocolVersion: Int = 0
 
-    override fun pid(): Int {
-        return ProtocolInfo.REQUEST_NETWORK_SETTINGS_PACKET
-    }
-
-
-
+data class RequestNetworkSettingsPacket(
+    val clientProtocol: Int,
+) : Packet(id) {
     companion object : PacketCodec<RequestNetworkSettingsPacket> {
+        override val id: Int
+            get() = ProtocolInfo.REQUEST_NETWORK_SETTINGS_PACKET
+
+        override fun serialize(
+            value: RequestNetworkSettingsPacket,
+            stream: Sink
+        ) {
+            ProtoBE.Int.serialize(value.clientProtocol, stream)
+        }
+
         override fun deserialize(stream: Source): RequestNetworkSettingsPacket {
-            val packet = RequestNetworkSettingsPacket()
-
-            packet.protocolVersion = byteBuf.readInt()
-
-            return packet
+            return RequestNetworkSettingsPacket(
+                clientProtocol = ProtoBE.Int.deserialize(stream),
+            )
         }
     }
 }

@@ -19,20 +19,20 @@ data class ResourcePackChunkDataPacket(
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_CHUNK_DATA_PACKET
 
-        override fun deserialize(stream: Source): ResourcePackChunkDataPacket {
-            return ResourcePackChunkDataPacket(
-                resourceName = Proto.String.deserialize(stream),
-                chunkID = ProtoLE.UInt.deserialize(stream),
-                byteOffset = ProtoLE.ULong.deserialize(stream),
-                chunkData = Proto.String.deserialize(stream)
-            )
-        }
-
         override fun serialize(value: ResourcePackChunkDataPacket, stream: Sink) {
             Proto.String.serialize(value.resourceName, stream)
             ProtoLE.UInt.serialize(value.chunkID, stream)
             ProtoLE.ULong.serialize(value.byteOffset, stream)
             Proto.String.serialize(value.chunkData, stream)
+        }
+
+        override fun deserialize(stream: Source): ResourcePackChunkDataPacket {
+            return ResourcePackChunkDataPacket(
+                resourceName = Proto.String.deserialize(stream),
+                chunkID = ProtoLE.UInt.deserialize(stream),
+                byteOffset = ProtoLE.ULong.deserialize(stream),
+                chunkData = Proto.String.deserialize(stream),
+            )
         }
     }
 }
