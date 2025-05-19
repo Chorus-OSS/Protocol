@@ -16,7 +16,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-data class ShapelessRecipe(
+data class ShulkerBoxRecipe(
     val recipeID: String,
     val input: List<ItemDescriptorCount>,
     val output: List<ItemInstance>,
@@ -27,10 +27,10 @@ data class ShapelessRecipe(
     val recipeNetworkID: UInt,
 ) : Recipe() {
     override val type: Recipe.Companion.Type
-        get() = Recipe.Companion.Type.Shapeless
+        get() = Recipe.Companion.Type.ShulkerBox
 
-    companion object : ProtoCodec<ShapelessRecipe> {
-        override fun serialize(value: ShapelessRecipe, stream: Sink) {
+    companion object : ProtoCodec<ShulkerBoxRecipe> {
+        override fun serialize(value: ShulkerBoxRecipe, stream: Sink) {
             Proto.String.serialize(value.recipeID, stream)
             ProtoHelper.serializeList(value.input, stream, ItemDescriptorCount)
             ProtoHelper.serializeList(value.output, stream, ItemInstance)
@@ -41,8 +41,8 @@ data class ShapelessRecipe(
             ProtoVAR.UInt.serialize(value.recipeNetworkID, stream)
         }
 
-        override fun deserialize(stream: Source): ShapelessRecipe {
-            return ShapelessRecipe(
+        override fun deserialize(stream: Source): ShulkerBoxRecipe {
+            return ShulkerBoxRecipe(
                 recipeID = Proto.String.deserialize(stream),
                 input = ProtoHelper.deserializeList(stream, ItemDescriptorCount),
                 output = ProtoHelper.deserializeList(stream, ItemInstance),

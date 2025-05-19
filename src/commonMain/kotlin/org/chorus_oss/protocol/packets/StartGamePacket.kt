@@ -5,11 +5,7 @@ import org.chorus_oss.chorus.level.GameRules
 import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
 import org.chorus_oss.chorus.utils.Loggable
-
-
-import java.io.IOException
-import java.nio.ByteOrder
-import java.util.*
+import org.chorus_oss.protocol.core.Packet
 
 class StartGamePacket : Packet(id) {
     var entityUniqueId: Long = 0
