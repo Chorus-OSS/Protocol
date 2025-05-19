@@ -1,48 +1,63 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.nbt.tag.CompoundTag
 
-import org.chorus_oss.chorus.utils.Loggable
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.types.ActorUniqueID
 
 
-import java.io.IOException
-import java.nio.ByteOrder
+data class UpdateTradePacket(
+    val windowID: Byte,
+    val windowType: Byte,
+    val size: Int,
+    val tradeTier: Int,
+    val villagerUniqueID: ActorUniqueID,
+    val entityUniqueID: ActorUniqueID,
+    val displayName: String,
+    val newTradeUI: Boolean,
+    val demandBasedPrices: Boolean,
+    val serializedOffers: List<Byte>,
+) : Packet(id) {
+    companion object : PacketCodec<UpdateTradePacket> {
+        override val id: Int
+            get() = ProtocolInfo.UPDATE_TRADE_PACKET
 
+        override fun serialize(value: UpdateTradePacket, stream: Sink) {
+            Proto.Byte.serialize(value.windowID, stream)
+            Proto.Byte.serialize(value.windowType, stream)
+            ProtoVAR.Int.serialize(value.size, stream)
+            ProtoVAR.Int.serialize(value.tradeTier, stream)
+            ActorUniqueID.serialize(value.villagerUniqueID, stream)
+            ActorUniqueID.serialize(value.entityUniqueID, stream)
+            Proto.String.serialize(value.displayName, stream)
+            Proto.Boolean.serialize(value.newTradeUI, stream)
+            Proto.Boolean.serialize(value.demandBasedPrices, stream)
+            ProtoHelper.serializeList(value.serializedOffers, stream, Proto.Byte)
+        }
 
-class UpdateTradePacket : Packet(id) {
-    var containerId: Byte = 0
-    var containerType: Byte = 15 //trading id
-    var size: Int = 0 // hardcoded to 0
-    var tradeTier: Int = 0 //交易等级
-    var traderUniqueEntityId: Long = 0 //村民id
-    var playerUniqueEntityId: Long = 0 //村民id
-    var displayName: String? = null //硬编码的显示名
-    var offers: CompoundTag? = null //交易配方
-    var newTradingUi: Boolean = false //是否启用新版交易ui
-    var usingEconomyTrade: Boolean = false //未知
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(containerId.toInt())
-        byteBuf.writeByte(containerType.toInt())
-        byteBuf.writeVarInt(size)
-        byteBuf.writeVarInt(tradeTier)
-        byteBuf.writeActorUniqueID(traderUniqueEntityId)
-        byteBuf.writeActorUniqueID(playerUniqueEntityId)
-        byteBuf.writeString(displayName!!)
-        byteBuf.writeBoolean(newTradingUi)
-        byteBuf.writeBoolean(usingEconomyTrade)
-        try {
-            byteBuf.writeBytes(write(offers!!, ByteOrder.LITTLE_ENDIAN, true))
-        } catch (e: IOException) {
-            UpdateTradePacket.log.error("", e)
+        override fun deserialize(stream: Source): UpdateTradePacket {
+            return UpdateTradePacket(
+                windowID = Proto.Byte.deserialize(stream),
+                windowType = Proto.Byte.deserialize(stream),
+                size = ProtoVAR.Int.deserialize(stream),
+                tradeTier = ProtoVAR.Int.deserialize(stream),
+                villagerUniqueID = ActorUniqueID.deserialize(stream),
+                entityUniqueID = ActorUniqueID.deserialize(stream),
+                displayName = Proto.String.deserialize(stream),
+                newTradeUI = Proto.Boolean.deserialize(stream),
+                demandBasedPrices = Proto.Boolean.deserialize(stream),
+                serializedOffers = ProtoHelper.deserializeList(stream, Proto.Byte),
+            )
         }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.UPDATE_TRADE_PACKET
-    }
-
-
-
-    companion object : Loggable
 }

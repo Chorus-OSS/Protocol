@@ -1,35 +1,38 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.entity.Attribute
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.ULong
+import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.types.attribute.Attribute
 
 
-class UpdateAttributesPacket : Packet(id) {
-    var entries: Array<Attribute> = emptyArray()
+data class UpdateAttributesPacket(
+    val actorRuntimeID: ActorRuntimeID,
+    val attributes: List<Attribute>,
+    val tick: ULong,
+) : Packet(id) {
+    companion object : PacketCodec<UpdateAttributesPacket> {
+        override val id: Int
+            get() = ProtocolInfo.UPDATE_ATTRIBUTES_PACKET
 
-    @JvmField
-    var entityId: Long = 0
-    var frame: Long = 0 //tick
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorRuntimeID(this.entityId)
-
-        byteBuf.writeUnsignedVarInt(entries.size)
-        for (entry in entries) {
-            byteBuf.writeFloatLE(entry.minValue)
-            byteBuf.writeFloatLE(entry.maxValue)
-            byteBuf.writeFloatLE(entry.getValue())
-            byteBuf.writeFloatLE(entry.defaultMinimum)
-            byteBuf.writeFloatLE(entry.defaultMaximum)
-            byteBuf.writeFloatLE(entry.defaultValue)
-            byteBuf.writeString(entry.name)
-            byteBuf.writeUnsignedVarInt(0) // Modifiers
+        override fun serialize(value: UpdateAttributesPacket, stream: Sink) {
+            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
+            ProtoHelper.serializeList(value.attributes, stream, Attribute)
+            ProtoVAR.ULong.serialize(value.tick, stream)
         }
-        byteBuf.writeUnsignedVarInt(frame.toInt())
+
+        override fun deserialize(stream: Source): UpdateAttributesPacket {
+            return UpdateAttributesPacket(
+                actorRuntimeID = ActorRuntimeID.deserialize(stream),
+                attributes = ProtoHelper.deserializeList(stream, Attribute),
+                tick = ProtoVAR.ULong.deserialize(stream),
+            )
+        }
     }
-
-    override fun pid(): Int {
-        return ProtocolInfo.UPDATE_ATTRIBUTES_PACKET
-    }
-
-
 }

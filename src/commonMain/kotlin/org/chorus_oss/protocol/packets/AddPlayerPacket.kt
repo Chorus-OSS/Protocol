@@ -27,7 +27,7 @@ data class AddPlayerPacket(
     val playerGameType: Int,
     val actorData: ActorDataMap,
     val actorProperties: ActorProperties,
-    val abilitiesData: SerializedAbilitiesData,
+    val abilitiesData: AbilitiesData,
     val actorLinks: List<ActorLink>,
     val deviceID: String,
     val buildPlatform: Platform,
@@ -50,7 +50,7 @@ data class AddPlayerPacket(
                 playerGameType = ProtoVAR.Int.deserialize(stream),
                 actorData = ActorDataMap.deserialize(stream),
                 actorProperties = ActorProperties.deserialize(stream),
-                abilitiesData = SerializedAbilitiesData.deserialize(stream),
+                abilitiesData = AbilitiesData.deserialize(stream),
                 actorLinks = ProtoHelper.deserializeList(stream, ActorLink),
                 deviceID = Proto.String.deserialize(stream),
                 buildPlatform = Platform.deserialize(stream)
@@ -71,7 +71,7 @@ data class AddPlayerPacket(
             ProtoVAR.Int.serialize(value.playerGameType, stream)
             ActorDataMap.serialize(value.actorData, stream)
             ActorProperties.serialize(value.actorProperties, stream)
-            SerializedAbilitiesData.serialize(value.abilitiesData, stream)
+            AbilitiesData.serialize(value.abilitiesData, stream)
             ProtoHelper.serializeList(value.actorLinks, stream, ActorLink)
             Proto.String.serialize(value.deviceID, stream)
             Platform.serialize(value.buildPlatform, stream)

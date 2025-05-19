@@ -1,97 +1,102 @@
 package org.chorus_oss.protocol.packets
 
-import io.netty.util.internal.EmptyArrays
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.String
 
-import java.util.function.Function
-
-class TextPacket : Packet(id) {
-    @JvmField
-    var type: Byte = 0
-
-    @JvmField
-    var source: String = ""
-
-    @JvmField
-    var message: String = ""
-
-    @JvmField
-    var parameters: Array<String> = EmptyArrays.EMPTY_STRINGS
-    var isLocalized: Boolean = false
-    var xboxUserId: String = ""
-    var platformChatId: String = ""
-    var filteredMessage: String = ""
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeByte(type.toInt())
-        byteBuf.writeBoolean(this.isLocalized || type == TYPE_TRANSLATION)
-        when (this.type) {
-            TYPE_CHAT, TYPE_WHISPER, TYPE_ANNOUNCEMENT -> {
-                byteBuf.writeString(this.source)
-                byteBuf.writeString(this.message)
-            }
-
-            TYPE_RAW, TYPE_TIP, TYPE_SYSTEM, TYPE_OBJECT, TYPE_OBJECT_WHISPER -> byteBuf.writeString(
-                this.message
-            )
-
-            TYPE_TRANSLATION, TYPE_POPUP, TYPE_JUKEBOX_POPUP -> {
-                byteBuf.writeString(this.message)
-                byteBuf.writeUnsignedVarInt(parameters.size)
-                for (parameter in this.parameters) {
-                    byteBuf.writeString(parameter)
-                }
-            }
-        }
-        byteBuf.writeString(this.xboxUserId)
-        byteBuf.writeString(this.platformChatId)
-        byteBuf.writeString(this.filteredMessage)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.TEXT_PACKET
-    }
-
-
-
+data class TextPacket(
+    val textType: TextType,
+    val needsTranslation: Boolean,
+    val sourceName: String?,
+    val message: String,
+    val parameters: List<String>?,
+    val xuid: String,
+    val platformChatID: String,
+    val filteredMessage: String,
+) : Packet(id) {
     companion object : PacketCodec<TextPacket> {
-        override fun deserialize(stream: Source): TextPacket {
-            val packet = TextPacket()
+        enum class TextType {
+            Raw,
+            Chat,
+            Translation,
+            Popup,
+            JukeboxPopup,
+            Tip,
+            System,
+            Whisper,
+            Announcement,
+            ObjectWhisper,
+            Object,
+            ObjectAnnouncement;
 
-            packet.type = Proto.Byte.deserialize(stream)
-            packet.isLocalized = Proto.Boolean.deserialize(stream) || packet.type == TYPE_TRANSLATION
-            when (packet.type) {
-                TYPE_CHAT, TYPE_WHISPER, TYPE_ANNOUNCEMENT -> {
-                    packet.source = Proto.String.deserialize(stream)
-                    packet.message = Proto.String.deserialize(stream)
+            companion object : ProtoCodec<TextType> {
+                override fun serialize(
+                    value: TextType,
+                    stream: Sink
+                ) {
+                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
                 }
 
-                TYPE_RAW, TYPE_TIP, TYPE_SYSTEM, TYPE_OBJECT, TYPE_OBJECT_WHISPER -> packet.message =
-                    Proto.String.deserialize(stream)
-
-                TYPE_TRANSLATION, TYPE_POPUP, TYPE_JUKEBOX_POPUP -> {
-                    packet.message = Proto.String.deserialize(stream)
-                    packet.parameters = byteBuf.readArray<String>(
-                        String::class.java,
-                        Function { obj: ByteBuf -> obj.readString() })
+                override fun deserialize(stream: Source): TextType {
+                    return entries[Proto.Byte.deserialize(stream).toInt()]
                 }
             }
-            packet.xboxUserId = Proto.String.deserialize(stream)
-            packet.platformChatId = Proto.String.deserialize(stream)
-            packet.filteredMessage = Proto.String.deserialize(stream)
-
-            return packet
         }
 
-        const val TYPE_RAW: Byte = 0
-        const val TYPE_CHAT: Byte = 1
-        const val TYPE_TRANSLATION: Byte = 2
-        const val TYPE_POPUP: Byte = 3
-        const val TYPE_JUKEBOX_POPUP: Byte = 4
-        const val TYPE_TIP: Byte = 5
-        const val TYPE_SYSTEM: Byte = 6
-        const val TYPE_WHISPER: Byte = 7
-        const val TYPE_ANNOUNCEMENT: Byte = 8
-        const val TYPE_OBJECT: Byte = 9
-        const val TYPE_OBJECT_WHISPER: Byte = 10
+        override val id: Int
+            get() = ProtocolInfo.TEXT_PACKET
+
+        override fun serialize(value: TextPacket, stream: Sink) {
+            TextType.serialize(value.textType, stream)
+            Proto.Boolean.serialize(value.needsTranslation, stream)
+            when (value.textType) {
+                TextType.Chat,
+                TextType.Whisper,
+                TextType.Announcement -> Proto.String.serialize(value.sourceName as String, stream)
+                else -> Unit
+            }
+            Proto.String.serialize(value.message, stream)
+            when (value.textType) {
+                TextType.Translation,
+                TextType.Popup,
+                TextType.JukeboxPopup -> ProtoHelper.serializeList(value.parameters as List<String>, stream, Proto.String)
+                else -> Unit
+            }
+            Proto.String.serialize(value.xuid, stream)
+            Proto.String.serialize(value.platformChatID, stream)
+            Proto.String.serialize(value.filteredMessage, stream)
+        }
+
+        override fun deserialize(stream: Source): TextPacket {
+            val textType: TextType
+            return TextPacket(
+                textType = TextType.deserialize(stream).also { textType = it },
+                needsTranslation = Proto.Boolean.deserialize(stream),
+                sourceName = when (textType) {
+                    TextType.Chat,
+                    TextType.Whisper,
+                    TextType.Announcement -> Proto.String.deserialize(stream)
+                    else -> null
+                },
+                message = Proto.String.deserialize(stream),
+                parameters = when (textType) {
+                    TextType.Translation,
+                    TextType.Popup,
+                    TextType.JukeboxPopup -> ProtoHelper.deserializeList(stream, Proto.String)
+                    else -> null
+                },
+                xuid = Proto.String.deserialize(stream),
+                platformChatID = Proto.String.deserialize(stream),
+                filteredMessage = Proto.String.deserialize(stream),
+            )
+        }
     }
 }

@@ -1,47 +1,33 @@
 package org.chorus_oss.protocol.packets
 
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.TrimMaterial
 import org.chorus_oss.protocol.types.TrimPattern
 
-class TrimDataPacket : Packet(id) {
-    val patterns: MutableList<TrimPattern> = mutableListOf()
-    val materials: MutableList<TrimMaterial> = mutableListOf()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeUnsignedVarInt(patterns.size)
-        patterns.forEach { p: TrimPattern ->
-            byteBuf.writeString(p.itemName)
-            byteBuf.writeString(p.patternId)
-        }
-        byteBuf.writeUnsignedVarInt(materials.size)
-        materials.forEach { m: TrimMaterial ->
-            byteBuf.writeString(m.materialId)
-            byteBuf.writeString(m.color)
-            byteBuf.writeString(m.itemName)
-        }
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.TRIM_DATA
-    }
-
-
-
+data class TrimDataPacket(
+    val patterns: List<TrimPattern>,
+    val materials: List<TrimMaterial>,
+) : Packet(id) {
     companion object : PacketCodec<TrimDataPacket> {
+        override val id: Int
+            get() = ProtocolInfo.TRIM_DATA_PACKET
+
+        override fun serialize(value: TrimDataPacket, stream: Sink) {
+            ProtoHelper.serializeList(value.patterns, stream, TrimPattern)
+            ProtoHelper.serializeList(value.materials, stream, TrimMaterial)
+        }
+
         override fun deserialize(stream: Source): TrimDataPacket {
-            val packet = TrimPacket(id)
-
-            val length1 = byteBuf.readUnsignedVarInt()
-            for (i in 0..<length1) {
-                packet.patterns.add(TrimPattern(Proto.String.deserialize(stream), Proto.String.deserialize(stream)))
-            }
-            val length2 = byteBuf.readUnsignedVarInt()
-            for (i in 0..<length2) {
-                packet.materials.add(TrimMaterial(Proto.String.deserialize(stream), Proto.String.deserialize(stream), Proto.String.deserialize(stream)))
-            }
-
-            return packet
+            return TrimDataPacket(
+                patterns = ProtoHelper.deserializeList(stream, TrimPattern),
+                materials = ProtoHelper.deserializeList(stream, TrimMaterial),
+            )
         }
     }
 }

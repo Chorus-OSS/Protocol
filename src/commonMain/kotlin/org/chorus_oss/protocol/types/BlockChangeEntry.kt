@@ -1,18 +1,54 @@
 package org.chorus_oss.protocol.types
 
-import org.chorus_oss.chorus.math.BlockVector3
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.UInt
 
-@JvmRecord
 data class BlockChangeEntry(
-    val blockPos: BlockVector3,
-    val runtimeID: Long,
-    val updateFlags: Int,
-    val messageEntityID: Long,
-    val messageType: MessageType
+    val blockPos: IVector3,
+    val blockRuntimeID: UInt,
+    val flags: UInt,
+    val syncedUpdateEntityUniqueID: ActorUniqueID,
+    val syncedUpdateType: MessageType
 ) {
-    enum class MessageType {
-        NONE,
-        CREATE,
-        DESTROY
+    companion object : ProtoCodec<BlockChangeEntry> {
+        enum class MessageType {
+            None,
+            Create,
+            Destroy;
+
+            companion object : ProtoCodec<MessageType> {
+                override fun serialize(
+                    value: MessageType,
+                    stream: Sink
+                ) {
+                    ProtoVAR.UInt.serialize(value.ordinal.toUInt(), stream)
+                }
+
+                override fun deserialize(stream: Source): MessageType {
+                    return entries[ProtoVAR.UInt.deserialize(stream).toInt()]
+                }
+            }
+        }
+
+        override fun serialize(value: BlockChangeEntry, stream: Sink) {
+            UIVector3.serialize(value.blockPos, stream)
+            ProtoVAR.UInt.serialize(value.blockRuntimeID, stream)
+            ProtoVAR.UInt.serialize(value.flags, stream)
+            ActorUniqueID.serialize(value.syncedUpdateEntityUniqueID, stream)
+            MessageType.serialize(value.syncedUpdateType, stream)
+        }
+
+        override fun deserialize(stream: Source): BlockChangeEntry {
+            return BlockChangeEntry(
+                blockPos = UIVector3.deserialize(stream),
+                blockRuntimeID = ProtoVAR.UInt.deserialize(stream),
+                flags = ProtoVAR.UInt.deserialize(stream),
+                syncedUpdateEntityUniqueID = ActorUniqueID.deserialize(stream),
+                syncedUpdateType = MessageType.deserialize(stream),
+            )
+        }
     }
 }

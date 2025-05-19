@@ -1,34 +1,52 @@
 package org.chorus_oss.protocol.packets
 
-
-class UnlockedRecipesPacket : Packet(id) {
-    var unlockedNotification: Boolean = false
-    val unlockedRecipes: MutableList<String> = mutableListOf()
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeBoolean(this.unlockedNotification)
-        byteBuf.writeUnsignedVarInt(unlockedRecipes.size)
-        for (recipe in this.unlockedRecipes) {
-            byteBuf.writeString(recipe)
-        }
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.UNLOCKED_RECIPES_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
 
 
-
+data class UnlockedRecipesPacket(
+    val unlockType: UnlockType,
+    val recipes: List<String>
+) : Packet(id) {
     companion object : PacketCodec<UnlockedRecipesPacket> {
-        override fun deserialize(stream: Source): UnlockedRecipesPacket {
-            val packet = UnlockedRecipesPacket()
+        enum class UnlockType {
+            Empty,
+            InitiallyUnlocked,
+            NewlyUnlocked,
+            RemoveUnlocked,
+            RemoveAllUnlocked;
 
-            packet.unlockedNotification = Proto.Boolean.deserialize(stream)
-            for (i in 0..<byteBuf.readUnsignedVarInt()) {
-                packet.unlockedRecipes.add(Proto.String.deserialize(stream))
+            companion object : ProtoCodec<UnlockType> {
+                override fun serialize(
+                    value: UnlockType,
+                    stream: Sink
+                ) {
+                    ProtoLE.UInt.serialize(value.ordinal.toUInt(), stream)
+                }
+
+                override fun deserialize(stream: Source): UnlockType {
+                    return entries[ProtoLE.UInt.deserialize(stream).toInt()]
+                }
             }
+        }
 
-            return packet
+        override val id: Int
+            get() = ProtocolInfo.UNLOCKED_RECIPES_PACKET
+
+        override fun serialize(value: UnlockedRecipesPacket, stream: Sink) {
+            UnlockType.serialize(value.unlockType, stream)
+            ProtoHelper.serializeList(value.recipes, stream, Proto.String)
+        }
+
+        override fun deserialize(stream: Source): UnlockedRecipesPacket {
+            return UnlockedRecipesPacket(
+                unlockType = UnlockType.deserialize(stream),
+                recipes = ProtoHelper.deserializeList(stream, Proto.String),
+            )
         }
     }
 }

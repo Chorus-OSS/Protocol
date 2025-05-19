@@ -1,50 +1,45 @@
 package org.chorus_oss.protocol.packets
 
-
-open class UpdateBlockPacket : Packet(id) {
-    @JvmField
-    var x: Int = 0
-
-    @JvmField
-    var z: Int = 0
-
-    @JvmField
-    var y: Int = 0
-
-    @JvmField
-    var blockRuntimeId: Int = 0
-
-    @JvmField
-    var flags: Int = 0
-    var dataLayer: Int = 0
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeBlockVector3(x, y, z)
-        byteBuf.writeUnsignedVarInt(blockRuntimeId)
-        byteBuf.writeUnsignedVarInt(flags)
-        byteBuf.writeUnsignedVarInt(dataLayer)
-    }
-
-    class Entry(
-        val x: Int,
-        val z: Int,
-        val y: Int, val blockId: String, val blockData: Int,
-        val flags: Int
-    )
-
-    override fun pid(): Int {
-        return ProtocolInfo.UPDATE_BLOCK_PACKET
-    }
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.UInt
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 
+data class UpdateBlockPacket(
+    val position: IVector3,
+    val newBlockRuntimeID: UInt,
+    val flags: UInt,
+    val layer: UInt,
+) : Packet(id) {
+    companion object : PacketCodec<UpdateBlockPacket> {
+        const val FLAG_NEIGHBORS: UInt = 0x1u
+        const val FLAG_NETWORK: UInt = 0x2u
+        const val FLAG_NO_GRAPHICS: UInt = 0x4u
+        const val FLAG_PRIORITY: UInt = 0x8u
 
-    companion object {
-        const val FLAG_NONE: Int = 0
-        const val FLAG_NEIGHBORS: Int = 1
-        const val FLAG_NETWORK: Int = 2
-        const val FLAG_NOGRAPHIC: Int = 4
-        const val FLAG_PRIORITY: Int = 8
-        const val FLAG_ALL: Int = (FLAG_NEIGHBORS or FLAG_NETWORK)
-        const val FLAG_ALL_PRIORITY: Int = (FLAG_ALL or FLAG_PRIORITY)
+        override val id: Int
+            get() = ProtocolInfo.UPDATE_BLOCK_PACKET
+
+        override fun serialize(value: UpdateBlockPacket, stream: Sink) {
+            UIVector3.serialize(value.position, stream)
+            ProtoVAR.UInt.serialize(value.newBlockRuntimeID, stream)
+            ProtoVAR.UInt.serialize(value.flags, stream)
+            ProtoVAR.UInt.serialize(value.layer, stream)
+        }
+
+        override fun deserialize(stream: Source): UpdateBlockPacket {
+            return UpdateBlockPacket(
+                position = UIVector3.deserialize(stream),
+                newBlockRuntimeID = ProtoVAR.UInt.deserialize(stream),
+                flags = ProtoVAR.UInt.deserialize(stream),
+                layer = ProtoVAR.UInt.deserialize(stream),
+            )
+        }
     }
 }

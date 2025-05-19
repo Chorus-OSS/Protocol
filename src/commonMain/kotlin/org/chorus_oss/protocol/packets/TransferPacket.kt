@@ -1,29 +1,38 @@
 package org.chorus_oss.protocol.packets
 
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UShort
 
-class TransferPacket : Packet(id) {
-    @JvmField
-    var address: String? = null
 
-    @JvmField
-    var port: Int = 19132
-    private var reloadWorld = false
+data class TransferPacket(
+    val address: String,
+    val port: UShort,
+    val reloadWorld: Boolean,
+) : Packet(id) {
+    companion object : PacketCodec<TransferPacket> {
+        override val id: Int
+            get() = ProtocolInfo.TRANSFER_PACKET
 
-    override fun deserialize(stream: Source) {
-        this.address = Proto.String.deserialize(stream)
-        this.port = byteBuf.readShortLE().toInt()
-        this.reloadWorld = Proto.Boolean.deserialize(stream)
+        override fun serialize(value: TransferPacket, stream: Sink) {
+            Proto.String.serialize(value.address, stream)
+            ProtoLE.UShort.serialize(value.port, stream)
+            Proto.Boolean.serialize(value.reloadWorld, stream)
+        }
+
+        override fun deserialize(stream: Source): TransferPacket {
+            return TransferPacket(
+                address = Proto.String.deserialize(stream),
+                port = ProtoLE.UShort.deserialize(stream),
+                reloadWorld = Proto.Boolean.deserialize(stream),
+            )
+        }
     }
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeString(address!!)
-        byteBuf.writeShortLE(port)
-        byteBuf.writeBoolean(this.reloadWorld)
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.TRANSFER_PACKET
-    }
-
-
 }

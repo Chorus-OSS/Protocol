@@ -590,7 +590,7 @@ data class LevelSoundEventPacket(
         }
 
         override val id: Int
-            get() = ProtocolInfo.LEVEL_EVENT_PACKET
+            get() = ProtocolInfo.LEVEL_SOUND_EVENT_PACKET
 
         override fun serialize(
             value: LevelSoundEventPacket,
