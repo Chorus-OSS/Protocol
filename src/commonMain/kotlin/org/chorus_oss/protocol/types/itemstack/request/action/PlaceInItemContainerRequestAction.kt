@@ -7,6 +7,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.itemstack.request.ItemStackRequestSlotData
 
+@Deprecated("since v712")
 data class PlaceInItemContainerRequestAction(
     val count: Byte,
     val source: ItemStackRequestSlotData,
@@ -15,6 +16,7 @@ data class PlaceInItemContainerRequestAction(
     override val type: ItemStackRequestAction.Companion.Type
         get() = ItemStackRequestAction.Companion.Type.PLACE
 
+    @Suppress("DEPRECATION")
     companion object : ProtoCodec<PlaceInItemContainerRequestAction> {
         override fun serialize(
             value: PlaceInItemContainerRequestAction,

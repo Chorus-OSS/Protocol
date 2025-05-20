@@ -9,6 +9,7 @@ import org.chorus_oss.protocol.core.types.Byte
 abstract class ItemStackRequestAction {
     abstract val type: Type
 
+    @Suppress("DEPRECATION")
     companion object : ProtoCodec<ItemStackRequestAction> {
         enum class Type {
             TAKE,
@@ -87,9 +88,7 @@ abstract class ItemStackRequestAction {
                 Type.DESTROY -> DestroyRequestAction.deserialize(stream)
                 Type.CONSUME -> ConsumeRequestAction.deserialize(stream)
                 Type.CREATE -> CreateRequestAction.deserialize(stream)
-                @Suppress("DEPRECATION")
                 Type.PLACE_IN_ITEM_CONTAINER -> PlaceInItemContainerRequestAction.deserialize(stream)
-                @Suppress("DEPRECATION")
                 Type.TAKE_FROM_ITEM_CONTAINER -> TakeFromItemContainerRequestAction.deserialize(stream)
                 Type.LAB_TABLE_COMBINE -> LabTableCombineRequestAction.deserialize(stream)
                 Type.BEACON_PAYMENT -> BeaconPaymentRequestAction.deserialize(stream)
