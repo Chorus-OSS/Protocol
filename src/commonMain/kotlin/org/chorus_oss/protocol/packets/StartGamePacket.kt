@@ -1,236 +1,266 @@
 package org.chorus_oss.protocol.packets
 
-import org.chorus_oss.chorus.block.customblock.CustomBlockDefinition
-import org.chorus_oss.chorus.level.GameRules
-import org.chorus_oss.chorus.nbt.tag.CompoundTag
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagSerialization
+import org.chorus_oss.nbt.tags.CompoundTag
+import org.chorus_oss.protocol.ProtocolInfo
+import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.*
+import org.chorus_oss.protocol.types.*
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-import org.chorus_oss.chorus.utils.Loggable
-import org.chorus_oss.protocol.core.Packet
+@OptIn(ExperimentalUuidApi::class)
+data class StartGamePacket(
+    val entityUniqueID: ActorUniqueID,
+    val entityRuntimeID: ActorRuntimeID,
+    val playerGameMode: Int,
+    val playerPosition: Vector3f,
+    val pitch: Float,
+    val yaw: Float,
+    val worldSeed: Long,
+    val spawnBiomeType: SpawnBiomeType,
+    val userDefinedBiomeName: String,
+    val dimension: Int,
+    val generator: Int,
+    val worldGameMode: Int,
+    val hardcore: Boolean,
+    val difficulty: Int,
+    val worldSpawn: IVector3,
+    val achievementsDisabled: Boolean,
+    val editorWorldType: EditorWorldType,
+    val createdInEditor: Boolean,
+    val exportedFromEditor: Boolean,
+    val dayCycleLockTime: Int,
+    val educationEditionOffer: Int,
+    val educationFeaturesEnabled: Boolean,
+    val educationProductID: String,
+    val rainLevel: Float,
+    val lightningLevel: Float,
+    val confirmedPlatformLockedContent: Boolean,
+    val multiPlayerGame: Boolean,
+    val lanBroadcastEnabled: Boolean,
+    val xblBroadcastMode: BroadcastMode,
+    val platformBroadcastMode: BroadcastMode,
+    val commandsEnabled: Boolean,
+    val texturePackRequired: Boolean,
+    val gameRules: List<GameRule<*>>,
+    val experiments: List<ExperimentData>,
+    val experimentsPreviouslyToggled: Boolean,
+    val bonusChestEnabled: Boolean,
+    val startWithMapEnabled: Boolean,
+    val playerPermissions: Int,
+    val serverChunkTickRadius: Int,
+    val hasLockedBehaviourPack: Boolean,
+    val hasLockedTexturePack: Boolean,
+    val fromLockedWorldTemplate: Boolean,
+    val msaGamerTagsOnly: Boolean,
+    val fromWorldTemplate: Boolean,
+    val worldTemplateSettingsLocked: Boolean,
+    val onlySpawnV1Villagers: Boolean,
+    val personaDisabled: Boolean,
+    val customSkinsDisabled: Boolean,
+    val emoteChatMuted: Boolean,
+    val baseGameVersion: String,
+    val limitedWorldWidth: Int,
+    val limitedWorldDepth: Int,
+    val newNether: Boolean,
+    val educationSharedResourceUriResource: EduSharedUriResource,
+    val forceExperimentalGameplay: Boolean?,
+    val chatRestrictionLevel: ChatRestrictionLevel,
+    val disablePlayerInteractions: Boolean,
+    val serverID: String,
+    val worldID: String,
+    val scenarioID: String,
+    val levelID: String,
+    val worldName: String,
+    val templateContentIdentity: String,
+    val trial: Boolean,
+    val playerMovementSettings: PlayerMovementSettings,
+    val tick: Long,
+    val enchantmentSeed: Int,
+    val blocks: List<BlocksEntry>,
+    val multiPlayerCorrelationID: String,
+    val serverAuthoritativeInventory: Boolean,
+    val gameVersion: String,
+    val propertyData: CompoundTag,
+    val serverBlockStateChecksum: ULong,
+    val clientSideGeneration: Boolean,
+    val worldTemplateID: Uuid,
+    val useBlockNetworkIDHashes: Boolean,
+    val serverAuthoritativeSound: Boolean,
+) : Packet(id) {
+   companion object : PacketCodec<StartGamePacket> {
+        override val id: Int
+            get() = ProtocolInfo.START_GAME_PACKET
 
-class StartGamePacket : Packet(id) {
-    var entityUniqueId: Long = 0
-    var entityRuntimeId: Long = 0
-    var playerGamemode: Int = 0
-    var x: Float = 0f
-    var y: Float = 0f
-    var z: Float = 0f
-    var yaw: Float = 0f
-    var pitch: Float = 0f
-    var seed: Long = 0
-    var dimension: Byte = 0
-    var generator: Int = 1
-    var worldGamemode: Int = 0
-    var isHardcore: Boolean = false
-    var difficulty: Int = 0
-    var spawnX: Int = 0
-    var spawnY: Int = 0
-    var spawnZ: Int = 0
-    var hasAchievementsDisabled: Boolean = true
-    var worldEditor: Boolean = false
-    var dayCycleStopTime: Int = -1 //-1 = not stopped, any positive value = stopped at that time
-    var eduEditionOffer: Int = 0
-    var hasEduFeaturesEnabled: Boolean = false
-    var rainLevel: Float = 0f
-    var lightningLevel: Float = 0f
-    var hasConfirmedPlatformLockedContent: Boolean = false
-    var multiplayerGame: Boolean = true
-    var broadcastToLAN: Boolean = true
-    var xblBroadcastIntent: Int = GAME_PUBLISH_SETTING_PUBLIC
-    var platformBroadcastIntent: Int = GAME_PUBLISH_SETTING_PUBLIC
-    var commandsEnabled: Boolean = false
-    var isTexturePacksRequired: Boolean = false
-    var gameRules: GameRules? = null
-    var bonusChest: Boolean = false
-    var hasStartWithMapEnabled: Boolean = false
-    var permissionLevel: Int = 1
-    var serverChunkTickRange: Int = 4
-    var hasLockedBehaviorPack: Boolean = false
-    var hasLockedResourcePack: Boolean = false
-    var isFromLockedWorldTemplate: Boolean = false
-    var isUsingMsaGamertagsOnly: Boolean = false
-    var isFromWorldTemplate: Boolean = false
-    var isWorldTemplateOptionLocked: Boolean = false
-    var isOnlySpawningV1Villagers: Boolean = false
-    var vanillaVersion: String = ProtocolInfo.GAME_VERSION_NET
-
-    // HACK: For now we can specify this version, since the new chunk changes are not relevant for our Anvil format.
-    // However, it could be that Microsoft will prevent this in a new update.
-    var playerPropertyData: CompoundTag = CompoundTag()
-    var levelId: String = "" // base64 string, usually the same as world folder name in vanilla
-    var worldName: String? = null
-    var premiumWorldTemplateId: String = ""
-    var isTrial: Boolean = false
-    var isMovementServerAuthoritative: Boolean = false
-    var serverAuthoritativeMovement: Int? = null
-    var isInventoryServerAuthoritative: Boolean = false
-    var currentTick: Long = 0
-    var enchantmentSeed: Int = 0
-    val blockProperties: MutableList<CustomBlockDefinition> = mutableListOf()
-    var multiplayerCorrelationId: String = ""
-    var isDisablingPersonas: Boolean = false
-    var isDisablingCustomSkins: Boolean = false
-    var clientSideGenerationEnabled: Boolean = false
-
-    var emoteChatMuted: Boolean = false
-
-    /**
-     * Whether block runtime IDs should be replaced by 32-bit integer hashes of the NBT block state.
-     * Unlike runtime IDs, this hashes should be persistent across versions and should make support for data-driven/custom blocks easier.
-     */
-    var blockNetworkIdsHashed: Boolean = false
-
-    var createdInEditor: Boolean = false
-
-
-    var exportedFromEditor: Boolean = false
-    var chatRestrictionLevel: Byte = 0
-    var disablePlayerInteractions: Boolean = false
-
-    var isSoundsServerAuthoritative: Boolean = false
-
-    private val serverId = ""
-
-    private val worldId = ""
-
-    private val scenarioId = ""
-
-    override fun encode(byteBuf: ByteBuf) {
-        byteBuf.writeActorUniqueID(this.entityUniqueId)
-        byteBuf.writeActorRuntimeID(this.entityRuntimeId)
-        byteBuf.writeVarInt(this.playerGamemode)
-        byteBuf.writeVector3f(this.x, this.y, this.z)
-        byteBuf.writeFloatLE(this.yaw)
-        byteBuf.writeFloatLE(this.pitch)
-        writeLevelSettings(byteBuf)
-        byteBuf.writeString(this.levelId)
-        byteBuf.writeString(worldName!!)
-        byteBuf.writeString(this.premiumWorldTemplateId)
-        byteBuf.writeBoolean(this.isTrial)
-        byteBuf.writeVarInt(
-            this.serverAuthoritativeMovement ?: if (this.isMovementServerAuthoritative) 1 else 0
-        ) // 2 - rewind
-        byteBuf.writeVarInt(0) // RewindHistorySize
-        if (this.serverAuthoritativeMovement != null) {
-            byteBuf.writeBoolean(serverAuthoritativeMovement!! > 0) // isServerAuthoritativeBlockBreaking
-        } else { //兼容nkx旧插件
-            byteBuf.writeBoolean(this.isMovementServerAuthoritative) // isServerAuthoritativeBlockBreaking
-        }
-        byteBuf.writeLongLE(this.currentTick)
-        byteBuf.writeVarInt(this.enchantmentSeed)
-
-        // Custom blocks
-        byteBuf.writeUnsignedVarInt(blockProperties.size)
-        try {
-            for (customBlockDefinition in this.blockProperties) {
-                byteBuf.writeString(customBlockDefinition.identifier)
-                byteBuf.writeBytes(write(customBlockDefinition.nbt, ByteOrder.LITTLE_ENDIAN, true))
+        override fun serialize(value: StartGamePacket, stream: Sink) {
+            ActorUniqueID.serialize(value.entityUniqueID, stream)
+            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+            ProtoVAR.Int.serialize(value.playerGameMode, stream)
+            Vector3f.serialize(value.playerPosition, stream)
+            ProtoLE.Float.serialize(value.pitch, stream)
+            ProtoLE.Float.serialize(value.yaw, stream)
+            ProtoLE.Long.serialize(value.worldSeed, stream)
+            SpawnBiomeType.serialize(value.spawnBiomeType, stream)
+            Proto.String.serialize(value.userDefinedBiomeName, stream)
+            ProtoVAR.Int.serialize(value.dimension, stream)
+            ProtoVAR.Int.serialize(value.generator, stream)
+            ProtoVAR.Int.serialize(value.worldGameMode, stream)
+            Proto.Boolean.serialize(value.hardcore, stream)
+            ProtoVAR.Int.serialize(value.difficulty, stream)
+            UIVector3.serialize(value.worldSpawn, stream)
+            Proto.Boolean.serialize(value.achievementsDisabled, stream)
+            EditorWorldType.serialize(value.editorWorldType, stream)
+            Proto.Boolean.serialize(value.createdInEditor, stream)
+            Proto.Boolean.serialize(value.exportedFromEditor, stream)
+            ProtoVAR.Int.serialize(value.dayCycleLockTime, stream)
+            ProtoVAR.Int.serialize(value.educationEditionOffer, stream)
+            Proto.Boolean.serialize(value.educationFeaturesEnabled, stream)
+            Proto.String.serialize(value.educationProductID, stream)
+            ProtoLE.Float.serialize(value.rainLevel, stream)
+            ProtoLE.Float.serialize(value.lightningLevel, stream)
+            Proto.Boolean.serialize(value.confirmedPlatformLockedContent, stream)
+            Proto.Boolean.serialize(value.multiPlayerGame, stream)
+            Proto.Boolean.serialize(value.lanBroadcastEnabled, stream)
+            BroadcastMode.serialize(value.xblBroadcastMode, stream)
+            BroadcastMode.serialize(value.platformBroadcastMode, stream)
+            Proto.Boolean.serialize(value.commandsEnabled, stream)
+            Proto.Boolean.serialize(value.texturePackRequired, stream)
+            ProtoHelper.serializeList(value.gameRules, stream, GameRule)
+            value.experiments.let { experiments ->
+                ProtoLE.UInt.serialize(experiments.size.toUInt(), stream)
+                experiments.forEach { ExperimentData.serialize(it, stream) }
             }
-        } catch (e: IOException) {
-            StartGamePacket.log.error("Error while encoding NBT data of BlockPropertyData", e)
+            Proto.Boolean.serialize(value.experimentsPreviouslyToggled, stream)
+            Proto.Boolean.serialize(value.bonusChestEnabled, stream)
+            Proto.Boolean.serialize(value.startWithMapEnabled, stream)
+            ProtoVAR.Int.serialize(value.playerPermissions, stream)
+            ProtoLE.Int.serialize(value.serverChunkTickRadius, stream)
+            Proto.Boolean.serialize(value.hasLockedBehaviourPack, stream)
+            Proto.Boolean.serialize(value.hasLockedTexturePack, stream)
+            Proto.Boolean.serialize(value.fromLockedWorldTemplate, stream)
+            Proto.Boolean.serialize(value.msaGamerTagsOnly, stream)
+            Proto.Boolean.serialize(value.fromWorldTemplate, stream)
+            Proto.Boolean.serialize(value.worldTemplateSettingsLocked, stream)
+            Proto.Boolean.serialize(value.onlySpawnV1Villagers, stream)
+            Proto.Boolean.serialize(value.personaDisabled, stream)
+            Proto.Boolean.serialize(value.customSkinsDisabled, stream)
+            Proto.Boolean.serialize(value.emoteChatMuted, stream)
+            Proto.String.serialize(value.baseGameVersion, stream)
+            ProtoLE.Int.serialize(value.limitedWorldWidth, stream)
+            ProtoLE.Int.serialize(value.limitedWorldDepth, stream)
+            Proto.Boolean.serialize(value.newNether, stream)
+            EduSharedUriResource.serialize(value.educationSharedResourceUriResource, stream)
+            ProtoHelper.serializeNullable(value.forceExperimentalGameplay, stream, Proto.Boolean)
+            ChatRestrictionLevel.serialize(value.chatRestrictionLevel, stream)
+            Proto.Boolean.serialize(value.disablePlayerInteractions, stream)
+            Proto.String.serialize(value.serverID, stream)
+            Proto.String.serialize(value.worldID, stream)
+            Proto.String.serialize(value.scenarioID, stream)
+            Proto.String.serialize(value.levelID, stream)
+            Proto.String.serialize(value.worldName, stream)
+            Proto.String.serialize(value.templateContentIdentity, stream)
+            Proto.Boolean.serialize(value.trial, stream)
+            PlayerMovementSettings.serialize(value.playerMovementSettings, stream)
+            ProtoLE.Long.serialize(value.tick, stream)
+            ProtoVAR.Int.serialize(value.enchantmentSeed, stream)
+            ProtoHelper.serializeList(value.blocks, stream, BlocksEntry)
+            Proto.String.serialize(value.multiPlayerCorrelationID, stream)
+            Proto.Boolean.serialize(value.serverAuthoritativeInventory, stream)
+            Proto.String.serialize(value.gameVersion, stream)
+            Tag.serialize(value.propertyData, stream, TagSerialization.NetLE, true)
+            ProtoLE.ULong.serialize(value.serverBlockStateChecksum, stream)
+            Proto.Uuid.serialize(value.worldTemplateID, stream)
+            Proto.Boolean.serialize(value.clientSideGeneration, stream)
+            Proto.Boolean.serialize(value.useBlockNetworkIDHashes, stream)
+            Proto.Boolean.serialize(value.serverAuthoritativeSound, stream)
         }
 
-        byteBuf.writeString(this.multiplayerCorrelationId)
-        byteBuf.writeBoolean(this.isInventoryServerAuthoritative)
-        byteBuf.writeString(vanillaVersion) // Server Engine
-        try {
-            byteBuf.writeBytes(writeNetwork(playerPropertyData)) // playerPropertyData
-        } catch (e: IOException) {
-            throw RuntimeException(e)
+        override fun deserialize(stream: Source): StartGamePacket {
+            return StartGamePacket(
+                entityUniqueID = ActorUniqueID.deserialize(stream),
+                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+                playerGameMode = ProtoVAR.Int.deserialize(stream),
+                playerPosition = Vector3f.deserialize(stream),
+                pitch = ProtoLE.Float.deserialize(stream),
+                yaw = ProtoLE.Float.deserialize(stream),
+                worldSeed = ProtoLE.Long.deserialize(stream),
+                spawnBiomeType = SpawnBiomeType.deserialize(stream),
+                userDefinedBiomeName = Proto.String.deserialize(stream),
+                dimension = ProtoVAR.Int.deserialize(stream),
+                generator = ProtoVAR.Int.deserialize(stream),
+                worldGameMode = ProtoVAR.Int.deserialize(stream),
+                hardcore = Proto.Boolean.deserialize(stream),
+                difficulty = ProtoVAR.Int.deserialize(stream),
+                worldSpawn = UIVector3.deserialize(stream),
+                achievementsDisabled = Proto.Boolean.deserialize(stream),
+                editorWorldType = EditorWorldType.deserialize(stream),
+                createdInEditor = Proto.Boolean.deserialize(stream),
+                exportedFromEditor = Proto.Boolean.deserialize(stream),
+                dayCycleLockTime = ProtoVAR.Int.deserialize(stream),
+                educationEditionOffer = ProtoVAR.Int.deserialize(stream),
+                educationFeaturesEnabled = Proto.Boolean.deserialize(stream),
+                educationProductID = Proto.String.deserialize(stream),
+                rainLevel = ProtoLE.Float.deserialize(stream),
+                lightningLevel = ProtoLE.Float.deserialize(stream),
+                confirmedPlatformLockedContent = Proto.Boolean.deserialize(stream),
+                multiPlayerGame = Proto.Boolean.deserialize(stream),
+                lanBroadcastEnabled = Proto.Boolean.deserialize(stream),
+                xblBroadcastMode = BroadcastMode.deserialize(stream),
+                platformBroadcastMode = BroadcastMode.deserialize(stream),
+                commandsEnabled = Proto.Boolean.deserialize(stream),
+                texturePackRequired = Proto.Boolean.deserialize(stream),
+                gameRules = ProtoHelper.deserializeList(stream, GameRule),
+                experiments = List(ProtoLE.UInt.deserialize(stream).toInt()) {
+                    ExperimentData.deserialize(stream)
+                },
+                experimentsPreviouslyToggled = Proto.Boolean.deserialize(stream),
+                bonusChestEnabled = Proto.Boolean.deserialize(stream),
+                startWithMapEnabled = Proto.Boolean.deserialize(stream),
+                playerPermissions = ProtoVAR.Int.deserialize(stream),
+                serverChunkTickRadius = ProtoLE.Int.deserialize(stream),
+                hasLockedBehaviourPack = Proto.Boolean.deserialize(stream),
+                hasLockedTexturePack = Proto.Boolean.deserialize(stream),
+                fromLockedWorldTemplate = Proto.Boolean.deserialize(stream),
+                msaGamerTagsOnly = Proto.Boolean.deserialize(stream),
+                fromWorldTemplate = Proto.Boolean.deserialize(stream),
+                worldTemplateSettingsLocked = Proto.Boolean.deserialize(stream),
+                onlySpawnV1Villagers = Proto.Boolean.deserialize(stream),
+                personaDisabled = Proto.Boolean.deserialize(stream),
+                customSkinsDisabled = Proto.Boolean.deserialize(stream),
+                emoteChatMuted = Proto.Boolean.deserialize(stream),
+                baseGameVersion = Proto.String.deserialize(stream),
+                limitedWorldWidth = ProtoLE.Int.deserialize(stream),
+                limitedWorldDepth = ProtoLE.Int.deserialize(stream),
+                newNether = Proto.Boolean.deserialize(stream),
+                educationSharedResourceUriResource = EduSharedUriResource.deserialize(stream),
+                forceExperimentalGameplay = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                chatRestrictionLevel = ChatRestrictionLevel.deserialize(stream),
+                disablePlayerInteractions = Proto.Boolean.deserialize(stream),
+                serverID = Proto.String.deserialize(stream),
+                worldID = Proto.String.deserialize(stream),
+                scenarioID = Proto.String.deserialize(stream),
+                levelID = Proto.String.deserialize(stream),
+                worldName = Proto.String.deserialize(stream),
+                templateContentIdentity = Proto.String.deserialize(stream),
+                trial = Proto.Boolean.deserialize(stream),
+                playerMovementSettings = PlayerMovementSettings.deserialize(stream),
+                tick = ProtoLE.Long.deserialize(stream),
+                enchantmentSeed = ProtoVAR.Int.deserialize(stream),
+                blocks = ProtoHelper.deserializeList(stream, BlocksEntry),
+                multiPlayerCorrelationID = Proto.String.deserialize(stream),
+                serverAuthoritativeInventory = Proto.Boolean.deserialize(stream),
+                gameVersion = Proto.String.deserialize(stream),
+                propertyData = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
+                serverBlockStateChecksum = ProtoLE.ULong.deserialize(stream),
+                worldTemplateID = Proto.Uuid.deserialize(stream),
+                clientSideGeneration = Proto.Boolean.deserialize(stream),
+                useBlockNetworkIDHashes = Proto.Boolean.deserialize(stream),
+                serverAuthoritativeSound = Proto.Boolean.deserialize(stream),
+            )
         }
-        byteBuf.writeLongLE(0) // blockRegistryChecksum
-        byteBuf.writeUUID(UUID(0, 0)) // worldTemplateId
-        byteBuf.writeBoolean(this.clientSideGenerationEnabled)
-        byteBuf.writeBoolean(this.blockNetworkIdsHashed) // blockIdsAreHashed
-        byteBuf.writeBoolean(this.isSoundsServerAuthoritative) // serverAuthSounds
-    }
-
-    private fun writeLevelSettings(byteBuf: ByteBuf) {
-        /* Level settings start */
-        byteBuf.writeLongLE(this.seed)
-        byteBuf.writeShortLE(0x00) // SpawnBiomeType - Default
-        byteBuf.writeString("plains") // UserDefinedBiomeName
-        byteBuf.writeVarInt(dimension.toInt())
-        byteBuf.writeVarInt(this.generator)
-        byteBuf.writeVarInt(this.worldGamemode)
-        byteBuf.writeBoolean(this.isHardcore)
-        byteBuf.writeVarInt(this.difficulty)
-        byteBuf.writeBlockVector3(this.spawnX, this.spawnY, this.spawnZ)
-        byteBuf.writeBoolean(this.hasAchievementsDisabled)
-        byteBuf.writeBoolean(this.worldEditor)
-        byteBuf.writeBoolean(this.createdInEditor)
-        byteBuf.writeBoolean(this.exportedFromEditor)
-        byteBuf.writeVarInt(this.dayCycleStopTime)
-        byteBuf.writeVarInt(this.eduEditionOffer)
-        byteBuf.writeBoolean(this.hasEduFeaturesEnabled)
-        byteBuf.writeString("") // Education Edition Product ID
-        byteBuf.writeFloatLE(this.rainLevel)
-        byteBuf.writeFloatLE(this.lightningLevel)
-        byteBuf.writeBoolean(this.hasConfirmedPlatformLockedContent)
-        byteBuf.writeBoolean(this.multiplayerGame)
-        byteBuf.writeBoolean(this.broadcastToLAN)
-        byteBuf.writeVarInt(this.xblBroadcastIntent)
-        byteBuf.writeVarInt(this.platformBroadcastIntent)
-        byteBuf.writeBoolean(this.commandsEnabled)
-        byteBuf.writeBoolean(this.isTexturePacksRequired)
-        byteBuf.writeGameRules(gameRules!!)
-
-        byteBuf.writeIntLE(6) // Experiment count
-        run {
-            byteBuf.writeString("data_driven_items")
-            byteBuf.writeBoolean(true)
-            byteBuf.writeString("data_driven_biomes")
-            byteBuf.writeBoolean(true)
-            byteBuf.writeString("upcoming_creator_features")
-            byteBuf.writeBoolean(true)
-            byteBuf.writeString("gametest")
-            byteBuf.writeBoolean(true)
-            byteBuf.writeString("experimental_molang_features")
-            byteBuf.writeBoolean(true)
-            byteBuf.writeString("cameras")
-            byteBuf.writeBoolean(true)
-        }
-        byteBuf.writeBoolean(true) // Were experiments previously toggled
-
-        byteBuf.writeBoolean(this.bonusChest)
-        byteBuf.writeBoolean(this.hasStartWithMapEnabled)
-        byteBuf.writeVarInt(this.permissionLevel)
-        byteBuf.writeIntLE(this.serverChunkTickRange)
-        byteBuf.writeBoolean(this.hasLockedBehaviorPack)
-        byteBuf.writeBoolean(this.hasLockedResourcePack)
-        byteBuf.writeBoolean(this.isFromLockedWorldTemplate)
-        byteBuf.writeBoolean(this.isUsingMsaGamertagsOnly)
-        byteBuf.writeBoolean(this.isFromWorldTemplate)
-        byteBuf.writeBoolean(this.isWorldTemplateOptionLocked)
-        byteBuf.writeBoolean(this.isOnlySpawningV1Villagers)
-        byteBuf.writeBoolean(this.isDisablingPersonas)
-        byteBuf.writeBoolean(this.isDisablingCustomSkins)
-        byteBuf.writeBoolean(this.emoteChatMuted)
-        byteBuf.writeString("*") // vanillaVersion
-        byteBuf.writeIntLE(16) // Limited world width
-        byteBuf.writeIntLE(16) // Limited world height
-        byteBuf.writeBoolean(false) // Nether type
-        byteBuf.writeString("") // EduSharedUriResource buttonName
-        byteBuf.writeString("") // EduSharedUriResource linkUri
-        byteBuf.writeBoolean(false) // force Experimental Gameplay (exclusive to debug clients)
-        byteBuf.writeByte(chatRestrictionLevel.toInt())
-        byteBuf.writeBoolean(this.disablePlayerInteractions)
-        byteBuf.writeString(serverId)
-        byteBuf.writeString(worldId)
-        byteBuf.writeString(scenarioId)
-        /* Level settings end */
-    }
-
-    override fun pid(): Int {
-        return ProtocolInfo.START_GAME_PACKET
-    }
-
-
-
-    companion object : Loggable {
-        const val GAME_PUBLISH_SETTING_NO_MULTI_PLAY: Int = 0
-        const val GAME_PUBLISH_SETTING_INVITE_ONLY: Int = 1
-        const val GAME_PUBLISH_SETTING_FRIENDS_ONLY: Int = 2
-        const val GAME_PUBLISH_SETTING_FRIENDS_OF_FRIENDS: Int = 3
-        const val GAME_PUBLISH_SETTING_PUBLIC: Int = 4
     }
 }
