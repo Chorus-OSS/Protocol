@@ -9,9 +9,9 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.types.ControlScheme
 import org.chorus_oss.protocol.types.Vector2f
 import org.chorus_oss.protocol.types.Vector3f
-import org.chorus_oss.protocol.types.ControlScheme
 import org.chorus_oss.protocol.types.camera.CameraAudioListener
 
 data class CameraPreset(

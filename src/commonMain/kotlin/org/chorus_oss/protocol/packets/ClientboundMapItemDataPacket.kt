@@ -5,12 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
-
-import org.chorus_oss.protocol.types.ActorUniqueID
-import org.chorus_oss.protocol.types.Color
-import org.chorus_oss.protocol.types.IVarColorRGBA
+import org.chorus_oss.protocol.types.*
 
 data class ClientboundMapItemDataPacket(
     val mapID: ActorUniqueID,
@@ -160,6 +155,7 @@ data class ClientboundMapItemDataPacket(
                             val entityData = value.data as EntityData
                             ActorUniqueID.serialize(entityData.uniqueID, stream)
                         }
+
                         Type.BLOCK -> {
                             val blockData = value.data as BlockData
                             UIVector3.serialize(blockData.blockPosition, stream)
@@ -175,6 +171,7 @@ data class ClientboundMapItemDataPacket(
                             Type.ENTITY -> EntityData(
                                 uniqueID = ActorUniqueID.deserialize(stream)
                             )
+
                             Type.BLOCK -> BlockData(
                                 blockPosition = UIVector3.deserialize(stream)
                             )
@@ -200,11 +197,15 @@ data class ClientboundMapItemDataPacket(
                     typeFlags and Type.CREATION.bit != 0u -> CreationData(
                         mapIDList = ProtoHelper.deserializeList(stream, ActorUniqueID)
                     )
+
                     else -> null
                 },
 
                 scale = when {
-                    typeFlags and (Type.CREATION.bit or Type.DECORATION_UPDATE.bit or Type.TEXTURE_UPDATE.bit) != 0u -> Proto.Byte.deserialize(stream)
+                    typeFlags and (Type.CREATION.bit or Type.DECORATION_UPDATE.bit or Type.TEXTURE_UPDATE.bit) != 0u -> Proto.Byte.deserialize(
+                        stream
+                    )
+
                     else -> null
                 },
 
@@ -213,6 +214,7 @@ data class ClientboundMapItemDataPacket(
                         actorIDs = ProtoHelper.deserializeList(stream, MapItemTrackedActor),
                         decorationList = ProtoHelper.deserializeList(stream, MapDecoration)
                     )
+
                     else -> null
                 },
 
@@ -224,6 +226,7 @@ data class ClientboundMapItemDataPacket(
                         yTexCoordinate = ProtoVAR.Int.deserialize(stream),
                         pixels = ProtoHelper.deserializeList(stream, IVarColorRGBA)
                     )
+
                     else -> null
                 }
             )

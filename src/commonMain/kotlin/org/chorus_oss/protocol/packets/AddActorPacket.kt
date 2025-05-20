@@ -6,12 +6,7 @@ import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.Vector2f
-import org.chorus_oss.protocol.types.Vector3f
-import org.chorus_oss.protocol.types.ActorLink
-import org.chorus_oss.protocol.types.ActorProperties
-import org.chorus_oss.protocol.types.ActorRuntimeID
-import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.*
 import org.chorus_oss.protocol.types.actor_data.ActorDataMap
 import org.chorus_oss.protocol.types.attribute.AttributeValue
 

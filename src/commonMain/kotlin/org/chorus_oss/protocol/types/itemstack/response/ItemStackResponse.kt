@@ -20,7 +20,12 @@ data class ItemStackResponse(
             ItemStackResponseStatus.serialize(value.result, stream)
             ProtoVAR.Int.serialize(value.requestID, stream)
             when (value.result) {
-                ItemStackResponseStatus.OK -> ProtoHelper.serializeList(value.containers, stream, ItemStackResponseContainer)
+                ItemStackResponseStatus.OK -> ProtoHelper.serializeList(
+                    value.containers,
+                    stream,
+                    ItemStackResponseContainer
+                )
+
                 else -> Unit
             }
         }

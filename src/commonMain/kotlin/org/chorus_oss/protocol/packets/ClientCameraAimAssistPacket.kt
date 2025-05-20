@@ -8,7 +8,6 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.camera.aimassist.ClientCameraAimAssistPacketAction
 

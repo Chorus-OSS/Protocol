@@ -20,6 +20,7 @@ data class PlayerBlockActionData(
                 PlayerActionType.CrackBlock,
                 PlayerActionType.PredictDestroyBlock,
                 PlayerActionType.ContinueDestroyBlock -> IVector3.serialize(value.position as IVector3, stream)
+
                 else -> Unit
             }
             when (value.action) {
@@ -28,6 +29,7 @@ data class PlayerBlockActionData(
                 PlayerActionType.CrackBlock,
                 PlayerActionType.PredictDestroyBlock,
                 PlayerActionType.ContinueDestroyBlock -> ProtoVAR.Int.serialize(value.facing as Int, stream)
+
                 else -> Unit
             }
         }
@@ -42,6 +44,7 @@ data class PlayerBlockActionData(
                     PlayerActionType.CrackBlock,
                     PlayerActionType.PredictDestroyBlock,
                     PlayerActionType.ContinueDestroyBlock -> IVector3.deserialize(stream)
+
                     else -> null
                 },
                 facing = when (action) {
@@ -50,6 +53,7 @@ data class PlayerBlockActionData(
                     PlayerActionType.CrackBlock,
                     PlayerActionType.PredictDestroyBlock,
                     PlayerActionType.ContinueDestroyBlock -> ProtoVAR.Int.deserialize(stream)
+
                     else -> null
                 }
             )

@@ -3,11 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
@@ -61,13 +57,19 @@ data class TextPacket(
                 TextType.Chat,
                 TextType.Whisper,
                 TextType.Announcement -> Proto.String.serialize(value.sourceName as String, stream)
+
                 else -> Unit
             }
             Proto.String.serialize(value.message, stream)
             when (value.textType) {
                 TextType.Translation,
                 TextType.Popup,
-                TextType.JukeboxPopup -> ProtoHelper.serializeList(value.parameters as List<String>, stream, Proto.String)
+                TextType.JukeboxPopup -> ProtoHelper.serializeList(
+                    value.parameters as List<String>,
+                    stream,
+                    Proto.String
+                )
+
                 else -> Unit
             }
             Proto.String.serialize(value.xuid, stream)
@@ -84,6 +86,7 @@ data class TextPacket(
                     TextType.Chat,
                     TextType.Whisper,
                     TextType.Announcement -> Proto.String.deserialize(stream)
+
                     else -> null
                 },
                 message = Proto.String.deserialize(stream),
@@ -91,6 +94,7 @@ data class TextPacket(
                     TextType.Translation,
                     TextType.Popup,
                     TextType.JukeboxPopup -> ProtoHelper.deserializeList(stream, Proto.String)
+
                     else -> null
                 },
                 xuid = Proto.String.deserialize(stream),

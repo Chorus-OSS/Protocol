@@ -4,11 +4,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.scoreboard.ScoreboardEntry
 import org.chorus_oss.protocol.types.scoreboard.ScoreboardRemoveEntry
@@ -44,11 +40,21 @@ data class SetScorePacket(
         override fun serialize(value: SetScorePacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)
             when (value.actionType) {
-                ActionType.Modify -> ProtoHelper.serializeList(value.modifyEntries as List<ScoreboardEntry>, stream, ScoreboardEntry)
+                ActionType.Modify -> ProtoHelper.serializeList(
+                    value.modifyEntries as List<ScoreboardEntry>,
+                    stream,
+                    ScoreboardEntry
+                )
+
                 else -> Unit
             }
             when (value.actionType) {
-                ActionType.Remove -> ProtoHelper.serializeList(value.removeEntries as List<ScoreboardRemoveEntry>, stream, ScoreboardRemoveEntry)
+                ActionType.Remove -> ProtoHelper.serializeList(
+                    value.removeEntries as List<ScoreboardRemoveEntry>,
+                    stream,
+                    ScoreboardRemoveEntry
+                )
+
                 else -> Unit
             }
         }

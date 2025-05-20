@@ -6,7 +6,10 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.types.*
+import org.chorus_oss.protocol.core.types.Boolean
+import org.chorus_oss.protocol.core.types.Float
+import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.UShort
 
 data class BiomeDefinitionData(
     val id: UShort? = null,

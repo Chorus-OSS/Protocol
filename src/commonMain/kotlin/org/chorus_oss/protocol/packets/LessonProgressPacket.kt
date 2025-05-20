@@ -19,8 +19,8 @@ data class LessonProgressPacket(
         enum class Action {
             Start,
             Complete,
-            Restart; 
-            
+            Restart;
+
             companion object : ProtoCodec<Action> {
                 override fun serialize(
                     value: Action,

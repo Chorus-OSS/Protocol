@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.types.item.desciptor
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.types.item.desciptor.ItemDescriptor.Companion
 
 class InvalidItemDescriptor : ItemDescriptor() {
     override val type: Companion.Type

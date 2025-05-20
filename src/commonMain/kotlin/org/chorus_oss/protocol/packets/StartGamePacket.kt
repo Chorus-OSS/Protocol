@@ -92,7 +92,7 @@ data class StartGamePacket(
     val useBlockNetworkIDHashes: Boolean,
     val serverAuthoritativeSound: Boolean,
 ) : Packet(id) {
-   companion object : PacketCodec<StartGamePacket> {
+    companion object : PacketCodec<StartGamePacket> {
         override val id: Int
             get() = ProtocolInfo.START_GAME_PACKET
 

@@ -3,12 +3,14 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.BitSet
 import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.MovementAttributesComponent
+import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.actor_data.ActorDataFlag
 
 data class ClientMovementPredictionSyncPacket(

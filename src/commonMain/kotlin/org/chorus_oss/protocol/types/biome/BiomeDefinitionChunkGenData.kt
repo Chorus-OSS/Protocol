@@ -44,7 +44,10 @@ data class BiomeDefinitionChunkGenData(
                 climate = ProtoHelper.deserializeNullable(stream, BiomeClimateData),
                 consolidatedFeatures = ProtoHelper.deserializeNullable(stream, BiomeConsolidatedFeaturesData),
                 mountainParams = ProtoHelper.deserializeNullable(stream, BiomeMountainsParamData),
-                surfaceMaterialAdjustments = ProtoHelper.deserializeNullable(stream, BiomeSurfaceMaterialAdjustmentData),
+                surfaceMaterialAdjustments = ProtoHelper.deserializeNullable(
+                    stream,
+                    BiomeSurfaceMaterialAdjustmentData
+                ),
                 surfaceMaterials = ProtoHelper.deserializeNullable(stream, BiomeSurfaceMaterialData),
                 hasSwampSurface = Proto.Boolean.deserialize(stream),
                 hasFrozenOceanSurface = Proto.Boolean.deserialize(stream),

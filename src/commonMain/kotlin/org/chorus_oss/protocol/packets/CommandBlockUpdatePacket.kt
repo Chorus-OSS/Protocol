@@ -7,10 +7,10 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.CommandBlockMode
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 data class CommandBlockUpdatePacket(
     val isBlock: Boolean,
@@ -100,8 +100,19 @@ data class CommandBlockUpdatePacket(
         ) {
             Proto.Boolean.serialize(value.isBlock, stream)
             when (value.isBlock) {
-                true -> (value.commandBlockHolderData as CommandBlockData).let { CommandBlockData.serialize(it, stream) }
-                false -> (value.commandBlockHolderData as CommandBlockActorData).let { CommandBlockActorData.serialize(it, stream) }
+                true -> (value.commandBlockHolderData as CommandBlockData).let {
+                    CommandBlockData.serialize(
+                        it,
+                        stream
+                    )
+                }
+
+                false -> (value.commandBlockHolderData as CommandBlockActorData).let {
+                    CommandBlockActorData.serialize(
+                        it,
+                        stream
+                    )
+                }
             }
             Proto.String.serialize(value.command, stream)
             Proto.String.serialize(value.lastOutput, stream)

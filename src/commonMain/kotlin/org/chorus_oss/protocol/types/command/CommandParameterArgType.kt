@@ -5,7 +5,7 @@ object CommandParameterArgType {
     const val ENUM: UInt = 0x200000u
     const val SUFFIXED: UInt = 0x1000000u
     const val DYNAMIC_ENUM: UInt = 0x4000000u
-    
+
     const val INT: UInt = 1u
     const val FLOAT: UInt = 3u
     const val VALUE: UInt = 4u

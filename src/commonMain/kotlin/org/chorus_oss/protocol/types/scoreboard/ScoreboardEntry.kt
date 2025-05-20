@@ -52,6 +52,7 @@ data class ScoreboardEntry(
             when (value.identityType) {
                 IdentityType.Player,
                 IdentityType.Entity -> ActorUniqueID.serialize(value.entityUniqueID as ActorUniqueID, stream)
+
                 else -> Unit
             }
             when (value.identityType) {
@@ -70,6 +71,7 @@ data class ScoreboardEntry(
                 entityUniqueID = when (identityType) {
                     IdentityType.Player,
                     IdentityType.Entity -> ActorUniqueID.deserialize(stream)
+
                     else -> null
                 },
                 displayName = when (identityType) {

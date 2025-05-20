@@ -9,10 +9,9 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.Vector3f
-
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.Vector3f
 
 data class AddPaintingPacket(
     val actorUniqueID: ActorUniqueID,

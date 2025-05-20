@@ -74,6 +74,7 @@ data class PlayerAuthInputPacket(
                     ProtoVAR.Int.serialize(blockActions.size, stream)
                     blockActions.forEach { PlayerBlockActionData.serialize(it, stream) }
                 }
+
                 false -> Unit
             }
 
@@ -120,6 +121,7 @@ data class PlayerAuthInputPacket(
                     true -> List(ProtoVAR.Int.deserialize(stream)) {
                         PlayerBlockActionData.deserialize(stream)
                     }
+
                     false -> null
                 },
                 vehicleRotation = when (inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {

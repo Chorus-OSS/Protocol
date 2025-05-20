@@ -8,9 +8,7 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.Vector3f
 

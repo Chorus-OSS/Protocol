@@ -51,14 +51,33 @@ data class InventoryTransactionPacket(
                 true -> (value.legacySetItemSlots as List<LegacySetItemSlotData>).let {
                     ProtoHelper.serializeList(it, stream, LegacySetItemSlotData)
                 }
+
                 false -> Unit
             }
             TransactionType.serialize(value.transactionType, stream)
             ProtoHelper.serializeList(value.actions, stream, InventoryAction)
             when (value.transactionType) {
-                TransactionType.USE_ITEM -> (value.transactionData as UseItemTransactionData).let { UseItemTransactionData.serialize(it, stream) }
-                TransactionType.USE_ITEM_ON_ENTITY -> (value.transactionData as UseItemOnEntityTransactionData).let { UseItemOnEntityTransactionData.serialize(it, stream) }
-                TransactionType.RELEASE_ITEM -> (value.transactionData as ReleaseItemTransactionData).let { ReleaseItemTransactionData.serialize(it, stream) }
+                TransactionType.USE_ITEM -> (value.transactionData as UseItemTransactionData).let {
+                    UseItemTransactionData.serialize(
+                        it,
+                        stream
+                    )
+                }
+
+                TransactionType.USE_ITEM_ON_ENTITY -> (value.transactionData as UseItemOnEntityTransactionData).let {
+                    UseItemOnEntityTransactionData.serialize(
+                        it,
+                        stream
+                    )
+                }
+
+                TransactionType.RELEASE_ITEM -> (value.transactionData as ReleaseItemTransactionData).let {
+                    ReleaseItemTransactionData.serialize(
+                        it,
+                        stream
+                    )
+                }
+
                 else -> Unit
             }
         }

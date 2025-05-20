@@ -113,21 +113,25 @@ data class BookEditPacket(
                     Proto.String.serialize(replacePageData.text, stream)
                     Proto.String.serialize(replacePageData.photoName, stream)
                 }
+
                 Action.ADD_PAGE -> {
                     val addPageData = value.actionData as AddPageData
                     Proto.Byte.serialize(addPageData.pageIndex, stream)
                     Proto.String.serialize(addPageData.text, stream)
                     Proto.String.serialize(addPageData.photoName, stream)
                 }
+
                 Action.DELETE_PAGE -> {
                     val deletePageData = value.actionData as DeletePageData
                     Proto.Byte.serialize(deletePageData.pageIndex, stream)
                 }
+
                 Action.SWAP_PAGES -> {
                     val swapPagesData = value.actionData as SwapPagesData
                     Proto.Byte.serialize(swapPagesData.pageIndexA, stream)
                     Proto.Byte.serialize(swapPagesData.pageIndexB, stream)
                 }
+
                 Action.FINALIZE -> {
                     val finalizeData = value.actionData as FinalizeData
                     Proto.String.serialize(finalizeData.title, stream)

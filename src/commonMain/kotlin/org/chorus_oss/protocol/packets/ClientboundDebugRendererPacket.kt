@@ -58,6 +58,7 @@ data class ClientboundDebugRendererPacket(
                         alpha = ProtoLE.Float.deserialize(stream),
                         duration = ProtoLE.ULong.deserialize(stream)
                     )
+
                     else -> null
                 }
             )
@@ -76,6 +77,7 @@ data class ClientboundDebugRendererPacket(
                     ProtoLE.Float.serialize(addCubeData.alpha, stream)
                     ProtoLE.ULong.serialize(addCubeData.duration, stream)
                 }
+
                 else -> Unit
             }
         }

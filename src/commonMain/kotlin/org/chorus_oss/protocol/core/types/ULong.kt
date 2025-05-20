@@ -1,7 +1,10 @@
 package org.chorus_oss.protocol.core.types
 
 import kotlinx.io.*
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.ProtoBE
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.varlen.types.readULongVar
 import org.chorus_oss.varlen.types.writeULongVar
 

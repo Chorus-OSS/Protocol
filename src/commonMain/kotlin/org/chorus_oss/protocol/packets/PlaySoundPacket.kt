@@ -26,11 +26,13 @@ data class PlaySoundPacket(
 
         override fun serialize(value: PlaySoundPacket, stream: Sink) {
             Proto.String.serialize(value.soundName, stream)
-            UIVector3.serialize(IVector3(
-                x = (value.position.x * 8f).toInt(),
-                y = (value.position.y * 8f).toInt(),
-                z = (value.position.z * 8f).toInt(),
-            ), stream)
+            UIVector3.serialize(
+                IVector3(
+                    x = (value.position.x * 8f).toInt(),
+                    y = (value.position.y * 8f).toInt(),
+                    z = (value.position.z * 8f).toInt(),
+                ), stream
+            )
             ProtoLE.Float.serialize(value.volume, stream)
             ProtoLE.Float.serialize(value.pitch, stream)
         }

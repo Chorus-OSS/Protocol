@@ -7,7 +7,9 @@ import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.types.*
+import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
+import org.chorus_oss.protocol.core.types.ULong
 
 data class ResourcePackChunkDataPacket(
     val resourceName: String,

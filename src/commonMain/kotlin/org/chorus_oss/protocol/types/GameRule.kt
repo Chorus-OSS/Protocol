@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.types
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import kotlinx.io.files.Path
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE

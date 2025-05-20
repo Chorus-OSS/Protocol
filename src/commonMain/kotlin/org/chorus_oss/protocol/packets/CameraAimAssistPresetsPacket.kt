@@ -7,7 +7,9 @@ import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoHelper
-import org.chorus_oss.protocol.types.camera.aimassist.*
+import org.chorus_oss.protocol.types.camera.aimassist.CameraAimAssistCategory
+import org.chorus_oss.protocol.types.camera.aimassist.CameraAimAssistPreset
+import org.chorus_oss.protocol.types.camera.aimassist.CameraAimAssistPresetsPacketOperation
 
 data class CameraAimAssistPresetsPacket(
     val categories: List<CameraAimAssistCategory>,

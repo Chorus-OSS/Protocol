@@ -7,10 +7,10 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.ContainerType
+import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.UIVector3
 
 data class ContainerOpenPacket(
     val containerID: Byte,

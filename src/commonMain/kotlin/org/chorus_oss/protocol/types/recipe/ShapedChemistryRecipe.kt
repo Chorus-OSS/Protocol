@@ -6,11 +6,7 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoVAR
-import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.core.types.Uuid
+import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.item.ItemInstance
 import org.chorus_oss.protocol.types.item.desciptor.InvalidItemDescriptor
 import org.chorus_oss.protocol.types.item.desciptor.ItemDescriptorCount

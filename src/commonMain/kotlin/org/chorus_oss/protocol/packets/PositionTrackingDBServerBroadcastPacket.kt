@@ -6,11 +6,7 @@ import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 

@@ -111,10 +111,13 @@ enum class ActorDataFlag {
     CAN_DASH,
     HAS_DASH_COOLDOWN,
     PUSH_TOWARDS_CLOSEST_SPACE,
+
     @Deprecated("Since v671")
     SCENTING,
+
     @Deprecated("Since v671")
     RISING,
+
     @Deprecated("Since v671")
     FEELING_HAPPY,
     SEARCHING,

@@ -99,6 +99,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                         ProtoVAR.Int.serialize(vec.y, stream)
                         ProtoVAR.Int.serialize(vec.z, stream)
                     }
+
                     ActorDataFormat.LONG -> ProtoVAR.Long.serialize(data as Long, stream)
                     ActorDataFormat.VECTOR3F -> Vector3f.serialize(data as Vector3f, stream)
                 }
@@ -123,6 +124,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                         y = ProtoVAR.Int.deserialize(stream),
                         z = ProtoVAR.Int.deserialize(stream),
                     )
+
                     ActorDataFormat.LONG -> ProtoVAR.Long.deserialize(stream)
                     ActorDataFormat.VECTOR3F -> Vector3f.deserialize(stream)
                 }

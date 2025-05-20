@@ -4,11 +4,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
@@ -52,6 +48,7 @@ data class RequestAbilityPacket(
                     Proto.Boolean.serialize(value.boolValue as Boolean, stream)
                     ProtoLE.Float.serialize(0f, stream)
                 }
+
                 else -> Unit
             }
             when (value.type) {
@@ -59,6 +56,7 @@ data class RequestAbilityPacket(
                     Proto.Boolean.serialize(false, stream)
                     ProtoLE.Float.serialize(value.floatValue as Float, stream)
                 }
+
                 else -> Unit
             }
         }
@@ -74,6 +72,7 @@ data class RequestAbilityPacket(
                         ProtoLE.Float.deserialize(stream)
                         boolValue
                     }
+
                     else -> null
                 },
                 floatValue = when (type) {
@@ -82,6 +81,7 @@ data class RequestAbilityPacket(
                         val floatValue = ProtoLE.Float.deserialize(stream)
                         floatValue
                     }
+
                     else -> null
                 }
             )

@@ -6,8 +6,8 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Long
-import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.ActorUniqueID
+import org.chorus_oss.protocol.types.Vector3f
 
 data class CameraTargetInstruction(
     val centerOffset: Vector3f? = null,

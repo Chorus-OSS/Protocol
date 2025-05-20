@@ -61,13 +61,15 @@ sealed class ActorDataType<T : Any>(
     data object TargetA : ActorDataType<Long>(ActorDataKey.TargetA, Long::class)
     data object TargetB : ActorDataType<Long>(ActorDataKey.TargetB, Long::class)
     data object TargetC : ActorDataType<Long>(ActorDataKey.TargetC, Long::class)
-    data object AerialAttack : ActorDataType<Short>(ActorDataKey.AerialAttack,Short::class)
+    data object AerialAttack : ActorDataType<Short>(ActorDataKey.AerialAttack, Short::class)
     data object Width : ActorDataType<Float>(ActorDataKey.Width, Float::class)
     data object Height : ActorDataType<Float>(ActorDataKey.Height, Float::class)
     data object FuseTime : ActorDataType<Int>(ActorDataKey.FuseTime, Int::class)
     data object SeatOffset : ActorDataType<Vector3f>(ActorDataKey.SeatOffset, Vector3f::class)
     data object SeatLockPassengerRotation : ActorDataType<Byte>(ActorDataKey.SeatLockPassengerRotation, Byte::class)
-    data object SeatLockPassengerRotationDegrees : ActorDataType<Float>(ActorDataKey.SeatLockPassengerRotationDegrees, Float::class)
+    data object SeatLockPassengerRotationDegrees :
+        ActorDataType<Float>(ActorDataKey.SeatLockPassengerRotationDegrees, Float::class)
+
     data object SeatRotationOffset : ActorDataType<Byte>(ActorDataKey.SeatRotationOffset, Byte::class)
     data object SeatRotationOffsetDegrees : ActorDataType<Float>(ActorDataKey.SeatRotationOffsetDegrees, Float::class)
     data object DataRadius : ActorDataType<Float>(ActorDataKey.DataRadius, Float::class)
@@ -116,7 +118,9 @@ sealed class ActorDataType<T : Any>(
     data object SkinID : ActorDataType<Int>(ActorDataKey.SkinID, Int::class)
     data object SpawningFrames : ActorDataType<Int>(ActorDataKey.SpawningFrames, Int::class)
     data object CommandBlockTickDelay : ActorDataType<Int>(ActorDataKey.CommandBlockTickDelay, Int::class)
-    data object CommandBlockExecuteOnFirstTick : ActorDataType<Byte>(ActorDataKey.CommandBlockExecuteOnFirstTick, Byte::class)
+    data object CommandBlockExecuteOnFirstTick :
+        ActorDataType<Byte>(ActorDataKey.CommandBlockExecuteOnFirstTick, Byte::class)
+
     data object AmbientSoundInterval : ActorDataType<Float>(ActorDataKey.AmbientSoundInterval, Float::class)
     data object AmbientSoundIntervalRange : ActorDataType<Float>(ActorDataKey.AmbientSoundIntervalRange, Float::class)
     data object AmbientSoundEventName : ActorDataType<String>(ActorDataKey.AmbientSoundEventName, String::class)
@@ -133,7 +137,9 @@ sealed class ActorDataType<T : Any>(
     data object BuoyancyData : ActorDataType<String>(ActorDataKey.BuoyancyData, String::class)
     data object GoatHornCount : ActorDataType<Int>(ActorDataKey.GoatHornCount, Int::class)
     data object BaseRuntimeID : ActorDataType<String>(ActorDataKey.BaseRuntimeID, String::class)
-    data object MovementSoundDistanceOffset : ActorDataType<Float>(ActorDataKey.MovementSoundDistanceOffset, Float::class)
+    data object MovementSoundDistanceOffset :
+        ActorDataType<Float>(ActorDataKey.MovementSoundDistanceOffset, Float::class)
+
     data object HeartbeatIntervalTicks : ActorDataType<Int>(ActorDataKey.HeartbeatIntervalTicks, Int::class)
     data object HeartbeatSoundEvent : ActorDataType<Int>(ActorDataKey.HeartbeatSoundEvent, Int::class)
     data object PlayerLastDeathPosition : ActorDataType<IVector3>(ActorDataKey.PlayerLastDeathPosition, IVector3::class)
@@ -143,6 +149,9 @@ sealed class ActorDataType<T : Any>(
     data object VisibleMobEffects : ActorDataType<Long>(ActorDataKey.VisibleMobEffects, Long::class)
     data object FilteredName : ActorDataType<String>(ActorDataKey.FilteredName, String::class)
     data object BedEnterPosition : ActorDataType<Vector3f>(ActorDataKey.BedEnterPosition, Vector3f::class)
-    data object SeatThirdPersonCameraRadius : ActorDataType<Float>(ActorDataKey.SeatThirdPersonCameraRadius, Float::class)
-    data object SeatCameraRelaxDistanceSmoothing : ActorDataType<Float>(ActorDataKey.SeatCameraRelaxDistanceSmoothing, Float::class)
+    data object SeatThirdPersonCameraRadius :
+        ActorDataType<Float>(ActorDataKey.SeatThirdPersonCameraRadius, Float::class)
+
+    data object SeatCameraRelaxDistanceSmoothing :
+        ActorDataType<Float>(ActorDataKey.SeatCameraRelaxDistanceSmoothing, Float::class)
 }

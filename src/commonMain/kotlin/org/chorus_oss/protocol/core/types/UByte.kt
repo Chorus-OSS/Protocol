@@ -1,6 +1,9 @@
 package org.chorus_oss.protocol.core.types
 
-import kotlinx.io.*
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import kotlinx.io.readUByte
+import kotlinx.io.writeUByte
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 

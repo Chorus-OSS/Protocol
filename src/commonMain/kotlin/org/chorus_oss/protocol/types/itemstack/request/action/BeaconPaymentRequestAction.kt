@@ -12,7 +12,7 @@ data class BeaconPaymentRequestAction(
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
         get() = ItemStackRequestAction.Companion.Type.BEACON_PAYMENT
-    
+
     companion object : ProtoCodec<BeaconPaymentRequestAction> {
         override fun serialize(
             value: BeaconPaymentRequestAction,

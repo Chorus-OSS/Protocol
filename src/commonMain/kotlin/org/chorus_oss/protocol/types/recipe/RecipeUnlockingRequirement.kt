@@ -39,7 +39,12 @@ data class RecipeUnlockingRequirement(
         ) {
             UnlockingContext.serialize(value.context, stream)
             when (value.context) {
-                UnlockingContext.None -> ProtoHelper.serializeList(value.ingredients as List<ItemDescriptorCount>, stream, ItemDescriptorCount)
+                UnlockingContext.None -> ProtoHelper.serializeList(
+                    value.ingredients as List<ItemDescriptorCount>,
+                    stream,
+                    ItemDescriptorCount
+                )
+
                 else -> Unit
             }
         }

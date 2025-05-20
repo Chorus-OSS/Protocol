@@ -2,11 +2,11 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.types.biome.BiomeDefinitionData
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Short
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.types.biome.BiomeDefinitionData
 
 data class BiomeDefinitionListPacket(
     val biomeDefinitions: Map<Short, BiomeDefinitionData>,

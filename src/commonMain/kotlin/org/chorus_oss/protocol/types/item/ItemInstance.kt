@@ -20,7 +20,8 @@ data class ItemInstance(
         private var _ShieldID: Int? = null
 
         var ShieldID: Int
-            get() = _ShieldID ?: throw IllegalStateException("SHIELD_ID not set (should be the runtimeID of the Shield item)")
+            get() = _ShieldID
+                ?: throw IllegalStateException("SHIELD_ID not set (should be the runtimeID of the Shield item)")
             set(value) {
                 _ShieldID = value
             }
@@ -92,9 +93,10 @@ data class ItemInstance(
                     1u.toUByte() -> {
                         nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
                     }
+
                     else -> throw IllegalArgumentException("Invalid UserDataBuffer version: $version")
                 }
-            } else if (length > 0)  {
+            } else if (length > 0) {
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 

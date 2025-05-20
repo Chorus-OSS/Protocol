@@ -140,7 +140,7 @@ data class BossEventPacket(
         override fun serialize(value: BossEventPacket, stream: Sink) {
             ActorUniqueID.serialize(value.targetActorID, stream)
             EventType.serialize(value.eventType, stream)
-            
+
             when (value.eventType) {
                 EventType.ADD -> {
                     val addData = value.eventData as EventType.Companion.AddData
@@ -151,35 +151,42 @@ data class BossEventPacket(
                     ProtoVAR.UInt.serialize(addData.color, stream)
                     ProtoVAR.UInt.serialize(addData.overlay, stream)
                 }
+
                 EventType.PLAYER_ADDED -> {
                     val playerAddedData = value.eventData as EventType.Companion.PlayerAddedData
                     ActorUniqueID.serialize(playerAddedData.playerID, stream)
                 }
+
                 EventType.REMOVE -> Unit
                 EventType.PLAYER_REMOVED -> {
                     val playerRemovedData = value.eventData as EventType.Companion.PlayerRemovedData
                     ActorUniqueID.serialize(playerRemovedData.playerID, stream)
                 }
+
                 EventType.UPDATE_PERCENT -> {
                     val updatePercentData = value.eventData as EventType.Companion.UpdatePercentData
                     ProtoLE.Float.serialize(updatePercentData.healthPercent, stream)
                 }
+
                 EventType.UPDATE_NAME -> {
                     val updateNameData = value.eventData as EventType.Companion.UpdateNameData
                     Proto.String.serialize(updateNameData.name, stream)
                     Proto.String.serialize(updateNameData.filteredName, stream)
                 }
+
                 EventType.UPDATE_PROPERTIES -> {
                     val updatePropertiesData = value.eventData as EventType.Companion.UpdatePropertiesData
                     ProtoLE.UShort.serialize(updatePropertiesData.darkenScreen, stream)
                     ProtoVAR.UInt.serialize(updatePropertiesData.color, stream)
                     ProtoVAR.UInt.serialize(updatePropertiesData.overlay, stream)
                 }
+
                 EventType.UPDATE_STYLE -> {
                     val updateStyleData = value.eventData as EventType.Companion.UpdateStyleData
                     ProtoVAR.UInt.serialize(updateStyleData.color, stream)
                     ProtoVAR.UInt.serialize(updateStyleData.overlay, stream)
                 }
+
                 EventType.QUERY -> {
                     val queryData = value.eventData as EventType.Companion.QueryData
                     ActorUniqueID.serialize(queryData.playerID, stream)

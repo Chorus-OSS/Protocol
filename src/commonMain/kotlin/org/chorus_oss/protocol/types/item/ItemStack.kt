@@ -45,7 +45,7 @@ data class ItemStack(
             ProtoHelper.serializeList(value.item.canBePlacedOn, userDataBuffer, Proto.String)
             ProtoHelper.serializeList(value.item.canBreak, userDataBuffer, Proto.String)
 
-            if (value.item.netID == ItemInstance.ShieldID) {
+            if (value.item.netID == ShieldID) {
                 ProtoLE.Long.serialize(0, userDataBuffer)
             }
 
@@ -59,7 +59,7 @@ data class ItemStack(
             if (netID == 0) {
                 return ItemStack(
                     stackNetID = 0,
-                    item =  ItemInstance(
+                    item = ItemInstance(
                         netID = netID,
                         metadata = 0u,
                         blockRuntimeID = 0,
@@ -77,7 +77,9 @@ data class ItemStack(
             val hasNetID = Proto.Boolean.deserialize(stream)
             val stackNetID = if (hasNetID) {
                 ProtoVAR.Int.deserialize(stream)
-            } else { 0 }
+            } else {
+                0
+            }
 
             val blockRuntimeID = ProtoVAR.Int.deserialize(stream)
 
@@ -95,9 +97,10 @@ data class ItemStack(
                     1u.toUByte() -> {
                         nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
                     }
+
                     else -> throw IllegalArgumentException("Invalid UserDataBuffer version: $version")
                 }
-            } else if (length > 0)  {
+            } else if (length > 0) {
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 

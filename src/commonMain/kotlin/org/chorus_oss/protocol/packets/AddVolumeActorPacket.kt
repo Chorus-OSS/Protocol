@@ -12,9 +12,9 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.IVector3
 import org.chorus_oss.protocol.types.UIVector3
-import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AddVolumeActorPacket(
     val actorRuntimeID: ActorRuntimeID,

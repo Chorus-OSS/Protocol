@@ -1,7 +1,13 @@
 package org.chorus_oss.protocol.core.types
 
-import kotlinx.io.*
-import org.chorus_oss.protocol.core.*
+import kotlinx.io.Sink
+import kotlinx.io.Source
+import kotlinx.io.readShortLe
+import kotlinx.io.writeShortLe
+import org.chorus_oss.protocol.core.ProtoBE
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.varlen.types.readShortVar
 import org.chorus_oss.varlen.types.writeShortVar
 
