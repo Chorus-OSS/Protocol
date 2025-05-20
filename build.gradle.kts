@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform") version "2.1.10"
+    `maven-publish`
 }
 
 group = "org.chorus_oss"
