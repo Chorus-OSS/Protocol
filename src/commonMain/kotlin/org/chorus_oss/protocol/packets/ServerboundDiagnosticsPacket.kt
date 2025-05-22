@@ -21,7 +21,9 @@ data class ServerboundDiagnosticsPacket(
     val avgUnaccountedTimePercent: Float,
 ) : Packet(id) {
     companion object : PacketCodec<ServerboundDiagnosticsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SERVERBOUND_DIAGNOSTICS_PACKET

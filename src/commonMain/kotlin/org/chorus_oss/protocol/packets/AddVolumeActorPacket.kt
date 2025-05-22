@@ -6,11 +6,7 @@ import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -28,7 +24,9 @@ data class AddVolumeActorPacket(
     val engineVersion: String,
 ) : Packet(id) {
     companion object : PacketCodec<AddVolumeActorPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ADD_VOLUME_ENTITY_PACKET

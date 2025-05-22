@@ -16,7 +16,9 @@ data class ModalFormRequestPacket(
     val formData: String,
 ) : Packet(id) {
     companion object : PacketCodec<ModalFormRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.MODAL_FORM_REQUEST_PACKET

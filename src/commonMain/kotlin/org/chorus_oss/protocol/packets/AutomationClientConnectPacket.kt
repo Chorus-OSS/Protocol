@@ -14,7 +14,9 @@ data class AutomationClientConnectPacket(
     val serverURI: String
 ) : Packet(id) {
     companion object : PacketCodec<AutomationClientConnectPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.INITIATE_WEB_SOCKET_CONNECTION_PACKET

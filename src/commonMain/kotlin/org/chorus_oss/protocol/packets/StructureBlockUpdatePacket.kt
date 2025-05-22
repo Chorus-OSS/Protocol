@@ -29,7 +29,9 @@ data class StructureBlockUpdatePacket(
     val waterLogged: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<StructureBlockUpdatePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.STRUCTURE_BLOCK_UPDATE_PACKET

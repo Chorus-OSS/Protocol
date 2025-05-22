@@ -15,7 +15,9 @@ data class SyncActorPropertyPacket(
     val data: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<SyncActorPropertyPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SYNC_ENTITY_PROPERTY_PACKET

@@ -17,7 +17,9 @@ data class GUIDataPickItemPacket(
     val hotbarSlot: Int,
 ) : Packet(id) {
     companion object : PacketCodec<GUIDataPickItemPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.GUI_DATA_PICK_ITEM_PACKET

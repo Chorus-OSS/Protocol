@@ -12,7 +12,9 @@ data class FeatureRegistryPacket(
     val features: List<GenerationFeature>,
 ) : Packet(id) {
     companion object : PacketCodec<FeatureRegistryPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.FEATURE_REGISTRY_PACKET

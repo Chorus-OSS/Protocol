@@ -15,7 +15,9 @@ data class AgentAnimationPacket(
     val runtimeID: ActorRuntimeID,
 ) : Packet(id) {
     companion object : PacketCodec<AgentAnimationPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.AGENT_ANIMATION_PACKET

@@ -17,7 +17,9 @@ data class BlockPickRequestPacket(
     var maxSlots: Byte,
 ) : Packet(id) {
     companion object : PacketCodec<BlockPickRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.BLOCK_PICK_REQUEST_PACKET

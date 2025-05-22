@@ -19,7 +19,9 @@ data class PlayerToggleCrafterSlotRequestPacket(
     val disabled: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerToggleCrafterSlotRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.PLAYER_TOGGLE_CRAFTER_SLOT_REQUEST_PACKET

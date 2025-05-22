@@ -21,7 +21,9 @@ data class AvailableCommandsPacket(
     val constraints: List<CommandEnumConstraint>
 ) : Packet(id) {
     companion object : PacketCodec<AvailableCommandsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.AVAILABLE_COMMANDS_PACKET

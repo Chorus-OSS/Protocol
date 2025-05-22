@@ -15,7 +15,9 @@ data class SetHudPacket(
     val visibility: HudVisibility,
 ) : Packet(id) {
     companion object : PacketCodec<SetHudPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_HUD_PACKET

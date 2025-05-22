@@ -13,7 +13,9 @@ data class PlayerEnchantOptionsPacket(
     val options: List<EnchantmentOption>
 ) : Packet(id) {
     companion object : PacketCodec<PlayerEnchantOptionsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.PLAYER_ENCHANT_OPTIONS_PACKET

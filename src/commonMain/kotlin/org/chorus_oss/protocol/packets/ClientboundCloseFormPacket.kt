@@ -9,7 +9,9 @@ import org.chorus_oss.protocol.core.PacketRegistry
 
 class ClientboundCloseFormPacket() : Packet(id) {
     companion object : PacketCodec<ClientboundCloseFormPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_CLOSE_FORM_PACKET

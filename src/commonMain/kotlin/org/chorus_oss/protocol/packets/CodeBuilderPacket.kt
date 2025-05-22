@@ -16,7 +16,9 @@ data class CodeBuilderPacket(
     val shouldOpenCodeBuilder: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CodeBuilderPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CODE_BUILDER_PACKET

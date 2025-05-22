@@ -17,7 +17,9 @@ data class MobArmorEquipmentPacket(
     val body: ItemStack,
 ) : Packet(id) {
     companion object : PacketCodec<MobArmorEquipmentPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET

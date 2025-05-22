@@ -4,11 +4,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -25,7 +21,9 @@ data class UpdateBlockSyncedPacket(
     val transitionType: TransitionType,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateBlockSyncedPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         const val FLAG_NEIGHBORS: UInt = 0x1u
         const val FLAG_NETWORK: UInt = 0x2u

@@ -21,7 +21,9 @@ data class MobEffectPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<MobEffectPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Operation(val netOrdinal: Byte) {
             Add(1),

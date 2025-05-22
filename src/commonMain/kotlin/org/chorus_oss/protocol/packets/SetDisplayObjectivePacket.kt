@@ -20,7 +20,9 @@ data class SetDisplayObjectivePacket(
     val sortOrder: ScoreboardSlotOrder,
 ) : Packet(id) {
     companion object : PacketCodec<SetDisplayObjectivePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_DISPLAY_OBJECTIVE_PACKET

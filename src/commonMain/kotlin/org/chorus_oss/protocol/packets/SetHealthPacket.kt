@@ -13,7 +13,9 @@ data class SetHealthPacket(
     val health: Int
 ) : Packet(id) {
     companion object : PacketCodec<SetHealthPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_HEALTH_PACKET

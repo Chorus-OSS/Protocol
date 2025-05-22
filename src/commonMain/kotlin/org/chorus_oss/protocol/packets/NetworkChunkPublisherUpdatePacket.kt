@@ -19,7 +19,9 @@ data class NetworkChunkPublisherUpdatePacket(
     val savedChunks: List<ChunkPos>
 ) : Packet(id) {
     companion object : PacketCodec<NetworkChunkPublisherUpdatePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.NETWORK_CHUNK_PUBLISHER_UPDATE_PACKET

@@ -15,7 +15,9 @@ data class ShowStoreOfferPacket(
     val type: Type,
 ) {
     companion object : PacketCodec<ShowStoreOfferPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Type {
             Marketplace,

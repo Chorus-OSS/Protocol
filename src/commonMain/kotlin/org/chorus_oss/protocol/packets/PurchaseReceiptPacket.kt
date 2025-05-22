@@ -13,7 +13,9 @@ data class PurchaseReceiptPacket(
     val receipts: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<PurchaseReceiptPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.PURCHASE_RECEIPT_PACKET

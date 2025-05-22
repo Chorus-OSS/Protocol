@@ -16,7 +16,9 @@ data class EditorNetworkPacket(
     val payload: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<EditorNetworkPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.EDITOR_NETWORK_PACKET

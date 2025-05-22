@@ -24,7 +24,9 @@ data class EducationSettingsPacket(
     val externalLinkSettings: EducationExternalLinkSettings? = null,
 ) : Packet(id) {
     companion object : PacketCodec<EducationSettingsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.EDUCATION_SETTINGS_PACKET

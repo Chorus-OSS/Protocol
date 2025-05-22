@@ -19,7 +19,9 @@ data class ContainerOpenPacket(
     val targetActorID: ActorUniqueID,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerOpenPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CONTAINER_OPEN_PACKET

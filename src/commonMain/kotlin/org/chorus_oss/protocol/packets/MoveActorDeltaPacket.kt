@@ -20,7 +20,9 @@ data class MoveActorDeltaPacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorDeltaPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         const val FLAG_HAS_X: UShort = 0x1u
         const val FLAG_HAS_Y: UShort = 0x2u

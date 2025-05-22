@@ -13,7 +13,9 @@ data class PositionTrackingDBClientRequestPacket(
     val trackingID: Int,
 ) : Packet(id) {
     companion object : PacketCodec<PositionTrackingDBClientRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class RequestAction {
             Query;

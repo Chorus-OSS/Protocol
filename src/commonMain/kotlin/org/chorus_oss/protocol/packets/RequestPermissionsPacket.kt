@@ -17,7 +17,9 @@ data class RequestPermissionsPacket(
     val requestedPermissions: UShort,
 ) : Packet(id) {
     companion object : PacketCodec<RequestPermissionsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.REQUEST_PERMISSIONS_PACKET

@@ -18,7 +18,9 @@ data class ResourcePackChunkDataPacket(
     val chunkData: String,
 ) {
     companion object : PacketCodec<ResourcePackChunkDataPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_CHUNK_DATA_PACKET

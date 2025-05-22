@@ -17,7 +17,9 @@ data class BlockActorDataPacket(
     var actorDataTags: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<BlockActorDataPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.BLOCK_ACTOR_DATA_PACKET

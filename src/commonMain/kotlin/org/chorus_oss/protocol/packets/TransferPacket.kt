@@ -18,7 +18,9 @@ data class TransferPacket(
     val reloadWorld: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<TransferPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.TRANSFER_PACKET

@@ -3,11 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.core.types.ULong
 
@@ -16,7 +12,9 @@ data class ClientCacheBlobStatusPacket(
     val hitHashes: List<ULong>,
 ) : Packet(id) {
     companion object : PacketCodec<ClientCacheBlobStatusPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENT_CACHE_BLOB_STATUS_PACKET

@@ -17,7 +17,9 @@ data class BossEventPacket(
     val eventData: EventType.Companion.EventData?,
 ) : Packet(id) {
     companion object : PacketCodec<BossEventPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class EventType {
             ADD,

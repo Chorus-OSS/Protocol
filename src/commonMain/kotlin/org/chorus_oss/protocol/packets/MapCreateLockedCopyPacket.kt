@@ -13,7 +13,9 @@ data class MapCreateLockedCopyPacket(
     val newMapID: ActorUniqueID,
 ) : Packet(id) {
     companion object : PacketCodec<MapCreateLockedCopyPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.MAP_CREATE_LOCKED_COPY_PACKET

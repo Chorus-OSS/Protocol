@@ -18,7 +18,9 @@ data class InventoryTransactionPacket(
     val transactionData: InventoryTransactionData?,
 ) : Packet(id) {
     companion object : PacketCodec<InventoryTransactionPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class TransactionType {
             NORMAL,

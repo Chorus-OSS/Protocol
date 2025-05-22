@@ -13,7 +13,9 @@ data class CameraPresetsPacket(
     val presets: List<CameraPreset>
 ) : Packet(id) {
     companion object : PacketCodec<CameraPresetsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CAMERA_PRESETS_PACKET

@@ -16,7 +16,9 @@ data class LessonProgressPacket(
     val identifier: String,
 ) : Packet(id) {
     companion object : PacketCodec<LessonProgressPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Action {
             Start,

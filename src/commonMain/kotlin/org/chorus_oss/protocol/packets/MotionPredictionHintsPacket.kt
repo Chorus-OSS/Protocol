@@ -16,7 +16,9 @@ data class MotionPredictionHintsPacket(
     val onGround: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<MotionPredictionHintsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.MOTION_PREDICTION_HINTS_PACKET

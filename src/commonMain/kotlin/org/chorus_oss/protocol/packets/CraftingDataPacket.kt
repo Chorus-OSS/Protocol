@@ -22,7 +22,9 @@ data class CraftingDataPacket(
     val clearRecipes: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CraftingDataPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CRAFTING_DATA_PACKET

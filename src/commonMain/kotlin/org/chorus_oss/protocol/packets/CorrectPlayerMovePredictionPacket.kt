@@ -3,14 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoHelper
-import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
@@ -28,7 +21,9 @@ data class CorrectPlayerMovePredictionPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<CorrectPlayerMovePredictionPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class PredictionType {
             Player,
@@ -63,7 +58,12 @@ data class CorrectPlayerMovePredictionPacket(
                 else -> Unit
             }
             when (value.predictionType) {
-                PredictionType.Vehicle -> ProtoHelper.serializeNullable(value.vehicleAngularVelocity, stream, ProtoLE.Float)
+                PredictionType.Vehicle -> ProtoHelper.serializeNullable(
+                    value.vehicleAngularVelocity,
+                    stream,
+                    ProtoLE.Float
+                )
+
                 else -> Unit
             }
             Proto.Boolean.serialize(value.onGround, stream)

@@ -17,7 +17,9 @@ data class BlockEventPacket(
     val eventValue: Int,
 ) : Packet(id) {
     companion object : PacketCodec<BlockEventPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.BLOCK_EVENT_PACKET

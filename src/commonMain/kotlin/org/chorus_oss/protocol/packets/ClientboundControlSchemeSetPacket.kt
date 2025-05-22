@@ -12,7 +12,9 @@ data class ClientboundControlSchemeSetPacket(
     val controlScheme: ControlScheme
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundControlSchemeSetPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENTBOUND_CONTROL_SCHEME_SET_PACKET

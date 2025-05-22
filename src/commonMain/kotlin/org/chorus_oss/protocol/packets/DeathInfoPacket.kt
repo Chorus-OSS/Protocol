@@ -15,7 +15,9 @@ data class DeathInfoPacket(
     val messages: List<String>,
 ) : Packet(id) {
     companion object : PacketCodec<DeathInfoPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.DEATH_INFO_PACKET

@@ -24,7 +24,9 @@ data class AddItemActorPacket(
     val fromFishing: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<AddItemActorPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ADD_ITEM_ACTOR_PACKET

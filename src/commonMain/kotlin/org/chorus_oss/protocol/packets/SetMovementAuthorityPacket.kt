@@ -13,7 +13,9 @@ data class SetMovementAuthorityPacket(
     val movementType: PlayerMovementMode,
 ) : Packet(id) {
     companion object : PacketCodec<SetMovementAuthorityPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_MOVEMENT_AUTHORITY_PACKET

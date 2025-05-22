@@ -13,7 +13,9 @@ data class SetDifficultyPacket(
     val difficulty: UInt
 ) : Packet(id) {
     companion object : PacketCodec<SetDifficultyPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_DIFFICULTY_PACKET

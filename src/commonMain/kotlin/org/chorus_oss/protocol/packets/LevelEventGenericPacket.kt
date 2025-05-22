@@ -12,7 +12,9 @@ data class LevelEventGenericPacket(
     val serializedEventData: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<LevelEventGenericPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.LEVEL_EVENT_GENERIC_PACKET

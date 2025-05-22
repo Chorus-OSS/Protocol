@@ -13,7 +13,9 @@ data class TickingAreasLoadStatusPacket(
     val preload: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<TickingAreasLoadStatusPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.TICKING_AREAS_LOAD_STATUS_PACKET

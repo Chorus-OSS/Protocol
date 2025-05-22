@@ -13,7 +13,9 @@ data class BiomeDefinitionListPacket(
     val biomeStringList: List<String>,
 ) : Packet(id) {
     companion object : PacketCodec<BiomeDefinitionListPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.BIOME_DEFINITION_LIST_PACKET

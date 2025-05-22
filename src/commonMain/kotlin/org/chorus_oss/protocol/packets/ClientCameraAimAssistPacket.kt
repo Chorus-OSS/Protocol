@@ -18,7 +18,9 @@ data class ClientCameraAimAssistPacket(
     val allowAimAssist: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ClientCameraAimAssistPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENT_CAMERA_AIM_ASSIST_PACKET

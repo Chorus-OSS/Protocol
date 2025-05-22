@@ -18,7 +18,9 @@ data class CameraAimAssistPresetsPacket(
     val operation: CameraAimAssistPresetsPacketOperation,
 ) : Packet(id) {
     companion object : PacketCodec<CameraAimAssistPresetsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CAMERA_AIM_ASSIST_PRESETS_PACKET

@@ -16,7 +16,9 @@ data class DebugInfoPacket(
     val data: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<DebugInfoPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.DEBUG_INFO_PACKET

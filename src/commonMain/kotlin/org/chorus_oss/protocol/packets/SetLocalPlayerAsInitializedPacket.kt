@@ -12,7 +12,9 @@ data class SetLocalPlayerAsInitializedPacket(
     val entityRuntimeID: ActorRuntimeID,
 ) : Packet(id) {
     companion object : PacketCodec<SetLocalPlayerAsInitializedPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_LOCAL_PLAYER_AS_INITIALIZED_PACKET

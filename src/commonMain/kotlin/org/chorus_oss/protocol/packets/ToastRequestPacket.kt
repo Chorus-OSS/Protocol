@@ -14,7 +14,9 @@ data class ToastRequestPacket(
     val message: String,
 ) : Packet(id) {
     companion object : PacketCodec<ToastRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.TOAST_REQUEST_PACKET

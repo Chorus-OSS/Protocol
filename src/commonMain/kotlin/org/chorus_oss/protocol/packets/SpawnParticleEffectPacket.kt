@@ -21,7 +21,9 @@ data class SpawnParticleEffectPacket(
     val moLangVariablesJSON: String?
 ) : Packet(id) {
     companion object : PacketCodec<SpawnParticleEffectPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SPAWN_PARTICLE_EFFECT_PACKET

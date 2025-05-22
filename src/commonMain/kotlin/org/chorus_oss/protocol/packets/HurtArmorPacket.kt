@@ -16,7 +16,9 @@ data class HurtArmorPacket(
     val armorSlots: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<HurtArmorPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.HURT_ARMOR_PACKET

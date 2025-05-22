@@ -13,7 +13,9 @@ data class AddBehaviorTreePacket(
     val behaviorTreeJSON: String
 ) : Packet(id) {
     companion object : PacketCodec<AddBehaviorTreePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ADD_BEHAVIOR_TREE_PACKET

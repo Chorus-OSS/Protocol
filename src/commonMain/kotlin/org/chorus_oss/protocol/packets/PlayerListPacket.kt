@@ -25,7 +25,9 @@ data class PlayerListPacket(
     val removePlayerList: List<Uuid>?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerListPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class ActionType {
             Add,

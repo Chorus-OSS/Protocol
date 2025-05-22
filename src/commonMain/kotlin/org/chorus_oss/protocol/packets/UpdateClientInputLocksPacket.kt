@@ -15,7 +15,9 @@ data class UpdateClientInputLocksPacket(
     val position: Vector3f
 ) : Packet(id) {
     companion object : PacketCodec<UpdateClientInputLocksPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         const val FLAG_LOCK_CAMERA: UInt = 0x1u
         const val FLAG_LOCK_MOVEMENT: UInt = 0x2u

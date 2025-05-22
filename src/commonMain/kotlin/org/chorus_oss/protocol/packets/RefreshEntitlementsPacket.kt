@@ -8,7 +8,9 @@ import org.chorus_oss.protocol.core.PacketCodec
 
 class RefreshEntitlementsPacket : Packet(id) {
     companion object : PacketCodec<RefreshEntitlementsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.REFRESH_ENTITLEMENTS_PACKET

@@ -13,7 +13,9 @@ data class SetTimePacket(
     val time: Int
 ) : Packet(id) {
     companion object : PacketCodec<SetTimePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_TIME_PACKET

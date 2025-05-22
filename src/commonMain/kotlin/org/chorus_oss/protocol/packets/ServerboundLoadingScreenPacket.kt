@@ -13,7 +13,9 @@ data class ServerboundLoadingScreenPacket(
     val loadingScreenID: Int?,
 ) : Packet(id) {
     companion object : PacketCodec<ServerboundLoadingScreenPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Type {
             Unknown,

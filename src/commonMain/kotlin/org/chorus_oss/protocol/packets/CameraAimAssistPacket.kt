@@ -18,7 +18,9 @@ data class CameraAimAssistPacket(
     val action: Action,
 ) : Packet(id) {
     companion object : PacketCodec<CameraAimAssistPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Action {
             SET,

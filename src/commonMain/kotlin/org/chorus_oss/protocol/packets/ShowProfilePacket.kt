@@ -13,7 +13,9 @@ data class ShowProfilePacket(
     val xuid: String,
 ) : Packet(id) {
     companion object : PacketCodec<ShowProfilePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SHOW_PROFILE_PACKET

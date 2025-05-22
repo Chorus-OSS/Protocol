@@ -13,7 +13,9 @@ data class ClientCacheStatusPacket(
     val isCacheSupported: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<ClientCacheStatusPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENT_CACHE_STATUS_PACKET

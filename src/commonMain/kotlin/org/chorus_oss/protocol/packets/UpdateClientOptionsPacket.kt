@@ -3,19 +3,16 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 
 data class UpdateClientOptionsPacket(
     val graphicsMode: GraphicsMode?,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateClientOptionsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class GraphicsMode {
             Simple,

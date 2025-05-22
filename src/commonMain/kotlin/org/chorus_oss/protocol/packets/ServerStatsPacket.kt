@@ -13,7 +13,9 @@ data class ServerStatsPacket(
     val networkTime: Float,
 ) : Packet(id) {
     companion object : PacketCodec<ServerStatsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SERVER_STATS_PACKET

@@ -18,7 +18,9 @@ data class PlayerUpdateEntityOverridesPacket(
     val floatValue: Float?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerUpdateEntityOverridesPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Type {
             ClearAll,

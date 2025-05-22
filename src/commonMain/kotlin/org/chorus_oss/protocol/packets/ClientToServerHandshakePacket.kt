@@ -10,7 +10,9 @@ import org.chorus_oss.protocol.core.PacketRegistry
 
 class ClientToServerHandshakePacket : Packet(id) {
     companion object : PacketCodec<ClientToServerHandshakePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENT_TO_SERVER_HANDSHAKE_PACKET

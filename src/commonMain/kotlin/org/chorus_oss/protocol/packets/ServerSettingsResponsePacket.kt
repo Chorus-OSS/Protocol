@@ -16,7 +16,9 @@ data class ServerSettingsResponsePacket(
     val formData: String,
 ) : Packet(id) {
     companion object : PacketCodec<ServerSettingsResponsePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SERVER_SETTINGS_RESPONSE_PACKET

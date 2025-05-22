@@ -16,7 +16,9 @@ data class AnvilDamagePacket(
     val blockPosition: IVector3,
 ) : Packet(id) {
     companion object : PacketCodec<AnvilDamagePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ANVIL_DAMAGE_PACKET

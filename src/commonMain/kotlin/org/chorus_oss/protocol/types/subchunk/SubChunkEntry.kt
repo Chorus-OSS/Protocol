@@ -76,6 +76,7 @@ data class SubChunkEntry(
                         Proto.Byte.serialize(it.getOrElse(i) { 0 }, stream)
                     }
                 }
+
                 else -> Unit
             }
             ProtoVAR.ULong.serialize(value.blobHash as ULong, stream)
@@ -96,6 +97,7 @@ data class SubChunkEntry(
                     HeightMapType.HasData -> List(256) {
                         Proto.Byte.deserialize(stream)
                     }
+
                     else -> null
                 },
                 blobHash = ProtoVAR.ULong.deserialize(stream),
@@ -116,6 +118,7 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
                     Proto.Byte.serialize(it.getOrElse(i) { 0 }, stream)
                 }
             }
+
             else -> Unit
         }
     }
@@ -131,6 +134,7 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
                 SubChunkEntry.Companion.HeightMapType.HasData -> List(256) {
                     Proto.Byte.deserialize(stream)
                 }
+
                 else -> null
             },
             blobHash = null

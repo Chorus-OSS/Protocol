@@ -20,7 +20,9 @@ data class SetPlayerInventoryOptionsPacket(
     val craftingLayout: InventoryLayout,
 ) : Packet(id) {
     companion object : PacketCodec<SetPlayerInventoryOptionsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_PLAYER_INVENTORY_OPTIONS_PACKET

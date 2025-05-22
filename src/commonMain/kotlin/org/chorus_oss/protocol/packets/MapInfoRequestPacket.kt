@@ -3,11 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.Packet
-import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
-import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -20,7 +16,9 @@ data class MapInfoRequestPacket(
     val clientPixels: List<PixelRequest>,
 ) : Packet(id) {
     companion object : PacketCodec<MapInfoRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         data class PixelRequest(
             val color: Color,

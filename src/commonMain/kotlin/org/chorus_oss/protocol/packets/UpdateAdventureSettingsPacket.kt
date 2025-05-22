@@ -17,7 +17,9 @@ data class UpdateAdventureSettingsPacket(
     val autoJump: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateAdventureSettingsPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.UPDATE_ADVENTURE_SETTINGS_PACKET

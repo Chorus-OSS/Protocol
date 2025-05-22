@@ -19,7 +19,9 @@ data class SetTitlePacket(
     val filteredMessage: String,
 ) : Packet(id) {
     companion object : PacketCodec<SetTitlePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class ActionType {
             Clear,

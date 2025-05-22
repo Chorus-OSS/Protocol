@@ -13,7 +13,9 @@ data class SetDefaultGameTypePacket(
     val gameType: Int
 ) : Packet(id) {
     companion object : PacketCodec<SetDefaultGameTypePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.SET_DEFAULT_GAME_TYPE_PACKET

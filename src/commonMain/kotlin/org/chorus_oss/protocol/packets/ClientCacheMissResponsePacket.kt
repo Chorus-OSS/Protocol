@@ -13,7 +13,9 @@ data class ClientCacheMissResponsePacket(
     val blobs: List<CacheBlob>
 ) : Packet(id) {
     companion object : PacketCodec<ClientCacheMissResponsePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CLIENT_CACHE_MISS_RESPONSE_PACKET

@@ -17,7 +17,9 @@ data class LevelEventPacket(
     val eventData: Int,
 ) : Packet(id) {
     companion object : PacketCodec<LevelEventPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         const val EVENT_UNDEFINED: Int = 0
         const val EVENT_SOUND_CLICK: Int = 1000

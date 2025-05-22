@@ -16,7 +16,9 @@ data class ContainerClosePacket(
     val serverInitiatedClose: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerClosePacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CONTAINER_CLOSE_PACKET

@@ -21,7 +21,9 @@ data class PlaySoundPacket(
     val pitch: Float,
 ) : Packet(id) {
     companion object : PacketCodec<PlaySoundPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.PLAY_SOUND_PACKET

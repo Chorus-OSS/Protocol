@@ -18,7 +18,9 @@ data class RequestAbilityPacket(
     val floatValue: Float?,
 ) : Packet(id) {
     companion object : PacketCodec<RequestAbilityPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Type {
             None,

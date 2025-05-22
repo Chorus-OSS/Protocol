@@ -17,7 +17,9 @@ data class ActorPickRequestPacket(
     val withData: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ActorPickRequestPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ACTOR_PICK_REQUEST_PACKET

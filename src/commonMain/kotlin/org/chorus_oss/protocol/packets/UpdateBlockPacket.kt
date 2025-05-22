@@ -19,7 +19,9 @@ data class UpdateBlockPacket(
     val layer: UInt,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateBlockPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         const val FLAG_NEIGHBORS: UInt = 0x1u
         const val FLAG_NETWORK: UInt = 0x2u

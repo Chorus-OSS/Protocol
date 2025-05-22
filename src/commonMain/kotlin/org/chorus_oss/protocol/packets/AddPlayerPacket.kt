@@ -34,7 +34,9 @@ data class AddPlayerPacket(
     val buildPlatform: Platform,
 ) : Packet(id) {
     companion object : PacketCodec<AddPlayerPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.ADD_PLAYER_PACKET

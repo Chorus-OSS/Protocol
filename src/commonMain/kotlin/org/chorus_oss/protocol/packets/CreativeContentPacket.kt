@@ -15,7 +15,9 @@ data class CreativeContentPacket(
     val items: List<CreativeItem>,
 ) : Packet(id) {
     companion object : PacketCodec<CreativeContentPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CREATIVE_CONTENT_PACKET

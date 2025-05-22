@@ -14,7 +14,9 @@ data class CameraPacket(
     val targetPlayerID: ActorUniqueID,
 ) : Packet(id) {
     companion object : PacketCodec<CameraPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.CAMERA_PACKET

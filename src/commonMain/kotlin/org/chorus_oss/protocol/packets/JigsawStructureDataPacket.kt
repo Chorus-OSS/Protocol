@@ -13,7 +13,9 @@ data class JigsawStructureDataPacket(
     val data: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<JigsawStructureDataPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.JIGSAW_STRUCTURE_DATA_PACKET

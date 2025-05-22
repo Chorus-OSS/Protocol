@@ -18,7 +18,9 @@ data class UpdateSubChunkBlocksPacket(
     val extra: List<BlockChangeEntry>,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateSubChunkBlocksPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.UPDATE_SUB_CHUNK_BLOCKS_PACKET

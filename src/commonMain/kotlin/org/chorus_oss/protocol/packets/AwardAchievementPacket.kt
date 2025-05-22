@@ -13,7 +13,9 @@ data class AwardAchievementPacket(
     val achievementID: Int,
 ) : Packet(id) {
     companion object : PacketCodec<AwardAchievementPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         override val id: Int
             get() = ProtocolInfo.AWARD_ACHIEVEMENT_PACKET

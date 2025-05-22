@@ -15,7 +15,9 @@ data class ClientboundDebugRendererPacket(
     val data: Data? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundDebugRendererPacket> {
-        init { PacketRegistry.register(this) }
+        init {
+            PacketRegistry.register(this)
+        }
 
         enum class Type {
             Clear,
