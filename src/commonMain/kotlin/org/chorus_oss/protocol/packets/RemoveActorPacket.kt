@@ -12,6 +12,8 @@ data class RemoveActorPacket(
     val actorUniqueID: ActorUniqueID
 ) : Packet(id) {
     companion object : PacketCodec<RemoveActorPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.REMOVE_ENTITY_PACKET
 

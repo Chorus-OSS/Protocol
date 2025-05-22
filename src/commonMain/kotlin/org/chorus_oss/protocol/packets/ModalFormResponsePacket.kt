@@ -15,6 +15,8 @@ data class ModalFormResponsePacket(
     val cancelReason: CancelReason?,
 ) : Packet(id) {
     companion object : PacketCodec<ModalFormResponsePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class CancelReason {
             UserClosed,
             UserBusy;

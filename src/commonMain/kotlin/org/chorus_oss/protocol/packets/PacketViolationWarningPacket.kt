@@ -16,6 +16,8 @@ data class PacketViolationWarningPacket(
     val violationContext: String,
 ) : Packet(id) {
     companion object : PacketCodec<PacketViolationWarningPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Type(val net: Int) {
             Unknown(-1),
             MalformedPacket(0);

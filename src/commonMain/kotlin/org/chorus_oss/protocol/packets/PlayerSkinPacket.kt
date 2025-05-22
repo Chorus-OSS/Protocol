@@ -23,6 +23,8 @@ class PlayerSkinPacket(
     val isTrusted: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerSkinPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_SKIN_PACKET
 

@@ -15,6 +15,8 @@ data class ResourcePackClientResponsePacket(
     val packsToDownload: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<ResourcePackClientResponsePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Response(val net: Byte) {
             Refused(1),
             SendPacks(2),

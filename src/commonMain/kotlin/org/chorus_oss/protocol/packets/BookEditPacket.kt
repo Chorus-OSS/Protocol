@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -63,6 +64,8 @@ data class BookEditPacket(
     ) : ActionData
 
     companion object : PacketCodec<BookEditPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.BOOK_EDIT_PACKET
 

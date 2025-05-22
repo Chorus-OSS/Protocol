@@ -15,6 +15,8 @@ data class ChangeDimensionPacket(
     val loadingScreenID: Int? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ChangeDimensionPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CHANGE_DIMENSION_PACKET
 

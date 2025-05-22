@@ -4,6 +4,7 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -14,6 +15,8 @@ data class ShowStoreOfferPacket(
     val type: Type,
 ) {
     companion object : PacketCodec<ShowStoreOfferPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Type {
             Marketplace,
             DressingRoom,

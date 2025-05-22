@@ -24,6 +24,8 @@ data class CommandBlockUpdatePacket(
     val shouldExecuteOnFirstTick: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CommandBlockUpdatePacket> {
+        init { PacketRegistry.register(this) }
+
         interface CommandBlockHolderData
 
         data class CommandBlockActorData(

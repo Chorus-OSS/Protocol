@@ -16,6 +16,8 @@ data class SetScorePacket(
     val removeEntries: List<ScoreboardRemoveEntry>?,
 ) : Packet(id) {
     companion object : PacketCodec<SetScorePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             Modify,
             Remove;

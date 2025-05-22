@@ -15,6 +15,8 @@ data class PlayerFogPacket(
     val stack: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<PlayerFogPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_FOG_PACKET
 

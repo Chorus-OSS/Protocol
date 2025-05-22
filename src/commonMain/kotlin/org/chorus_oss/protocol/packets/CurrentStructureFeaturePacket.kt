@@ -12,6 +12,8 @@ data class CurrentStructureFeaturePacket(
     val currentFeature: String,
 ) : Packet(id) {
     companion object : PacketCodec<CurrentStructureFeaturePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CURRENT_STRUCTURE_FEATURE_PACKET
 

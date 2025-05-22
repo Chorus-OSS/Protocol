@@ -9,6 +9,8 @@ import org.chorus_oss.protocol.core.PacketCodec
 
 class ServerSettingsRequestPacket : Packet(id) {
     companion object : PacketCodec<ServerSettingsRequestPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET
 

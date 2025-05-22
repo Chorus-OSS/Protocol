@@ -15,6 +15,8 @@ data class TrimDataPacket(
     val materials: List<TrimMaterial>,
 ) : Packet(id) {
     companion object : PacketCodec<TrimDataPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.TRIM_DATA_PACKET
 

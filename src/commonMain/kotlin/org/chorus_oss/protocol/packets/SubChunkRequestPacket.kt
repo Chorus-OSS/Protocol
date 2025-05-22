@@ -18,6 +18,8 @@ data class SubChunkRequestPacket(
     val offsets: List<SubChunkOffset>,
 ) : Packet(id) {
     companion object : PacketCodec<SubChunkRequestPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SUB_CHUNK_REQUEST_PACKET
 

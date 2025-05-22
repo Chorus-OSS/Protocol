@@ -13,6 +13,8 @@ data class OnScreenTextureAnimationPacket(
     val animationType: Int,
 ) : Packet(id) {
     companion object : PacketCodec<OnScreenTextureAnimationPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.ON_SCREEN_TEXTURE_ANIMATION_PACKET
 

@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -14,6 +15,8 @@ data class AgentAnimationPacket(
     val runtimeID: ActorRuntimeID,
 ) : Packet(id) {
     companion object : PacketCodec<AgentAnimationPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.AGENT_ANIMATION_PACKET
 

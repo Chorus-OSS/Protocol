@@ -18,6 +18,8 @@ data class DisconnectPacket(
     val filteredMessage: String,
 ) : Packet(id) {
     companion object : PacketCodec<DisconnectPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.DISCONNECT_PACKET
 

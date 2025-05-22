@@ -13,6 +13,8 @@ data class TakeItemEntityPacket(
     val takerEntityRuntimeID: ActorRuntimeID,
 ) : Packet(id) {
     companion object : PacketCodec<TakeItemEntityPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.TAKE_ITEM_ENTITY_PACKET
 

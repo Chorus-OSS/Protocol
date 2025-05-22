@@ -15,6 +15,8 @@ class ActorEventPacket(
     val eventData: Int,
 ) : Packet(id) {
     companion object : PacketCodec<ActorEventPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Type(val id: Byte) {
             NONE(0),
             JUMP(1),

@@ -15,6 +15,8 @@ data class CameraShakePacket(
     val action: Action,
 ) : Packet(id) {
     companion object : PacketCodec<CameraShakePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Action {
             ADD,
             STOP;

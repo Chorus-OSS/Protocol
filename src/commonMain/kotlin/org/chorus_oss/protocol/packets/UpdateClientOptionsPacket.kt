@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -14,6 +15,8 @@ data class UpdateClientOptionsPacket(
     val graphicsMode: GraphicsMode?,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateClientOptionsPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class GraphicsMode {
             Simple,
             Fancy,

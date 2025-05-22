@@ -14,6 +14,8 @@ data class ScriptMessagePacket(
     val message: String,
 ) : Packet(id) {
     companion object : PacketCodec<ScriptMessagePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SCRIPT_MESSAGE_PACKET
 

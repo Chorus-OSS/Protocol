@@ -20,6 +20,8 @@ data class EmoteListPacket(
     val emotePieces: List<Uuid>,
 ) : Packet(id) {
     companion object : PacketCodec<EmoteListPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.EMOTE_LIST_PACKET
 

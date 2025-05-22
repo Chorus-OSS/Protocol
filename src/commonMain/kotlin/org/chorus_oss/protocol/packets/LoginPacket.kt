@@ -12,6 +12,8 @@ data class LoginPacket(
     val connectionRequest: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<LoginPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.LOGIN_PACKET
 

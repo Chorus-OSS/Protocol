@@ -13,6 +13,8 @@ data class DimensionDataPacket(
     val definitions: List<DimensionDefinition>
 ) : Packet(id) {
     companion object : PacketCodec<DimensionDataPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.DIMENSION_DATA_PACKET
 

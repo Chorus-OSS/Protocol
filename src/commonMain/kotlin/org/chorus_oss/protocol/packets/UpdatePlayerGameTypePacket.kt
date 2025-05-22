@@ -18,6 +18,8 @@ data class UpdatePlayerGameTypePacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<UpdatePlayerGameTypePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.UPDATE_PLAYER_GAME_TYPE_PACKET
 

@@ -14,6 +14,8 @@ data class UpdateSoftEnumPacket(
     val actionType: ActionType,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateSoftEnumPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             Add,
             Remove,

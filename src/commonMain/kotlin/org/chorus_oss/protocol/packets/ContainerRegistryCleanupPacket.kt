@@ -13,6 +13,8 @@ data class ContainerRegistryCleanupPacket(
     val removedContainers: List<FullContainerName>
 ) : Packet(id) {
     companion object : PacketCodec<ContainerRegistryCleanupPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CONTAINER_REGISTRY_CLEANUP_PACKET
 

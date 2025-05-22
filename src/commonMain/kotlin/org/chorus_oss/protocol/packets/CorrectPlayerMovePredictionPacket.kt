@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
@@ -27,6 +28,8 @@ data class CorrectPlayerMovePredictionPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<CorrectPlayerMovePredictionPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class PredictionType {
             Player,
             Vehicle;

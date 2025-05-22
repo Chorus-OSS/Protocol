@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -17,6 +18,8 @@ data class LabTablePacket(
     val reactionType: Byte
 ) : Packet(id) {
     companion object : PacketCodec<LabTablePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             Combine,
             React,

@@ -26,6 +26,8 @@ data class ResourcePacksInfoPacket(
     val texturePacks: List<TexturePackInfo>
 ) : Packet(id) {
     companion object : PacketCodec<ResourcePacksInfoPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACKS_INFO_PACKET
 

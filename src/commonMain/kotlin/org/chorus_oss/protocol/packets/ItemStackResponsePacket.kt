@@ -14,6 +14,8 @@ data class ItemStackResponsePacket(
     val responses: List<ItemStackResponse>
 ) : Packet(id) {
     companion object : PacketCodec<ItemStackResponsePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.ITEM_STACK_RESPONSE_PACKET
 

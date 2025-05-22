@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
@@ -13,6 +14,8 @@ data class MultiplayerSettingsPacket(
     val actionType: ActionType,
 ) : Packet(id) {
     companion object : PacketCodec<MultiplayerSettingsPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             EnableMultiplayer,
             DisableMultiplayer,

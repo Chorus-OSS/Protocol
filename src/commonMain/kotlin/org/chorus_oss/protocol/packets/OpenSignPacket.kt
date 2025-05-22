@@ -15,6 +15,8 @@ data class OpenSignPacket(
     val frontSide: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<OpenSignPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.OPEN_SIGN_PACKET
 

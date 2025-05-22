@@ -13,6 +13,8 @@ data class RequestNetworkSettingsPacket(
     val clientProtocol: Int,
 ) : Packet(id) {
     companion object : PacketCodec<RequestNetworkSettingsPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.REQUEST_NETWORK_SETTINGS_PACKET
 

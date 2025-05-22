@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
@@ -19,6 +20,8 @@ data class MapInfoRequestPacket(
     val clientPixels: List<PixelRequest>,
 ) : Packet(id) {
     companion object : PacketCodec<MapInfoRequestPacket> {
+        init { PacketRegistry.register(this) }
+
         data class PixelRequest(
             val color: Color,
             val index: UShort,

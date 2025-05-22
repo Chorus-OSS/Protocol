@@ -16,6 +16,8 @@ data class PositionTrackingDBServerBroadcastPacket(
     val payload: CompoundTag,
 ) : Packet(id) {
     companion object : PacketCodec<PositionTrackingDBServerBroadcastPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Action {
             Update,
             Destroy,

@@ -21,6 +21,8 @@ class ResourcePackStackPacket(
     val includeEditorPacks: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ResourcePackStackPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.RESOURCE_PACK_STACK_PACKET
 

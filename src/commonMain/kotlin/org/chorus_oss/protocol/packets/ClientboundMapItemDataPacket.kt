@@ -19,6 +19,8 @@ data class ClientboundMapItemDataPacket(
     val textureUpdateData: TextureUpdateData? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundMapItemDataPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Type(val bit: UInt) {
             INVALID(0u),
             TEXTURE_UPDATE(1u shl 1),

@@ -18,6 +18,8 @@ data class UpdateAttributesPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateAttributesPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.UPDATE_ATTRIBUTES_PACKET
 

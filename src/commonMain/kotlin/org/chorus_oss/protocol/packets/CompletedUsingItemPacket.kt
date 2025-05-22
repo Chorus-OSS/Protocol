@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
@@ -16,6 +17,8 @@ data class CompletedUsingItemPacket(
     val itemUseMethod: ItemUseMethod,
 ) : Packet(id) {
     companion object : PacketCodec<CompletedUsingItemPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ItemUseMethod(val id: Int) {
             UNKNOWN(-1),
             EQUIP_ARMOR(0),

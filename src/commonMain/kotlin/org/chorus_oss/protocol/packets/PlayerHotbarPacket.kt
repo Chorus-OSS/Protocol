@@ -17,6 +17,8 @@ data class PlayerHotbarPacket(
     val selectHotbarSlot: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<PlayerHotbarPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_HOTBAR_PACKET
 

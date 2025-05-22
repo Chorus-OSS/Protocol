@@ -16,6 +16,8 @@ data class PlayerStartItemCoolDownPacket(
     val duration: Int
 ) : Packet(id) {
     companion object : PacketCodec<PlayerStartItemCoolDownPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_START_ITEM_COOL_DOWN_PACKET
 

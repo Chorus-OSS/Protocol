@@ -13,6 +13,8 @@ data class GameRulesChangedPacket(
     val gameRules: List<GameRule<*>>
 ) : Packet(id) {
     companion object : PacketCodec<GameRulesChangedPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.GAME_RULES_CHANGED_PACKET
 

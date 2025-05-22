@@ -19,6 +19,8 @@ data class InventorySlotPacket(
     val newItem: ItemStack,
 ) : Packet(id) {
     companion object : PacketCodec<InventorySlotPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.INVENTORY_SLOT_PACKET
 

@@ -13,6 +13,8 @@ data class RemoveObjectivePacket(
     val objectiveName: String,
 ) : Packet(id) {
     companion object : PacketCodec<RemoveObjectivePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.REMOVE_OBJECTIVE_PACKET
 

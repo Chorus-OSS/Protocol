@@ -16,6 +16,8 @@ data class CodeBuilderSourcePacket(
     val codeStatus: CodeBuilderCodeStatus,
 ) : Packet(id) {
     companion object : PacketCodec<CodeBuilderSourcePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CODE_BUILDER_SOURCE_PACKET
 

@@ -17,6 +17,8 @@ data class SetActorMotionPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<SetActorMotionPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SET_ACTOR_MOTION_PACKET
 

@@ -15,6 +15,8 @@ data class SettingsCommandPacket(
     val suppressOutput: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<SettingsCommandPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SETTINGS_COMMAND_PACKET
 

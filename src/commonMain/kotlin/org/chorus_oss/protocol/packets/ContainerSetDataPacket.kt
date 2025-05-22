@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
@@ -17,6 +18,8 @@ data class ContainerSetDataPacket(
     val value: Int,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerSetDataPacket> {
+        init { PacketRegistry.register(this) }
+
         const val FURNACE_TICK_COUNT: Int = 0
         const val FURNACE_LIT_TIME: Int = 1
         const val FURNACE_LIT_DURATION: Int = 2

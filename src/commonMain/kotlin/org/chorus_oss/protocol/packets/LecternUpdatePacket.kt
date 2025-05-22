@@ -17,6 +17,8 @@ data class LecternUpdatePacket(
     val blockPosition: IVector3,
 ) : Packet(id) {
     companion object : PacketCodec<LecternUpdatePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.LECTERN_UPDATE_PACKET
 

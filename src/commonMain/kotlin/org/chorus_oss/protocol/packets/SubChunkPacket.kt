@@ -22,6 +22,8 @@ data class SubChunkPacket(
     val subChunkEntries: List<SubChunkEntry>,
 ) : Packet(id) {
     companion object : PacketCodec<SubChunkPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SUB_CHUNK_PACKET
 

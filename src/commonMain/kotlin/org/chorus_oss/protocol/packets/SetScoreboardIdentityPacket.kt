@@ -16,6 +16,8 @@ data class SetScoreboardIdentityPacket(
     val clearEntries: List<ScoreboardIdentityClearEntry>?,
 ) : Packet(id) {
     companion object : PacketCodec<SetScoreboardIdentityPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             Register,
             Clear;

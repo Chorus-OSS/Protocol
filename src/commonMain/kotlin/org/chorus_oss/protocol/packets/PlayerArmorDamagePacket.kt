@@ -6,6 +6,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
@@ -22,6 +23,8 @@ data class PlayerArmorDamagePacket(
     val bodyDamage: Int,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerArmorDamagePacket> {
+        init { PacketRegistry.register(this) }
+
         const val FLAG_HELMET: Byte = 0x1
         const val FLAG_CHESTPLATE: Byte = 0x2
         const val FLAG_LEGGINGS: Byte = 0x4

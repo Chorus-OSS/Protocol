@@ -18,6 +18,8 @@ data class InventoryContentPacket(
     val storageItem: ItemStack,
 ) : Packet(id) {
     companion object : PacketCodec<InventoryContentPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.INVENTORY_CONTENT_PACKET
 

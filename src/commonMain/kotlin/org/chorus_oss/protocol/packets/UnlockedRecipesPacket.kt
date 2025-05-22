@@ -13,6 +13,8 @@ data class UnlockedRecipesPacket(
     val recipes: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<UnlockedRecipesPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class UnlockType {
             Empty,
             InitiallyUnlocked,

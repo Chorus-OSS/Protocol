@@ -8,6 +8,7 @@ import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.types.IVector3
 import org.chorus_oss.protocol.types.UIVector3
 
@@ -16,6 +17,8 @@ data class BlockActorDataPacket(
     var actorDataTags: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<BlockActorDataPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.BLOCK_ACTOR_DATA_PACKET
 

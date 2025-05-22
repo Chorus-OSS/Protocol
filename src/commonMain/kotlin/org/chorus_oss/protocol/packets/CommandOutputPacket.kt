@@ -19,6 +19,8 @@ data class CommandOutputPacket(
     val dataSet: String? = null,
 ) : Packet(id) {
     companion object : PacketCodec<CommandOutputPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.COMMAND_OUTPUT_PACKET
 

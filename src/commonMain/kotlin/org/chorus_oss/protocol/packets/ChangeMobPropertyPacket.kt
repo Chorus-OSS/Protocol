@@ -20,6 +20,8 @@ data class ChangeMobPropertyPacket(
     val floatValue: Float,
 ) : Packet(id) {
     companion object : PacketCodec<ChangeMobPropertyPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CHANGE_MOB_PROPERTY_PACKET
 

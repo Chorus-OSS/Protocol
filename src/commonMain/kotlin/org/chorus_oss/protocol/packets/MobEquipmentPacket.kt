@@ -19,6 +19,8 @@ data class MobEquipmentPacket(
     val windowID: Byte,
 ) : Packet(id) {
     companion object : PacketCodec<MobEquipmentPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.MOB_EQUIPMENT_PACKET
 

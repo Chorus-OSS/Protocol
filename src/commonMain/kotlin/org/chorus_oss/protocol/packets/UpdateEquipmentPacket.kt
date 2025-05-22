@@ -17,6 +17,8 @@ data class UpdateEquipmentPacket(
     val serializedInventoryData: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<UpdateEquipmentPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.UPDATE_EQUIPMENT_PACKET
 

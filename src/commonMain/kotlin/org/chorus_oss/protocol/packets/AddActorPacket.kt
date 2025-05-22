@@ -25,6 +25,8 @@ data class AddActorPacket(
     val actorLinks: List<ActorLink>
 ) : Packet(id) {
     companion object : PacketCodec<AddActorPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.ADD_ACTOR_PACKET
 

@@ -13,6 +13,8 @@ data class EduUriResourcePacket(
     val resource: EduSharedUriResource,
 ) : Packet(id) {
     companion object : PacketCodec<EduUriResourcePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.EDU_URI_RESOURCE_PACKET
 

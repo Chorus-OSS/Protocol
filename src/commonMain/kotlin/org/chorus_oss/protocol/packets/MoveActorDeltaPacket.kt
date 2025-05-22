@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.UShort
@@ -19,6 +20,8 @@ data class MoveActorDeltaPacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorDeltaPacket> {
+        init { PacketRegistry.register(this) }
+
         const val FLAG_HAS_X: UShort = 0x1u
         const val FLAG_HAS_Y: UShort = 0x2u
         const val FLAG_HAS_Z: UShort = 0x4u

@@ -20,6 +20,8 @@ data class LevelSoundEventPacket(
     val actorUniqueID: Long
 ) : Packet(id) {
     companion object : PacketCodec<LevelSoundEventPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class SoundType(val id: Int) {
             ITEM_USE_ON(0),
             HIT(1),

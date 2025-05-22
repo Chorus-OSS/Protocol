@@ -6,6 +6,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
@@ -17,6 +18,8 @@ data class ClientCameraAimAssistPacket(
     val allowAimAssist: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ClientCameraAimAssistPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CLIENT_CAMERA_AIM_ASSIST_PACKET
 

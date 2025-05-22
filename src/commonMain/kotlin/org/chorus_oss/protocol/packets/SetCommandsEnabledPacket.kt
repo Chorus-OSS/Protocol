@@ -13,6 +13,8 @@ data class SetCommandsEnabledPacket(
     val enabled: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<SetCommandsEnabledPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SET_COMMANDS_ENABLED_PACKET
 

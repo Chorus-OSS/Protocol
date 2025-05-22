@@ -40,6 +40,8 @@ data class PlayerAuthInputPacket(
     val rawMoveVector: Vector2f,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerAuthInputPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_AUTH_INPUT_PACKET
 

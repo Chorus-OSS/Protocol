@@ -15,6 +15,8 @@ data class GameTestResultsPacket(
     val name: String,
 ) : Packet(id) {
     companion object : PacketCodec<GameTestResultsPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.GAME_TEST_RESULTS_PACKET
 

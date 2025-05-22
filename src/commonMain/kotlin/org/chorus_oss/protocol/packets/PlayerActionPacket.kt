@@ -21,6 +21,8 @@ data class PlayerActionPacket(
     val blockFace: Int,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerActionPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.PLAYER_ACTION_PACKET
 

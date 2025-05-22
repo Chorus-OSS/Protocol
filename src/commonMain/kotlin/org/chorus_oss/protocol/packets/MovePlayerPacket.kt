@@ -23,6 +23,8 @@ data class MovePlayerPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<MovePlayerPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Mode {
             Normal,
             Reset,

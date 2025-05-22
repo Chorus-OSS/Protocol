@@ -23,6 +23,8 @@ data class NetworkSettingsPacket(
     val clientThrottleScalar: Float,
 ) : Packet(id) {
     companion object : PacketCodec<NetworkSettingsPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.NETWORK_SETTINGS_PACKET
 

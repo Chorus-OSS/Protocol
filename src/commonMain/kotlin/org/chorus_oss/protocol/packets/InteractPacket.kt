@@ -6,6 +6,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -18,6 +19,8 @@ data class InteractPacket(
     val actionData: ActionData?,
 ) : Packet(id) {
     companion object : PacketCodec<InteractPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class Action(val netOrdinal: Byte) {
             INVALID(0),
             STOP_RIDING(3),

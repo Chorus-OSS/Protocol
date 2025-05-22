@@ -6,6 +6,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.Vector3f
@@ -16,6 +17,8 @@ data class LevelEventPacket(
     val eventData: Int,
 ) : Packet(id) {
     companion object : PacketCodec<LevelEventPacket> {
+        init { PacketRegistry.register(this) }
+
         const val EVENT_UNDEFINED: Int = 0
         const val EVENT_SOUND_CLICK: Int = 1000
         const val EVENT_SOUND_CLICK_FAIL: Int = 1001

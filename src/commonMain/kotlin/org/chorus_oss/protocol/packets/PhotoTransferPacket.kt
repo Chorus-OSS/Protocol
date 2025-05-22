@@ -18,6 +18,8 @@ data class PhotoTransferPacket(
     val newPhotoName: String,
 ) : Packet(id) {
     companion object : PacketCodec<PhotoTransferPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class PhotoType {
             Portfolio,
             PhotoItem,

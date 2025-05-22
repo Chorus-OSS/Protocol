@@ -19,6 +19,8 @@ data class TextPacket(
     val filteredMessage: String,
 ) : Packet(id) {
     companion object : PacketCodec<TextPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class TextType {
             Raw,
             Chat,

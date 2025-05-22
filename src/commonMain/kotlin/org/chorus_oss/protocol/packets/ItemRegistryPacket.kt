@@ -12,6 +12,8 @@ data class ItemRegistryPacket(
     val items: List<ItemEntry>
 ) : Packet(id) {
     companion object : PacketCodec<ItemRegistryPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.ITEM_REGISTRY_PACKET
 

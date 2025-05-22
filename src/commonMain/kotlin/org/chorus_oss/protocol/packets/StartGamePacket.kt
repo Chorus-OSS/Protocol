@@ -93,6 +93,8 @@ data class StartGamePacket(
     val serverAuthoritativeSound: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<StartGamePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.START_GAME_PACKET
 

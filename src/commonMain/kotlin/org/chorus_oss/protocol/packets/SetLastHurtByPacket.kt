@@ -13,6 +13,8 @@ data class SetLastHurtByPacket(
     val entityType: Int
 ) : Packet(id) {
     companion object : PacketCodec<SetLastHurtByPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SET_LAST_HURT_BY_PACKET
 

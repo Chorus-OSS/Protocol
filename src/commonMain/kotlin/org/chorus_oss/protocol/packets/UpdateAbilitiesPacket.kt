@@ -13,6 +13,8 @@ data class UpdateAbilitiesPacket(
     val abilitiesData: AbilitiesData,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateAbilitiesPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.UPDATE_ABILITIES_PACKET
 

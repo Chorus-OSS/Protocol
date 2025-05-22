@@ -13,6 +13,8 @@ data class ServerToClientHandshakePacket(
     val jwt: String,
 ) : Packet(id) {
     companion object : PacketCodec<ServerToClientHandshakePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SERVER_TO_CLIENT_HANDSHAKE_PACKET
 

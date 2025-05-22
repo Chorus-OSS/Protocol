@@ -41,6 +41,8 @@ data class AnimatePacket(
     }
 
     companion object : PacketCodec<AnimatePacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.ANIMATE_PACKET
 

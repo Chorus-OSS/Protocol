@@ -13,6 +13,8 @@ data class SubClientLoginPacket(
     val connectionRequest: String,
 ) : Packet(id) {
     companion object : PacketCodec<SubClientLoginPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.SUB_CLIENT_LOGIN_PACKET
 

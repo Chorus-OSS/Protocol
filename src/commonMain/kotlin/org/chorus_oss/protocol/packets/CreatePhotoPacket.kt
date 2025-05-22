@@ -17,6 +17,8 @@ data class CreatePhotoPacket(
     val photoItemName: String,
 ) : Packet(id) {
     companion object : PacketCodec<CreatePhotoPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.CREATE_PHOTO_PACKET
 

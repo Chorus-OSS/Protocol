@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.types.Byte
@@ -14,6 +15,8 @@ data class AvailableActorIdentifiersPacket(
     val tag: List<Byte>,
 ) : Packet(id) {
     companion object : PacketCodec<AvailableActorIdentifiersPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS_PACKET
 

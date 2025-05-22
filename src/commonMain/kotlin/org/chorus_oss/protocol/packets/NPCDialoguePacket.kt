@@ -18,6 +18,8 @@ data class NPCDialoguePacket(
     val actionJSON: String,
 ) : Packet(id) {
     companion object : PacketCodec<NPCDialoguePacket> {
+        init { PacketRegistry.register(this) }
+
         enum class ActionType {
             Open,
             Close;

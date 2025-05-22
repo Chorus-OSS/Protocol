@@ -5,6 +5,7 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
@@ -16,6 +17,8 @@ data class ShowCreditsPacket(
     val statusType: StatusType,
 ) : Packet(id) {
     companion object : PacketCodec<ShowCreditsPacket> {
+        init { PacketRegistry.register(this) }
+
         enum class StatusType {
             Start,
             End;

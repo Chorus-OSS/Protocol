@@ -14,6 +14,8 @@ data class RequestChunkRadiusPacket(
     val maxChunkRadius: Int,
 ) : Packet(id) {
     companion object : PacketCodec<RequestChunkRadiusPacket> {
+        init { PacketRegistry.register(this) }
+
         override val id: Int
             get() = ProtocolInfo.REQUEST_CHUNK_RADIUS_PACKET
 
