@@ -2,12 +2,14 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 
 data class JigsawStructureDataPacket(
-    val data: List<Byte>
+    val data: ByteString
 ) : Packet(id) {
     companion object : PacketCodec<JigsawStructureDataPacket> {
         init {
@@ -21,12 +23,12 @@ data class JigsawStructureDataPacket(
             value: JigsawStructureDataPacket,
             stream: Sink
         ) {
-            ProtoHelper.serializeList(value.data, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.data, stream)
         }
 
         override fun deserialize(stream: Source): JigsawStructureDataPacket {
             return JigsawStructureDataPacket(
-                data = ProtoHelper.deserializeList(stream, Proto.Byte)
+                data = Proto.ByteString.deserialize(stream),
             )
         }
     }

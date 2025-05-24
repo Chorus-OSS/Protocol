@@ -3,10 +3,12 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -22,7 +24,7 @@ data class UpdateTradePacket(
     val displayName: String,
     val newTradeUI: Boolean,
     val demandBasedPrices: Boolean,
-    val serializedOffers: List<Byte>,
+    val serializedOffers: ByteString,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateTradePacket> {
         init {
@@ -42,7 +44,7 @@ data class UpdateTradePacket(
             Proto.String.serialize(value.displayName, stream)
             Proto.Boolean.serialize(value.newTradeUI, stream)
             Proto.Boolean.serialize(value.demandBasedPrices, stream)
-            ProtoHelper.serializeList(value.serializedOffers, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.serializedOffers, stream)
         }
 
         override fun deserialize(stream: Source): UpdateTradePacket {
@@ -56,7 +58,7 @@ data class UpdateTradePacket(
                 displayName = Proto.String.deserialize(stream),
                 newTradeUI = Proto.Boolean.deserialize(stream),
                 demandBasedPrices = Proto.Boolean.deserialize(stream),
-                serializedOffers = ProtoHelper.deserializeList(stream, Proto.Byte),
+                serializedOffers = Proto.ByteString.deserialize(stream),
             )
         }
     }

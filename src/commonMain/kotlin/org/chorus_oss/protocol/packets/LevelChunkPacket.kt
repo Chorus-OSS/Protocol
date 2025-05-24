@@ -2,6 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
@@ -15,7 +16,7 @@ data class LevelChunkPacket(
     val subChunkLimit: UShort,
     val cacheEnabled: Boolean,
     val blobHashes: List<ULong>,
-    val data: List<Byte>
+    val data: ByteString
 ) : Packet(id) {
     companion object : PacketCodec<LevelChunkPacket> {
         init {
@@ -41,7 +42,7 @@ data class LevelChunkPacket(
                 true -> ProtoHelper.serializeList(value.blobHashes, stream, ProtoLE.ULong)
                 false -> Unit
             }
-            ProtoHelper.serializeList(value.data, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.data, stream)
         }
 
         override fun deserialize(stream: Source): LevelChunkPacket {
@@ -60,7 +61,7 @@ data class LevelChunkPacket(
                     true -> ProtoHelper.deserializeList(stream, ProtoLE.ULong)
                     false -> emptyList()
                 },
-                data = ProtoHelper.deserializeList(stream, Proto.Byte)
+                data = Proto.ByteString.deserialize(stream),
             )
         }
     }

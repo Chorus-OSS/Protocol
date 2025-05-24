@@ -2,14 +2,17 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.String
 
 data class LoginPacket(
     val clientProtocol: Int,
-    val connectionRequest: List<Byte>
+    val connectionRequest: String,
 ) : Packet(id) {
     companion object : PacketCodec<LoginPacket> {
         init {
@@ -21,13 +24,13 @@ data class LoginPacket(
 
         override fun serialize(value: LoginPacket, stream: Sink) {
             ProtoBE.Int.serialize(value.clientProtocol, stream)
-            ProtoHelper.serializeList(value.connectionRequest, stream, Proto.Byte)
+            Proto.String.serialize(value.connectionRequest, stream)
         }
 
         override fun deserialize(stream: Source): LoginPacket {
             return LoginPacket(
                 clientProtocol = ProtoBE.Int.deserialize(stream),
-                connectionRequest = ProtoHelper.deserializeList(stream, Proto.Byte)
+                connectionRequest = Proto.String.deserialize(stream),
             )
         }
     }

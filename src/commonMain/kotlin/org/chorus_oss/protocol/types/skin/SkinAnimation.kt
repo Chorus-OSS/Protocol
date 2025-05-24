@@ -2,18 +2,20 @@ package org.chorus_oss.protocol.types.skin
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.UInt
 
 data class SkinAnimation(
     val imageWidth: UInt,
     val imageHeight: UInt,
-    val imageData: List<Byte>,
+    val imageData: ByteString,
     val animationType: AnimationType,
     val frameCount: Float,
     val expressionType: ExpressionType,
@@ -59,7 +61,7 @@ data class SkinAnimation(
         override fun serialize(value: SkinAnimation, stream: Sink) {
             ProtoLE.UInt.serialize(value.imageWidth, stream)
             ProtoLE.UInt.serialize(value.imageHeight, stream)
-            ProtoHelper.serializeList(value.imageData, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.imageData, stream)
             AnimationType.serialize(value.animationType, stream)
             ProtoLE.Float.serialize(value.frameCount, stream)
             ExpressionType.serialize(value.expressionType, stream)
@@ -69,7 +71,7 @@ data class SkinAnimation(
             return SkinAnimation(
                 imageWidth = ProtoLE.UInt.deserialize(stream),
                 imageHeight = ProtoLE.UInt.deserialize(stream),
-                imageData = ProtoHelper.deserializeList(stream, Proto.Byte),
+                imageData = Proto.ByteString.deserialize(stream),
                 animationType = AnimationType.deserialize(stream),
                 frameCount = ProtoLE.Float.deserialize(stream),
                 expressionType = ExpressionType.deserialize(stream),

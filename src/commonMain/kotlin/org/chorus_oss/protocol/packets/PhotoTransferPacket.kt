@@ -2,15 +2,17 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Long
 import org.chorus_oss.protocol.core.types.String
 
 data class PhotoTransferPacket(
     val photoName: String,
-    val photoData: List<Byte>,
+    val photoData: ByteString,
     val bookID: String,
     val photoType: PhotoType,
     val sourceType: PhotoType,
@@ -46,7 +48,7 @@ data class PhotoTransferPacket(
 
         override fun serialize(value: PhotoTransferPacket, stream: Sink) {
             Proto.String.serialize(value.photoName, stream)
-            ProtoHelper.serializeList(value.photoData, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.photoData, stream)
             Proto.String.serialize(value.bookID, stream)
             PhotoType.serialize(value.photoType, stream)
             PhotoType.serialize(value.sourceType, stream)
@@ -57,7 +59,7 @@ data class PhotoTransferPacket(
         override fun deserialize(stream: Source): PhotoTransferPacket {
             return PhotoTransferPacket(
                 photoName = Proto.String.deserialize(stream),
-                photoData = ProtoHelper.deserializeList(stream, Proto.Byte),
+                photoData = Proto.ByteString.deserialize(stream),
                 bookID = Proto.String.deserialize(stream),
                 photoType = PhotoType.deserialize(stream),
                 sourceType = PhotoType.deserialize(stream),

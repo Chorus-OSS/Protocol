@@ -2,17 +2,19 @@ package org.chorus_oss.protocol.types.subchunk
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.ULong
 
 data class SubChunkEntry(
     val offset: SubChunkOffset,
     val resultType: ResultType,
-    val rawPayload: List<Byte>?,
+    val rawPayload: ByteString?,
     val heightMapType: HeightMapType,
     val heightMapData: List<Byte>?,
     val blobHash: ULong?,
@@ -67,7 +69,7 @@ data class SubChunkEntry(
             ResultType.serialize(value.resultType, stream)
             when (value.resultType) {
                 ResultType.SuccessAllAir -> Unit
-                else -> ProtoHelper.serializeList(value.rawPayload as List<Byte>, stream, Proto.Byte)
+                else -> Proto.ByteString.serialize(value.rawPayload as ByteString, stream)
             }
             HeightMapType.serialize(value.heightMapType, stream)
             when (value.heightMapType) {
@@ -90,7 +92,7 @@ data class SubChunkEntry(
                 resultType = ResultType.deserialize(stream).also { resultType = it },
                 rawPayload = when (resultType) {
                     ResultType.SuccessAllAir -> null
-                    else -> ProtoHelper.deserializeList(stream, Proto.Byte)
+                    else -> Proto.ByteString.deserialize(stream)
                 },
                 heightMapType = HeightMapType.deserialize(stream).also { heightMapType = it },
                 heightMapData = when (heightMapType) {
@@ -110,7 +112,7 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
     override fun serialize(value: SubChunkEntry, stream: Sink) {
         SubChunkOffset.serialize(value.offset, stream)
         SubChunkEntry.Companion.ResultType.serialize(value.resultType, stream)
-        ProtoHelper.serializeList(value.rawPayload as List<Byte>, stream, Proto.Byte)
+        Proto.ByteString.serialize(value.rawPayload as ByteString, stream)
         SubChunkEntry.Companion.HeightMapType.serialize(value.heightMapType, stream)
         when (value.heightMapType) {
             SubChunkEntry.Companion.HeightMapType.HasData -> (value.heightMapData as List<Byte>).let {
@@ -128,7 +130,7 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
         return SubChunkEntry(
             offset = SubChunkOffset.deserialize(stream),
             resultType = SubChunkEntry.Companion.ResultType.deserialize(stream),
-            rawPayload = ProtoHelper.deserializeList(stream, Proto.Byte),
+            rawPayload = Proto.ByteString.deserialize(stream),
             heightMapType = SubChunkEntry.Companion.HeightMapType.deserialize(stream).also { heightMapType = it },
             heightMapData = when (heightMapType) {
                 SubChunkEntry.Companion.HeightMapType.HasData -> List(256) {

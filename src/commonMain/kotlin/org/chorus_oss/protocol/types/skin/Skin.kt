@@ -2,12 +2,14 @@ package org.chorus_oss.protocol.types.skin
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
 
@@ -17,14 +19,14 @@ data class Skin(
     val skinResourcePatch: String,
     val skinImageWidth: UInt,
     val skinImageHeight: UInt,
-    val skinData: List<Byte>,
+    val skinData: ByteString,
     val animations: List<SkinAnimation>,
     val capeImageWidth: UInt,
     val capeImageHeight: UInt,
-    val capeData: List<Byte>,
+    val capeData: ByteString,
     val skinGeometry: String,
     val geometryDataMinEngineVersion: String,
-    val animationData: List<Byte>,
+    val animationData: ByteString,
     val capeID: String,
     val fullID: String,
     val armSize: String,
@@ -44,17 +46,17 @@ data class Skin(
             Proto.String.serialize(value.skinResourcePatch, stream)
             ProtoLE.UInt.serialize(value.skinImageWidth, stream)
             ProtoLE.UInt.serialize(value.skinImageHeight, stream)
-            ProtoHelper.serializeList(value.skinData, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.skinData, stream)
             value.animations.let { animations ->
                 ProtoLE.UInt.serialize(animations.size.toUInt(), stream)
                 animations.forEach { SkinAnimation.serialize(it, stream) }
             }
             ProtoLE.UInt.serialize(value.capeImageWidth, stream)
             ProtoLE.UInt.serialize(value.capeImageHeight, stream)
-            ProtoHelper.serializeList(value.capeData, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.capeData, stream)
             Proto.String.serialize(value.skinGeometry, stream)
             Proto.String.serialize(value.geometryDataMinEngineVersion, stream)
-            ProtoHelper.serializeList(value.animationData, stream, Proto.Byte)
+            Proto.ByteString.serialize(value.animationData, stream)
             Proto.String.serialize(value.capeID, stream)
             Proto.String.serialize(value.fullID, stream)
             Proto.String.serialize(value.armSize, stream)
@@ -81,16 +83,16 @@ data class Skin(
                 skinResourcePatch = Proto.String.deserialize(stream),
                 skinImageWidth = ProtoLE.UInt.deserialize(stream),
                 skinImageHeight = ProtoLE.UInt.deserialize(stream),
-                skinData = ProtoHelper.deserializeList(stream, Proto.Byte),
+                skinData = Proto.ByteString.deserialize(stream),
                 animations = List(ProtoLE.UInt.deserialize(stream).toInt()) {
                     SkinAnimation.deserialize(stream)
                 },
                 capeImageWidth = ProtoLE.UInt.deserialize(stream),
                 capeImageHeight = ProtoLE.UInt.deserialize(stream),
-                capeData = ProtoHelper.deserializeList(stream, Proto.Byte),
+                capeData = Proto.ByteString.deserialize(stream),
                 skinGeometry = Proto.String.deserialize(stream),
                 geometryDataMinEngineVersion = Proto.String.deserialize(stream),
-                animationData = ProtoHelper.deserializeList(stream, Proto.Byte),
+                animationData = Proto.ByteString.deserialize(stream),
                 capeID = Proto.String.deserialize(stream),
                 fullID = Proto.String.deserialize(stream),
                 armSize = Proto.String.deserialize(stream),
