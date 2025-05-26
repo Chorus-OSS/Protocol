@@ -22,8 +22,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(libs.kotlinx.io)
+
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.io)
                 implementation(libs.semver)
                 implementation(libs.nbt)
                 implementation(libs.varlen)
