@@ -16,6 +16,7 @@ data class Attribute(
     val max: Float,
     val defaultMin: Float,
     val defaultMax: Float,
+    val defaultValue: Float,
     val modifiers: List<AttributeModifier>
 ) {
     companion object : ProtoCodec<Attribute> {
@@ -25,6 +26,7 @@ data class Attribute(
             ProtoLE.Float.serialize(value.value, stream)
             ProtoLE.Float.serialize(value.defaultMin, stream)
             ProtoLE.Float.serialize(value.defaultMax, stream)
+            ProtoLE.Float.serialize(value.defaultValue, stream)
             Proto.String.serialize(value.name, stream)
             ProtoHelper.serializeList(value.modifiers, stream, AttributeModifier)
         }
@@ -36,6 +38,7 @@ data class Attribute(
                 value = ProtoLE.Float.deserialize(stream),
                 defaultMin = ProtoLE.Float.deserialize(stream),
                 defaultMax = ProtoLE.Float.deserialize(stream),
+                defaultValue = ProtoLE.Float.deserialize(stream),
                 name = Proto.String.deserialize(stream),
                 modifiers = ProtoHelper.deserializeList(stream, AttributeModifier)
             )
