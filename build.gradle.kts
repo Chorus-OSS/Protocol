@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.chorus_oss"
-version = "1.0-SNAPSHOT"
+version = "v800-SNAPSHOT"
 description = "Protocol"
 
 repositories {
@@ -23,17 +23,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(libs.kotlinx.io)
+                api(libs.chorus.nbt)
 
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.semver)
-                implementation(libs.nbt)
-                implementation(libs.varlen)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
+                implementation(libs.chorus.varlen)
             }
         }
     }
