@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -18,12 +16,7 @@ data class SetActorMotionPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<SetActorMotionPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SET_ACTOR_MOTION_PACKET
+        override val id: Int = 40
 
         override fun serialize(value: SetActorMotionPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)

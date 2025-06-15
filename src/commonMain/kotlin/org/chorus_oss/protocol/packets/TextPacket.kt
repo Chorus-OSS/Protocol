@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
@@ -19,10 +18,6 @@ data class TextPacket(
     val filteredMessage: String,
 ) : Packet(id) {
     companion object : PacketCodec<TextPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class TextType {
             Raw,
             Chat,
@@ -51,8 +46,7 @@ data class TextPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.TEXT_PACKET
+        override val id: Int = 9
 
         override fun serialize(value: TextPacket, stream: Sink) {
             TextType.serialize(value.textType, stream)

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
@@ -21,10 +20,6 @@ data class MobEffectPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<MobEffectPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Operation(val netOrdinal: Byte) {
             Add(1),
             Modify(2),
@@ -46,8 +41,7 @@ data class MobEffectPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.MOB_EFFECT_PACKET
+        override val id: Int = 28
 
         override fun serialize(value: MobEffectPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.entityRuntimeID, stream)

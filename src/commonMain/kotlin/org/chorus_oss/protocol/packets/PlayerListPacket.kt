@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
@@ -25,10 +24,6 @@ data class PlayerListPacket(
     val removePlayerList: List<Uuid>?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerListPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Add,
             Remove;
@@ -97,8 +92,7 @@ data class PlayerListPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_LIST_PACKET
+        override val id: Int = 63
 
         override fun serialize(value: PlayerListPacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)

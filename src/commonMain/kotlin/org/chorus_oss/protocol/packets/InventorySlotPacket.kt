@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.inventory.FullContainerName
@@ -20,12 +18,7 @@ data class InventorySlotPacket(
     val newItem: ItemStack,
 ) : Packet(id) {
     companion object : PacketCodec<InventorySlotPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.INVENTORY_SLOT_PACKET
+        override val id: Int = 50
 
         override fun serialize(value: InventorySlotPacket, stream: Sink) {
             ProtoVAR.UInt.serialize(value.windowID, stream)

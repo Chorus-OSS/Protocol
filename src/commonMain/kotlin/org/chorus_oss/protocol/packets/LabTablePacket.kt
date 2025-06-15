@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.IVector3
 
@@ -14,10 +16,6 @@ data class LabTablePacket(
     val reactionType: Byte
 ) : Packet(id) {
     companion object : PacketCodec<LabTablePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Combine,
             React,
@@ -37,8 +35,7 @@ data class LabTablePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.LAB_TABLE_PACKET
+        override val id: Int = 109
 
         override fun serialize(value: LabTablePacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)

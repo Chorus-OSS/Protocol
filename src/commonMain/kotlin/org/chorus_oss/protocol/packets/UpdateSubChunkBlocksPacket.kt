@@ -3,10 +3,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.BlockChangeEntry
 import org.chorus_oss.protocol.types.IVector3
@@ -19,12 +17,7 @@ data class UpdateSubChunkBlocksPacket(
     val extra: List<BlockChangeEntry>,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateSubChunkBlocksPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_SUB_CHUNK_BLOCKS_PACKET
+        override val id: Int = 172
 
         override fun serialize(
             value: UpdateSubChunkBlocksPacket,

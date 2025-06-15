@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
@@ -15,10 +14,6 @@ data class ResourcePackClientResponsePacket(
     val packsToDownload: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<ResourcePackClientResponsePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Response(val net: Byte) {
             Refused(1),
             SendPacks(2),
@@ -41,8 +36,7 @@ data class ResourcePackClientResponsePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE_PACKET
+        override val id: Int = 8
 
         override fun serialize(
             value: ResourcePackClientResponsePacket,

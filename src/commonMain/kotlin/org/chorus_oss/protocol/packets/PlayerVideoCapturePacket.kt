@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -14,10 +13,6 @@ data class PlayerVideoCapturePacket(
     val filePrefix: String?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerVideoCapturePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Action {
             Stop,
             Start;
@@ -36,8 +31,7 @@ data class PlayerVideoCapturePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_VIDEO_CAPTURE_PACKET
+        override val id: Int = 324
 
         override fun serialize(
             value: PlayerVideoCapturePacket,

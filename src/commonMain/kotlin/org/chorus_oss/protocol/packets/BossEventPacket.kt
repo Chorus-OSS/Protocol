@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
@@ -17,10 +16,6 @@ data class BossEventPacket(
     val eventData: EventType.Companion.EventData?,
 ) : Packet(id) {
     companion object : PacketCodec<BossEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class EventType {
             ADD,
             PLAYER_ADDED,
@@ -86,8 +81,7 @@ data class BossEventPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.BOSS_EVENT_PACKET
+        override val id: Int = 74
 
         override fun deserialize(stream: Source): BossEventPacket {
             val eventType: EventType

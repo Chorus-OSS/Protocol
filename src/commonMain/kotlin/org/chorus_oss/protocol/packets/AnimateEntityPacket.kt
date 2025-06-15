@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.Int
@@ -18,30 +17,8 @@ data class AnimateEntityPacket(
     val blendOutTime: Float,
     val runtimeIDs: List<ActorRuntimeID>,
 ) : Packet(id) {
-    data class Animation(
-        val animation: String,
-        val nextState: String = DEFAULT_NEXT_STATE,
-        val stopExpression: String = DEFAULT_STOP_EXPRESSION,
-        val stopExpressionVersion: Int = DEFAULT_STOP_EXPRESSION_VERSION,
-        val controller: String = DEFAULT_CONTROLLER,
-        val blendOutTime: Float = DEFAULT_BLEND_OUT_TIME,
-    ) {
-        companion object {
-            const val DEFAULT_BLEND_OUT_TIME: Float = 0.0f
-            const val DEFAULT_STOP_EXPRESSION: String = "query.any_animation_finished"
-            const val DEFAULT_CONTROLLER: String = "__runtime_controller"
-            const val DEFAULT_NEXT_STATE: String = "default"
-            const val DEFAULT_STOP_EXPRESSION_VERSION: Int = 16777216
-        }
-    }
-
     companion object : PacketCodec<AnimateEntityPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.ANIMATE_ENTITY_PACKET
+        override val id: Int = 158
 
         override fun deserialize(stream: Source): AnimateEntityPacket {
             return AnimateEntityPacket(
@@ -63,18 +40,6 @@ data class AnimateEntityPacket(
             Proto.String.serialize(value.controller, stream)
             ProtoLE.Float.serialize(value.blendOutTime, stream)
             ProtoHelper.serializeList(value.runtimeIDs, stream, ActorRuntimeID)
-        }
-
-        fun fromAnimation(ani: Animation): AnimateEntityPacket {
-            return AnimateEntityPacket(
-                animation = ani.animation,
-                nextState = ani.nextState,
-                blendOutTime = ani.blendOutTime,
-                stopExpression = ani.stopExpression,
-                controller = ani.controller,
-                stopExpressionVersion = ani.stopExpressionVersion,
-                runtimeIDs = mutableListOf()
-            )
         }
     }
 }

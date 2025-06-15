@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.types.Uuid
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import kotlin.uuid.ExperimentalUuidApi
@@ -17,12 +19,7 @@ data class EmoteListPacket(
     val emotePieces: List<Uuid>,
 ) : Packet(id) {
     companion object : PacketCodec<EmoteListPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.EMOTE_LIST_PACKET
+        override val id: Int = 152
 
         override fun serialize(value: EmoteListPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.playerRuntimeID, stream)

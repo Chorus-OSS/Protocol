@@ -5,7 +5,6 @@ import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.*
@@ -93,12 +92,7 @@ data class StartGamePacket(
     val serverAuthoritativeSound: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<StartGamePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.START_GAME_PACKET
+        override val id: Int = 11
 
         override fun serialize(value: StartGamePacket, stream: Sink) {
             ActorUniqueID.serialize(value.entityUniqueID, stream)

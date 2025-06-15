@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
@@ -19,10 +18,6 @@ data class SetTitlePacket(
     val filteredMessage: String,
 ) : Packet(id) {
     companion object : PacketCodec<SetTitlePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Clear,
             Reset,
@@ -48,8 +43,7 @@ data class SetTitlePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SET_TITLE_PACKET
+        override val id: Int = 88
 
         override fun serialize(value: SetTitlePacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)

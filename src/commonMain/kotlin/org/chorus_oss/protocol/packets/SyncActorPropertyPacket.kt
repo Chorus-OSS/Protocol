@@ -6,22 +6,15 @@ import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 
 
 data class SyncActorPropertyPacket(
     val data: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<SyncActorPropertyPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SYNC_ENTITY_PROPERTY_PACKET
+        override val id: Int = 165
 
         override fun serialize(
             value: SyncActorPropertyPacket,

@@ -3,10 +3,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.types.AbilitiesData
 
 
@@ -14,12 +12,7 @@ data class UpdateAbilitiesPacket(
     val abilitiesData: AbilitiesData,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateAbilitiesPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_ABILITIES_PACKET
+        override val id: Int = 187
 
         override fun serialize(value: UpdateAbilitiesPacket, stream: Sink) {
             AbilitiesData.serialize(value.abilitiesData, stream)

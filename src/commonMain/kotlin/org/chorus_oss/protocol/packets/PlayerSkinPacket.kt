@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
@@ -24,12 +22,7 @@ class PlayerSkinPacket(
     val isTrusted: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerSkinPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_SKIN_PACKET
+        override val id: Int = 93
 
         override fun serialize(value: PlayerSkinPacket, stream: Sink) {
             Proto.Uuid.serialize(value.uuid, stream)

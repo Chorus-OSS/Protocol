@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.Short
 
@@ -13,10 +15,6 @@ data class CompletedUsingItemPacket(
     val itemUseMethod: ItemUseMethod,
 ) : Packet(id) {
     companion object : PacketCodec<CompletedUsingItemPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ItemUseMethod(val id: Int) {
             UNKNOWN(-1),
             EQUIP_ARMOR(0),
@@ -54,8 +52,7 @@ data class CompletedUsingItemPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.COMPLETED_USING_ITEM_PACKET
+        override val id: Int = 142
 
         override fun serialize(
             value: CompletedUsingItemPacket,

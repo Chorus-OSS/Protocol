@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -12,12 +11,7 @@ data class LevelEventGenericPacket(
     val serializedEventData: List<Byte>
 ) : Packet(id) {
     companion object : PacketCodec<LevelEventGenericPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.LEVEL_EVENT_GENERIC_PACKET
+        override val id: Int = 124
 
         override fun serialize(
             value: LevelEventGenericPacket,

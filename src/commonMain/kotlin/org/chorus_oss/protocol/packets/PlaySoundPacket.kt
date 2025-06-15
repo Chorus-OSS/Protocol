@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.IVector3
@@ -18,12 +20,7 @@ data class PlaySoundPacket(
     val pitch: Float,
 ) : Packet(id) {
     companion object : PacketCodec<PlaySoundPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.PLAY_SOUND_PACKET
+        override val id: Int = 86
 
         override fun serialize(value: PlaySoundPacket, stream: Sink) {
             Proto.String.serialize(value.soundName, stream)

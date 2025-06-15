@@ -2,19 +2,12 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 
 class RefreshEntitlementsPacket : Packet(id) {
     companion object : PacketCodec<RefreshEntitlementsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.REFRESH_ENTITLEMENTS_PACKET
+        override val id: Int = 305
 
         override fun serialize(
             value: RefreshEntitlementsPacket,

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
@@ -25,12 +24,7 @@ data class AddActorPacket(
     val actorLinks: List<ActorLink>
 ) : Packet(id) {
     companion object : PacketCodec<AddActorPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.ADD_ACTOR_PACKET
+        override val id: Int = 13
 
         override fun deserialize(stream: Source): AddActorPacket {
             return AddActorPacket(

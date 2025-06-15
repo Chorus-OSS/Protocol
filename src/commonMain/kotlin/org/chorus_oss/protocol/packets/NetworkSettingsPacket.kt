@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
@@ -20,12 +22,7 @@ data class NetworkSettingsPacket(
     val clientThrottleScalar: Float,
 ) : Packet(id) {
     companion object : PacketCodec<NetworkSettingsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.NETWORK_SETTINGS_PACKET
+        override val id: Int = 143
 
         override fun serialize(value: NetworkSettingsPacket, stream: Sink) {
             ProtoLE.UShort.serialize(value.compressionThreshold, stream)

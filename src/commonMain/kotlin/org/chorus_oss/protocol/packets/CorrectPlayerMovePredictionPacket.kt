@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
@@ -21,10 +20,6 @@ data class CorrectPlayerMovePredictionPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<CorrectPlayerMovePredictionPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class PredictionType {
             Player,
             Vehicle;
@@ -43,8 +38,7 @@ data class CorrectPlayerMovePredictionPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.CORRECT_PLAYER_MOVE_PREDICTION_PACKET
+        override val id: Int = 161
 
         override fun serialize(
             value: CorrectPlayerMovePredictionPacket,

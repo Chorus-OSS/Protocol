@@ -2,18 +2,16 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 
 data class MultiplayerSettingsPacket(
     val actionType: ActionType,
 ) : Packet(id) {
     companion object : PacketCodec<MultiplayerSettingsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             EnableMultiplayer,
             DisableMultiplayer,
@@ -33,8 +31,7 @@ data class MultiplayerSettingsPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.MULTIPLAYER_SETTINGS_PACKET
+        override val id: Int = 139
 
         override fun serialize(
             value: MultiplayerSettingsPacket,

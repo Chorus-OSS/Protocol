@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.ChunkPos
@@ -19,15 +18,12 @@ data class LevelChunkPacket(
     val data: ByteString
 ) : Packet(id) {
     companion object : PacketCodec<LevelChunkPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         val LIMITLESS: UInt = UInt.MAX_VALUE
         val LIMITED: UInt = UInt.MAX_VALUE - 1u
 
-        override val id: Int
-            get() = ProtocolInfo.LEVEL_CHUNK_PACKET
+        override val id: Int = 58
 
         override fun serialize(value: LevelChunkPacket, stream: Sink) {
             ChunkPos.serialize(value.position, stream)

@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.Vector3f
@@ -14,10 +16,6 @@ data class PlayerLocationPacket(
     val position: Vector3f?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerLocationPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             Coordinates,
             Hide;
@@ -36,8 +34,7 @@ data class PlayerLocationPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_LOCATION_PACKET
+        override val id: Int = 326
 
         override fun serialize(
             value: PlayerLocationPacket,

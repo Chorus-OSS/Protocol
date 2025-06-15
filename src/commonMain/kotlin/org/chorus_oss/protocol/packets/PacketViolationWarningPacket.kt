@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
@@ -16,10 +15,6 @@ data class PacketViolationWarningPacket(
     val violationContext: String,
 ) : Packet(id) {
     companion object : PacketCodec<PacketViolationWarningPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type(val net: Int) {
             Unknown(-1),
             MalformedPacket(0);
@@ -62,8 +57,7 @@ data class PacketViolationWarningPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PACKET_VIOLATION_WARNING_PACKET
+        override val id: Int = 156
 
         override fun serialize(
             value: PacketViolationWarningPacket,

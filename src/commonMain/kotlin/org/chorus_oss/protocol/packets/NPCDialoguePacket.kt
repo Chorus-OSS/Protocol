@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
@@ -18,10 +17,6 @@ data class NPCDialoguePacket(
     val actionJSON: String,
 ) : Packet(id) {
     companion object : PacketCodec<NPCDialoguePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Open,
             Close;
@@ -40,8 +35,7 @@ data class NPCDialoguePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.NPC_DIALOGUE_PACKET
+        override val id: Int = 169
 
         override fun serialize(value: NPCDialoguePacket, stream: Sink) {
             ActorUniqueID.serialize(value.entityUniqueID, stream)

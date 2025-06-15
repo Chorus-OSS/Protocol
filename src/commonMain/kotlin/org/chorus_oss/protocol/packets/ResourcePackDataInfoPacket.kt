@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.*
 
 data class ResourcePackDataInfoPacket(
@@ -17,10 +19,6 @@ data class ResourcePackDataInfoPacket(
     val type: Type,
 ) {
     companion object : PacketCodec<ResourcePackDataInfoPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             Invalid,
             Addon,
@@ -43,8 +41,7 @@ data class ResourcePackDataInfoPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.RESOURCE_PACK_DATA_INFO_PACKET
+        override val id: Int = 82
 
         override fun serialize(value: ResourcePackDataInfoPacket, stream: Sink) {
             Proto.String.serialize(value.resourceName, stream)

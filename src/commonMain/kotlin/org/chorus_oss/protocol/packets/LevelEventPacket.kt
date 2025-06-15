@@ -3,10 +3,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.Vector3f
@@ -17,9 +15,7 @@ data class LevelEventPacket(
     val eventData: Int,
 ) : Packet(id) {
     companion object : PacketCodec<LevelEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val EVENT_UNDEFINED: Int = 0
         const val EVENT_SOUND_CLICK: Int = 1000
@@ -149,8 +145,7 @@ data class LevelEventPacket(
         const val EVENT_PARTICLE_CREAKING_HEART_TRAIL: Int = 9816
         const val EVENT_ADD_PARTICLE_MASK: Int = 0x4000
 
-        override val id: Int
-            get() = ProtocolInfo.LEVEL_EVENT_PACKET
+        override val id: Int = 25
 
         override fun serialize(value: LevelEventPacket, stream: Sink) {
             ProtoVAR.Int.serialize(value.eventType, stream)

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
@@ -13,10 +12,6 @@ data class UnlockedRecipesPacket(
     val recipes: List<String>
 ) : Packet(id) {
     companion object : PacketCodec<UnlockedRecipesPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class UnlockType {
             Empty,
             InitiallyUnlocked,
@@ -38,8 +33,7 @@ data class UnlockedRecipesPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.UNLOCKED_RECIPES_PACKET
+        override val id: Int = 199
 
         override fun serialize(value: UnlockedRecipesPacket, stream: Sink) {
             UnlockType.serialize(value.unlockType, stream)

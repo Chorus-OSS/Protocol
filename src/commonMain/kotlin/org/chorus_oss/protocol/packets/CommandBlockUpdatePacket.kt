@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
@@ -24,9 +23,7 @@ data class CommandBlockUpdatePacket(
     val shouldExecuteOnFirstTick: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CommandBlockUpdatePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         interface CommandBlockHolderData
 
@@ -77,8 +74,7 @@ data class CommandBlockUpdatePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET
+        override val id: Int = 78
 
         override fun deserialize(stream: Source): CommandBlockUpdatePacket {
             val isBlock: Boolean

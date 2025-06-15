@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.ByteString
@@ -20,10 +19,6 @@ data class PhotoTransferPacket(
     val newPhotoName: String,
 ) : Packet(id) {
     companion object : PacketCodec<PhotoTransferPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class PhotoType {
             Portfolio,
             PhotoItem,
@@ -43,8 +38,7 @@ data class PhotoTransferPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PHOTO_TRANSFER_PACKET
+        override val id: Int = 99
 
         override fun serialize(value: PhotoTransferPacket, stream: Sink) {
             Proto.String.serialize(value.photoName, stream)

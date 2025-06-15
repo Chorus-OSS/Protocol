@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -18,12 +16,7 @@ data class RequestPermissionsPacket(
     val requestedPermissions: UShort,
 ) : Packet(id) {
     companion object : PacketCodec<RequestPermissionsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.REQUEST_PERMISSIONS_PACKET
+        override val id: Int = 185
 
         override fun serialize(
             value: RequestPermissionsPacket,

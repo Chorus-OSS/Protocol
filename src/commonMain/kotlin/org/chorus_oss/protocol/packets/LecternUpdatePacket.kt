@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.IVector3
@@ -18,12 +16,7 @@ data class LecternUpdatePacket(
     val blockPosition: IVector3,
 ) : Packet(id) {
     companion object : PacketCodec<LecternUpdatePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.LECTERN_UPDATE_PACKET
+        override val id: Int = 125
 
         override fun serialize(value: LecternUpdatePacket, stream: Sink) {
             Proto.Byte.serialize(value.page, stream)

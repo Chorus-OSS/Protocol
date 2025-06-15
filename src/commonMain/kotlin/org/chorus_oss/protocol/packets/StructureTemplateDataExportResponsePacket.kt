@@ -5,8 +5,10 @@ import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
@@ -18,10 +20,6 @@ data class StructureTemplateDataExportResponsePacket(
     val responseType: ResponseType,
 ) : Packet(id) {
     companion object : PacketCodec<StructureTemplateDataExportResponsePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ResponseType(val net: Byte) {
             Export(1),
             Query(2);
@@ -42,8 +40,7 @@ data class StructureTemplateDataExportResponsePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE_PACKET
+        override val id: Int = 133
 
         override fun serialize(
             value: StructureTemplateDataExportResponsePacket,

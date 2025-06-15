@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.IVector3
@@ -17,10 +19,6 @@ data class StructureTemplateDataExportRequestPacket(
     val requestType: RequestType,
 ) : Packet(id) {
     companion object : PacketCodec<StructureTemplateDataExportRequestPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class RequestType(val net: Byte) {
             ExportFromSave(1),
             ExportFromLoad(2),
@@ -42,8 +40,7 @@ data class StructureTemplateDataExportRequestPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST_PACKET
+        override val id: Int = 132
 
         override fun serialize(
             value: StructureTemplateDataExportRequestPacket,

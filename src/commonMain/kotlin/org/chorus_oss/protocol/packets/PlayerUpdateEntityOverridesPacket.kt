@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
@@ -18,10 +17,6 @@ data class PlayerUpdateEntityOverridesPacket(
     val floatValue: Float?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerUpdateEntityOverridesPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             ClearAll,
             Remove,
@@ -42,8 +37,7 @@ data class PlayerUpdateEntityOverridesPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_UPDATE_ENTITY_OVERRIDES_PACKET
+        override val id: Int = 325
 
         override fun serialize(
             value: PlayerUpdateEntityOverridesPacket,

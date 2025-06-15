@@ -3,10 +3,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.scoreboard.ScoreboardSlot
@@ -21,12 +19,7 @@ data class SetDisplayObjectivePacket(
     val sortOrder: ScoreboardSlotOrder,
 ) : Packet(id) {
     companion object : PacketCodec<SetDisplayObjectivePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SET_DISPLAY_OBJECTIVE_PACKET
+        override val id: Int = 107
 
         override fun serialize(
             value: SetDisplayObjectivePacket,

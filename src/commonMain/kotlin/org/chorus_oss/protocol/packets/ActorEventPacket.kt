@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -15,10 +14,6 @@ class ActorEventPacket(
     val eventData: Int,
 ) : Packet(id) {
     companion object : PacketCodec<ActorEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type(val id: Byte) {
             NONE(0),
             JUMP(1),
@@ -97,8 +92,7 @@ class ActorEventPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.ACTOR_EVENT_PACKET
+        override val id: Int = 27
 
         override fun serialize(value: ActorEventPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.actorRuntimeID, stream)

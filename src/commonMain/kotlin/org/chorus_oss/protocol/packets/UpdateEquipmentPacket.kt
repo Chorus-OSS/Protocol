@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Int
@@ -19,12 +21,7 @@ data class UpdateEquipmentPacket(
     val serializedInventoryData: ByteString,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateEquipmentPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_EQUIPMENT_PACKET
+        override val id: Int = 81
 
         override fun serialize(value: UpdateEquipmentPacket, stream: Sink) {
             Proto.Byte.serialize(value.windowID, stream)

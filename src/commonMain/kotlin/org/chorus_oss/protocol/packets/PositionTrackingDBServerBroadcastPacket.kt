@@ -5,7 +5,6 @@ import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -16,10 +15,6 @@ data class PositionTrackingDBServerBroadcastPacket(
     val payload: CompoundTag,
 ) : Packet(id) {
     companion object : PacketCodec<PositionTrackingDBServerBroadcastPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Action {
             Update,
             Destroy,
@@ -39,8 +34,7 @@ data class PositionTrackingDBServerBroadcastPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.POSITION_TRACKING_DB_SERVER_BROADCAST_PACKET
+        override val id: Int = 153
 
         override fun serialize(
             value: PositionTrackingDBServerBroadcastPacket,

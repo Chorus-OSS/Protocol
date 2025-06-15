@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -23,10 +22,6 @@ data class MovePlayerPacket(
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<MovePlayerPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Mode {
             Normal,
             Reset,
@@ -68,8 +63,7 @@ data class MovePlayerPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.MOVE_PLAYER_PACKET
+        override val id: Int = 19
 
         override fun serialize(value: MovePlayerPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.entityRuntimeID, stream)

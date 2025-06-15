@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
@@ -14,12 +12,7 @@ data class TakeItemEntityPacket(
     val takerEntityRuntimeID: ActorRuntimeID,
 ) : Packet(id) {
     companion object : PacketCodec<TakeItemEntityPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.TAKE_ITEM_ENTITY_PACKET
+        override val id: Int = 17
 
         override fun serialize(value: TakeItemEntityPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.itemEntityRuntimeID, stream)

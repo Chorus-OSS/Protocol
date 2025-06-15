@@ -2,20 +2,13 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 
 
 class ServerSettingsRequestPacket : Packet(id) {
     companion object : PacketCodec<ServerSettingsRequestPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET
+        override val id: Int = 102
 
         override fun serialize(
             value: ServerSettingsRequestPacket,

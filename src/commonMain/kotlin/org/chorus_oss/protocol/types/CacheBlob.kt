@@ -5,9 +5,7 @@ import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
-import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.ULong
 

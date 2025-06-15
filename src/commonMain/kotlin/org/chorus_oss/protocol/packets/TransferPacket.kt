@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UShort
@@ -15,12 +17,7 @@ data class TransferPacket(
     val reloadWorld: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<TransferPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.TRANSFER_PACKET
+        override val id: Int = 85
 
         override fun serialize(value: TransferPacket, stream: Sink) {
             Proto.String.serialize(value.address, stream)

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
@@ -20,10 +19,6 @@ data class LevelSoundEventPacket(
     val actorUniqueID: Long
 ) : Packet(id) {
     companion object : PacketCodec<LevelSoundEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class SoundType(val id: Int) {
             ITEM_USE_ON(0),
             HIT(1),
@@ -593,8 +588,7 @@ data class LevelSoundEventPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.LEVEL_SOUND_EVENT_PACKET
+        override val id: Int = 123
 
         override fun serialize(
             value: LevelSoundEventPacket,

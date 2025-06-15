@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.PlayerMovementMode
@@ -14,12 +12,7 @@ data class SetMovementAuthorityPacket(
     val movementType: PlayerMovementMode,
 ) : Packet(id) {
     companion object : PacketCodec<SetMovementAuthorityPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SET_MOVEMENT_AUTHORITY_PACKET
+        override val id: Int = 319
 
         override fun serialize(
             value: SetMovementAuthorityPacket,

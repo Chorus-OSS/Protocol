@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.UShort
@@ -20,9 +18,7 @@ data class MoveActorDeltaPacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorDeltaPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val FLAG_HAS_X: UShort = 0x1u
         const val FLAG_HAS_Y: UShort = 0x2u
@@ -34,8 +30,7 @@ data class MoveActorDeltaPacket(
         const val FLAG_TELEPORT: UShort = 0x80u
         const val FLAG_FORCE_MOVE: UShort = 0x100u
 
-        override val id: Int
-            get() = ProtocolInfo.MOVE_ENTITY_DELTA_PACKET
+        override val id: Int = 111
 
         override fun serialize(value: MoveActorDeltaPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.entityRuntimeID, stream)

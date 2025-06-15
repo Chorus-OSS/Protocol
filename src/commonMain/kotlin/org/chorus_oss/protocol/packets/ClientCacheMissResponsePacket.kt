@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.CacheBlob
 
@@ -13,12 +11,7 @@ data class ClientCacheMissResponsePacket(
     val blobs: List<CacheBlob>
 ) : Packet(id) {
     companion object : PacketCodec<ClientCacheMissResponsePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.CLIENT_CACHE_MISS_RESPONSE_PACKET
+        override val id: Int = 136
 
         override fun serialize(
             value: ClientCacheMissResponsePacket,

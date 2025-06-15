@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.IVector3
@@ -19,17 +17,14 @@ data class UpdateBlockPacket(
     val layer: UInt,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateBlockPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val FLAG_NEIGHBORS: UInt = 0x1u
         const val FLAG_NETWORK: UInt = 0x2u
         const val FLAG_NO_GRAPHICS: UInt = 0x4u
         const val FLAG_PRIORITY: UInt = 0x8u
 
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_BLOCK_PACKET
+        override val id: Int = 21
 
         override fun serialize(value: UpdateBlockPacket, stream: Sink) {
             UIVector3.serialize(value.position, stream)

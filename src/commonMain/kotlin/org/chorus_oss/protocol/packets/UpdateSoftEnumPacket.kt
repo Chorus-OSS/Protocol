@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
@@ -14,10 +13,6 @@ data class UpdateSoftEnumPacket(
     val actionType: ActionType,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateSoftEnumPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Add,
             Remove,
@@ -37,8 +32,7 @@ data class UpdateSoftEnumPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_SOFT_ENUM_PACKET
+        override val id: Int = 114
 
         override fun serialize(value: UpdateSoftEnumPacket, stream: Sink) {
             Proto.String.serialize(value.enumType, stream)

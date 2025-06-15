@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -20,12 +18,7 @@ data class MobEquipmentPacket(
     val windowID: Byte,
 ) : Packet(id) {
     companion object : PacketCodec<MobEquipmentPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.MOB_EQUIPMENT_PACKET
+        override val id: Int = 31
 
         override fun serialize(value: MobEquipmentPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.entityRuntimeID, stream)

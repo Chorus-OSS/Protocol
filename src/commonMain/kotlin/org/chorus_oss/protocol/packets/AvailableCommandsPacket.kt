@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UByte
@@ -21,12 +20,7 @@ data class AvailableCommandsPacket(
     val constraints: List<CommandEnumConstraint>
 ) : Packet(id) {
     companion object : PacketCodec<AvailableCommandsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.AVAILABLE_COMMANDS_PACKET
+        override val id: Int = 76
 
         override fun deserialize(stream: Source): AvailableCommandsPacket {
             val enumValuesLen: Int

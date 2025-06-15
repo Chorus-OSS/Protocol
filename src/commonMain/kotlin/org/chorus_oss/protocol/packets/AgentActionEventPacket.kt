@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.AgentActionType
@@ -15,12 +17,7 @@ data class AgentActionEventPacket(
     val response: String,
 ) : Packet(id) {
     companion object : PacketCodec<AgentActionEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.AGENT_ACTION_EVENT_PACKET
+        override val id: Int = 181
 
         override fun deserialize(stream: Source): AgentActionEventPacket {
             return AgentActionEventPacket(

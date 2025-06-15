@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
@@ -20,10 +19,6 @@ data class GameTestRequestPacket(
     val name: String,
 ) : Packet(id) {
     companion object : PacketCodec<GameTestRequestPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Rotation {
             Rotate0,
             Rotate90,
@@ -45,8 +40,7 @@ data class GameTestRequestPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.GAME_TEST_REQUEST_PACKET
+        override val id: Int = 194
 
         override fun serialize(value: GameTestRequestPacket, stream: Sink) {
             ProtoVAR.Int.serialize(value.maxTestsPerBatch, stream)

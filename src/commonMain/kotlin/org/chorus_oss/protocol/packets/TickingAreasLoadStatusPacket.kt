@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 
@@ -14,12 +12,7 @@ data class TickingAreasLoadStatusPacket(
     val preload: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<TickingAreasLoadStatusPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.TICKING_AREAS_LOAD_STATUS_PACKET
+        override val id: Int = 179
 
         override fun serialize(
             value: TickingAreasLoadStatusPacket,

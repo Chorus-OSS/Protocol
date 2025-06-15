@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 
@@ -14,9 +16,7 @@ data class ContainerSetDataPacket(
     val value: Int,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerSetDataPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val FURNACE_TICK_COUNT: Int = 0
         const val FURNACE_LIT_TIME: Int = 1
@@ -28,8 +28,7 @@ data class ContainerSetDataPacket(
         const val BREWING_STAND_FUEL_AMOUNT: Int = 1
         const val BREWING_STAND_FUEL_TOTAL: Int = 2
 
-        override val id: Int
-            get() = ProtocolInfo.CONTAINER_SET_DATA_PACKET
+        override val id: Int = 51
 
         override fun serialize(value: ContainerSetDataPacket, stream: Sink) {
             Proto.Byte.serialize(value.containerID, stream)

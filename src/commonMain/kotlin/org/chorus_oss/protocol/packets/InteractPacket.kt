@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.Vector3f
@@ -15,10 +17,6 @@ data class InteractPacket(
     val actionData: ActionData?,
 ) : Packet(id) {
     companion object : PacketCodec<InteractPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Action(val netOrdinal: Byte) {
             INVALID(0),
             STOP_RIDING(3),
@@ -63,8 +61,7 @@ data class InteractPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.INTERACT_PACKET
+        override val id: Int = 33
 
         override fun serialize(value: InteractPacket, stream: Sink) {
             Action.serialize(value.action, stream)

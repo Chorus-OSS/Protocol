@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
@@ -30,12 +28,7 @@ data class StructureBlockUpdatePacket(
     val waterLogged: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<StructureBlockUpdatePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.STRUCTURE_BLOCK_UPDATE_PACKET
+        override val id: Int = 90
 
         override fun serialize(
             value: StructureBlockUpdatePacket,

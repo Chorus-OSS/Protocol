@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
@@ -18,10 +17,6 @@ data class CameraAimAssistPacket(
     val action: Action,
 ) : Packet(id) {
     companion object : PacketCodec<CameraAimAssistPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Action {
             SET,
             CLEAR;
@@ -37,8 +32,7 @@ data class CameraAimAssistPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.CAMERA_AIM_ASSIST_PACKET
+        override val id: Int = 316
 
         override fun deserialize(stream: Source): CameraAimAssistPacket {
             return CameraAimAssistPacket(

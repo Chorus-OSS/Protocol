@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -16,10 +15,6 @@ data class LessonProgressPacket(
     val identifier: String,
 ) : Packet(id) {
     companion object : PacketCodec<LessonProgressPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Action {
             Start,
             Complete,
@@ -39,8 +34,7 @@ data class LessonProgressPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.LESSON_PROGRESS_PACKET
+        override val id: Int = 183
 
         override fun serialize(value: LessonProgressPacket, stream: Sink) {
             Action.serialize(value.action, stream)

@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.Int
@@ -41,12 +40,7 @@ data class AnimatePacket(
     }
 
     companion object : PacketCodec<AnimatePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.ANIMATE_PACKET
+        override val id: Int = 44
 
         override fun deserialize(stream: Source): AnimatePacket {
             val action: Action

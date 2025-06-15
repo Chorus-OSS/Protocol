@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
@@ -19,12 +18,7 @@ data class CommandOutputPacket(
     val dataSet: String? = null,
 ) : Packet(id) {
     companion object : PacketCodec<CommandOutputPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.COMMAND_OUTPUT_PACKET
+        override val id: Int = 79
 
         override fun deserialize(stream: Source): CommandOutputPacket {
             val outputType: CommandOutputType

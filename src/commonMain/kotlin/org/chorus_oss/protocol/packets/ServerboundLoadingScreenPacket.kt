@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 
@@ -13,10 +12,6 @@ data class ServerboundLoadingScreenPacket(
     val loadingScreenID: Int?,
 ) : Packet(id) {
     companion object : PacketCodec<ServerboundLoadingScreenPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             Unknown,
             StartLoadingScreen,
@@ -36,8 +31,7 @@ data class ServerboundLoadingScreenPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SERVERBOUND_LOADING_SCREEN_PACKET
+        override val id: Int = 312
 
         override fun serialize(
             value: ServerboundLoadingScreenPacket,

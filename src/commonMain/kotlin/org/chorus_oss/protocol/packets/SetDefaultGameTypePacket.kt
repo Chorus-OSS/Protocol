@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 
@@ -14,12 +12,7 @@ data class SetDefaultGameTypePacket(
     val gameType: Int
 ) : Packet(id) {
     companion object : PacketCodec<SetDefaultGameTypePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SET_DEFAULT_GAME_TYPE_PACKET
+        override val id: Int = 105
 
         override fun serialize(
             value: SetDefaultGameTypePacket,

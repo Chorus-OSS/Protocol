@@ -4,13 +4,11 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
-import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.core.types.ByteString
-import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
+import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 
@@ -27,12 +25,7 @@ data class UpdateTradePacket(
     val serializedOffers: ByteString,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateTradePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.UPDATE_TRADE_PACKET
+        override val id: Int = 80
 
         override fun serialize(value: UpdateTradePacket, stream: Sink) {
             Proto.Byte.serialize(value.windowID, stream)

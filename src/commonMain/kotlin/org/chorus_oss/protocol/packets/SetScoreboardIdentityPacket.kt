@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.scoreboard.ScoreboardIdentityClearEntry
@@ -16,10 +15,6 @@ data class SetScoreboardIdentityPacket(
     val clearEntries: List<ScoreboardIdentityClearEntry>?,
 ) : Packet(id) {
     companion object : PacketCodec<SetScoreboardIdentityPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Register,
             Clear;
@@ -38,8 +33,7 @@ data class SetScoreboardIdentityPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SET_SCOREBOARD_IDENTITY_PACKET
+        override val id: Int = 112
 
         override fun serialize(
             value: SetScoreboardIdentityPacket,

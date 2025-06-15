@@ -3,8 +3,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 import kotlin.experimental.and
@@ -19,9 +21,7 @@ data class PlayerArmorDamagePacket(
     val bodyDamage: Int,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerArmorDamagePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val FLAG_HELMET: Byte = 0x1
         const val FLAG_CHESTPLATE: Byte = 0x2
@@ -29,8 +29,7 @@ data class PlayerArmorDamagePacket(
         const val FLAG_BOOTS: Byte = 0x8
         const val FLAG_BODY: Byte = 0x10
 
-        override val id: Int
-            get() = ProtocolInfo.PLAYER_ARMOR_DAMAGE_PACKET
+        override val id: Int = 149
 
         override fun serialize(
             value: PlayerArmorDamagePacket,

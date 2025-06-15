@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
@@ -15,12 +14,7 @@ data class ChangeDimensionPacket(
     val loadingScreenID: Int? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ChangeDimensionPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.CHANGE_DIMENSION_PACKET
+        override val id: Int = 61
 
         override fun deserialize(stream: Source): ChangeDimensionPacket {
             return ChangeDimensionPacket(

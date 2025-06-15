@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Short
 
 
@@ -11,10 +13,6 @@ data class SimpleEventPacket(
     val eventType: EventType
 ) : Packet(id) {
     companion object : PacketCodec<SimpleEventPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class EventType(val net: Short) {
             CommandsEnabled(1),
             CommandsDisabled(2),
@@ -36,8 +34,7 @@ data class SimpleEventPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SIMPLE_EVENT_PACKET
+        override val id: Int = 64
 
         override fun serialize(value: SimpleEventPacket, stream: Sink) {
             EventType.serialize(value.eventType, stream)

@@ -2,9 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
@@ -15,10 +13,6 @@ data class ShowStoreOfferPacket(
     val type: Type,
 ) {
     companion object : PacketCodec<ShowStoreOfferPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             Marketplace,
             DressingRoom,
@@ -38,8 +32,7 @@ data class ShowStoreOfferPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SHOW_STORE_OFFER_PACKET
+        override val id: Int = 91
 
         override fun serialize(value: ShowStoreOfferPacket, stream: Sink) {
             Proto.String.serialize(value.offerID, stream)

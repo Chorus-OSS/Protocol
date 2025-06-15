@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorUniqueID
@@ -16,9 +18,7 @@ data class MapInfoRequestPacket(
     val clientPixels: List<PixelRequest>,
 ) : Packet(id) {
     companion object : PacketCodec<MapInfoRequestPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         data class PixelRequest(
             val color: Color,
@@ -42,8 +42,7 @@ data class MapInfoRequestPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.MAP_INFO_REQUEST_PACKET
+        override val id: Int = 68
 
         override fun serialize(value: MapInfoRequestPacket, stream: Sink) {
             ActorUniqueID.serialize(value.mapID, stream)

@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 
@@ -14,12 +16,7 @@ data class GUIDataPickItemPacket(
     val hotbarSlot: Int,
 ) : Packet(id) {
     companion object : PacketCodec<GUIDataPickItemPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.GUI_DATA_PICK_ITEM_PACKET
+        override val id: Int = 54
 
         override fun serialize(value: GUIDataPickItemPacket, stream: Sink) {
             Proto.String.serialize(value.itemName, stream)

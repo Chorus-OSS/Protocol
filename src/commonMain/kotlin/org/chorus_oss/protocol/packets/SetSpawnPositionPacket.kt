@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.IVector3
 import org.chorus_oss.protocol.types.UIVector3
@@ -16,10 +18,6 @@ data class SetSpawnPositionPacket(
     val spawnPosition: IVector3,
 ) : Packet(id) {
     companion object : PacketCodec<SetSpawnPositionPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class SpawnType {
             Player,
             World;
@@ -38,8 +36,7 @@ data class SetSpawnPositionPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SET_SPAWN_POSITION_PACKET
+        override val id: Int = 43
 
         override fun serialize(value: SetSpawnPositionPacket, stream: Sink) {
             SpawnType.serialize(value.spawnType, stream)

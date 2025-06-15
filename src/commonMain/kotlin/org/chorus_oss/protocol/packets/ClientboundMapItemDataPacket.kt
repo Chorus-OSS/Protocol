@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.*
@@ -19,10 +18,6 @@ data class ClientboundMapItemDataPacket(
     val textureUpdateData: TextureUpdateData? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundMapItemDataPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type(val bit: UInt) {
             INVALID(0u),
             TEXTURE_UPDATE(1u shl 1),
@@ -185,8 +180,7 @@ data class ClientboundMapItemDataPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.CLIENTBOUND_MAP_ITEM_DATA_PACKET
+        override val id: Int = 67
 
         override fun deserialize(stream: Source): ClientboundMapItemDataPacket {
             val typeFlags: UInt

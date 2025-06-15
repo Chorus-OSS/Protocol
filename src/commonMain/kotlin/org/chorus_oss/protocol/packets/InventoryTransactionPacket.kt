@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UInt
@@ -18,10 +17,6 @@ data class InventoryTransactionPacket(
     val transactionData: InventoryTransactionData?,
 ) : Packet(id) {
     companion object : PacketCodec<InventoryTransactionPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class TransactionType {
             NORMAL,
             MISMATCH,
@@ -43,8 +38,7 @@ data class InventoryTransactionPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.INVENTORY_TRANSACTION_PACKET
+        override val id: Int = 30
 
         override fun serialize(
             value: InventoryTransactionPacket,

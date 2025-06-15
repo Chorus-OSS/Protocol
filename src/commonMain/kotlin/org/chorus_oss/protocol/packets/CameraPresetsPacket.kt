@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.types.camera.preset.CameraPreset
 
@@ -13,12 +11,7 @@ data class CameraPresetsPacket(
     val presets: List<CameraPreset>
 ) : Packet(id) {
     companion object : PacketCodec<CameraPresetsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.CAMERA_PRESETS_PACKET
+        override val id: Int = 198
 
         override fun deserialize(stream: Source): CameraPresetsPacket {
             return CameraPresetsPacket(

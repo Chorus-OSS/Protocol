@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -19,16 +17,13 @@ data class MoveActorAbsolutePacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorAbsolutePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
+
 
         const val FLAG_ON_GROUND: Byte = 0x01
         const val FLAG_TELEPORT: Byte = 0x02
         const val FLAG_FORCE_MOVE: Byte = 0x04
 
-        override val id: Int
-            get() = ProtocolInfo.MOVE_ACTOR_ABSOLUTE_PACKET
+        override val id: Int = 18
 
         override fun serialize(
             value: MoveActorAbsolutePacket,

@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
@@ -15,10 +14,6 @@ data class ClientboundDebugRendererPacket(
     val data: Data? = null,
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundDebugRendererPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class Type {
             Clear,
             AddCube;
@@ -45,8 +40,7 @@ data class ClientboundDebugRendererPacket(
             val duration: ULong,
         ) : Data
 
-        override val id: Int
-            get() = ProtocolInfo.CLIENTBOUND_DEBUG_RENDERER_PACKET
+        override val id: Int = 164
 
         override fun deserialize(stream: Source): ClientboundDebugRendererPacket {
             val type: Type

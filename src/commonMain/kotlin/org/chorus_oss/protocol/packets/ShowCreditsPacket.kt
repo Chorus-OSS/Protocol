@@ -2,8 +2,10 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
-import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.Packet
+import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
@@ -13,10 +15,6 @@ data class ShowCreditsPacket(
     val statusType: StatusType,
 ) : Packet(id) {
     companion object : PacketCodec<ShowCreditsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class StatusType {
             Start,
             End;
@@ -35,8 +33,7 @@ data class ShowCreditsPacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SHOW_CREDITS_PACKET
+        override val id: Int = 75
 
         override fun serialize(value: ShowCreditsPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.playerRuntimeID, stream)

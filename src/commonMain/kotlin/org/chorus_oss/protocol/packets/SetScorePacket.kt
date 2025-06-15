@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.scoreboard.ScoreboardEntry
@@ -16,10 +15,6 @@ data class SetScorePacket(
     val removeEntries: List<ScoreboardRemoveEntry>?,
 ) : Packet(id) {
     companion object : PacketCodec<SetScorePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class ActionType {
             Modify,
             Remove;
@@ -38,8 +33,7 @@ data class SetScorePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.SET_SCORE_PACKET
+        override val id: Int = 108
 
         override fun serialize(value: SetScorePacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)

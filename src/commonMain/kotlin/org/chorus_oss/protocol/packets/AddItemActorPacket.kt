@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -24,12 +22,7 @@ data class AddItemActorPacket(
     val fromFishing: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<AddItemActorPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.ADD_ITEM_ACTOR_PACKET
+        override val id: Int = 15
 
         override fun deserialize(stream: Source): AddItemActorPacket {
             return AddItemActorPacket(

@@ -2,10 +2,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.PacketRegistry
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -17,12 +15,7 @@ data class MotionPredictionHintsPacket(
     val onGround: Boolean
 ) : Packet(id) {
     companion object : PacketCodec<MotionPredictionHintsPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.MOTION_PREDICTION_HINTS_PACKET
+        override val id: Int = 157
 
         override fun serialize(
             value: MotionPredictionHintsPacket,

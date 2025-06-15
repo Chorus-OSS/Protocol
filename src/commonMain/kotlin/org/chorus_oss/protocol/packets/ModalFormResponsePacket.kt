@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
@@ -15,10 +14,6 @@ data class ModalFormResponsePacket(
     val cancelReason: CancelReason?,
 ) : Packet(id) {
     companion object : PacketCodec<ModalFormResponsePacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
         enum class CancelReason {
             UserClosed,
             UserBusy;
@@ -37,8 +32,7 @@ data class ModalFormResponsePacket(
             }
         }
 
-        override val id: Int
-            get() = ProtocolInfo.MODAL_FORM_RESPONSE_PACKET
+        override val id: Int = 101
 
         override fun serialize(
             value: ModalFormResponsePacket,

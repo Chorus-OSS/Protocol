@@ -2,7 +2,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
@@ -18,12 +17,7 @@ data class SubChunkPacket(
     val subChunkEntries: List<SubChunkEntry>,
 ) : Packet(id) {
     companion object : PacketCodec<SubChunkPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.SUB_CHUNK_PACKET
+        override val id: Int = 174
 
         override fun serialize(value: SubChunkPacket, stream: Sink) {
             Proto.Boolean.serialize(value.cacheEnabled, stream)

@@ -3,7 +3,6 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
-import org.chorus_oss.protocol.ProtocolInfo
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
@@ -21,12 +20,7 @@ class ResourcePackStackPacket(
     val includeEditorPacks: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ResourcePackStackPacket> {
-        init {
-            PacketRegistry.register(this)
-        }
-
-        override val id: Int
-            get() = ProtocolInfo.RESOURCE_PACK_STACK_PACKET
+        override val id: Int = 7
 
         override fun serialize(
             value: ResourcePackStackPacket,
