@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="protocol-jvm-v818-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/build/libs</output-path>
+    <root id="archive" name="protocol-jvm-v818-SNAPSHOT.jar">
+      <element id="module-output" name="protocol.jvmMain" />
+    </root>
+  </artifact>
+</component>
