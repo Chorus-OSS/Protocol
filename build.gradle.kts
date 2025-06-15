@@ -9,7 +9,7 @@ plugins {
 }
 
 description = "Minecraft: Bedrock protocol library for Kotlin Multiplatform"
-group = "org.chorus_oss"
+group = "org.chorus-oss"
 version = "v818-SNAPSHOT"
 
 repositories {
