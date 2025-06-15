@@ -21,6 +21,7 @@ data class CameraSetInstruction(
     val viewOffset: Vector2f? = null,
     val entityOffset: Vector3f? = null,
     val default: Boolean? = null,
+    val removeIgnoreStartingValuesComponent: Boolean,
 ) {
     companion object : ProtoCodec<CameraSetInstruction> {
         override fun serialize(value: CameraSetInstruction, stream: Sink) {
@@ -32,6 +33,7 @@ data class CameraSetInstruction(
             ProtoHelper.serializeNullable(value.viewOffset, stream, Vector2f)
             ProtoHelper.serializeNullable(value.entityOffset, stream, Vector3f)
             ProtoHelper.serializeNullable(value.default, stream, Proto.Boolean)
+            Proto.Boolean.serialize(value.removeIgnoreStartingValuesComponent, stream)
         }
 
         override fun deserialize(stream: Source): CameraSetInstruction {
@@ -43,7 +45,8 @@ data class CameraSetInstruction(
                 facing = ProtoHelper.deserializeNullable(stream, Vector3f),
                 viewOffset = ProtoHelper.deserializeNullable(stream, Vector2f),
                 entityOffset = ProtoHelper.deserializeNullable(stream, Vector3f),
-                default = ProtoHelper.deserializeNullable(stream, Proto.Boolean)
+                default = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                removeIgnoreStartingValuesComponent = Proto.Boolean.deserialize(stream),
             )
         }
     }

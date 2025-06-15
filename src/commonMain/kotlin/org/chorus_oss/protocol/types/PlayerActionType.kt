@@ -43,7 +43,8 @@ enum class PlayerActionType {
     StopCrawling,
     StartFlying,
     StopFlying,
-    ReceivedServerData,
+    @Deprecated("Size v818")
+    ClientAckServerData,
     StartItemUse;
 
     companion object : ProtoCodec<PlayerActionType> {

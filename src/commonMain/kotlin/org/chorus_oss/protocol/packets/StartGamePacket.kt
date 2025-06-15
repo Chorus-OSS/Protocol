@@ -73,6 +73,7 @@ data class StartGamePacket(
     val serverID: String,
     val worldID: String,
     val scenarioID: String,
+    val ownerID: String,
     val levelID: String,
     val worldName: String,
     val templateContentIdentity: String,
@@ -158,6 +159,7 @@ data class StartGamePacket(
             Proto.String.serialize(value.serverID, stream)
             Proto.String.serialize(value.worldID, stream)
             Proto.String.serialize(value.scenarioID, stream)
+            Proto.String.serialize(value.ownerID, stream)
             Proto.String.serialize(value.levelID, stream)
             Proto.String.serialize(value.worldName, stream)
             Proto.String.serialize(value.templateContentIdentity, stream)
@@ -241,6 +243,7 @@ data class StartGamePacket(
                 serverID = Proto.String.deserialize(stream),
                 worldID = Proto.String.deserialize(stream),
                 scenarioID = Proto.String.deserialize(stream),
+                ownerID = Proto.String.deserialize(stream),
                 levelID = Proto.String.deserialize(stream),
                 worldName = Proto.String.deserialize(stream),
                 templateContentIdentity = Proto.String.deserialize(stream),

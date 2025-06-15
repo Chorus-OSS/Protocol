@@ -16,6 +16,8 @@ data class SubChunkEntry(
     val rawPayload: ByteString?,
     val heightMapType: HeightMapType,
     val heightMapData: List<Byte>?,
+    val renderHeightMapType: HeightMapType,
+    val renderHeightMapData: List<Byte>?,
     val blobHash: ULong?,
 ) {
     companion object : ProtoCodec<SubChunkEntry> {
@@ -47,7 +49,8 @@ data class SubChunkEntry(
             None,
             HasData,
             TooHigh,
-            TooLow;
+            TooLow,
+            AllCopied;
 
             companion object : ProtoCodec<HeightMapType> {
                 override fun serialize(
@@ -80,12 +83,23 @@ data class SubChunkEntry(
 
                 else -> Unit
             }
+            HeightMapType.serialize(value.renderHeightMapType, stream)
+            when (value.renderHeightMapType) {
+                HeightMapType.HasData -> (value.renderHeightMapData as List<Byte>).let {
+                    for (i in 0 until 256) {
+                        Proto.Byte.serialize(it.getOrElse(i) { 0 }, stream)
+                    }
+                }
+
+                else -> Unit
+            }
             ProtoVAR.ULong.serialize(value.blobHash as ULong, stream)
         }
 
         override fun deserialize(stream: Source): SubChunkEntry {
             val resultType: ResultType
             val heightMapType: HeightMapType
+            val renderHeightMapType: HeightMapType
             return SubChunkEntry(
                 offset = SubChunkOffset.deserialize(stream),
                 resultType = ResultType.deserialize(stream).also { resultType = it },
@@ -95,6 +109,14 @@ data class SubChunkEntry(
                 },
                 heightMapType = HeightMapType.deserialize(stream).also { heightMapType = it },
                 heightMapData = when (heightMapType) {
+                    HeightMapType.HasData -> List(256) {
+                        Proto.Byte.deserialize(stream)
+                    }
+
+                    else -> null
+                },
+                renderHeightMapType = HeightMapType.deserialize(stream).also { renderHeightMapType = it },
+                renderHeightMapData = when (renderHeightMapType) {
                     HeightMapType.HasData -> List(256) {
                         Proto.Byte.deserialize(stream)
                     }
@@ -122,16 +144,35 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
 
             else -> Unit
         }
+        SubChunkEntry.Companion.HeightMapType.serialize(value.renderHeightMapType, stream)
+        when (value.heightMapType) {
+            SubChunkEntry.Companion.HeightMapType.HasData -> (value.renderHeightMapData as List<Byte>).let {
+                for (i in 0 until 256) {
+                    Proto.Byte.serialize(it.getOrElse(i) { 0 }, stream)
+                }
+            }
+
+            else -> Unit
+        }
     }
 
     override fun deserialize(stream: Source): SubChunkEntry {
         val heightMapType: SubChunkEntry.Companion.HeightMapType
+        val renderHeightMapType: SubChunkEntry.Companion.HeightMapType
         return SubChunkEntry(
             offset = SubChunkOffset.deserialize(stream),
             resultType = SubChunkEntry.Companion.ResultType.deserialize(stream),
             rawPayload = Proto.ByteString.deserialize(stream),
             heightMapType = SubChunkEntry.Companion.HeightMapType.deserialize(stream).also { heightMapType = it },
             heightMapData = when (heightMapType) {
+                SubChunkEntry.Companion.HeightMapType.HasData -> List(256) {
+                    Proto.Byte.deserialize(stream)
+                }
+
+                else -> null
+            },
+            renderHeightMapType = SubChunkEntry.Companion.HeightMapType.deserialize(stream).also { renderHeightMapType = it },
+            renderHeightMapData = when (renderHeightMapType) {
                 SubChunkEntry.Companion.HeightMapType.HasData -> List(256) {
                     Proto.Byte.deserialize(stream)
                 }

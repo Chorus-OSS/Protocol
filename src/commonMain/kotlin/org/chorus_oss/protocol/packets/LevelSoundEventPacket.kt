@@ -570,7 +570,13 @@ data class LevelSoundEventPacket(
             STATE_CHANGE(552),
             IMITATE_HAPPY_GHAST(553),
             UNEQUIP_GENERIC(554),
-            UNDEFINED(555);
+            RECORD_TEARS(555),
+            THE_END_LIGHT_FLASH(556),
+            LEAD_LEASH(557),
+            LEAD_UNLEASH(558),
+            LEAD_BREAK(559),
+            UNSADDLE(560),
+            UNDEFINED(561);
 
             companion object : ProtoCodec<SoundType> {
                 override fun serialize(

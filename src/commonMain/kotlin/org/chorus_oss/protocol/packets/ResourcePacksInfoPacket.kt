@@ -20,6 +20,7 @@ data class ResourcePacksInfoPacket(
     val texturePackRequired: Boolean,
     val hasAddons: Boolean,
     val hasScripts: Boolean,
+    val forceDisableVibrantVisuals: Boolean,
     val worldTemplateUuid: Uuid,
     val worldTemplateVersion: String,
     val texturePacks: List<TexturePackInfo>
@@ -34,6 +35,7 @@ data class ResourcePacksInfoPacket(
             Proto.Boolean.serialize(value.texturePackRequired, stream)
             Proto.Boolean.serialize(value.hasAddons, stream)
             Proto.Boolean.serialize(value.hasScripts, stream)
+            Proto.Boolean.serialize(value.forceDisableVibrantVisuals, stream)
             Proto.Uuid.serialize(value.worldTemplateUuid, stream)
             Proto.String.serialize(value.worldTemplateVersion, stream)
             value.texturePacks.let { texturePacks ->
@@ -47,6 +49,7 @@ data class ResourcePacksInfoPacket(
                 texturePackRequired = Proto.Boolean.deserialize(stream),
                 hasAddons = Proto.Boolean.deserialize(stream),
                 hasScripts = Proto.Boolean.deserialize(stream),
+                forceDisableVibrantVisuals = Proto.Boolean.deserialize(stream),
                 worldTemplateUuid = Proto.Uuid.deserialize(stream),
                 worldTemplateVersion = Proto.String.deserialize(stream),
                 texturePacks = List(ProtoLE.UShort.deserialize(stream).toInt()) {

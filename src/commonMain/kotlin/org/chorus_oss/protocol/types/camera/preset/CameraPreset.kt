@@ -35,7 +35,6 @@ data class CameraPreset(
     val maxYawLimit: Float? = null,
     val audioListener: CameraAudioListener? = null,
     val playerEffects: Boolean? = null,
-    val alignTargetAndCameraForward: Boolean? = null,
     val aimAssist: CameraPresetAimAssist? = null,
     val controlScheme: ControlScheme? = null,
 ) {
@@ -61,7 +60,6 @@ data class CameraPreset(
             ProtoHelper.serializeNullable(value.maxYawLimit, stream, ProtoLE.Float)
             ProtoHelper.serializeNullable(value.audioListener, stream, CameraAudioListener)
             ProtoHelper.serializeNullable(value.playerEffects, stream, Proto.Boolean)
-            ProtoHelper.serializeNullable(value.alignTargetAndCameraForward, stream, Proto.Boolean)
             ProtoHelper.serializeNullable(value.aimAssist, stream, CameraPresetAimAssist)
             ProtoHelper.serializeNullable(value.controlScheme, stream, ControlScheme)
         }
@@ -88,7 +86,6 @@ data class CameraPreset(
                 maxYawLimit = ProtoHelper.deserializeNullable(stream, ProtoLE.Float),
                 audioListener = ProtoHelper.deserializeNullable(stream, CameraAudioListener),
                 playerEffects = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
-                alignTargetAndCameraForward = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
                 aimAssist = ProtoHelper.deserializeNullable(stream, CameraPresetAimAssist),
                 controlScheme = ProtoHelper.deserializeNullable(stream, ControlScheme),
             )

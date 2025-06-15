@@ -103,7 +103,10 @@ enum class DisconnectFailReason {
     ConnClientSignalingError,
     SubClientLoginDisabled,
     DeepLinkTryingToOpenDemoWorldWhileSignedIn,
-    AsyncJoinTaskDenied;
+    AsyncJoinTaskDenied,
+    RealmsTimelineRequired,
+    GuestWithoutHost,
+    FailedToJoinExperience;
 
     companion object : ProtoCodec<DisconnectFailReason> {
         override fun serialize(value: DisconnectFailReason, stream: Sink) {
