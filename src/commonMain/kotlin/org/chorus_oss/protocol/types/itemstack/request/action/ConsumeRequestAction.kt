@@ -12,7 +12,7 @@ data class ConsumeRequestAction(
     val source: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CONSUME
+        get() = ItemStackRequestAction.Companion.Type.Consume
 
     companion object : ProtoCodec<ConsumeRequestAction> {
         override fun serialize(

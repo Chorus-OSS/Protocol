@@ -7,9 +7,9 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CodeBuilderCategoryType {
-    NONE,
-    CODE_STATUS,
-    INSTANTIATION;
+    None,
+    CodeStatus,
+    Instantiation;
 
     companion object : ProtoCodec<CodeBuilderCategoryType> {
         override fun serialize(value: CodeBuilderCategoryType, stream: Sink) {

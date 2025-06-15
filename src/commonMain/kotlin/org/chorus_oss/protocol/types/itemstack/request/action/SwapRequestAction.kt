@@ -10,7 +10,7 @@ data class SwapRequestAction(
     val destination: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.SWAP
+        get() = ItemStackRequestAction.Companion.Type.Swap
 
     companion object : ProtoCodec<SwapRequestAction> {
         override fun serialize(

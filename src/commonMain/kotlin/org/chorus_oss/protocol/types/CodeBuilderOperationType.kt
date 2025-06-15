@@ -7,10 +7,10 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CodeBuilderOperationType {
-    NONE,
-    GET,
-    SET,
-    RESET;
+    None,
+    Get,
+    Set,
+    Reset;
 
     companion object : ProtoCodec<CodeBuilderOperationType> {
         override fun serialize(value: CodeBuilderOperationType, stream: Sink) {

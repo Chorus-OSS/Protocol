@@ -14,7 +14,7 @@ data class DropRequestAction(
     val randomly: Boolean,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.DROP
+        get() = ItemStackRequestAction.Companion.Type.Drop
 
     companion object : ProtoCodec<DropRequestAction> {
         override fun serialize(

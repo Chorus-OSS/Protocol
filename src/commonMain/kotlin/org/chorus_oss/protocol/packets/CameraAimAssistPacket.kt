@@ -18,8 +18,8 @@ data class CameraAimAssistPacket(
 ) : Packet(id) {
     companion object : PacketCodec<CameraAimAssistPacket> {
         enum class Action {
-            SET,
-            CLEAR;
+            Set,
+            Clear;
 
             companion object : ProtoCodec<Action> {
                 override fun serialize(value: Action, stream: Sink) {

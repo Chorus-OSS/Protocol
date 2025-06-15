@@ -10,7 +10,7 @@ enum class CreativeCategory {
     All,
     Construction,
     Nature,
-    EQUIPMENT,
+    Equipment,
     Items,
     ItemCommandOnly,
     Undefined;

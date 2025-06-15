@@ -20,22 +20,22 @@ data class CommandOriginData(
 ) {
     companion object : ProtoCodec<CommandOriginData> {
         enum class Origin {
-            PLAYER,
-            BLOCK,
-            MINECART_BLOCK,
-            DEV_CONSOLE,
-            TEST,
-            AUTOMATION_PLAYER,
-            CLIENT_AUTOMATION,
-            DEDICATED_SERVER,
-            ENTITY,
-            VIRTUAL,
-            GAME_ARGUMENT,
-            ENTITY_SERVER,
-            PRECOMPILED,
-            GAME_DIRECTOR_ENTITY_SERVER,
-            SCRIPT,
-            EXECUTE_CONTEXT;
+            Player,
+            Block,
+            MinecartBlock,
+            DevConsole,
+            Test,
+            AutomationPlayer,
+            ClientAutomation,
+            DedicatedServer,
+            Entity,
+            Virtual,
+            GameArgument,
+            EntityServer,
+            Precompiled,
+            GameDirectorEntityServer,
+            Script,
+            ExecuteContext;
 
             companion object : ProtoCodec<Origin> {
                 override fun serialize(
@@ -77,8 +77,8 @@ data class CommandOriginData(
             Proto.Uuid.serialize(value.commandUUID, stream)
             Proto.String.serialize(value.requestId, stream)
             when (value.commandType) {
-                Origin.TEST,
-                Origin.DEV_CONSOLE -> (value.commandData as PlayerIDData).let { PlayerIDData.serialize(it, stream) }
+                Origin.Test,
+                Origin.DevConsole -> (value.commandData as PlayerIDData).let { PlayerIDData.serialize(it, stream) }
 
                 else -> Unit
             }
@@ -91,8 +91,8 @@ data class CommandOriginData(
                 commandUUID = Proto.Uuid.deserialize(stream),
                 requestId = Proto.String.deserialize(stream),
                 commandData = when (type) {
-                    Origin.TEST,
-                    Origin.DEV_CONSOLE -> PlayerIDData.deserialize(stream)
+                    Origin.Test,
+                    Origin.DevConsole -> PlayerIDData.deserialize(stream)
 
                     else -> null
                 }

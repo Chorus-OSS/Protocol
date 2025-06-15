@@ -12,14 +12,14 @@ package org.chorus_oss.protocol.types
  * ```
  */
 enum class AgentActionType {
-    NONE,
-    ATTACK,
-    COLLECT,
-    DESTROY,
-    DETECT_REDSTONE,
-    DETECT_OBSTACLE,
-    DROP,
-    DROP_ALL,
+    None,
+    Attack,
+    Collect,
+    Destroy,
+    DetectRedstone,
+    DetectObstacle,
+    Drop,
+    DropAll,
 
     /**
      * JSON Data:
@@ -35,7 +35,7 @@ enum class AgentActionType {
      * }
      * ```
      */
-    INSPECT,
+    Inspect,
 
     /**
      * JSON Data:
@@ -49,7 +49,7 @@ enum class AgentActionType {
      * }
      * ```
      */
-    INSPECT_DATA,
+    InspectData,
 
     /**
      * JSON Data:
@@ -63,7 +63,7 @@ enum class AgentActionType {
      * }
      * ```
      */
-    INSPECT_ITEM_COUNT,
+    InspectItemCount,
 
     /**
      * **Note:** If the enchantment level is above 10, the i18n string should not be used.
@@ -92,7 +92,7 @@ enum class AgentActionType {
      * }
      * ```
      */
-    INSPECT_ITEM_DETAIL,
+    InspectItemDetail,
 
     /**
      * JSON Data:
@@ -108,8 +108,8 @@ enum class AgentActionType {
      * }
      * ```
      */
-    INSPECT_ITEM_SPACE,
-    INTERACT,
+    InspectItemSpace,
+    Interact,
 
     /**
      * JSON Data:
@@ -121,9 +121,9 @@ enum class AgentActionType {
      * }
      * ```
      */
-    MOVE,
-    PLACE_BLOCK,
-    TILL,
-    TRANSFER_ITEM_TO,
-    TURN
+    Move,
+    PlaceBlock,
+    Till,
+    TransferItemTo,
+    Turn
 }

@@ -18,11 +18,11 @@ data class InteractPacket(
 ) : Packet(id) {
     companion object : PacketCodec<InteractPacket> {
         enum class Action(val netOrdinal: Byte) {
-            INVALID(0),
-            STOP_RIDING(3),
-            INTERACT_UPDATE(4),
-            NPC_OPEN(5),
-            OPEN_INVENTORY(6);
+            Invalid(0),
+            StopRiding(3),
+            InteractUpdate(4),
+            NpcOpen(5),
+            OpenInventory(6);
 
             companion object : ProtoCodec<Action> {
                 override fun serialize(
@@ -67,8 +67,8 @@ data class InteractPacket(
             Action.serialize(value.action, stream)
             ActorRuntimeID.serialize(value.targetRuntimeID, stream)
             when (value.action) {
-                Action.INTERACT_UPDATE,
-                Action.STOP_RIDING -> (value.actionData as PositionData).let { PositionData.serialize(it, stream) }
+                Action.InteractUpdate,
+                Action.StopRiding -> (value.actionData as PositionData).let { PositionData.serialize(it, stream) }
 
                 else -> Unit
             }
@@ -80,8 +80,8 @@ data class InteractPacket(
                 action = Action.deserialize(stream).also { action = it },
                 targetRuntimeID = ActorRuntimeID.deserialize(stream),
                 actionData = when (action) {
-                    Action.INTERACT_UPDATE,
-                    Action.STOP_RIDING -> PositionData.deserialize(stream)
+                    Action.InteractUpdate,
+                    Action.StopRiding -> PositionData.deserialize(stream)
 
                     else -> null
                 }

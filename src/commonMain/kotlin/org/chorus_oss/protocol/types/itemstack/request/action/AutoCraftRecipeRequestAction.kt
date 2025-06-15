@@ -17,7 +17,7 @@ data class AutoCraftRecipeRequestAction(
     val ingredients: List<ItemDescriptorCount>,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_RECIPE_AUTO
+        get() = ItemStackRequestAction.Companion.Type.CraftRecipeAuto
 
     companion object : ProtoCodec<AutoCraftRecipeRequestAction> {
         override fun serialize(

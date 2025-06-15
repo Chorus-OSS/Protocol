@@ -12,7 +12,7 @@ data class DestroyRequestAction(
     val source: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.DESTROY
+        get() = ItemStackRequestAction.Companion.Type.Destroy
 
     companion object : ProtoCodec<DestroyRequestAction> {
         override fun serialize(

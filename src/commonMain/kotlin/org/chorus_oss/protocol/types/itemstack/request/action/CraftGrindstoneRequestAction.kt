@@ -15,7 +15,7 @@ data class CraftGrindstoneRequestAction(
     val cost: Int,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_REPAIR_AND_DISENCHANT
+        get() = ItemStackRequestAction.Companion.Type.CraftRepairAndDisenchant
 
     companion object : ProtoCodec<CraftGrindstoneRequestAction> {
         override fun serialize(

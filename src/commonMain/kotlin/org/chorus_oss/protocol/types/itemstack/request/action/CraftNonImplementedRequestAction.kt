@@ -6,7 +6,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 
 class CraftNonImplementedRequestAction : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_NON_IMPLEMENTED_DEPRECATED
+        get() = ItemStackRequestAction.Companion.Type.CraftNonImplementedDeprecated
 
     companion object : ProtoCodec<CraftNonImplementedRequestAction> {
         override fun serialize(

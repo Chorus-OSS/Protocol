@@ -13,7 +13,7 @@ data class CraftResultsDeprecatedRequestAction(
     val timesCrafted: Byte,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_RESULTS_DEPRECATED
+        get() = ItemStackRequestAction.Companion.Type.CraftResultsDeprecated
 
     companion object : ProtoCodec<CraftResultsDeprecatedRequestAction> {
         override fun serialize(

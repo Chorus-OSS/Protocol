@@ -12,30 +12,30 @@ abstract class ItemStackRequestAction {
     @Suppress("DEPRECATION")
     companion object : ProtoCodec<ItemStackRequestAction> {
         enum class Type {
-            TAKE,
-            PLACE,
-            SWAP,
-            DROP,
-            DESTROY,
-            CONSUME,
-            CREATE,
+            Take,
+            Place,
+            Swap,
+            Drop,
+            Destroy,
+            Consume,
+            Create,
 
             @Deprecated("since v712")
-            PLACE_IN_ITEM_CONTAINER,
+            PlaceInItemContainer,
 
             @Deprecated("since v712")
-            TAKE_FROM_ITEM_CONTAINER,
-            LAB_TABLE_COMBINE,
-            BEACON_PAYMENT,
-            MINE_BLOCK,
-            CRAFT_RECIPE,
-            CRAFT_RECIPE_AUTO,
-            CRAFT_CREATIVE,
-            CRAFT_RECIPE_OPTIONAL,
-            CRAFT_REPAIR_AND_DISENCHANT,
-            CRAFT_LOOM,
-            CRAFT_NON_IMPLEMENTED_DEPRECATED,
-            CRAFT_RESULTS_DEPRECATED;
+            TakeFromItemContainer,
+            LabTableCombine,
+            BeaconPayment,
+            MineBlock,
+            CraftRecipe,
+            CraftRecipeAuto,
+            CraftCreative,
+            CraftRecipeOptional,
+            CraftRepairAndDisenchant,
+            CraftLoom,
+            CraftNonImplementedDeprecated,
+            CraftResultsDeprecated;
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(
@@ -81,26 +81,26 @@ abstract class ItemStackRequestAction {
         override fun deserialize(stream: Source): ItemStackRequestAction {
             val type = Type.deserialize(stream)
             return when (type) {
-                Type.TAKE -> TakeRequestAction.deserialize(stream)
-                Type.PLACE -> PlaceRequestAction.deserialize(stream)
-                Type.SWAP -> SwapRequestAction.deserialize(stream)
-                Type.DROP -> DropRequestAction.deserialize(stream)
-                Type.DESTROY -> DestroyRequestAction.deserialize(stream)
-                Type.CONSUME -> ConsumeRequestAction.deserialize(stream)
-                Type.CREATE -> CreateRequestAction.deserialize(stream)
-                Type.PLACE_IN_ITEM_CONTAINER -> PlaceInItemContainerRequestAction.deserialize(stream)
-                Type.TAKE_FROM_ITEM_CONTAINER -> TakeFromItemContainerRequestAction.deserialize(stream)
-                Type.LAB_TABLE_COMBINE -> LabTableCombineRequestAction.deserialize(stream)
-                Type.BEACON_PAYMENT -> BeaconPaymentRequestAction.deserialize(stream)
-                Type.MINE_BLOCK -> MineBlockRequestAction.deserialize(stream)
-                Type.CRAFT_RECIPE -> CraftRecipeRequestAction.deserialize(stream)
-                Type.CRAFT_RECIPE_AUTO -> AutoCraftRecipeRequestAction.deserialize(stream)
-                Type.CRAFT_CREATIVE -> CraftCreativeRequestAction.deserialize(stream)
-                Type.CRAFT_RECIPE_OPTIONAL -> CraftRecipeOptionalRequestAction.deserialize(stream)
-                Type.CRAFT_REPAIR_AND_DISENCHANT -> CraftGrindstoneRequestAction.deserialize(stream)
-                Type.CRAFT_LOOM -> CraftLoomRequestAction.deserialize(stream)
-                Type.CRAFT_NON_IMPLEMENTED_DEPRECATED -> CraftNonImplementedRequestAction.deserialize(stream)
-                Type.CRAFT_RESULTS_DEPRECATED -> CraftResultsDeprecatedRequestAction.deserialize(stream)
+                Type.Take -> TakeRequestAction.deserialize(stream)
+                Type.Place -> PlaceRequestAction.deserialize(stream)
+                Type.Swap -> SwapRequestAction.deserialize(stream)
+                Type.Drop -> DropRequestAction.deserialize(stream)
+                Type.Destroy -> DestroyRequestAction.deserialize(stream)
+                Type.Consume -> ConsumeRequestAction.deserialize(stream)
+                Type.Create -> CreateRequestAction.deserialize(stream)
+                Type.PlaceInItemContainer -> PlaceInItemContainerRequestAction.deserialize(stream)
+                Type.TakeFromItemContainer -> TakeFromItemContainerRequestAction.deserialize(stream)
+                Type.LabTableCombine -> LabTableCombineRequestAction.deserialize(stream)
+                Type.BeaconPayment -> BeaconPaymentRequestAction.deserialize(stream)
+                Type.MineBlock -> MineBlockRequestAction.deserialize(stream)
+                Type.CraftRecipe -> CraftRecipeRequestAction.deserialize(stream)
+                Type.CraftRecipeAuto -> AutoCraftRecipeRequestAction.deserialize(stream)
+                Type.CraftCreative -> CraftCreativeRequestAction.deserialize(stream)
+                Type.CraftRecipeOptional -> CraftRecipeOptionalRequestAction.deserialize(stream)
+                Type.CraftRepairAndDisenchant -> CraftGrindstoneRequestAction.deserialize(stream)
+                Type.CraftLoom -> CraftLoomRequestAction.deserialize(stream)
+                Type.CraftNonImplementedDeprecated -> CraftNonImplementedRequestAction.deserialize(stream)
+                Type.CraftResultsDeprecated -> CraftResultsDeprecatedRequestAction.deserialize(stream)
             }
         }
     }

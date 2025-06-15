@@ -7,8 +7,8 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CameraAimAssistTargetMode {
-    ANGLE,
-    DISTANCE;
+    Angle,
+    Distance;
 
     companion object : ProtoCodec<CameraAimAssistTargetMode> {
         override fun serialize(value: CameraAimAssistTargetMode, stream: Sink) {

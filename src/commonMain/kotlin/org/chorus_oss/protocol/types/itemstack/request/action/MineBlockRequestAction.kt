@@ -12,7 +12,7 @@ data class MineBlockRequestAction(
     val stackNetworkID: Int,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.MINE_BLOCK
+        get() = ItemStackRequestAction.Companion.Type.MineBlock
 
     companion object : ProtoCodec<MineBlockRequestAction> {
         override fun serialize(

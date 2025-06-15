@@ -7,11 +7,11 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 
 enum class AttributeOperation {
-    ADDITION,
-    MULTIPLY_BASE,
-    MULTIPLY_TOTAL,
-    CAP,
-    INVALID;
+    Addition,
+    MultiplyBase,
+    MultiplyTotal,
+    Cap,
+    Invalid;
 
     companion object : ProtoCodec<AttributeOperation> {
         override fun serialize(value: AttributeOperation, stream: Sink) {

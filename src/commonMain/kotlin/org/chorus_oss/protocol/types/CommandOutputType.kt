@@ -7,11 +7,11 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CommandOutputType {
-    NONE,
-    LAST_OUTPUT,
-    SILENT,
-    ALL_OUTPUT,
-    DATA_SET;
+    None,
+    LastOutput,
+    Silent,
+    AllOutput,
+    DataSet;
 
     companion object : ProtoCodec<CommandOutputType> {
         override fun serialize(value: CommandOutputType, stream: Sink) {

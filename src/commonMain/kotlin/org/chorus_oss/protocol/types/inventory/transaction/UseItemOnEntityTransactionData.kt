@@ -20,8 +20,8 @@ data class UseItemOnEntityTransactionData(
 ) : InventoryTransactionData {
     companion object : ProtoCodec<UseItemOnEntityTransactionData> {
         enum class ActionType {
-            INTERACT,
-            ATTACK;
+            Interact,
+            Attack;
 
             companion object : ProtoCodec<ActionType> {
                 override fun serialize(

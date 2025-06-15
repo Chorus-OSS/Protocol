@@ -25,9 +25,9 @@ data class UseItemTransactionData(
 ) : InventoryTransactionData {
     companion object : ProtoCodec<UseItemTransactionData> {
         enum class ActionType {
-            CLICK_BLOCK,
-            CLICK_AIR,
-            BREAK_BLOCK;
+            ClickBlock,
+            ClickAir,
+            BreakBlock;
 
             companion object : ProtoCodec<ActionType> {
                 override fun serialize(
@@ -44,9 +44,9 @@ data class UseItemTransactionData(
         }
 
         enum class TriggerType {
-            UNKNOWN,
-            PLAYER_INPUT,
-            SIMULATION_TICK;
+            Unknown,
+            PlayerInput,
+            SimulationTick;
 
             companion object : ProtoCodec<TriggerType> {
                 override fun serialize(
@@ -63,8 +63,8 @@ data class UseItemTransactionData(
         }
 
         enum class PredictedResult {
-            FAILURE,
-            SUCCESS;
+            Failure,
+            Success;
 
             companion object : ProtoCodec<PredictedResult> {
                 override fun serialize(

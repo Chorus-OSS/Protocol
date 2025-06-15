@@ -7,9 +7,9 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 
 enum class CommandBlockMode {
-    NORMAL,
-    REPEATING,
-    CHAIN;
+    Normal,
+    Repeating,
+    Chain;
 
     companion object : ProtoCodec<CommandBlockMode> {
         override fun serialize(value: CommandBlockMode, stream: Sink) {

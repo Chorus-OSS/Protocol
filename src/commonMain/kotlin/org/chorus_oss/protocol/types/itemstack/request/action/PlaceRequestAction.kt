@@ -13,7 +13,7 @@ data class PlaceRequestAction(
     val destination: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.PLACE
+        get() = ItemStackRequestAction.Companion.Type.Place
 
     companion object : ProtoCodec<PlaceRequestAction> {
         override fun serialize(

@@ -16,11 +16,11 @@ data class BookEditPacket(
     val actionData: ActionData,
 ) : Packet(id) {
     enum class Action {
-        REPLACE_PAGE,
-        ADD_PAGE,
-        DELETE_PAGE,
-        SWAP_PAGES,
-        FINALIZE;
+        ReplacePage,
+        AddPage,
+        DeletePage,
+        SwapPages,
+        Finalize;
 
         companion object : ProtoCodec<Action> {
             override fun serialize(value: Action, stream: Sink) {
@@ -70,28 +70,28 @@ data class BookEditPacket(
                 action = Action.deserialize(stream).also { action = it },
                 bookSlot = Proto.Byte.deserialize(stream),
                 actionData = when (action) {
-                    Action.REPLACE_PAGE -> ReplacePageData(
+                    Action.ReplacePage -> ReplacePageData(
                         pageIndex = Proto.Byte.deserialize(stream),
                         text = Proto.String.deserialize(stream),
                         photoName = Proto.String.deserialize(stream),
                     )
 
-                    Action.ADD_PAGE -> AddPageData(
+                    Action.AddPage -> AddPageData(
                         pageIndex = Proto.Byte.deserialize(stream),
                         text = Proto.String.deserialize(stream),
                         photoName = Proto.String.deserialize(stream),
                     )
 
-                    Action.DELETE_PAGE -> DeletePageData(
+                    Action.DeletePage -> DeletePageData(
                         pageIndex = Proto.Byte.deserialize(stream),
                     )
 
-                    Action.SWAP_PAGES -> SwapPagesData(
+                    Action.SwapPages -> SwapPagesData(
                         pageIndexA = Proto.Byte.deserialize(stream),
                         pageIndexB = Proto.Byte.deserialize(stream),
                     )
 
-                    Action.FINALIZE -> FinalizeData(
+                    Action.Finalize -> FinalizeData(
                         title = Proto.String.deserialize(stream),
                         author = Proto.String.deserialize(stream),
                         xuid = Proto.String.deserialize(stream),
@@ -105,32 +105,32 @@ data class BookEditPacket(
             Proto.Byte.serialize(value.bookSlot, stream)
 
             when (value.action) {
-                Action.REPLACE_PAGE -> {
+                Action.ReplacePage -> {
                     val replacePageData = value.actionData as ReplacePageData
                     Proto.Byte.serialize(replacePageData.pageIndex, stream)
                     Proto.String.serialize(replacePageData.text, stream)
                     Proto.String.serialize(replacePageData.photoName, stream)
                 }
 
-                Action.ADD_PAGE -> {
+                Action.AddPage -> {
                     val addPageData = value.actionData as AddPageData
                     Proto.Byte.serialize(addPageData.pageIndex, stream)
                     Proto.String.serialize(addPageData.text, stream)
                     Proto.String.serialize(addPageData.photoName, stream)
                 }
 
-                Action.DELETE_PAGE -> {
+                Action.DeletePage -> {
                     val deletePageData = value.actionData as DeletePageData
                     Proto.Byte.serialize(deletePageData.pageIndex, stream)
                 }
 
-                Action.SWAP_PAGES -> {
+                Action.SwapPages -> {
                     val swapPagesData = value.actionData as SwapPagesData
                     Proto.Byte.serialize(swapPagesData.pageIndexA, stream)
                     Proto.Byte.serialize(swapPagesData.pageIndexB, stream)
                 }
 
-                Action.FINALIZE -> {
+                Action.Finalize -> {
                     val finalizeData = value.actionData as FinalizeData
                     Proto.String.serialize(finalizeData.title, stream)
                     Proto.String.serialize(finalizeData.author, stream)

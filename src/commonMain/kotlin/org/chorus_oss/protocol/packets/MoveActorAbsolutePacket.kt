@@ -17,8 +17,6 @@ data class MoveActorAbsolutePacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorAbsolutePacket> {
-
-
         const val FLAG_ON_GROUND: Byte = 0x01
         const val FLAG_TELEPORT: Byte = 0x02
         const val FLAG_FORCE_MOVE: Byte = 0x04

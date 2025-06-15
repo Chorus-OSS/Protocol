@@ -10,7 +10,7 @@ data class CreateRequestAction(
     val resultsSlot: Byte,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CREATE
+        get() = ItemStackRequestAction.Companion.Type.Create
 
     companion object : ProtoCodec<CreateRequestAction> {
         override fun serialize(

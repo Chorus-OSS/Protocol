@@ -10,7 +10,7 @@ data class CraftLoomRequestAction(
     val patternID: String
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_LOOM
+        get() = ItemStackRequestAction.Companion.Type.CraftLoom
 
     companion object : ProtoCodec<CraftLoomRequestAction> {
         override fun serialize(

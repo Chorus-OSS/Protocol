@@ -7,11 +7,11 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 
 enum class BiomeTemperatureCategory {
-    MEDIUM,
-    WARM,
-    LUKEWARM,
-    COLD,
-    FROZEN;
+    Medium,
+    Warm,
+    Lukewarm,
+    Cold,
+    Frozen;
 
     companion object : ProtoCodec<BiomeTemperatureCategory> {
         override fun serialize(value: BiomeTemperatureCategory, stream: Sink) {
