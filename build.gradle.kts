@@ -8,9 +8,9 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.32.0"
 }
 
+description = "Minecraft: Bedrock protocol library for Kotlin Multiplatform"
 group = "org.chorus_oss"
 version = "v818-SNAPSHOT"
-description = "Protocol"
 
 repositories {
     mavenLocal()
@@ -47,7 +47,7 @@ kotlin {
 
         pom {
             name = "Protocol"
-            description = "Minecraft: Bedrock protocol library for Kotlin Multiplatform"
+            description = project.description
             inceptionYear = "2025"
             url = "https://github.com/Chorus-OSS/Protocol"
             licenses {
