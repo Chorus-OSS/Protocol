@@ -18,8 +18,6 @@ data class LevelChunkPacket(
     val data: ByteString
 ) : Packet(id) {
     companion object : PacketCodec<LevelChunkPacket> {
-
-
         val LIMITLESS: UInt = UInt.MAX_VALUE
         val LIMITED: UInt = UInt.MAX_VALUE - 1u
 

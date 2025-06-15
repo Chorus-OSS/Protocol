@@ -19,10 +19,10 @@ data class InventoryAction(
 ) {
     companion object : ProtoCodec<InventoryAction> {
         enum class Type(private val id: UInt) {
-            CONTAINER(0u),
-            WORLD_INTERACTION(2u),
-            CREATIVE(3u),
-            NON_IMPLEMENTED_TODO(99999u);
+            Container(0u),
+            WorldInteraction(2u),
+            Creative(3u),
+            NonImplementedTODO(99999u);
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(
@@ -41,9 +41,9 @@ data class InventoryAction(
         }
 
         enum class Flag {
-            DROP_ITEM,
-            PICKUP_ITEM,
-            NONE;
+            DropItem,
+            PickupItem,
+            None;
 
             companion object : ProtoCodec<Flag> {
                 override fun serialize(
@@ -65,10 +65,10 @@ data class InventoryAction(
         ) {
             Type.serialize(value.sourceType, stream)
             when (value.sourceType) {
-                Type.CONTAINER,
-                Type.NON_IMPLEMENTED_TODO -> (value.windowID as Int).let { ProtoVAR.Int.serialize(it, stream) }
+                Type.Container,
+                Type.NonImplementedTODO -> (value.windowID as Int).let { ProtoVAR.Int.serialize(it, stream) }
 
-                Type.WORLD_INTERACTION -> (value.sourceFlags as Flag).let { Flag.serialize(it, stream) }
+                Type.WorldInteraction -> (value.sourceFlags as Flag).let { Flag.serialize(it, stream) }
 
                 else -> Unit
             }
@@ -82,12 +82,12 @@ data class InventoryAction(
             return InventoryAction(
                 sourceType = Type.deserialize(stream).also { type = it },
                 windowID = when (type) {
-                    Type.CONTAINER, Type.NON_IMPLEMENTED_TODO -> ProtoVAR.Int.deserialize(stream)
+                    Type.Container, Type.NonImplementedTODO -> ProtoVAR.Int.deserialize(stream)
 
                     else -> null
                 },
                 sourceFlags = when (type) {
-                    Type.WORLD_INTERACTION -> Flag.deserialize(stream)
+                    Type.WorldInteraction -> Flag.deserialize(stream)
 
                     else -> null
                 },

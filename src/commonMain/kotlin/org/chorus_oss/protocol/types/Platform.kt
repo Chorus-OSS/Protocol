@@ -7,26 +7,26 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 
 enum class Platform(val platformName: String, val id: Int) {
-    UNKNOWN("Unknown", -1),
-    ANDROID("Android", 1),
+    Unknown("Unknown", -1),
+    Android("Android", 1),
     IOS("iOS", 2),
-    MAC_OS("macOS", 3),
-    FIRE_OS("FireOS", 4),
-    GEAR_VR("Gear VR", 5),
-    HOLOLENS("Hololens", 6),
-    WINDOWS_10("Windows", 7),
-    WINDOWS("Windows", 8),
-    DEDICATED("Dedicated", 9),
+    MacOS("macOS", 3),
+    FireOS("FireOS", 4),
+    GearVR("Gear VR", 5),
+    Hololens("Hololens", 6),
+    Windows10("Windows", 7),
+    Windows("Windows", 8),
+    Dedicated("Dedicated", 9),
 
     @Deprecated("tvOS_Deprecated")
-    TVOS("TVOS", 10),
-    PLAYSTATION("PlayStation", 11),
-    SWITCH("Switch", 12),
-    XBOX_ONE("Xbox One", 13),
+    TvOS("TVOS", 10),
+    PlayStation("PlayStation", 11),
+    Switch("Switch", 12),
+    XboxOne("Xbox One", 13),
 
     @Deprecated("WindowsPhone_Deprecated")
-    WINDOWS_PHONE("Windows Phone", 14),
-    LINUX("Linux", 15);
+    WindowsPhone("Windows Phone", 14),
+    Linux("Linux", 15);
 
 
     companion object : ProtoCodec<Platform> {

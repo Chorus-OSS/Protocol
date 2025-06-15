@@ -18,11 +18,11 @@ data class InventoryTransactionPacket(
 ) : Packet(id) {
     companion object : PacketCodec<InventoryTransactionPacket> {
         enum class TransactionType {
-            NORMAL,
-            MISMATCH,
-            USE_ITEM,
-            USE_ITEM_ON_ENTITY,
-            RELEASE_ITEM;
+            Normal,
+            Mismatch,
+            UseItem,
+            UseItemOnEntity,
+            ReleaseItem;
 
             companion object : ProtoCodec<TransactionType> {
                 override fun serialize(
@@ -55,21 +55,21 @@ data class InventoryTransactionPacket(
             TransactionType.serialize(value.transactionType, stream)
             ProtoHelper.serializeList(value.actions, stream, InventoryAction)
             when (value.transactionType) {
-                TransactionType.USE_ITEM -> (value.transactionData as UseItemTransactionData).let {
+                TransactionType.UseItem -> (value.transactionData as UseItemTransactionData).let {
                     UseItemTransactionData.serialize(
                         it,
                         stream
                     )
                 }
 
-                TransactionType.USE_ITEM_ON_ENTITY -> (value.transactionData as UseItemOnEntityTransactionData).let {
+                TransactionType.UseItemOnEntity -> (value.transactionData as UseItemOnEntityTransactionData).let {
                     UseItemOnEntityTransactionData.serialize(
                         it,
                         stream
                     )
                 }
 
-                TransactionType.RELEASE_ITEM -> (value.transactionData as ReleaseItemTransactionData).let {
+                TransactionType.ReleaseItem -> (value.transactionData as ReleaseItemTransactionData).let {
                     ReleaseItemTransactionData.serialize(
                         it,
                         stream
@@ -92,9 +92,9 @@ data class InventoryTransactionPacket(
                 transactionType = TransactionType.deserialize(stream).also { transactionType = it },
                 actions = ProtoHelper.deserializeList(stream, InventoryAction),
                 transactionData = when (transactionType) {
-                    TransactionType.USE_ITEM -> UseItemTransactionData.deserialize(stream)
-                    TransactionType.USE_ITEM_ON_ENTITY -> UseItemOnEntityTransactionData.deserialize(stream)
-                    TransactionType.RELEASE_ITEM -> ReleaseItemTransactionData.deserialize(stream)
+                    TransactionType.UseItem -> UseItemTransactionData.deserialize(stream)
+                    TransactionType.UseItemOnEntity -> UseItemOnEntityTransactionData.deserialize(stream)
+                    TransactionType.ReleaseItem -> ReleaseItemTransactionData.deserialize(stream)
                     else -> null
                 }
             )

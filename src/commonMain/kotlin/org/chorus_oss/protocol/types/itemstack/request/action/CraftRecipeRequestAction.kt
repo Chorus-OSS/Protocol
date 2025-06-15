@@ -13,7 +13,7 @@ data class CraftRecipeRequestAction(
     val numberOfCrafts: Byte,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_RECIPE
+        get() = ItemStackRequestAction.Companion.Type.CraftRecipe
 
     companion object : ProtoCodec<CraftRecipeRequestAction> {
         override fun serialize(

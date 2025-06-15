@@ -19,9 +19,9 @@ data class ActorLink(
 ) {
     companion object : ProtoCodec<ActorLink> {
         enum class Type {
-            REMOVE,
-            RIDER,
-            PASSENGER;
+            Remove,
+            Rider,
+            Passenger;
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(value: Type, stream: Sink) {

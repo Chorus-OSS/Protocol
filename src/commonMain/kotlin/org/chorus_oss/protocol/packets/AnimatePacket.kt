@@ -14,13 +14,13 @@ data class AnimatePacket(
     val actionData: Action.ActionData? = null,
 ) : Packet(id) {
     enum class Action(val id: Int) {
-        NO_ACTION(0),
-        SWING_ARM(1),
-        WAKE_UP(3),
-        CRITICAL_HIT(4),
-        MAGIC_CRITICAL_HIT(5),
-        ROW_RIGHT(128),
-        ROW_LEFT(129);
+        NoAction(0),
+        SwingArm(1),
+        WakeUp(3),
+        CriticalHit(4),
+        MagicCriticalHit(5),
+        RowRight(128),
+        RowLeft(129);
 
         companion object : ProtoCodec<Action> {
             override fun serialize(value: Action, stream: Sink) {
@@ -48,8 +48,8 @@ data class AnimatePacket(
                 action = Action.deserialize(stream).also { action = it },
                 targetRuntimeID = ActorRuntimeID.deserialize(stream),
                 actionData = when (action) {
-                    Action.ROW_LEFT,
-                    Action.ROW_RIGHT -> Action.RowingData(
+                    Action.RowLeft,
+                    Action.RowRight -> Action.RowingData(
                         rowingTime = ProtoLE.Float.deserialize(stream)
                     )
 
@@ -62,8 +62,8 @@ data class AnimatePacket(
             Action.serialize(value.action, stream)
             ActorRuntimeID.serialize(value.targetRuntimeID, stream)
             when (value.action) {
-                Action.ROW_LEFT,
-                Action.ROW_RIGHT -> {
+                Action.RowLeft,
+                Action.RowRight -> {
                     val actionData = value.actionData as Action.RowingData
                     ProtoLE.Float.serialize(actionData.rowingTime, stream)
                 }

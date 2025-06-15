@@ -7,8 +7,8 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CameraAudioListener {
-    CAMERA,
-    PLAYER;
+    Camera,
+    Player;
 
     companion object : ProtoCodec<CameraAudioListener> {
         override fun serialize(value: CameraAudioListener, stream: Sink) {

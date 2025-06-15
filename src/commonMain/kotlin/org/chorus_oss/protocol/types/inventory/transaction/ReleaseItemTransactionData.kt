@@ -17,8 +17,8 @@ data class ReleaseItemTransactionData(
 ) : InventoryTransactionData {
     companion object : ProtoCodec<ReleaseItemTransactionData> {
         enum class ActionType {
-            RELEASE,
-            CONSUME;
+            Release,
+            Consume;
 
             companion object : ProtoCodec<ActionType> {
                 override fun serialize(

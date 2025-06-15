@@ -6,7 +6,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 
 class LabTableCombineRequestAction : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.LAB_TABLE_COMBINE
+        get() = ItemStackRequestAction.Companion.Type.LabTableCombine
 
     companion object : ProtoCodec<LabTableCombineRequestAction> {
         override fun serialize(

@@ -16,24 +16,24 @@ data class CompletedUsingItemPacket(
 ) : Packet(id) {
     companion object : PacketCodec<CompletedUsingItemPacket> {
         enum class ItemUseMethod(val id: Int) {
-            UNKNOWN(-1),
-            EQUIP_ARMOR(0),
-            EAT(1),
-            ATTACK(2),
-            CONSUME(3),
-            THROW(4),
-            SHOOT(5),
-            PLACE(6),
-            FILL_BOTTLE(7),
-            FILL_BUCKET(8),
-            POUR_BUCKET(9),
-            USE_TOOL(10),
-            INTERACT(11),
-            RETRIEVED(12),
-            DYED(13),
-            TRADED(14),
-            BRUSHING_COMPLETED(15),
-            OPENED_VAULT(16);
+            Unknown(-1),
+            EquipArmor(0),
+            Eat(1),
+            Attack(2),
+            Consume(3),
+            Throw(4),
+            Shoot(5),
+            Place(6),
+            FillBottle(7),
+            FillBucket(8),
+            PourBucket(9),
+            UseTool(10),
+            Interact(11),
+            Retrieved(12),
+            Dyed(13),
+            Traded(14),
+            BrushingCompleted(15),
+            OpenedVault(16);
 
             companion object : ProtoCodec<ItemUseMethod> {
                 override fun serialize(

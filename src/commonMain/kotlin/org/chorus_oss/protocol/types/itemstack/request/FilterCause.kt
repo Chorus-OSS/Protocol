@@ -7,20 +7,20 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Int
 
 enum class FilterCause {
-    SERVER_CHAT_PUBLIC,
-    SERVER_CHAT_WHISPER,
-    SIGN_TEXT,
-    ANVIL_TEXT,
-    BOOK_AND_QUILL_TEXT,
-    COMMAND_BLOCK_TEXT,
-    BLOCK_ENTITY_DATA_TEXT,
-    JOIN_EVENT_TEXT,
-    LEAVE_EVENT_TEXT,
-    SLASH_COMMAND_TEXT,
-    CARTOGRAPHY_TEXT,
-    SLASH_COMMAND_NON_CHAT,
-    SCOREBOARD_TEXT,
-    TICKING_AREA_TEXT;
+    ServerChatPublic,
+    ServerChatWhisper,
+    SignText,
+    AnvilText,
+    BookAndQuillText,
+    CommandBlockText,
+    BlockEntityDataText,
+    JoinEventText,
+    LeaveEventText,
+    SlashCommandText,
+    CartographyText,
+    SlashCommandNonChat,
+    ScoreboardText,
+    TickingAreaText;
 
     companion object : ProtoCodec<FilterCause> {
         override fun serialize(

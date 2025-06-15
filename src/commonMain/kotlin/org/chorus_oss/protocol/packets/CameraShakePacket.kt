@@ -15,8 +15,8 @@ data class CameraShakePacket(
 ) : Packet(id) {
     companion object : PacketCodec<CameraShakePacket> {
         enum class Action {
-            ADD,
-            STOP;
+            Add,
+            Stop;
 
             companion object : ProtoCodec<Action> {
                 override fun serialize(value: Action, stream: Sink) {
@@ -30,8 +30,8 @@ data class CameraShakePacket(
         }
 
         enum class Type {
-            POSITIONAL,
-            ROTATIONAL;
+            Positional,
+            Rotational;
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(value: Type, stream: Sink) {

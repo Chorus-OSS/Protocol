@@ -16,8 +16,6 @@ data class ContainerSetDataPacket(
     val value: Int,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerSetDataPacket> {
-
-
         const val FURNACE_TICK_COUNT: Int = 0
         const val FURNACE_LIT_TIME: Int = 1
         const val FURNACE_LIT_DURATION: Int = 2

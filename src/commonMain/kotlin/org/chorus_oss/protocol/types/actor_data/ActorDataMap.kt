@@ -87,21 +87,21 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                 ActorDataFormat.serialize(format, stream)
 
                 when (format) {
-                    ActorDataFormat.BYTE -> Proto.Byte.serialize(data as Byte, stream)
-                    ActorDataFormat.SHORT -> ProtoLE.Short.serialize(data as Short, stream)
-                    ActorDataFormat.INT -> ProtoVAR.Int.serialize(data as Int, stream)
-                    ActorDataFormat.FLOAT -> ProtoLE.Float.serialize(data as Float, stream)
-                    ActorDataFormat.STRING -> Proto.String.serialize(data as String, stream)
-                    ActorDataFormat.NBT -> Tag.serialize(data as Tag, stream, TagSerialization.NetLE, isRoot = true)
-                    ActorDataFormat.VECTOR3I -> {
+                    ActorDataFormat.Byte -> Proto.Byte.serialize(data as Byte, stream)
+                    ActorDataFormat.Short -> ProtoLE.Short.serialize(data as Short, stream)
+                    ActorDataFormat.Int -> ProtoVAR.Int.serialize(data as Int, stream)
+                    ActorDataFormat.Float -> ProtoLE.Float.serialize(data as Float, stream)
+                    ActorDataFormat.String -> Proto.String.serialize(data as String, stream)
+                    ActorDataFormat.Nbt -> Tag.serialize(data as Tag, stream, TagSerialization.NetLE, isRoot = true)
+                    ActorDataFormat.Vector3I -> {
                         val vec = data as IVector3
                         ProtoVAR.Int.serialize(vec.x, stream)
                         ProtoVAR.Int.serialize(vec.y, stream)
                         ProtoVAR.Int.serialize(vec.z, stream)
                     }
 
-                    ActorDataFormat.LONG -> ProtoVAR.Long.serialize(data as Long, stream)
-                    ActorDataFormat.VECTOR3F -> Vector3f.serialize(data as Vector3f, stream)
+                    ActorDataFormat.Long -> ProtoVAR.Long.serialize(data as Long, stream)
+                    ActorDataFormat.Vector3F -> Vector3f.serialize(data as Vector3f, stream)
                 }
             }
         }
@@ -109,24 +109,24 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
         override fun deserialize(stream: Source): ActorDataMap {
             val dataMap = ActorDataMap()
             val size = ProtoVAR.UInt.deserialize(stream).toInt()
-            for (i in 0 until size) {
+            (0 until size).forEach { _ ->
                 val key = ActorDataKey.deserialize(stream)
                 val format = ActorDataFormat.deserialize(stream)
                 val data: Any = when (format) {
-                    ActorDataFormat.BYTE -> Proto.Byte.deserialize(stream)
-                    ActorDataFormat.SHORT -> ProtoLE.Short.deserialize(stream)
-                    ActorDataFormat.INT -> ProtoVAR.Int.deserialize(stream)
-                    ActorDataFormat.FLOAT -> ProtoLE.Float.deserialize(stream)
-                    ActorDataFormat.STRING -> Proto.String.deserialize(stream)
-                    ActorDataFormat.NBT -> Tag.deserialize(stream, TagSerialization.NetLE)
-                    ActorDataFormat.VECTOR3I -> IVector3(
+                    ActorDataFormat.Byte -> Proto.Byte.deserialize(stream)
+                    ActorDataFormat.Short -> ProtoLE.Short.deserialize(stream)
+                    ActorDataFormat.Int -> ProtoVAR.Int.deserialize(stream)
+                    ActorDataFormat.Float -> ProtoLE.Float.deserialize(stream)
+                    ActorDataFormat.String -> Proto.String.deserialize(stream)
+                    ActorDataFormat.Nbt -> Tag.deserialize(stream, TagSerialization.NetLE)
+                    ActorDataFormat.Vector3I -> IVector3(
                         x = ProtoVAR.Int.deserialize(stream),
                         y = ProtoVAR.Int.deserialize(stream),
                         z = ProtoVAR.Int.deserialize(stream),
                     )
 
-                    ActorDataFormat.LONG -> ProtoVAR.Long.deserialize(stream)
-                    ActorDataFormat.VECTOR3F -> Vector3f.deserialize(stream)
+                    ActorDataFormat.Long -> ProtoVAR.Long.deserialize(stream)
+                    ActorDataFormat.Vector3F -> Vector3f.deserialize(stream)
                 }
 
                 dataMap[key] = data

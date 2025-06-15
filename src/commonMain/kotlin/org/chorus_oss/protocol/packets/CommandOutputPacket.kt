@@ -28,7 +28,7 @@ data class CommandOutputPacket(
                 successCount = ProtoVAR.UInt.deserialize(stream),
                 outputMessages = ProtoHelper.deserializeList(stream, CommandOutputMessage),
                 dataSet = when (outputType) {
-                    CommandOutputType.DATA_SET -> Proto.String.deserialize(stream)
+                    CommandOutputType.DataSet -> Proto.String.deserialize(stream)
 
                     else -> null
                 }
@@ -41,7 +41,7 @@ data class CommandOutputPacket(
             ProtoVAR.UInt.serialize(value.successCount, stream)
             ProtoHelper.serializeList(value.outputMessages, stream, CommandOutputMessage)
             when (value.outputType) {
-                CommandOutputType.DATA_SET -> (value.dataSet as String).let { Proto.String.serialize(it, stream) }
+                CommandOutputType.DataSet -> (value.dataSet as String).let { Proto.String.serialize(it, stream) }
 
                 else -> Unit
             }

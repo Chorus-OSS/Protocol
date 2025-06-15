@@ -13,7 +13,7 @@ class TakeRequestAction(
     val destination: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.TAKE
+        get() = ItemStackRequestAction.Companion.Type.Take
 
     companion object : ProtoCodec<TakeRequestAction> {
         override fun serialize(

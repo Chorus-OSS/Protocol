@@ -7,8 +7,8 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CameraAimAssistPresetsPacketOperation {
-    SET,
-    ADD_TO_EXISTING;
+    Set,
+    AddToExisting;
 
     companion object : ProtoCodec<CameraAimAssistPresetsPacketOperation> {
         override fun serialize(value: CameraAimAssistPresetsPacketOperation, stream: Sink) {

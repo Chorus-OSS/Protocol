@@ -13,7 +13,7 @@ data class CraftRecipeOptionalRequestAction(
     val filteredStringIndex: Int,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.CRAFT_RECIPE_OPTIONAL
+        get() = ItemStackRequestAction.Companion.Type.CraftRecipeOptional
 
     companion object : ProtoCodec<CraftRecipeOptionalRequestAction> {
         override fun serialize(

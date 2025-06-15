@@ -19,10 +19,10 @@ data class ClientboundMapItemDataPacket(
 ) : Packet(id) {
     companion object : PacketCodec<ClientboundMapItemDataPacket> {
         enum class Type(val bit: UInt) {
-            INVALID(0u),
-            TEXTURE_UPDATE(1u shl 1),
-            DECORATION_UPDATE(1u shl 2),
-            CREATION(1u shl 3);
+            Invalid(0u),
+            TextureUpdate(1u shl 1),
+            DecorationUpdate(1u shl 2),
+            Creation(1u shl 3);
         }
 
         data class CreationData(
@@ -52,38 +52,38 @@ data class ClientboundMapItemDataPacket(
         ) {
             companion object : ProtoCodec<MapDecoration> {
                 enum class Type(val id: Byte) {
-                    MARKER_WHITE(0),
-                    MARKER_GREEN(1),
-                    MARKER_RED(2),
-                    MARKER_BLUE(3),
-                    X_WHITE(4),
-                    TRIANGLE_RED(5),
-                    SQUARE_WHITE(6),
-                    MARKER_SIGN(7),
-                    MARKER_PINK(8),
-                    MARKER_ORANGE(9),
-                    MARKER_YELLOW(10),
-                    MARKER_TEAL(11),
-                    TRIANGLE_GREEN(12),
-                    SMALL_SQUARE_WHITE(13),
-                    MANSION(14),
-                    MONUMENT(15),
-                    NO_DRAW(16),
-                    VILLAGE_DESERT(17),
-                    VILLAGE_PLAINS(18),
-                    VILLAGE_SAVANNA(19),
-                    VILLAGE_SNOWY(20),
-                    VILLAGE_TAIGA(21),
-                    JUNGLE_TEMPLE(22),
-                    WITCH_HUT(23),
-                    TRIAL_CHAMBERS(24);
+                    MarkerWhite(0),
+                    MarkerGreen(1),
+                    MarkerRed(2),
+                    MarkerBlue(3),
+                    XWhite(4),
+                    TriangleRed(5),
+                    SquareWhite(6),
+                    MarkerSign(7),
+                    MarkerPink(8),
+                    MarkerOrange(9),
+                    MarkerYellow(10),
+                    MarkerTeal(11),
+                    TriangleGreen(12),
+                    SmallSquareWhite(13),
+                    Mansion(14),
+                    Monument(15),
+                    NoDraw(16),
+                    VillageDesert(17),
+                    VillagePlains(18),
+                    VillageSavanna(19),
+                    VillageSnowy(20),
+                    VillageTaiga(21),
+                    JungleTemple(22),
+                    WitchHut(23),
+                    TrialChambers(24);
 
                     companion object : ProtoCodec<Type> {
-                        val PLAYER = MARKER_WHITE
-                        val PLAYER_OFF_MAP = SQUARE_WHITE
-                        val PLAYER_OFF_LIMITS = SMALL_SQUARE_WHITE
-                        val PLAYER_HIDDEN = NO_DRAW
-                        val ITEM_FRAME = MARKER_GREEN
+                        val Player = MarkerWhite
+                        val PlayerOffMap = SquareWhite
+                        val PlayerOffLimits = SmallSquareWhite
+                        val PlayerHidden = NoDraw
+                        val ItemFrame = MarkerGreen
 
                         override fun serialize(value: Type, stream: Sink) {
                             Proto.Byte.serialize(value.ordinal.toByte(), stream)
@@ -124,8 +124,8 @@ data class ClientboundMapItemDataPacket(
         ) {
             companion object : ProtoCodec<MapItemTrackedActor> {
                 enum class Type {
-                    ENTITY,
-                    BLOCK;
+                    Entity,
+                    Block;
 
                     companion object : ProtoCodec<Type> {
                         override fun serialize(value: Type, stream: Sink) {
@@ -150,12 +150,12 @@ data class ClientboundMapItemDataPacket(
                 override fun serialize(value: MapItemTrackedActor, stream: Sink) {
                     Type.serialize(value.type, stream)
                     when (value.type) {
-                        Type.ENTITY -> {
+                        Type.Entity -> {
                             val entityData = value.data as EntityData
                             ActorUniqueID.serialize(entityData.uniqueID, stream)
                         }
 
-                        Type.BLOCK -> {
+                        Type.Block -> {
                             val blockData = value.data as BlockData
                             UIVector3.serialize(blockData.blockPosition, stream)
                         }
@@ -167,11 +167,11 @@ data class ClientboundMapItemDataPacket(
                     return MapItemTrackedActor(
                         type = Type.deserialize(stream).also { type = it },
                         data = when (type) {
-                            Type.ENTITY -> EntityData(
+                            Type.Entity -> EntityData(
                                 uniqueID = ActorUniqueID.deserialize(stream)
                             )
 
-                            Type.BLOCK -> BlockData(
+                            Type.Block -> BlockData(
                                 blockPosition = UIVector3.deserialize(stream)
                             )
                         }
@@ -192,7 +192,7 @@ data class ClientboundMapItemDataPacket(
                 mapOrigin = IVector3.deserialize(stream),
 
                 creationData = when {
-                    typeFlags and Type.CREATION.bit != 0u -> CreationData(
+                    typeFlags and Type.Creation.bit != 0u -> CreationData(
                         mapIDList = ProtoHelper.deserializeList(stream, ActorUniqueID)
                     )
 
@@ -200,7 +200,7 @@ data class ClientboundMapItemDataPacket(
                 },
 
                 scale = when {
-                    typeFlags and (Type.CREATION.bit or Type.DECORATION_UPDATE.bit or Type.TEXTURE_UPDATE.bit) != 0u -> Proto.Byte.deserialize(
+                    typeFlags and (Type.Creation.bit or Type.DecorationUpdate.bit or Type.TextureUpdate.bit) != 0u -> Proto.Byte.deserialize(
                         stream
                     )
 
@@ -208,7 +208,7 @@ data class ClientboundMapItemDataPacket(
                 },
 
                 decorationUpdateData = when {
-                    typeFlags and Type.DECORATION_UPDATE.bit != 0u -> DecorationUpdateData(
+                    typeFlags and Type.DecorationUpdate.bit != 0u -> DecorationUpdateData(
                         actorIDs = ProtoHelper.deserializeList(stream, MapItemTrackedActor),
                         decorationList = ProtoHelper.deserializeList(stream, MapDecoration)
                     )
@@ -217,7 +217,7 @@ data class ClientboundMapItemDataPacket(
                 },
 
                 textureUpdateData = when {
-                    typeFlags and Type.TEXTURE_UPDATE.bit != 0u -> TextureUpdateData(
+                    typeFlags and Type.TextureUpdate.bit != 0u -> TextureUpdateData(
                         textureWidth = ProtoVAR.Int.deserialize(stream),
                         textureHeight = ProtoVAR.Int.deserialize(stream),
                         xTexCoordinate = ProtoVAR.Int.deserialize(stream),
@@ -237,23 +237,23 @@ data class ClientboundMapItemDataPacket(
             Proto.Boolean.serialize(value.isLockedMap, stream)
             IVector3.serialize(value.mapOrigin, stream)
 
-            if (value.typeFlags and Type.CREATION.bit != 0u) {
+            if (value.typeFlags and Type.Creation.bit != 0u) {
                 val creationData = value.creationData as CreationData
                 ProtoHelper.serializeList(creationData.mapIDList, stream, ActorUniqueID)
             }
 
-            if (value.typeFlags and (Type.CREATION.bit or Type.DECORATION_UPDATE.bit or Type.TEXTURE_UPDATE.bit) != 0u) {
+            if (value.typeFlags and (Type.Creation.bit or Type.DecorationUpdate.bit or Type.TextureUpdate.bit) != 0u) {
                 val scale = value.scale as Byte
                 Proto.Byte.serialize(scale, stream)
             }
 
-            if (value.typeFlags and Type.DECORATION_UPDATE.bit != 0u) {
+            if (value.typeFlags and Type.DecorationUpdate.bit != 0u) {
                 val decorationUpdateData = value.decorationUpdateData as DecorationUpdateData
                 ProtoHelper.serializeList(decorationUpdateData.actorIDs, stream, MapItemTrackedActor)
                 ProtoHelper.serializeList(decorationUpdateData.decorationList, stream, MapDecoration)
             }
 
-            if (value.typeFlags and Type.TEXTURE_UPDATE.bit != 0u) {
+            if (value.typeFlags and Type.TextureUpdate.bit != 0u) {
                 val textureUpdateData = value.textureUpdateData as TextureUpdateData
                 ProtoVAR.Int.serialize(textureUpdateData.textureWidth, stream)
                 ProtoVAR.Int.serialize(textureUpdateData.textureHeight, stream)

@@ -17,12 +17,12 @@ data class AbilityLayer(
 ) {
     companion object : ProtoCodec<AbilityLayer> {
         enum class Type {
-            CACHE,
-            BASE,
-            SPECTATOR,
-            COMMANDS,
-            EDITOR,
-            LOADING_SCREEN;
+            Cache,
+            Base,
+            Spectator,
+            Commands,
+            Editor,
+            LoadingScreen;
 
             companion object : ProtoCodec<Type> {
                 override fun serialize(value: Type, stream: Sink) {

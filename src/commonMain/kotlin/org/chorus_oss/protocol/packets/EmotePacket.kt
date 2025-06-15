@@ -21,8 +21,6 @@ data class EmotePacket(
     val flags: Byte
 ) : Packet(id) {
     companion object : PacketCodec<EmotePacket> {
-
-
         const val FLAG_SERVER_SIDE: Byte = 0x1
         const val FLAG_MUTE_CHAT: Byte = 0x2
 

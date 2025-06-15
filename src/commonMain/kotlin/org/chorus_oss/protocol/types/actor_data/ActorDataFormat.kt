@@ -10,15 +10,15 @@ import org.chorus_oss.protocol.types.IVector3
 import org.chorus_oss.protocol.types.Vector3f
 
 enum class ActorDataFormat {
-    BYTE,
-    SHORT,
-    INT,
-    FLOAT,
-    STRING,
-    NBT,
-    VECTOR3I,
-    LONG,
-    VECTOR3F;
+    Byte,
+    Short,
+    Int,
+    Float,
+    String,
+    Nbt,
+    Vector3I,
+    Long,
+    Vector3F;
 
     companion object : ProtoCodec<ActorDataFormat> {
         override fun serialize(value: ActorDataFormat, stream: Sink) {
@@ -31,15 +31,15 @@ enum class ActorDataFormat {
 
         fun from(value: Any): ActorDataFormat {
             return when (value) {
-                is Byte -> BYTE
-                is Short -> SHORT
-                is Int -> INT
-                is Float -> FLOAT
-                is Long -> LONG
-                is String -> STRING
-                is CompoundTag -> NBT
-                is IVector3 -> VECTOR3I
-                is Vector3f -> VECTOR3F
+                is Byte -> Byte
+                is Short -> Short
+                is Int -> Int
+                is Float -> Float
+                is Long -> Long
+                is String -> String
+                is CompoundTag -> Nbt
+                is IVector3 -> Vector3I
+                is Vector3f -> Vector3F
 
                 else -> throw IllegalArgumentException("Unsupported type ${value::class}")
             }

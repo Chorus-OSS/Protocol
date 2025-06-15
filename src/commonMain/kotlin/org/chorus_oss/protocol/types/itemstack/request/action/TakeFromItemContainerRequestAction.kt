@@ -14,7 +14,7 @@ data class TakeFromItemContainerRequestAction(
     val destination: ItemStackRequestSlotData,
 ) : ItemStackRequestAction() {
     override val type: ItemStackRequestAction.Companion.Type
-        get() = ItemStackRequestAction.Companion.Type.PLACE
+        get() = ItemStackRequestAction.Companion.Type.Place
 
     @Suppress("DEPRECATION")
     companion object : ProtoCodec<TakeFromItemContainerRequestAction> {

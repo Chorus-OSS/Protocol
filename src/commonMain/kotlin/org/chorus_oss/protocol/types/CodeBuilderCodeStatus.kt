@@ -7,12 +7,12 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 
 enum class CodeBuilderCodeStatus {
-    NONE,
-    NOT_STARTED,
-    IN_PROGRESS,
-    PAUSED,
-    ERROR,
-    SUCCEEDED;
+    None,
+    NotStarted,
+    InProgress,
+    Paused,
+    Error,
+    Succeeded;
 
     companion object : ProtoCodec<CodeBuilderCodeStatus> {
         override fun serialize(value: CodeBuilderCodeStatus, stream: Sink) {
