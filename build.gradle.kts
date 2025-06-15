@@ -13,7 +13,6 @@ group = "org.chorus-oss"
 version = "v800.0"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 

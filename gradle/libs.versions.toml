@@ -1,9 +1,9 @@
 [versions]
 kotlinx-io = "0.7.0"
-nbt = "1.0-SNAPSHOT"
-varlen = "1.0-SNAPSHOT"
+nbt = "1.0.1"
+varlen = "1.0.0"
 
 [libraries]
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
-chorus-nbt = { module = "org.chorus_oss:nbt", version.ref = "nbt" }
-chorus-varlen = { module = "org.chorus_oss:varlen", version.ref = "varlen" }
+chorus-nbt = { module = "org.chorus-oss:nbt", version.ref = "nbt" }
+chorus-varlen = { module = "org.chorus-oss:varlen", version.ref = "varlen" }
