@@ -13,7 +13,6 @@ group = "org.chorus_oss"
 version = "v818-SNAPSHOT"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
