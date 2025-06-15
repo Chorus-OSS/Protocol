@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.chorus_oss"
-version = "1.800.0"
+version = "v800.0"
 description = "Protocol"
 
 repositories {
