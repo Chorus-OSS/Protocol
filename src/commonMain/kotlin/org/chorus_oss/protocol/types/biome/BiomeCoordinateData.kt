@@ -23,8 +23,8 @@ data class BiomeCoordinateData(
             ProtoLE.Short.serialize(value.minValue, stream)
             ExpressionOp.serialize(value.maxValueType, stream)
             ProtoLE.Short.serialize(value.maxValue, stream)
-            ProtoVAR.UInt.serialize(value.gridOffset, stream)
-            ProtoVAR.UInt.serialize(value.gridStepSize, stream)
+            ProtoLE.UInt.serialize(value.gridOffset, stream)
+            ProtoLE.UInt.serialize(value.gridStepSize, stream)
             RandomDistributionType.serialize(value.distribution, stream)
         }
 
@@ -34,8 +34,8 @@ data class BiomeCoordinateData(
                 minValue = ProtoLE.Short.deserialize(stream),
                 maxValueType = ExpressionOp.deserialize(stream),
                 maxValue = ProtoLE.Short.deserialize(stream),
-                gridOffset = ProtoVAR.UInt.deserialize(stream),
-                gridStepSize = ProtoVAR.UInt.deserialize(stream),
+                gridOffset = ProtoLE.UInt.deserialize(stream),
+                gridStepSize = ProtoLE.UInt.deserialize(stream),
                 distribution = RandomDistributionType.deserialize(stream)
             )
         }
