@@ -82,7 +82,7 @@ data class PlayerAuthInputPacket(
             }
 
             when (value.inputData.getOrElse(InputFlag.ClientPredictedVehicle.ordinal) { false }) {
-                true -> ActorUniqueID.serialize(value.clientPredictedVehicle as ActorUniqueID, stream)
+                true -> ActorUniqueID.serialize(value.clientPredictedVehicle as Long, stream)
                 false -> Unit
             }
 

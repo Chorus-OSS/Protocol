@@ -51,7 +51,7 @@ data class ScoreboardEntry(
             IdentityType.serialize(value.identityType, stream)
             when (value.identityType) {
                 IdentityType.Player,
-                IdentityType.Entity -> ActorUniqueID.serialize(value.entityUniqueID as ActorUniqueID, stream)
+                IdentityType.Entity -> ActorUniqueID.serialize(value.entityUniqueID as Long, stream)
 
                 else -> Unit
             }

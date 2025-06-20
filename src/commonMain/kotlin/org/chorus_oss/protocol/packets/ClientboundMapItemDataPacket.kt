@@ -26,7 +26,7 @@ data class ClientboundMapItemDataPacket(
         }
 
         data class CreationData(
-            val mapIDList: List<ActorUniqueID>,
+            val mapIDList: List<Long>,
         )
 
         data class DecorationUpdateData(

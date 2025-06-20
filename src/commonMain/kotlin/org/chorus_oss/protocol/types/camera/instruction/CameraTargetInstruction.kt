@@ -16,13 +16,13 @@ data class CameraTargetInstruction(
     companion object : ProtoCodec<CameraTargetInstruction> {
         override fun serialize(value: CameraTargetInstruction, stream: Sink) {
             ProtoHelper.serializeNullable(value.centerOffset, stream, Vector3f)
-            ProtoLE.Long.serialize(value.actorUniqueID.id, stream)
+            ProtoLE.Long.serialize(value.actorUniqueID, stream)
         }
 
         override fun deserialize(stream: Source): CameraTargetInstruction {
             return CameraTargetInstruction(
                 centerOffset = ProtoHelper.deserializeNullable(stream, Vector3f),
-                actorUniqueID = ActorUniqueID(ProtoLE.Long.deserialize(stream))
+                actorUniqueID = ProtoLE.Long.deserialize(stream)
             )
         }
     }
