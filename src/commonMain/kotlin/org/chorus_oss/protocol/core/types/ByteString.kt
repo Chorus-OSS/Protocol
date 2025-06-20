@@ -12,13 +12,13 @@ import org.chorus_oss.protocol.core.ProtoVAR
 val Proto.ByteString by lazy {
     object : ProtoCodec<ByteString> {
         override fun serialize(value: ByteString, stream: Sink) {
-            ProtoVAR.Int.serialize(value.size, stream)
+            ProtoVAR.UInt.serialize(value.size.toUInt(), stream)
             stream.write(value)
         }
 
         override fun deserialize(stream: Source): ByteString {
-            val size = ProtoVAR.Int.deserialize(stream)
-            return stream.readByteString(size)
+            val size = ProtoVAR.UInt.deserialize(stream)
+            return stream.readByteString(size.toInt())
         }
     }
 }
