@@ -42,8 +42,15 @@ data class ItemStack(
                 ProtoLE.Short.serialize(0, userDataBuffer)
             }
 
-            ProtoHelper.serializeList(value.item.canBePlacedOn, userDataBuffer, Proto.String)
-            ProtoHelper.serializeList(value.item.canBreak, userDataBuffer, Proto.String)
+            ProtoLE.UInt.serialize(value.item.canBePlacedOn.size.toUInt(), userDataBuffer)
+            value.item.canBePlacedOn.forEach {
+                Proto.String.serialize(it, userDataBuffer)
+            }
+
+            ProtoLE.UInt.serialize(value.item.canBreak.size.toUInt(), userDataBuffer)
+            value.item.canBreak.forEach {
+                Proto.String.serialize(it, userDataBuffer)
+            }
 
             if (value.item.netID == ShieldID) {
                 ProtoLE.Long.serialize(0, userDataBuffer)
@@ -51,7 +58,7 @@ data class ItemStack(
 
             // endregion
 
-            Proto.String.serialize(userDataBuffer.readString(), stream)
+            Proto.ByteString.serialize(userDataBuffer.readByteString(), stream)
         }
 
         override fun deserialize(stream: Source): ItemStack {
@@ -85,10 +92,9 @@ data class ItemStack(
 
             // region UserDataBuffer
 
-            val userDataBytes = ByteArray(ProtoVAR.UInt.deserialize(stream).toInt())
-            stream.readTo(userDataBytes)
-            val userDataBuffer = Buffer()
-            userDataBuffer.write(userDataBytes)
+            val userDataBuffer = Buffer().apply {
+                write(Proto.ByteString.deserialize(stream))
+            }
 
             var nbtData = CompoundTag()
             val length = ProtoLE.Short.deserialize(userDataBuffer)
@@ -104,8 +110,13 @@ data class ItemStack(
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 
-            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
-            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
+            val canBePlacedOn = List(ProtoLE.UInt.deserialize(userDataBuffer).toInt()) {
+                Proto.String.deserialize(userDataBuffer)
+            }
+
+            val canBreak = List(ProtoLE.UInt.deserialize(userDataBuffer).toInt()) {
+                Proto.String.deserialize(userDataBuffer)
+            }
 
             if (netID == ShieldID) {
                 ProtoLE.Long.deserialize(userDataBuffer) // BlockingTicks (UNUSED?)

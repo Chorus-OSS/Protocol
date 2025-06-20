@@ -48,17 +48,23 @@ data class ItemInstance(
                 ProtoLE.Short.serialize(0, userDataBuffer)
             }
 
-            ProtoHelper.serializeList(value.canBePlacedOn, userDataBuffer, Proto.String)
-            ProtoHelper.serializeList(value.canBreak, userDataBuffer, Proto.String)
+            ProtoLE.UInt.serialize(value.canBePlacedOn.size.toUInt(), userDataBuffer)
+            value.canBePlacedOn.forEach {
+                Proto.String.serialize(it, userDataBuffer)
+            }
+
+            ProtoLE.UInt.serialize(value.canBreak.size.toUInt(), userDataBuffer)
+            value.canBreak.forEach {
+                Proto.String.serialize(it, userDataBuffer)
+            }
 
             if (value.netID == ShieldID) {
                 ProtoLE.Long.serialize(0, userDataBuffer)
             }
 
             // endregion
-            val bytes = userDataBuffer.readByteArray()
-            ProtoVAR.UInt.serialize(bytes.size.toUInt(), stream)
-            stream.write(bytes)
+
+            Proto.ByteString.serialize(userDataBuffer.readByteString(), stream)
         }
 
         override fun deserialize(stream: Source): ItemInstance {
@@ -81,10 +87,9 @@ data class ItemInstance(
 
             // region UserDataBuffer
 
-            val userDataBytes = ByteArray(ProtoVAR.UInt.deserialize(stream).toInt())
-            stream.readTo(userDataBytes)
-            val userDataBuffer = Buffer()
-            userDataBuffer.write(userDataBytes)
+            val userDataBuffer = Buffer().apply {
+                write(Proto.ByteString.deserialize(stream))
+            }
 
             var nbtData = CompoundTag()
             val length = ProtoLE.Short.deserialize(userDataBuffer)
@@ -100,8 +105,13 @@ data class ItemInstance(
                 nbtData = Tag.deserialize(userDataBuffer, TagSerialization.LE) as CompoundTag
             }
 
-            val canBePlacedOn = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
-            val canBreak = ProtoHelper.deserializeList(userDataBuffer, Proto.String)
+            val canBePlacedOn = List(ProtoLE.UInt.deserialize(userDataBuffer).toInt()) {
+                Proto.String.deserialize(userDataBuffer)
+            }
+
+            val canBreak = List(ProtoLE.UInt.deserialize(userDataBuffer).toInt()) {
+                Proto.String.deserialize(userDataBuffer)
+            }
 
             if (netID == ShieldID) {
                 ProtoLE.Long.deserialize(userDataBuffer) // BlockingTicks (UNUSED?)
