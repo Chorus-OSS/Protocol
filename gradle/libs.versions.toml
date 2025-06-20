@@ -1,6 +1,6 @@
 [versions]
 kotlinx-io = "0.7.0"
-nbt = "1.0.1"
+nbt = "1.0.2"
 varlen = "1.0.0"
 
 [libraries]
