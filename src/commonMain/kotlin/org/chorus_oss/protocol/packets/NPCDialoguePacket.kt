@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class NPCDialoguePacket(
-    val entityUniqueID: ActorUniqueID,
+    val entityUniqueID: Long,
     val actionType: ActionType,
     val dialogue: String,
     val sceneName: String,

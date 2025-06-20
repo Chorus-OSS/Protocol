@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.item.ItemStack
 
 data class MobArmorEquipmentPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val head: ItemStack,
     val torso: ItemStack,
     val legs: ItemStack,

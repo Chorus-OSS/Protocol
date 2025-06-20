@@ -14,7 +14,7 @@ import org.chorus_oss.protocol.types.IColorRGBA
 
 
 data class MapInfoRequestPacket(
-    val mapID: ActorUniqueID,
+    val mapID: Long,
     val clientPixels: List<PixelRequest>,
 ) : Packet(id) {
     companion object : PacketCodec<MapInfoRequestPacket> {

@@ -13,8 +13,8 @@ import org.chorus_oss.protocol.types.actor_data.ActorDataMap
 import org.chorus_oss.protocol.types.item.ItemStack
 
 data class AddItemActorPacket(
-    val actorUniqueID: ActorUniqueID,
-    val actorRuntimeID: ActorRuntimeID,
+    val actorUniqueID: Long,
+    val actorRuntimeID: ULong,
     val item: ItemStack,
     val position: Vector3f,
     val velocity: Vector3f,

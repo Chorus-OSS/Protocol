@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.types.Byte
 
 data class AbilitiesData(
-    val targetPlayerRawID: ActorUniqueID,
+    val targetPlayerRawID: Long,
     val playerPermissions: PlayerPermission,
     val commandPermissions: CommandPermission,
     val layers: List<AbilityLayer>

@@ -33,7 +33,7 @@ data class PlayerAuthInputPacket(
     val itemStackRequest: ItemStackRequest?,
     val blockActions: List<PlayerBlockActionData>?,
     val vehicleRotation: Vector2f?,
-    val clientPredictedVehicle: ActorUniqueID?,
+    val clientPredictedVehicle: Long?,
     val analogMoveVector: Vector2f,
     val cameraOrientation: Vector3f,
     val rawMoveVector: Vector2f,

@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AgentAnimationPacket(
     val animation: Byte,
-    val runtimeID: ActorRuntimeID,
+    val runtimeID: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<AgentAnimationPacket> {
         override val id: Int = 304

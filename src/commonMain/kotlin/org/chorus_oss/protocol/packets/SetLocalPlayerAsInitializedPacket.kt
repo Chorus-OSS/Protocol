@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class SetLocalPlayerAsInitializedPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<SetLocalPlayerAsInitializedPacket> {
         override val id: Int = 113

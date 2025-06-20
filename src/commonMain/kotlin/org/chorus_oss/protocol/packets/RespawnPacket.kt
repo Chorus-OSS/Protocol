@@ -14,7 +14,7 @@ import org.chorus_oss.protocol.types.Vector3f
 data class RespawnPacket(
     val position: Vector3f,
     val state: State,
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<RespawnPacket> {
         enum class State {

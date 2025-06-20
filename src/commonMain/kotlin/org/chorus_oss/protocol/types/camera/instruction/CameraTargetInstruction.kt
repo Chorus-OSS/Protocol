@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 data class CameraTargetInstruction(
     val centerOffset: Vector3f? = null,
-    val actorUniqueID: ActorUniqueID
+    val actorUniqueID: Long
 ) {
     companion object : ProtoCodec<CameraTargetInstruction> {
         override fun serialize(value: CameraTargetInstruction, stream: Sink) {

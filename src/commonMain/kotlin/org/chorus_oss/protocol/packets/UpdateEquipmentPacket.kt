@@ -17,7 +17,7 @@ data class UpdateEquipmentPacket(
     val windowID: Byte,
     val windowType: Byte,
     val size: Int,
-    val entityUniqueID: ActorUniqueID,
+    val entityUniqueID: Long,
     val serializedInventoryData: ByteString,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateEquipmentPacket> {

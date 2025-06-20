@@ -13,8 +13,8 @@ import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 data class StartGamePacket(
-    val entityUniqueID: ActorUniqueID,
-    val entityRuntimeID: ActorRuntimeID,
+    val entityUniqueID: Long,
+    val entityRuntimeID: ULong,
     val playerGameMode: Int,
     val playerPosition: Vector3f,
     val pitch: Float,

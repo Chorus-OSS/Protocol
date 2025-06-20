@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 data class MoveActorDeltaPacket(
     val flags: UShort,
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val position: Vector3f,
     val rotation: Vector3f,
 ) : Packet(id) {

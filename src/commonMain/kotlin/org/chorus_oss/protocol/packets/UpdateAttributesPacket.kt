@@ -12,7 +12,7 @@ import org.chorus_oss.protocol.types.attribute.Attribute
 
 
 data class UpdateAttributesPacket(
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val attributes: List<Attribute>,
     val tick: ULong,
 ) : Packet(id) {

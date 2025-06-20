@@ -10,8 +10,8 @@ import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 
 data class ActorLink(
-    val riddenActorUniqueID: ActorUniqueID,
-    val riderActorUniqueID: ActorUniqueID,
+    val riddenActorUniqueID: Long,
+    val riderActorUniqueID: Long,
     val type: Type,
     val immediate: Boolean,
     val riderInitiated: Boolean,

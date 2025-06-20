@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class BossEventPacket(
-    var targetActorID: ActorUniqueID,
+    var targetActorID: Long,
     var eventType: EventType,
     val eventData: EventType.Companion.EventData?,
 ) : Packet(id) {
@@ -48,11 +48,11 @@ data class BossEventPacket(
                 ) : EventData
 
                 data class PlayerAddedData(
-                    val playerID: ActorUniqueID,
+                    val playerID: Long,
                 ) : EventData
 
                 data class PlayerRemovedData(
-                    val playerID: ActorUniqueID,
+                    val playerID: Long,
                 ) : EventData
 
                 data class UpdatePercentData(
@@ -76,7 +76,7 @@ data class BossEventPacket(
                 ) : EventData
 
                 data class QueryData(
-                    val playerID: ActorUniqueID,
+                    val playerID: Long,
                 ) : EventData
             }
         }

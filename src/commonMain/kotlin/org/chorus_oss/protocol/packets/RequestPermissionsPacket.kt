@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.PlayerPermission
 
 
 data class RequestPermissionsPacket(
-    val entityUniqueID: ActorUniqueID,
+    val entityUniqueID: Long,
     val permissionLevel: PlayerPermission,
     val requestedPermissions: UShort,
 ) : Packet(id) {

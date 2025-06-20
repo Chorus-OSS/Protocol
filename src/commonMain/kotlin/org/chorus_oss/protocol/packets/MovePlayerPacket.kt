@@ -9,14 +9,14 @@ import org.chorus_oss.protocol.types.Vector3f
 
 
 data class MovePlayerPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val position: Vector3f,
     val pitch: Float,
     val yaw: Float,
     val headYaw: Float,
     val mode: Mode,
     val onGround: Boolean,
-    val riddenEntityRuntimeID: ActorRuntimeID,
+    val riddenEntityRuntimeID: ULong,
     val teleportCause: TeleportCause,
     val teleportSourceEntityType: Int,
     val tick: ULong,

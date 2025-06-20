@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class CameraPacket(
-    val cameraID: ActorUniqueID,
-    val targetPlayerID: ActorUniqueID,
+    val cameraID: Long,
+    val targetPlayerID: Long,
 ) : Packet(id) {
     companion object : PacketCodec<CameraPacket> {
         override val id: Int = 73

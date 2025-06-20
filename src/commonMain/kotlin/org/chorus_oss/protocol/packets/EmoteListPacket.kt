@@ -15,7 +15,7 @@ import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 data class EmoteListPacket(
-    val playerRuntimeID: ActorRuntimeID,
+    val playerRuntimeID: ULong,
     val emotePieces: List<Uuid>,
 ) : Packet(id) {
     companion object : PacketCodec<EmoteListPacket> {

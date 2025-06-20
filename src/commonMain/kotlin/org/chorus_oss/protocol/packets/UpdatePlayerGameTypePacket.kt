@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.types.GameType
 
 data class UpdatePlayerGameTypePacket(
     val gameType: GameType,
-    val playerUniqueID: ActorUniqueID,
+    val playerUniqueID: Long,
     val tick: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<UpdatePlayerGameTypePacket> {

@@ -14,7 +14,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 data class SpawnParticleEffectPacket(
     val dimension: Byte,
-    val entityUniqueID: ActorUniqueID,
+    val entityUniqueID: Long,
     val position: Vector3f,
     val identifier: String,
     val moLangVariablesJSON: String?

@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class MobEffectPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val operation: Operation,
     val effectType: Int,
     val amplifier: Int,

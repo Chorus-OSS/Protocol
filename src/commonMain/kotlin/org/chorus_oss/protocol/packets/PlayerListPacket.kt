@@ -45,7 +45,7 @@ data class PlayerListPacket(
         @OptIn(ExperimentalUuidApi::class)
         data class AddPlayerEntry(
             val uuid: Uuid,
-            val actorUniqueID: ActorUniqueID,
+            val actorUniqueID: Long,
             val playerName: String,
             val xuid: String,
             val platformChatID: String,

@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.core.types.*
 import org.chorus_oss.protocol.types.*
 
 data class ClientboundMapItemDataPacket(
-    val mapID: ActorUniqueID,
+    val mapID: Long,
     val typeFlags: UInt,
     val dimension: Byte,
     val isLockedMap: Boolean,
@@ -140,7 +140,7 @@ data class ClientboundMapItemDataPacket(
 
                 interface Data
                 data class EntityData(
-                    val uniqueID: ActorUniqueID
+                    val uniqueID: Long
                 ) : Data
 
                 data class BlockData(
