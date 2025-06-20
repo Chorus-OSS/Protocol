@@ -1,9 +1,17 @@
 [versions]
+kotlin = "2.1.10"
 kotlinx-io = "0.7.0"
 nbt = "1.0.2"
 varlen = "1.0.0"
+dokka = "2.0.0"
+maven-publish = "0.32.0"
 
 [libraries]
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 chorus-nbt = { module = "org.chorus-oss:nbt", version.ref = "nbt" }
 chorus-varlen = { module = "org.chorus-oss:varlen", version.ref = "varlen" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
