@@ -6,15 +6,15 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.item.ItemStack
 
 data class UseItemTransactionData(
     val actionType: ActionType,
     val triggerType: TriggerType,
-    val blockPosition: IVector3,
+    val blockPosition: BlockPos,
     val blockFace: Int,
     val hotbarSlot: Int,
     val itemInHand: ItemStack,
@@ -87,7 +87,7 @@ data class UseItemTransactionData(
         ) {
             ActionType.serialize(value.actionType, stream)
             TriggerType.serialize(value.triggerType, stream)
-            UIVector3.serialize(value.blockPosition, stream)
+            NetBlockPos.serialize(value.blockPosition, stream)
             ProtoVAR.Int.serialize(value.blockFace, stream)
             ProtoVAR.Int.serialize(value.hotbarSlot, stream)
             ItemStack.serialize(value.itemInHand, stream)
@@ -101,7 +101,7 @@ data class UseItemTransactionData(
             return UseItemTransactionData(
                 actionType = ActionType.deserialize(stream),
                 triggerType = TriggerType.deserialize(stream),
-                blockPosition = UIVector3.deserialize(stream),
+                blockPosition = NetBlockPos.deserialize(stream),
                 blockFace = ProtoVAR.Int.deserialize(stream),
                 hotbarSlot = ProtoVAR.Int.deserialize(stream),
                 itemInHand = ItemStack.deserialize(stream),

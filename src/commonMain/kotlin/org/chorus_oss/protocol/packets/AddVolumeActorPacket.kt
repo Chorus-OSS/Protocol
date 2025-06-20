@@ -12,16 +12,16 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorRuntimeID
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 data class AddVolumeActorPacket(
     val actorRuntimeID: ULong,
     val components: CompoundTag,
     val jsonIdentifier: String,
     val instanceIdentifier: String,
-    val minBounds: IVector3,
-    val maxBounds: IVector3,
+    val minBounds: BlockPos,
+    val maxBounds: BlockPos,
     val dimension: Int,
     val engineVersion: String,
 ) : Packet(id) {
@@ -34,8 +34,8 @@ data class AddVolumeActorPacket(
                 components = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
                 jsonIdentifier = Proto.String.deserialize(stream),
                 instanceIdentifier = Proto.String.deserialize(stream),
-                minBounds = UIVector3.deserialize(stream),
-                maxBounds = UIVector3.deserialize(stream),
+                minBounds = NetBlockPos.deserialize(stream),
+                maxBounds = NetBlockPos.deserialize(stream),
                 dimension = ProtoVAR.Int.deserialize(stream),
                 engineVersion = Proto.String.deserialize(stream),
             )
@@ -46,8 +46,8 @@ data class AddVolumeActorPacket(
             Tag.serialize(value.components, stream, TagSerialization.NetLE, true)
             Proto.String.serialize(value.jsonIdentifier, stream)
             Proto.String.serialize(value.instanceIdentifier, stream)
-            UIVector3.serialize(value.minBounds, stream)
-            UIVector3.serialize(value.maxBounds, stream)
+            NetBlockPos.serialize(value.minBounds, stream)
+            NetBlockPos.serialize(value.maxBounds, stream)
             ProtoVAR.Int.serialize(value.dimension, stream)
             Proto.String.serialize(value.engineVersion, stream)
         }

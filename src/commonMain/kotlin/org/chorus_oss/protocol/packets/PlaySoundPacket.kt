@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 import org.chorus_oss.protocol.types.Vector3f
 
 
@@ -24,8 +24,8 @@ data class PlaySoundPacket(
 
         override fun serialize(value: PlaySoundPacket, stream: Sink) {
             Proto.String.serialize(value.soundName, stream)
-            UIVector3.serialize(
-                IVector3(
+            NetBlockPos.serialize(
+                BlockPos(
                     x = (value.position.x * 8f).toInt(),
                     y = (value.position.y * 8f).toInt(),
                     z = (value.position.z * 8f).toInt(),
@@ -38,7 +38,7 @@ data class PlaySoundPacket(
         override fun deserialize(stream: Source): PlaySoundPacket {
             return PlaySoundPacket(
                 soundName = Proto.String.deserialize(stream),
-                position = UIVector3.deserialize(stream).let {
+                position = NetBlockPos.deserialize(stream).let {
                     Vector3f(
                         x = it.x.toFloat() / 8f,
                         y = it.y.toFloat() / 8f,

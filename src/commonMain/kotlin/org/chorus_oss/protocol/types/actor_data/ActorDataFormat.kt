@@ -6,7 +6,7 @@ import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.Vector3f
 
 enum class ActorDataFormat {
@@ -38,7 +38,7 @@ enum class ActorDataFormat {
                 is Long -> Long
                 is String -> String
                 is CompoundTag -> Nbt
-                is IVector3 -> Vector3I
+                is BlockPos -> Vector3I
                 is Vector3f -> Vector3F
 
                 else -> throw IllegalArgumentException("Unsupported type ${value::class}")

@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.core.types.Int
 
 data class PlayerBlockActionData(
     val action: PlayerActionType,
-    val position: IVector3?,
+    val position: BlockPos?,
     val facing: Int?,
 ) {
     companion object : ProtoCodec<PlayerBlockActionData> {
@@ -19,7 +19,7 @@ data class PlayerBlockActionData(
                 PlayerActionType.AbortDestroyBlock,
                 PlayerActionType.CrackBlock,
                 PlayerActionType.PredictDestroyBlock,
-                PlayerActionType.ContinueDestroyBlock -> IVector3.serialize(value.position as IVector3, stream)
+                PlayerActionType.ContinueDestroyBlock -> BlockPos.serialize(value.position as BlockPos, stream)
 
                 else -> Unit
             }
@@ -43,7 +43,7 @@ data class PlayerBlockActionData(
                     PlayerActionType.AbortDestroyBlock,
                     PlayerActionType.CrackBlock,
                     PlayerActionType.PredictDestroyBlock,
-                    PlayerActionType.ContinueDestroyBlock -> IVector3.deserialize(stream)
+                    PlayerActionType.ContinueDestroyBlock -> BlockPos.deserialize(stream)
 
                     else -> null
                 },

@@ -7,14 +7,14 @@ import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 
 data class GameTestRequestPacket(
     val maxTestsPerBatch: Int,
     val repetitions: Int,
     val rotation: Rotation,
     val stopOnError: Boolean,
-    val position: IVector3,
+    val position: BlockPos,
     val testsPerRow: Int,
     val name: String,
 ) : Packet(id) {
@@ -47,7 +47,7 @@ data class GameTestRequestPacket(
             ProtoVAR.Int.serialize(value.repetitions, stream)
             Rotation.serialize(value.rotation, stream)
             Proto.Boolean.serialize(value.stopOnError, stream)
-            IVector3.serialize(value.position, stream)
+            BlockPos.serialize(value.position, stream)
             ProtoVAR.Int.serialize(value.testsPerRow, stream)
             Proto.String.serialize(value.name, stream)
         }
@@ -58,7 +58,7 @@ data class GameTestRequestPacket(
                 repetitions = ProtoVAR.Int.deserialize(stream),
                 rotation = Rotation.deserialize(stream),
                 stopOnError = Proto.Boolean.deserialize(stream),
-                position = IVector3.deserialize(stream),
+                position = BlockPos.deserialize(stream),
                 testsPerRow = ProtoVAR.Int.deserialize(stream),
                 name = Proto.String.deserialize(stream),
             )

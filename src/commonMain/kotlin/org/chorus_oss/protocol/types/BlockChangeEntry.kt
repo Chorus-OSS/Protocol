@@ -7,7 +7,7 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 
 data class BlockChangeEntry(
-    val blockPos: IVector3,
+    val blockPos: BlockPos,
     val blockRuntimeID: UInt,
     val flags: UInt,
     val syncedUpdateEntityUniqueID: Long,
@@ -34,7 +34,7 @@ data class BlockChangeEntry(
         }
 
         override fun serialize(value: BlockChangeEntry, stream: Sink) {
-            UIVector3.serialize(value.blockPos, stream)
+            NetBlockPos.serialize(value.blockPos, stream)
             ProtoVAR.UInt.serialize(value.blockRuntimeID, stream)
             ProtoVAR.UInt.serialize(value.flags, stream)
             ActorUniqueID.serialize(value.syncedUpdateEntityUniqueID, stream)
@@ -43,7 +43,7 @@ data class BlockChangeEntry(
 
         override fun deserialize(stream: Source): BlockChangeEntry {
             return BlockChangeEntry(
-                blockPos = UIVector3.deserialize(stream),
+                blockPos = NetBlockPos.deserialize(stream),
                 blockRuntimeID = ProtoVAR.UInt.deserialize(stream),
                 flags = ProtoVAR.UInt.deserialize(stream),
                 syncedUpdateEntityUniqueID = ActorUniqueID.deserialize(stream),

@@ -7,12 +7,12 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 
 
 data class LabTablePacket(
     val actionType: ActionType,
-    val blockPosition: IVector3,
+    val blockPosition: BlockPos,
     val reactionType: Byte
 ) : Packet(id) {
     companion object : PacketCodec<LabTablePacket> {
@@ -39,14 +39,14 @@ data class LabTablePacket(
 
         override fun serialize(value: LabTablePacket, stream: Sink) {
             ActionType.serialize(value.actionType, stream)
-            IVector3.serialize(value.blockPosition, stream)
+            BlockPos.serialize(value.blockPosition, stream)
             Proto.Byte.serialize(value.reactionType, stream)
         }
 
         override fun deserialize(stream: Source): LabTablePacket {
             return LabTablePacket(
                 actionType = ActionType.deserialize(stream),
-                blockPosition = IVector3.deserialize(stream),
+                blockPosition = BlockPos.deserialize(stream),
                 reactionType = Proto.Byte.deserialize(stream)
             )
         }

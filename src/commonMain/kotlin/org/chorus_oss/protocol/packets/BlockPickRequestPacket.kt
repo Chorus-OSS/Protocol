@@ -7,10 +7,10 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 
 data class BlockPickRequestPacket(
-    val position: IVector3,
+    val position: BlockPos,
     var withData: Boolean,
     var maxSlots: Byte,
 ) : Packet(id) {
@@ -19,14 +19,14 @@ data class BlockPickRequestPacket(
 
         override fun deserialize(stream: Source): BlockPickRequestPacket {
             return BlockPickRequestPacket(
-                position = IVector3.deserialize(stream),
+                position = BlockPos.deserialize(stream),
                 withData = Proto.Boolean.deserialize(stream),
                 maxSlots = Proto.Byte.deserialize(stream)
             )
         }
 
         override fun serialize(value: BlockPickRequestPacket, stream: Sink) {
-            IVector3.serialize(value.position, stream)
+            BlockPos.serialize(value.position, stream)
             Proto.Boolean.serialize(value.withData, stream)
             Proto.Byte.serialize(value.maxSlots, stream)
         }

@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.CommandBlockMode
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 data class CommandBlockUpdatePacket(
     val isBlock: Boolean,
@@ -47,7 +47,7 @@ data class CommandBlockUpdatePacket(
         }
 
         data class CommandBlockData(
-            val blockPosition: IVector3,
+            val blockPosition: BlockPos,
             val commandBlockMode: CommandBlockMode,
             val redstoneMode: Boolean,
             val isConditional: Boolean,
@@ -57,7 +57,7 @@ data class CommandBlockUpdatePacket(
                     value: CommandBlockData,
                     stream: Sink
                 ) {
-                    UIVector3.serialize(value.blockPosition, stream)
+                    NetBlockPos.serialize(value.blockPosition, stream)
                     CommandBlockMode.serialize(value.commandBlockMode, stream)
                     Proto.Boolean.serialize(value.redstoneMode, stream)
                     Proto.Boolean.serialize(value.isConditional, stream)
@@ -65,7 +65,7 @@ data class CommandBlockUpdatePacket(
 
                 override fun deserialize(stream: Source): CommandBlockData {
                     return CommandBlockData(
-                        blockPosition = UIVector3.deserialize(stream),
+                        blockPosition = NetBlockPos.deserialize(stream),
                         commandBlockMode = CommandBlockMode.deserialize(stream),
                         redstoneMode = Proto.Boolean.deserialize(stream),
                         isConditional = Proto.Boolean.deserialize(stream),

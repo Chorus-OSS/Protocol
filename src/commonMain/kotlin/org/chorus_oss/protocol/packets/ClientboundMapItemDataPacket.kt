@@ -11,7 +11,7 @@ data class ClientboundMapItemDataPacket(
     val typeFlags: UInt,
     val dimension: Byte,
     val isLockedMap: Boolean,
-    val mapOrigin: IVector3,
+    val mapOrigin: BlockPos,
     val scale: Byte? = null,
     val creationData: CreationData? = null,
     val decorationUpdateData: DecorationUpdateData? = null,
@@ -144,7 +144,7 @@ data class ClientboundMapItemDataPacket(
                 ) : Data
 
                 data class BlockData(
-                    val blockPosition: IVector3,
+                    val blockPosition: BlockPos,
                 ) : Data
 
                 override fun serialize(value: MapItemTrackedActor, stream: Sink) {
@@ -157,7 +157,7 @@ data class ClientboundMapItemDataPacket(
 
                         Type.Block -> {
                             val blockData = value.data as BlockData
-                            UIVector3.serialize(blockData.blockPosition, stream)
+                            NetBlockPos.serialize(blockData.blockPosition, stream)
                         }
                     }
                 }
@@ -172,7 +172,7 @@ data class ClientboundMapItemDataPacket(
                             )
 
                             Type.Block -> BlockData(
-                                blockPosition = UIVector3.deserialize(stream)
+                                blockPosition = NetBlockPos.deserialize(stream)
                             )
                         }
                     )
@@ -189,7 +189,7 @@ data class ClientboundMapItemDataPacket(
                 typeFlags = ProtoVAR.UInt.deserialize(stream).also { typeFlags = it },
                 dimension = Proto.Byte.deserialize(stream),
                 isLockedMap = Proto.Boolean.deserialize(stream),
-                mapOrigin = IVector3.deserialize(stream),
+                mapOrigin = BlockPos.deserialize(stream),
 
                 creationData = when {
                     typeFlags and Type.Creation.bit != 0u -> CreationData(
@@ -235,7 +235,7 @@ data class ClientboundMapItemDataPacket(
             ProtoVAR.UInt.serialize(value.typeFlags, stream)
             Proto.Byte.serialize(value.dimension, stream)
             Proto.Boolean.serialize(value.isLockedMap, stream)
-            IVector3.serialize(value.mapOrigin, stream)
+            BlockPos.serialize(value.mapOrigin, stream)
 
             if (value.typeFlags and Type.Creation.bit != 0u) {
                 val creationData = value.creationData as CreationData

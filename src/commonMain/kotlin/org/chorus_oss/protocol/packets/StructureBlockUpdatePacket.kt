@@ -7,15 +7,15 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 import org.chorus_oss.protocol.types.structure.StructureBlockType
 import org.chorus_oss.protocol.types.structure.StructureRedstoneSaveMode
 import org.chorus_oss.protocol.types.structure.StructureSettings
 
 
 data class StructureBlockUpdatePacket(
-    val position: IVector3,
+    val position: BlockPos,
     val structureName: String,
     val filteredStructureName: String,
     val dataField: String,
@@ -34,7 +34,7 @@ data class StructureBlockUpdatePacket(
             value: StructureBlockUpdatePacket,
             stream: Sink
         ) {
-            UIVector3.serialize(value.position, stream)
+            NetBlockPos.serialize(value.position, stream)
             Proto.String.serialize(value.structureName, stream)
             Proto.String.serialize(value.filteredStructureName, stream)
             Proto.String.serialize(value.dataField, stream)
@@ -49,7 +49,7 @@ data class StructureBlockUpdatePacket(
 
         override fun deserialize(stream: Source): StructureBlockUpdatePacket {
             return StructureBlockUpdatePacket(
-                position = UIVector3.deserialize(stream),
+                position = NetBlockPos.deserialize(stream),
                 structureName = Proto.String.deserialize(stream),
                 filteredStructureName = Proto.String.deserialize(stream),
                 dataField = Proto.String.deserialize(stream),

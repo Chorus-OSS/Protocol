@@ -7,16 +7,16 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.ActorRuntimeID
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.PlayerActionType
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.NetBlockPos
 
 
 data class PlayerActionPacket(
     val entityRuntimeID: ULong,
     val actionType: PlayerActionType,
-    val blockPosition: IVector3,
-    val resultPosition: IVector3,
+    val blockPosition: BlockPos,
+    val resultPosition: BlockPos,
     val blockFace: Int,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerActionPacket> {
@@ -25,8 +25,8 @@ data class PlayerActionPacket(
         override fun serialize(value: PlayerActionPacket, stream: Sink) {
             ActorRuntimeID.serialize(value.entityRuntimeID, stream)
             PlayerActionType.serialize(value.actionType, stream)
-            UIVector3.serialize(value.blockPosition, stream)
-            UIVector3.serialize(value.resultPosition, stream)
+            NetBlockPos.serialize(value.blockPosition, stream)
+            NetBlockPos.serialize(value.resultPosition, stream)
             ProtoVAR.Int.serialize(value.blockFace, stream)
         }
 
@@ -34,8 +34,8 @@ data class PlayerActionPacket(
             return PlayerActionPacket(
                 entityRuntimeID = ActorRuntimeID.deserialize(stream),
                 actionType = PlayerActionType.deserialize(stream),
-                blockPosition = UIVector3.deserialize(stream),
-                resultPosition = UIVector3.deserialize(stream),
+                blockPosition = NetBlockPos.deserialize(stream),
+                resultPosition = NetBlockPos.deserialize(stream),
                 blockFace = ProtoVAR.Int.deserialize(stream),
             )
         }

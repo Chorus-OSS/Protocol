@@ -10,8 +10,8 @@ import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.ActorUniqueID
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 import org.chorus_oss.protocol.types.Vector3f
 
 data class StructureSettings(
@@ -19,8 +19,8 @@ data class StructureSettings(
     val ignoringEntities: Boolean,
     val ignoringBlocks: Boolean,
     val allowNonTickingChunks: Boolean,
-    val size: IVector3,
-    val offset: IVector3,
+    val size: BlockPos,
+    val offset: BlockPos,
     val lastEditedPlayerUniqueID: Long,
     val rotation: StructureRotation,
     val mirror: StructureMirror,
@@ -39,8 +39,8 @@ data class StructureSettings(
             Proto.Boolean.serialize(value.ignoringEntities, stream)
             Proto.Boolean.serialize(value.ignoringBlocks, stream)
             Proto.Boolean.serialize(value.allowNonTickingChunks, stream)
-            UIVector3.serialize(value.size, stream)
-            UIVector3.serialize(value.offset, stream)
+            NetBlockPos.serialize(value.size, stream)
+            NetBlockPos.serialize(value.offset, stream)
             ActorUniqueID.serialize(value.lastEditedPlayerUniqueID, stream)
             StructureRotation.serialize(value.rotation, stream)
             StructureMirror.serialize(value.mirror, stream)
@@ -57,8 +57,8 @@ data class StructureSettings(
                 ignoringEntities = Proto.Boolean.deserialize(stream),
                 ignoringBlocks = Proto.Boolean.deserialize(stream),
                 allowNonTickingChunks = Proto.Boolean.deserialize(stream),
-                size = UIVector3.deserialize(stream),
-                offset = UIVector3.deserialize(stream),
+                size = NetBlockPos.deserialize(stream),
+                offset = NetBlockPos.deserialize(stream),
                 lastEditedPlayerUniqueID = ActorUniqueID.deserialize(stream),
                 rotation = StructureRotation.deserialize(stream),
                 mirror = StructureMirror.deserialize(stream),

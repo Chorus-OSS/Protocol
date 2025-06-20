@@ -10,12 +10,12 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.types.ActorUniqueID
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 
 data class UpdateBlockSyncedPacket(
-    val position: IVector3,
+    val position: BlockPos,
     val newBlockRuntimeID: UInt,
     val flags: UInt,
     val layer: UInt,
@@ -54,7 +54,7 @@ data class UpdateBlockSyncedPacket(
             value: UpdateBlockSyncedPacket,
             stream: Sink
         ) {
-            UIVector3.serialize(value.position, stream)
+            NetBlockPos.serialize(value.position, stream)
             ProtoVAR.UInt.serialize(value.newBlockRuntimeID, stream)
             ProtoVAR.UInt.serialize(value.flags, stream)
             ProtoVAR.UInt.serialize(value.layer, stream)
@@ -64,7 +64,7 @@ data class UpdateBlockSyncedPacket(
 
         override fun deserialize(stream: Source): UpdateBlockSyncedPacket {
             return UpdateBlockSyncedPacket(
-                position = UIVector3.deserialize(stream),
+                position = NetBlockPos.deserialize(stream),
                 newBlockRuntimeID = ProtoVAR.UInt.deserialize(stream),
                 flags = ProtoVAR.UInt.deserialize(stream),
                 layer = ProtoVAR.UInt.deserialize(stream),

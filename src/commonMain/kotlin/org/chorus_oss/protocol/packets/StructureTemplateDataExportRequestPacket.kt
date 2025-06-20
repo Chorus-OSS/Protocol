@@ -8,13 +8,13 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 import org.chorus_oss.protocol.types.structure.StructureSettings
 
 data class StructureTemplateDataExportRequestPacket(
     val structureName: String,
-    val position: IVector3,
+    val position: BlockPos,
     val settings: StructureSettings,
     val requestType: RequestType,
 ) : Packet(id) {
@@ -47,7 +47,7 @@ data class StructureTemplateDataExportRequestPacket(
             stream: Sink
         ) {
             Proto.String.serialize(value.structureName, stream)
-            UIVector3.serialize(value.position, stream)
+            NetBlockPos.serialize(value.position, stream)
             StructureSettings.serialize(value.settings, stream)
             RequestType.serialize(value.requestType, stream)
         }
@@ -55,7 +55,7 @@ data class StructureTemplateDataExportRequestPacket(
         override fun deserialize(stream: Source): StructureTemplateDataExportRequestPacket {
             return StructureTemplateDataExportRequestPacket(
                 structureName = Proto.String.deserialize(stream),
-                position = UIVector3.deserialize(stream),
+                position = NetBlockPos.deserialize(stream),
                 settings = StructureSettings.deserialize(stream),
                 requestType = RequestType.deserialize(stream),
             )
