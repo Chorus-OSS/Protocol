@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
 data class AddPlayerPacket(
     val uuid: Uuid,
     val playerName: String,
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val platformChatID: String,
     val position: Vector3f,
     val velocity: Vector3f,

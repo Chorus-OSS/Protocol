@@ -7,15 +7,12 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.ULong
 import kotlin.jvm.JvmInline
 
-@JvmInline
-value class ActorRuntimeID(val id: ULong) {
-    companion object : ProtoCodec<ActorRuntimeID> {
-        override fun serialize(value: ActorRuntimeID, stream: Sink) {
-            ProtoVAR.ULong.serialize(value.id, stream)
-        }
+object ActorRuntimeID : ProtoCodec<ULong> {
+    override fun serialize(value: ULong, stream: Sink) {
+        ProtoVAR.ULong.serialize(value, stream)
+    }
 
-        override fun deserialize(stream: Source): ActorRuntimeID {
-            return ActorRuntimeID(ProtoVAR.ULong.deserialize(stream))
-        }
+    override fun deserialize(stream: Source): ULong {
+        return ProtoVAR.ULong.deserialize(stream)
     }
 }

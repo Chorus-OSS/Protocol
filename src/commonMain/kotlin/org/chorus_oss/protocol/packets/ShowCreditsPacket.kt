@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class ShowCreditsPacket(
-    val playerRuntimeID: ActorRuntimeID,
+    val playerRuntimeID: ULong,
     val statusType: StatusType,
 ) : Packet(id) {
     companion object : PacketCodec<ShowCreditsPacket> {

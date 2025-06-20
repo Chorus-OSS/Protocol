@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class RemoveVolumeEntityPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val dimension: Int,
 ) : Packet(id) {
     companion object : PacketCodec<RemoveVolumeEntityPacket> {

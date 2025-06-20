@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class DebugInfoPacket(
-    val playerUniqueID: ActorUniqueID,
+    val playerUniqueID: Long,
     val data: ByteString
 ) : Packet(id) {
     companion object : PacketCodec<DebugInfoPacket> {

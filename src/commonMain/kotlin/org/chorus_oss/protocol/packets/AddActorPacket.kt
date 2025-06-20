@@ -10,8 +10,8 @@ import org.chorus_oss.protocol.types.actor_data.ActorDataMap
 import org.chorus_oss.protocol.types.attribute.AttributeValue
 
 data class AddActorPacket(
-    val actorUniqueID: ActorUniqueID,
-    val actorRuntimeID: ActorRuntimeID,
+    val actorUniqueID: Long,
+    val actorRuntimeID: ULong,
     val actorType: String,
     val position: Vector3f,
     val velocity: Vector3f,

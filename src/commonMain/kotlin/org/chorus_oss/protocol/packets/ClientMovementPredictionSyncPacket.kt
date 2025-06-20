@@ -16,7 +16,7 @@ data class ClientMovementPredictionSyncPacket(
     val flags: Set<ActorDataFlag>,
     val actorBoundingBox: Vector3f,
     val movementAttributesComponent: MovementAttributesComponent,
-    val actorUniqueID: ActorUniqueID,
+    val actorUniqueID: Long,
     val actorFlyingState: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<ClientMovementPredictionSyncPacket> {

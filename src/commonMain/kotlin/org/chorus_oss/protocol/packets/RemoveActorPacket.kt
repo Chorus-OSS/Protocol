@@ -8,7 +8,7 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class RemoveActorPacket(
-    val actorUniqueID: ActorUniqueID
+    val actorUniqueID: Long
 ) : Packet(id) {
     companion object : PacketCodec<RemoveActorPacket> {
         override val id: Int = 14

@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class AnimatePacket(
     val action: Action,
-    val targetRuntimeID: ActorRuntimeID,
+    val targetRuntimeID: ULong,
     val actionData: Action.ActionData? = null,
 ) : Packet(id) {
     enum class Action(val id: Int) {

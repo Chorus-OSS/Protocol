@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ChangeMobPropertyPacket(
-    val actorID: ActorUniqueID,
+    val actorID: Long,
     val property: String,
     val boolValue: Boolean,
     val stringValue: String,

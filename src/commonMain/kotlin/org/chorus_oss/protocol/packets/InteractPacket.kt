@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 data class InteractPacket(
     val action: Action,
-    val targetRuntimeID: ActorRuntimeID,
+    val targetRuntimeID: ULong,
     val actionData: ActionData?,
 ) : Packet(id) {
     companion object : PacketCodec<InteractPacket> {

@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 data class PlayerUpdateEntityOverridesPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val propertyIndex: UInt,
     val type: Type,
     val intValue: Int?,

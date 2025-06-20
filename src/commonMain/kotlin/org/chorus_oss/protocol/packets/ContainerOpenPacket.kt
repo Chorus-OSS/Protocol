@@ -15,7 +15,7 @@ data class ContainerOpenPacket(
     val containerID: Byte,
     val containerType: ContainerType,
     val position: IVector3,
-    val targetActorID: ActorUniqueID,
+    val targetActorID: Long,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerOpenPacket> {
         override val id: Int = 46

@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ScoreboardIdentityEntry(
     val entryID: Long,
-    val entityUniqueID: ActorUniqueID,
+    val entityUniqueID: Long,
 ) {
     companion object : ProtoCodec<ScoreboardIdentityEntry> {
         override fun serialize(

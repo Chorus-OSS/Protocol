@@ -10,7 +10,7 @@ data class BlockChangeEntry(
     val blockPos: IVector3,
     val blockRuntimeID: UInt,
     val flags: UInt,
-    val syncedUpdateEntityUniqueID: ActorUniqueID,
+    val syncedUpdateEntityUniqueID: Long,
     val syncedUpdateType: MessageType
 ) {
     companion object : ProtoCodec<BlockChangeEntry> {

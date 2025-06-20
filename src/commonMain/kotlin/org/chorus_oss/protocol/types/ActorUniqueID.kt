@@ -5,17 +5,15 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Long
+import kotlin.Long
 import kotlin.jvm.JvmInline
 
-@JvmInline
-value class ActorUniqueID(val id: Long) {
-    companion object : ProtoCodec<ActorUniqueID> {
-        override fun serialize(value: ActorUniqueID, stream: Sink) {
-            ProtoVAR.Long.serialize(value.id, stream)
-        }
+object ActorUniqueID : ProtoCodec<Long> {
+    override fun serialize(value: Long, stream: Sink) {
+        ProtoVAR.Long.serialize(value, stream)
+    }
 
-        override fun deserialize(stream: Source): ActorUniqueID {
-            return ActorUniqueID(ProtoVAR.Long.deserialize(stream))
-        }
+    override fun deserialize(stream: Source): Long {
+        return ProtoVAR.Long.deserialize(stream)
     }
 }

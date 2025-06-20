@@ -19,7 +19,7 @@ data class UpdateBlockSyncedPacket(
     val newBlockRuntimeID: UInt,
     val flags: UInt,
     val layer: UInt,
-    val actorUniqueID: ActorUniqueID,
+    val actorUniqueID: Long,
     val transitionType: TransitionType,
 ) : Packet(id) {
     companion object : PacketCodec<UpdateBlockSyncedPacket> {

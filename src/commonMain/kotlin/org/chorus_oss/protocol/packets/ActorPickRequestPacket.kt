@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 data class ActorPickRequestPacket(
-    val actorID: ActorUniqueID,
+    val actorID: Long,
     val maxSlots: Byte,
     val withData: Boolean,
 ) : Packet(id) {

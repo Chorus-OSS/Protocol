@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class MapCreateLockedCopyPacket(
-    val originalMapID: ActorUniqueID,
-    val newMapID: ActorUniqueID,
+    val originalMapID: Long,
+    val newMapID: Long,
 ) : Packet(id) {
     companion object : PacketCodec<MapCreateLockedCopyPacket> {
         override val id: Int = 131

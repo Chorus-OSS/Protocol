@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class TakeItemEntityPacket(
-    val itemEntityRuntimeID: ActorRuntimeID,
-    val takerEntityRuntimeID: ActorRuntimeID,
+    val itemEntityRuntimeID: ULong,
+    val takerEntityRuntimeID: ULong,
 ) : Packet(id) {
     companion object : PacketCodec<TakeItemEntityPacket> {
         override val id: Int = 17

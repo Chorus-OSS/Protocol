@@ -13,8 +13,8 @@ import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.Vector3f
 
 data class AddPaintingPacket(
-    val actorUniqueID: ActorUniqueID,
-    val actorRuntimeID: ActorRuntimeID,
+    val actorUniqueID: Long,
+    val actorRuntimeID: ULong,
     val position: Vector3f,
     val direction: Int,
     val motif: String,

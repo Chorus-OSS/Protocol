@@ -16,7 +16,7 @@ data class ScoreboardEntry(
     val objectiveName: String,
     val score: Int,
     val identityType: IdentityType,
-    val entityUniqueID: ActorUniqueID?,
+    val entityUniqueID: Long?,
     val displayName: String?,
 ) {
     companion object : ProtoCodec<ScoreboardEntry> {

@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 
 data class MoveActorAbsolutePacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val flags: Byte,
     val position: Vector3f,
     val rotation: Vector3f,

@@ -12,7 +12,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class NPCRequestPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val requestType: RequestType,
     val commandString: String,
     val actionType: Byte,

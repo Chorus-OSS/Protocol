@@ -10,7 +10,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.Vector3f
 
 data class MotionPredictionHintsPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val velocity: Vector3f,
     val onGround: Boolean
 ) : Packet(id) {

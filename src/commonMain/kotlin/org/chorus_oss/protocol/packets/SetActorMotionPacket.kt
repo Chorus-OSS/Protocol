@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 
 data class SetActorMotionPacket(
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val motion: Vector3f,
     val tick: ULong,
 ) : Packet(id) {

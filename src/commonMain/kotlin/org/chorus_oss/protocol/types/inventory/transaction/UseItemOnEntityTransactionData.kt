@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.Vector3f
 import org.chorus_oss.protocol.types.item.ItemStack
 
 data class UseItemOnEntityTransactionData(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val actionType: ActionType,
     val hotbarSlot: Int,
     val itemInHand: ItemStack,

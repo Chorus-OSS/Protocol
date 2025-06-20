@@ -21,7 +21,7 @@ data class StructureSettings(
     val allowNonTickingChunks: Boolean,
     val size: IVector3,
     val offset: IVector3,
-    val lastEditedPlayerUniqueID: ActorUniqueID,
+    val lastEditedPlayerUniqueID: Long,
     val rotation: StructureRotation,
     val mirror: StructureMirror,
     val animationMode: StructureAnimationMode,

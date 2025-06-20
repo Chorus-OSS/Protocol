@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.item.ItemStack
 
 
 data class MobEquipmentPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val newItem: ItemStack,
     val inventorySlot: Byte,
     val hotbarSlot: Byte,

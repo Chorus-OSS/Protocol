@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.types.UIVector3
 
 
 data class PlayerActionPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val actionType: PlayerActionType,
     val blockPosition: IVector3,
     val resultPosition: IVector3,

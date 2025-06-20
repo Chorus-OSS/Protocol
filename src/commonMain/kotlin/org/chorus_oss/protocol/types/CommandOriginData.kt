@@ -54,7 +54,7 @@ data class CommandOriginData(
         interface CommandData
 
         data class PlayerIDData(
-            val playerUniqueID: ActorUniqueID,
+            val playerUniqueID: Long,
         ) : CommandData {
             companion object : ProtoCodec<PlayerIDData> {
                 override fun serialize(

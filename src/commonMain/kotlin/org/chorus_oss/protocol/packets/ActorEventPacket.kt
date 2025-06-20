@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 class ActorEventPacket(
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val eventType: Type,
     val eventData: Int,
 ) : Packet(id) {

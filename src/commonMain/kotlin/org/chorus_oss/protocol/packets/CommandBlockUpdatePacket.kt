@@ -28,7 +28,7 @@ data class CommandBlockUpdatePacket(
         interface CommandBlockHolderData
 
         data class CommandBlockActorData(
-            val targetRuntimeID: ActorRuntimeID
+            val targetRuntimeID: ULong
         ) : CommandBlockHolderData {
             companion object : ProtoCodec<CommandBlockActorData> {
                 override fun serialize(

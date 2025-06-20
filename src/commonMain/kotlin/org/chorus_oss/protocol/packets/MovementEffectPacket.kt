@@ -13,7 +13,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class MovementEffectPacket(
-    val entityRuntimeID: ActorRuntimeID,
+    val entityRuntimeID: ULong,
     val type: Type,
     val duration: Int,
     val tick: ULong,

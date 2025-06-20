@@ -12,7 +12,7 @@ import org.chorus_oss.protocol.types.Vector3f
 
 data class PlayerLocationPacket(
     val type: Type,
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val position: Vector3f?,
 ) : Packet(id) {
     companion object : PacketCodec<PlayerLocationPacket> {

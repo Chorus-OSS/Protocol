@@ -16,7 +16,7 @@ import org.chorus_oss.protocol.types.IVector3
 import org.chorus_oss.protocol.types.UIVector3
 
 data class AddVolumeActorPacket(
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val components: CompoundTag,
     val jsonIdentifier: String,
     val instanceIdentifier: String,

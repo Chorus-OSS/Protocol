@@ -11,7 +11,7 @@ import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.actor_data.ActorDataMap
 
 data class SetActorDataPacket(
-    val actorRuntimeID: ActorRuntimeID,
+    val actorRuntimeID: ULong,
     val actorDataMap: ActorDataMap,
     val actorProperties: ActorProperties,
     val tick: ULong,
