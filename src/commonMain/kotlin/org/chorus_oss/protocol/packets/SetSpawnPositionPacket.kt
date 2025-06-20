@@ -7,15 +7,15 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 
 data class SetSpawnPositionPacket(
     val spawnType: SpawnType,
-    val position: IVector3,
+    val position: BlockPos,
     val dimension: Int,
-    val spawnPosition: IVector3,
+    val spawnPosition: BlockPos,
 ) : Packet(id) {
     companion object : PacketCodec<SetSpawnPositionPacket> {
         enum class SpawnType {
@@ -40,17 +40,17 @@ data class SetSpawnPositionPacket(
 
         override fun serialize(value: SetSpawnPositionPacket, stream: Sink) {
             SpawnType.serialize(value.spawnType, stream)
-            UIVector3.serialize(value.position, stream)
+            NetBlockPos.serialize(value.position, stream)
             ProtoVAR.Int.serialize(value.dimension, stream)
-            UIVector3.serialize(value.spawnPosition, stream)
+            NetBlockPos.serialize(value.spawnPosition, stream)
         }
 
         override fun deserialize(stream: Source): SetSpawnPositionPacket {
             return SetSpawnPositionPacket(
                 spawnType = SpawnType.deserialize(stream),
-                position = UIVector3.deserialize(stream),
+                position = NetBlockPos.deserialize(stream),
                 dimension = ProtoVAR.Int.deserialize(stream),
-                spawnPosition = UIVector3.deserialize(stream),
+                spawnPosition = NetBlockPos.deserialize(stream),
             )
         }
     }

@@ -27,7 +27,7 @@ data class StartGamePacket(
     val worldGameMode: Int,
     val hardcore: Boolean,
     val difficulty: Int,
-    val worldSpawn: IVector3,
+    val worldSpawn: BlockPos,
     val achievementsDisabled: Boolean,
     val editorWorldType: EditorWorldType,
     val createdInEditor: Boolean,
@@ -110,7 +110,7 @@ data class StartGamePacket(
             ProtoVAR.Int.serialize(value.worldGameMode, stream)
             Proto.Boolean.serialize(value.hardcore, stream)
             ProtoVAR.Int.serialize(value.difficulty, stream)
-            UIVector3.serialize(value.worldSpawn, stream)
+            NetBlockPos.serialize(value.worldSpawn, stream)
             Proto.Boolean.serialize(value.achievementsDisabled, stream)
             EditorWorldType.serialize(value.editorWorldType, stream)
             Proto.Boolean.serialize(value.createdInEditor, stream)
@@ -195,7 +195,7 @@ data class StartGamePacket(
                 worldGameMode = ProtoVAR.Int.deserialize(stream),
                 hardcore = Proto.Boolean.deserialize(stream),
                 difficulty = ProtoVAR.Int.deserialize(stream),
-                worldSpawn = UIVector3.deserialize(stream),
+                worldSpawn = NetBlockPos.deserialize(stream),
                 achievementsDisabled = Proto.Boolean.deserialize(stream),
                 editorWorldType = EditorWorldType.deserialize(stream),
                 createdInEditor = Proto.Boolean.deserialize(stream),

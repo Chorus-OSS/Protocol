@@ -1,7 +1,7 @@
 package org.chorus_oss.protocol.types.actor_data
 
 import org.chorus_oss.nbt.tags.CompoundTag
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.Vector3f
 import kotlin.reflect.KClass
 
@@ -37,7 +37,7 @@ sealed class ActorDataType<T : Any>(
     data object UsingItem : ActorDataType<Byte>(ActorDataKey.UsingItem, Byte::class)
     data object PlayerFlags : ActorDataType<Byte>(ActorDataKey.PlayerFlags, Byte::class)
     data object PlayerIndex : ActorDataType<Int>(ActorDataKey.PlayerIndex, Int::class)
-    data object BedPosition : ActorDataType<IVector3>(ActorDataKey.BedPosition, IVector3::class)
+    data object BedPosition : ActorDataType<BlockPos>(ActorDataKey.BedPosition, BlockPos::class)
     data object PowerX : ActorDataType<Float>(ActorDataKey.PowerX, Float::class)
     data object PowerY : ActorDataType<Float>(ActorDataKey.PowerY, Float::class)
     data object PowerZ : ActorDataType<Float>(ActorDataKey.PowerZ, Float::class)
@@ -56,7 +56,7 @@ sealed class ActorDataType<T : Any>(
     data object ContainerType : ActorDataType<Byte>(ActorDataKey.ContainerType, Byte::class)
     data object ContainerSize : ActorDataType<Int>(ActorDataKey.ContainerSize, Int::class)
     data object ContainerStrengthModifier : ActorDataType<Int>(ActorDataKey.ContainerStrengthModifier, Int::class)
-    data object BlockTarget : ActorDataType<IVector3>(ActorDataKey.BlockTarget, IVector3::class)
+    data object BlockTarget : ActorDataType<BlockPos>(ActorDataKey.BlockTarget, BlockPos::class)
     data object Inventory : ActorDataType<Int>(ActorDataKey.Inventory, Int::class)
     data object TargetA : ActorDataType<Long>(ActorDataKey.TargetA, Long::class)
     data object TargetB : ActorDataType<Long>(ActorDataKey.TargetB, Long::class)
@@ -78,7 +78,7 @@ sealed class ActorDataType<T : Any>(
     data object PeekID : ActorDataType<Int>(ActorDataKey.PeekID, Int::class)
     data object AttachFace : ActorDataType<Int>(ActorDataKey.AttachFace, Int::class)
     data object Attached : ActorDataType<Byte>(ActorDataKey.Attached, Byte::class)
-    data object AttachedPosition : ActorDataType<IVector3>(ActorDataKey.AttachedPosition, IVector3::class)
+    data object AttachedPosition : ActorDataType<BlockPos>(ActorDataKey.AttachedPosition, BlockPos::class)
     data object TradeTarget : ActorDataType<Long>(ActorDataKey.TradeTarget, Long::class)
     data object Career : ActorDataType<Int>(ActorDataKey.Career, Int::class)
     data object HasCommandBlock : ActorDataType<Byte>(ActorDataKey.HasCommandBlock, Byte::class)
@@ -142,7 +142,7 @@ sealed class ActorDataType<T : Any>(
 
     data object HeartbeatIntervalTicks : ActorDataType<Int>(ActorDataKey.HeartbeatIntervalTicks, Int::class)
     data object HeartbeatSoundEvent : ActorDataType<Int>(ActorDataKey.HeartbeatSoundEvent, Int::class)
-    data object PlayerLastDeathPosition : ActorDataType<IVector3>(ActorDataKey.PlayerLastDeathPosition, IVector3::class)
+    data object PlayerLastDeathPosition : ActorDataType<BlockPos>(ActorDataKey.PlayerLastDeathPosition, BlockPos::class)
     data object PlayerLastDeathDimension : ActorDataType<Int>(ActorDataKey.PlayerLastDeathDimension, Int::class)
     data object PlayerHasDied : ActorDataType<Byte>(ActorDataKey.PlayerHasDied, Byte::class)
     data object CollisionBox : ActorDataType<Vector3f>(ActorDataKey.CollisionBox, Vector3f::class)

@@ -8,13 +8,13 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.types.ActorUniqueID
 import org.chorus_oss.protocol.types.ContainerType
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 data class ContainerOpenPacket(
     val containerID: Byte,
     val containerType: ContainerType,
-    val position: IVector3,
+    val position: BlockPos,
     val targetActorID: Long,
 ) : Packet(id) {
     companion object : PacketCodec<ContainerOpenPacket> {
@@ -23,7 +23,7 @@ data class ContainerOpenPacket(
         override fun serialize(value: ContainerOpenPacket, stream: Sink) {
             Proto.Byte.serialize(value.containerID, stream)
             ContainerType.serialize(value.containerType, stream)
-            UIVector3.serialize(value.position, stream)
+            NetBlockPos.serialize(value.position, stream)
             ActorUniqueID.serialize(value.targetActorID, stream)
         }
 
@@ -31,7 +31,7 @@ data class ContainerOpenPacket(
             return ContainerOpenPacket(
                 containerID = Proto.Byte.deserialize(stream),
                 containerType = ContainerType.deserialize(stream),
-                position = UIVector3.deserialize(stream),
+                position = NetBlockPos.deserialize(stream),
                 targetActorID = ActorUniqueID.deserialize(stream)
             )
         }

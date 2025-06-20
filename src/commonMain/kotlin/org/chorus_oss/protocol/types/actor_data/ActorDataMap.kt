@@ -9,7 +9,7 @@ import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.*
-import org.chorus_oss.protocol.types.IVector3
+import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.Vector3f
 
 class ActorDataMap() : MutableMap<ActorDataKey, Any> {
@@ -94,7 +94,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                     ActorDataFormat.String -> Proto.String.serialize(data as String, stream)
                     ActorDataFormat.Nbt -> Tag.serialize(data as Tag, stream, TagSerialization.NetLE, isRoot = true)
                     ActorDataFormat.Vector3I -> {
-                        val vec = data as IVector3
+                        val vec = data as BlockPos
                         ProtoVAR.Int.serialize(vec.x, stream)
                         ProtoVAR.Int.serialize(vec.y, stream)
                         ProtoVAR.Int.serialize(vec.z, stream)
@@ -119,7 +119,7 @@ class ActorDataMap() : MutableMap<ActorDataKey, Any> {
                     ActorDataFormat.Float -> ProtoLE.Float.deserialize(stream)
                     ActorDataFormat.String -> Proto.String.deserialize(stream)
                     ActorDataFormat.Nbt -> Tag.deserialize(stream, TagSerialization.NetLE)
-                    ActorDataFormat.Vector3I -> IVector3(
+                    ActorDataFormat.Vector3I -> BlockPos(
                         x = ProtoVAR.Int.deserialize(stream),
                         y = ProtoVAR.Int.deserialize(stream),
                         z = ProtoVAR.Int.deserialize(stream),

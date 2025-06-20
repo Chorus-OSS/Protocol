@@ -7,11 +7,11 @@ import org.chorus_oss.nbt.TagSerialization
 import org.chorus_oss.nbt.tags.CompoundTag
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.types.IVector3
-import org.chorus_oss.protocol.types.UIVector3
+import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.NetBlockPos
 
 data class BlockActorDataPacket(
-    var blockPosition: IVector3,
+    var blockPosition: BlockPos,
     var actorDataTags: CompoundTag
 ) : Packet(id) {
     companion object : PacketCodec<BlockActorDataPacket> {
@@ -19,13 +19,13 @@ data class BlockActorDataPacket(
 
         override fun deserialize(stream: Source): BlockActorDataPacket {
             return BlockActorDataPacket(
-                blockPosition = UIVector3.deserialize(stream),
+                blockPosition = NetBlockPos.deserialize(stream),
                 actorDataTags = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
             )
         }
 
         override fun serialize(value: BlockActorDataPacket, stream: Sink) {
-            UIVector3.serialize(value.blockPosition, stream)
+            NetBlockPos.serialize(value.blockPosition, stream)
             Tag.serialize(value.actorDataTags, stream, TagSerialization.NetLE, true)
         }
     }
