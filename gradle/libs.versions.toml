@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.1.10"
 kotlinx-io = "0.7.0"
-nbt = "1.0.1"
+nbt = "1.0.2"
 varlen = "1.0.0"
 dokka = "2.0.0"
 maven-publish = "0.32.0"
