@@ -15,7 +15,7 @@ data class AnimateEntityPacket(
     val stopExpressionVersion: Int,
     val controller: String,
     val blendOutTime: Float,
-    val runtimeIDs: List<ActorRuntimeID>,
+    val runtimeIDs: List<ULong>,
 ) : Packet(id) {
     companion object : PacketCodec<AnimateEntityPacket> {
         override val id: Int = 158
