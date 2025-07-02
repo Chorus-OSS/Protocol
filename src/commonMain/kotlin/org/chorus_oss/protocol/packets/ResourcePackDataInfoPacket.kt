@@ -3,6 +3,8 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.ByteString
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
@@ -14,10 +16,10 @@ data class ResourcePackDataInfoPacket(
     val chunkSize: UInt,
     val chunkCount: UInt,
     val fileSize: ULong,
-    val fileHash: String,
+    val fileHash: ByteString,
     val premium: Boolean,
     val type: Type,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ResourcePackDataInfoPacket> {
         enum class Type {
             Invalid,
@@ -48,7 +50,7 @@ data class ResourcePackDataInfoPacket(
             ProtoLE.UInt.serialize(value.chunkSize, stream)
             ProtoLE.UInt.serialize(value.chunkCount, stream)
             ProtoLE.ULong.serialize(value.fileSize, stream)
-            Proto.String.serialize(value.fileHash, stream)
+            Proto.ByteString.serialize(value.fileHash, stream)
             Proto.Boolean.serialize(value.premium, stream)
             Type.serialize(value.type, stream)
         }
@@ -59,7 +61,7 @@ data class ResourcePackDataInfoPacket(
                 chunkSize = ProtoLE.UInt.deserialize(stream),
                 chunkCount = ProtoLE.UInt.deserialize(stream),
                 fileSize = ProtoLE.ULong.deserialize(stream),
-                fileHash = Proto.String.deserialize(stream),
+                fileHash = Proto.ByteString.deserialize(stream),
                 premium = Proto.Boolean.deserialize(stream),
                 type = Type.deserialize(stream),
             )
