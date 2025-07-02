@@ -6,7 +6,9 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoHelper
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Long
 
 data class AbilitiesData(
     val targetPlayerRawID: Long,
@@ -16,7 +18,7 @@ data class AbilitiesData(
 ) {
     companion object : ProtoCodec<AbilitiesData> {
         override fun serialize(value: AbilitiesData, stream: Sink) {
-            ActorUniqueID.serialize(value.targetPlayerRawID, stream)
+            ProtoLE.Long.serialize(value.targetPlayerRawID, stream)
             Proto.Byte.serialize(value.playerPermissions.ordinal.toByte(), stream)
             Proto.Byte.serialize(value.commandPermissions.ordinal.toByte(), stream)
             ProtoHelper.serializeList(value.layers, stream, AbilityLayer)
@@ -24,7 +26,7 @@ data class AbilitiesData(
 
         override fun deserialize(stream: Source): AbilitiesData {
             return AbilitiesData(
-                targetPlayerRawID = ActorUniqueID.deserialize(stream),
+                targetPlayerRawID = ProtoLE.Long.deserialize(stream),
                 playerPermissions = PlayerPermission.entries[Proto.Byte.deserialize(stream).toInt()],
                 commandPermissions = CommandPermission.entries[Proto.Byte.deserialize(stream).toInt()],
                 layers = ProtoHelper.deserializeList(stream, AbilityLayer)
