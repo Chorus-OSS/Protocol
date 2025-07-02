@@ -2,6 +2,7 @@ package org.chorus_oss.protocol.packets
 
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
@@ -11,7 +12,7 @@ import org.chorus_oss.protocol.core.types.UInt
 data class ResourcePackChunkRequestPacket(
     val resourceName: String,
     val chunkID: UInt,
-) {
+) : Packet(id) {
     companion object : PacketCodec<ResourcePackChunkRequestPacket> {
         override val id: Int = 84
 
