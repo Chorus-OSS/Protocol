@@ -3,6 +3,8 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
+import kotlinx.io.readByteString
+import kotlinx.io.write
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -17,12 +19,12 @@ data class AvailableActorIdentifiersPacket(
 
         override fun deserialize(stream: Source): AvailableActorIdentifiersPacket {
             return AvailableActorIdentifiersPacket(
-                tag = Proto.ByteString.deserialize(stream),
+                tag = stream.readByteString(),
             )
         }
 
         override fun serialize(value: AvailableActorIdentifiersPacket, stream: Sink) {
-            Proto.ByteString.serialize(value.tag, stream)
+            stream.write(value.tag)
         }
     }
 }
