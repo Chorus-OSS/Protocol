@@ -4,7 +4,9 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
+import org.chorus_oss.protocol.core.types.Int
 
 enum class InventoryLayout {
     None,
@@ -17,11 +19,11 @@ enum class InventoryLayout {
             value: InventoryLayout,
             stream: Sink
         ) {
-            Proto.Byte.serialize(value.ordinal.toByte(), stream)
+            ProtoVAR.Int.serialize(value.ordinal, stream)
         }
 
         override fun deserialize(stream: Source): InventoryLayout {
-            return entries[Proto.Byte.deserialize(stream).toInt()]
+            return entries[ProtoVAR.Int.deserialize(stream)]
         }
     }
 }
