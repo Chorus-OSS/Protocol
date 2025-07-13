@@ -5,11 +5,12 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.ULong
 import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class NPCDialoguePacket(
-    val entityUniqueID: Long,
+    val entityUniqueID: ULong,
     val actionType: ActionType,
     val dialogue: String,
     val sceneName: String,
@@ -38,7 +39,7 @@ data class NPCDialoguePacket(
         override val id: Int = 169
 
         override fun serialize(value: NPCDialoguePacket, stream: Sink) {
-            ActorUniqueID.serialize(value.entityUniqueID, stream)
+            ProtoLE.ULong.serialize(value.entityUniqueID, stream)
             ActionType.serialize(value.actionType, stream)
             Proto.String.serialize(value.dialogue, stream)
             Proto.String.serialize(value.sceneName, stream)
@@ -48,7 +49,7 @@ data class NPCDialoguePacket(
 
         override fun deserialize(stream: Source): NPCDialoguePacket {
             return NPCDialoguePacket(
-                entityUniqueID = ActorUniqueID.deserialize(stream),
+                entityUniqueID = ProtoLE.ULong.deserialize(stream),
                 actionType = ActionType.deserialize(stream),
                 dialogue = Proto.String.deserialize(stream),
                 sceneName = Proto.String.deserialize(stream),
