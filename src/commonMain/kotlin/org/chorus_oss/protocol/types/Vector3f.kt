@@ -5,10 +5,6 @@ import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Float
-import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 data class Vector3f(
     val x: Float,

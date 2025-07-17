@@ -7,8 +7,6 @@ import kotlinx.io.readByteString
 import kotlinx.io.write
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
-import org.chorus_oss.protocol.core.Proto
-import org.chorus_oss.protocol.core.types.ByteString
 
 
 data class AvailableActorIdentifiersPacket(

@@ -69,6 +69,7 @@ enum class DisconnectFailReason {
     IncompatiblePack,
     OutOfStorage,
     InvalidLevel,
+
     @Deprecated("")
     DisconnectPacket,
     BlockMismatch,
@@ -97,6 +98,7 @@ enum class DisconnectFailReason {
     ConnNegotiationTimeout,
     ConnInactivityTimeout,
     StaleConnectionBeingReplaced,
+
     @Deprecated("since v685")
     RealmsSessionNotFound,
     BadPacket,
