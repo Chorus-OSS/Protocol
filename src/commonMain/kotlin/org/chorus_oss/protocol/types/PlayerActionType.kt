@@ -43,6 +43,7 @@ enum class PlayerActionType {
     StopCrawling,
     StartFlying,
     StopFlying,
+
     @Deprecated("Size v818")
     ClientAckServerData,
     StartItemUse;
