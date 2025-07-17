@@ -3,6 +3,8 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.ByteString
+import kotlinx.io.readByteString
+import kotlinx.io.write
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.Proto
@@ -22,13 +24,13 @@ data class LevelEventGenericPacket(
             stream: Sink
         ) {
             ProtoVAR.Int.serialize(value.eventID, stream)
-            Proto.ByteString.serialize(value.serializedEventData, stream)
+            stream.write(value.serializedEventData)
         }
 
         override fun deserialize(stream: Source): LevelEventGenericPacket {
             return LevelEventGenericPacket(
                 eventID = ProtoVAR.Int.deserialize(stream),
-                serializedEventData = Proto.ByteString.deserialize(stream),
+                serializedEventData = stream.readByteString(),
             )
         }
     }
