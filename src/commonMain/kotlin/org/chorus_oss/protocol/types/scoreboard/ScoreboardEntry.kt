@@ -4,6 +4,7 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoCodec
+import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Int
@@ -47,7 +48,7 @@ data class ScoreboardEntry(
         ) {
             ProtoVAR.Long.serialize(value.entryID, stream)
             Proto.String.serialize(value.objectiveName, stream)
-            ProtoVAR.Int.serialize(value.score, stream)
+            ProtoLE.Int.serialize(value.score, stream)
             IdentityType.serialize(value.identityType, stream)
             when (value.identityType) {
                 IdentityType.Player,
@@ -66,7 +67,7 @@ data class ScoreboardEntry(
             return ScoreboardEntry(
                 entryID = ProtoVAR.Long.deserialize(stream),
                 objectiveName = Proto.String.deserialize(stream),
-                score = ProtoVAR.Int.deserialize(stream),
+                score = ProtoLE.Int.deserialize(stream),
                 identityType = IdentityType.deserialize(stream).also { identityType = it },
                 entityUniqueID = when (identityType) {
                     IdentityType.Player,
