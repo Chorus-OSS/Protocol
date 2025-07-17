@@ -171,7 +171,8 @@ object SubChunkEntryNoCache : ProtoCodec<SubChunkEntry> {
 
                 else -> null
             },
-            renderHeightMapType = SubChunkEntry.Companion.HeightMapType.deserialize(stream).also { renderHeightMapType = it },
+            renderHeightMapType = SubChunkEntry.Companion.HeightMapType.deserialize(stream)
+                .also { renderHeightMapType = it },
             renderHeightMapData = when (renderHeightMapType) {
                 SubChunkEntry.Companion.HeightMapType.HasData -> List(256) {
                     Proto.Byte.deserialize(stream)

@@ -4,7 +4,6 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Short
 import org.chorus_oss.protocol.core.types.UInt
 

@@ -7,8 +7,8 @@ import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.types.ActorRuntimeID
-import org.chorus_oss.protocol.types.CommandBlockMode
 import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.CommandBlockMode
 import org.chorus_oss.protocol.types.NetBlockPos
 
 data class CommandBlockUpdatePacket(

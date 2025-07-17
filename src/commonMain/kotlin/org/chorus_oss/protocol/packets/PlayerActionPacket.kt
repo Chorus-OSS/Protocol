@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.BlockPos
-import org.chorus_oss.protocol.types.PlayerActionType
 import org.chorus_oss.protocol.types.NetBlockPos
+import org.chorus_oss.protocol.types.PlayerActionType
 
 
 data class PlayerActionPacket(

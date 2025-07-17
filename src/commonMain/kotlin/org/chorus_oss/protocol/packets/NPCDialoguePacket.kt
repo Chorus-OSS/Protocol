@@ -6,7 +6,6 @@ import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
 import org.chorus_oss.protocol.core.types.ULong
-import org.chorus_oss.protocol.types.ActorUniqueID
 
 
 data class NPCDialoguePacket(

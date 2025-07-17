@@ -8,8 +8,8 @@ import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.types.ChunkPos
 import org.chorus_oss.protocol.types.BlockPos
+import org.chorus_oss.protocol.types.ChunkPos
 
 
 data class NetworkChunkPublisherUpdatePacket(
