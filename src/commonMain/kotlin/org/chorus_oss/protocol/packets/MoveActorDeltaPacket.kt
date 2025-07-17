@@ -4,7 +4,9 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
+import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoLE
+import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.UShort
 import org.chorus_oss.protocol.types.ActorRuntimeID
@@ -18,8 +20,6 @@ data class MoveActorDeltaPacket(
     val rotation: Vector3f,
 ) : Packet(id) {
     companion object : PacketCodec<MoveActorDeltaPacket> {
-
-
         const val FLAG_HAS_X: UShort = 0x1u
         const val FLAG_HAS_Y: UShort = 0x2u
         const val FLAG_HAS_Z: UShort = 0x4u
@@ -51,17 +51,17 @@ data class MoveActorDeltaPacket(
             }
 
             when (value.flags and FLAG_HAS_ROT_X != 0u.toUShort()) {
-                true -> ProtoLE.Float.serialize(value.rotation.x, stream)
+                true -> Proto.Byte.serialize((value.rotation.x / (360.0f / 256.0f)).toInt().toByte(), stream)
                 false -> Unit
             }
 
             when (value.flags and FLAG_HAS_ROT_Y != 0u.toUShort()) {
-                true -> ProtoLE.Float.serialize(value.rotation.y, stream)
+                true -> Proto.Byte.serialize((value.rotation.y / (360.0f / 256.0f)).toInt().toByte(), stream)
                 false -> Unit
             }
 
             when (value.flags and FLAG_HAS_ROT_Z != 0u.toUShort()) {
-                true -> ProtoLE.Float.serialize(value.rotation.z, stream)
+                true -> Proto.Byte.serialize((value.rotation.z / (360.0f / 256.0f)).toInt().toByte(), stream)
                 false -> Unit
             }
         }
@@ -87,15 +87,15 @@ data class MoveActorDeltaPacket(
                 ),
                 rotation = Vector3f(
                     x = when (flags and FLAG_HAS_ROT_X != 0u.toUShort()) {
-                        true -> ProtoLE.Float.deserialize(stream)
+                        true -> Proto.Byte.deserialize(stream).toFloat() * (360.0f / 256.0f)
                         false -> 0f
                     },
                     y = when (flags and FLAG_HAS_ROT_Y != 0u.toUShort()) {
-                        true -> ProtoLE.Float.deserialize(stream)
+                        true -> Proto.Byte.deserialize(stream).toFloat() * (360.0f / 256.0f)
                         false -> 0f
                     },
                     z = when (flags and FLAG_HAS_ROT_Z != 0u.toUShort()) {
-                        true -> ProtoLE.Float.deserialize(stream)
+                        true -> Proto.Byte.deserialize(stream).toFloat() * (360.0f / 256.0f)
                         false -> 0f
                     }
                 )
