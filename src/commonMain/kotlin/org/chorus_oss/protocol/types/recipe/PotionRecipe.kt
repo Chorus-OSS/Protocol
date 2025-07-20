@@ -18,7 +18,6 @@ data class PotionRecipe(
         override fun serialize(value: PotionRecipe, stream: Sink) {
             ProtoVAR.Int.serialize(value.inputPotionID, stream)
             ProtoVAR.Int.serialize(value.inputPotionMetadata, stream)
-            ProtoVAR.Int.serialize(value.inputPotionID, stream)
             ProtoVAR.Int.serialize(value.reagentItemID, stream)
             ProtoVAR.Int.serialize(value.reagentItemMetadata, stream)
             ProtoVAR.Int.serialize(value.outputPotionID, stream)
