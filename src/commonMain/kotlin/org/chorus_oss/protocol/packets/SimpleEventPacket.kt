@@ -6,7 +6,6 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
-import org.chorus_oss.protocol.core.types.Short
 import org.chorus_oss.protocol.core.types.UShort
 
 

@@ -9,7 +9,6 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoBE
 import org.chorus_oss.protocol.core.types.ByteString
 import org.chorus_oss.protocol.core.types.Int
-import org.chorus_oss.protocol.core.types.String
 
 data class LoginPacket(
     val clientProtocol: Int,
