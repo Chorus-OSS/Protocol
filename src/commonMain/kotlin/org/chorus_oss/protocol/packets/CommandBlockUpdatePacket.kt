@@ -4,8 +4,8 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.*
 import org.chorus_oss.protocol.core.types.Boolean
-import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.ActorRuntimeID
 import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.CommandBlockMode
@@ -19,7 +19,7 @@ data class CommandBlockUpdatePacket(
     val name: String,
     val filteredName: String,
     val trackOutput: Boolean,
-    val tickDelay: Int,
+    val tickDelay: UInt,
     val shouldExecuteOnFirstTick: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CommandBlockUpdatePacket> {
@@ -89,7 +89,7 @@ data class CommandBlockUpdatePacket(
                 name = Proto.String.deserialize(stream),
                 filteredName = Proto.String.deserialize(stream),
                 trackOutput = Proto.Boolean.deserialize(stream),
-                tickDelay = ProtoLE.Int.deserialize(stream),
+                tickDelay = ProtoLE.UInt.deserialize(stream),
                 shouldExecuteOnFirstTick = Proto.Boolean.deserialize(stream)
             )
         }
@@ -119,7 +119,7 @@ data class CommandBlockUpdatePacket(
             Proto.String.serialize(value.name, stream)
             Proto.String.serialize(value.filteredName, stream)
             Proto.Boolean.serialize(value.trackOutput, stream)
-            ProtoLE.Int.serialize(value.tickDelay, stream)
+            ProtoLE.UInt.serialize(value.tickDelay, stream)
             Proto.Boolean.serialize(value.shouldExecuteOnFirstTick, stream)
         }
     }

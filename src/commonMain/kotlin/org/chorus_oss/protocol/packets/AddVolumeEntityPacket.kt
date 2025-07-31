@@ -11,12 +11,12 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.String
-import org.chorus_oss.protocol.types.ActorRuntimeID
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.BlockPos
 import org.chorus_oss.protocol.types.NetBlockPos
 
-data class AddVolumeActorPacket(
-    val actorRuntimeID: ULong,
+data class AddVolumeEntityPacket(
+    val entityRuntimeID: UInt,
     val components: CompoundTag,
     val jsonIdentifier: String,
     val instanceIdentifier: String,
@@ -25,12 +25,12 @@ data class AddVolumeActorPacket(
     val dimension: Int,
     val engineVersion: String,
 ) : Packet(id) {
-    companion object : PacketCodec<AddVolumeActorPacket> {
+    companion object : PacketCodec<AddVolumeEntityPacket> {
         override val id: Int = 166
 
-        override fun deserialize(stream: Source): AddVolumeActorPacket {
-            return AddVolumeActorPacket(
-                actorRuntimeID = ActorRuntimeID.deserialize(stream),
+        override fun deserialize(stream: Source): AddVolumeEntityPacket {
+            return AddVolumeEntityPacket(
+                entityRuntimeID = ProtoVAR.UInt.deserialize(stream),
                 components = Tag.deserialize(stream, TagSerialization.NetLE) as CompoundTag,
                 jsonIdentifier = Proto.String.deserialize(stream),
                 instanceIdentifier = Proto.String.deserialize(stream),
@@ -41,8 +41,8 @@ data class AddVolumeActorPacket(
             )
         }
 
-        override fun serialize(value: AddVolumeActorPacket, stream: Sink) {
-            ActorRuntimeID.serialize(value.actorRuntimeID, stream)
+        override fun serialize(value: AddVolumeEntityPacket, stream: Sink) {
+            ProtoVAR.UInt.serialize(value.entityRuntimeID, stream)
             Tag.serialize(value.components, stream, TagSerialization.NetLE, true)
             Proto.String.serialize(value.jsonIdentifier, stream)
             Proto.String.serialize(value.instanceIdentifier, stream)

@@ -7,27 +7,28 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoCodec
 import org.chorus_oss.protocol.core.ProtoLE
 import org.chorus_oss.protocol.core.types.Short
+import org.chorus_oss.protocol.core.types.UShort
 
 
 data class SimpleEventPacket(
     val eventType: EventType
 ) : Packet(id) {
     companion object : PacketCodec<SimpleEventPacket> {
-        enum class EventType(val net: Short) {
-            CommandsEnabled(1),
-            CommandsDisabled(2),
-            UnlockWorldTemplateSettings(3);
+        enum class EventType(val net: UShort) {
+            CommandsEnabled(1u),
+            CommandsDisabled(2u),
+            UnlockWorldTemplateSettings(3u);
 
             companion object : ProtoCodec<EventType> {
                 override fun serialize(
                     value: EventType,
                     stream: Sink
                 ) {
-                    ProtoLE.Short.serialize(value.net, stream)
+                    ProtoLE.UShort.serialize(value.net, stream)
                 }
 
                 override fun deserialize(stream: Source): EventType {
-                    return ProtoLE.Short.deserialize(stream).let {
+                    return ProtoLE.UShort.deserialize(stream).let {
                         entries.find { e -> e.net == it }!!
                     }
                 }
