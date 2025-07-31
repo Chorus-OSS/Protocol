@@ -7,7 +7,6 @@ import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UInt
-import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class RemoveVolumeEntityPacket(
