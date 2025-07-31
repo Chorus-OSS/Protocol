@@ -25,11 +25,11 @@ data class LessonProgressPacket(
                     value: Action,
                     stream: Sink
                 ) {
-                    Proto.Byte.serialize(value.ordinal.toByte(), stream)
+                    ProtoVAR.Int.serialize(value.ordinal, stream)
                 }
 
                 override fun deserialize(stream: Source): Action {
-                    return entries[Proto.Byte.deserialize(stream).toInt()]
+                    return entries[ProtoVAR.Int.deserialize(stream)]
                 }
             }
         }

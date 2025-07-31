@@ -6,11 +6,12 @@ import org.chorus_oss.protocol.core.Packet
 import org.chorus_oss.protocol.core.PacketCodec
 import org.chorus_oss.protocol.core.ProtoVAR
 import org.chorus_oss.protocol.core.types.Int
+import org.chorus_oss.protocol.core.types.UInt
 import org.chorus_oss.protocol.types.ActorRuntimeID
 
 
 data class RemoveVolumeEntityPacket(
-    val entityRuntimeID: ULong,
+    val entityRuntimeID: UInt,
     val dimension: Int,
 ) : Packet(id) {
     companion object : PacketCodec<RemoveVolumeEntityPacket> {
@@ -20,13 +21,13 @@ data class RemoveVolumeEntityPacket(
             value: RemoveVolumeEntityPacket,
             stream: Sink
         ) {
-            ActorRuntimeID.serialize(value.entityRuntimeID, stream)
+            ProtoVAR.UInt.serialize(value.entityRuntimeID, stream)
             ProtoVAR.Int.serialize(value.dimension, stream)
         }
 
         override fun deserialize(stream: Source): RemoveVolumeEntityPacket {
             return RemoveVolumeEntityPacket(
-                entityRuntimeID = ActorRuntimeID.deserialize(stream),
+                entityRuntimeID = ProtoVAR.UInt.deserialize(stream),
                 dimension = ProtoVAR.Int.deserialize(stream),
             )
         }

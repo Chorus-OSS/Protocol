@@ -67,7 +67,7 @@ data class StartGamePacket(
     val limitedWorldDepth: Int,
     val newNether: Boolean,
     val educationSharedResourceUriResource: EduSharedUriResource,
-    val forceExperimentalGameplay: Boolean?,
+    val forceExperimentalGameplay: Boolean,
     val chatRestrictionLevel: ChatRestrictionLevel,
     val disablePlayerInteractions: Boolean,
     val serverID: String,
@@ -154,7 +154,7 @@ data class StartGamePacket(
             ProtoLE.Int.serialize(value.limitedWorldDepth, stream)
             Proto.Boolean.serialize(value.newNether, stream)
             EduSharedUriResource.serialize(value.educationSharedResourceUriResource, stream)
-            ProtoHelper.serializeNullable(value.forceExperimentalGameplay, stream, Proto.Boolean)
+            Proto.Boolean.serialize(value.forceExperimentalGameplay, stream)
             ChatRestrictionLevel.serialize(value.chatRestrictionLevel, stream)
             Proto.Boolean.serialize(value.disablePlayerInteractions, stream)
             Proto.String.serialize(value.serverID, stream)
@@ -239,7 +239,7 @@ data class StartGamePacket(
                 limitedWorldDepth = ProtoLE.Int.deserialize(stream),
                 newNether = Proto.Boolean.deserialize(stream),
                 educationSharedResourceUriResource = EduSharedUriResource.deserialize(stream),
-                forceExperimentalGameplay = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                forceExperimentalGameplay = Proto.Boolean.deserialize(stream),
                 chatRestrictionLevel = ChatRestrictionLevel.deserialize(stream),
                 disablePlayerInteractions = Proto.Boolean.deserialize(stream),
                 serverID = Proto.String.deserialize(stream),
