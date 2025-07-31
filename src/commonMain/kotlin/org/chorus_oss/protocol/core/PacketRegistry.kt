@@ -33,7 +33,7 @@ object PacketRegistry {
             AddItemActorPacket,
             AddPaintingPacket,
             AddPlayerPacket,
-            AddVolumeActorPacket,
+            AddVolumeEntityPacket,
             AgentActionEventPacket,
             AgentAnimationPacket,
             AnimateEntityPacket,
