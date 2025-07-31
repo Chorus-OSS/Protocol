@@ -30,6 +30,7 @@ enum class ActorDataKey {
     OldSwell,
     SwellDirection,
     ChargeAmount,
+    @Deprecated("Since v827")
     CarryBlockRuntimeID,
     ClientEvent,
     UsingItem,

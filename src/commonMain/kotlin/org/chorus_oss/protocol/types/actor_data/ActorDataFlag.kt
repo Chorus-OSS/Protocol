@@ -127,7 +127,7 @@ enum class ActorDataFlag {
     TimerFlag3,
     BodyRotationBlocked,
     RenderWhenInvisible,
-    BodyRotationAxisAligned,
+    RotationAxisAligned,
     Collidable,
     WasdAirControlled,
     DoesServerAuthOnlyDismount,

@@ -3,6 +3,7 @@ package org.chorus_oss.protocol.packets
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import org.chorus_oss.protocol.core.*
+import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.core.types.Byte
 import org.chorus_oss.protocol.core.types.Float
 import org.chorus_oss.protocol.core.types.String
@@ -15,6 +16,7 @@ data class CameraAimAssistPacket(
     val distance: Float,
     val targetMode: CameraAimAssistTargetMode,
     val action: Action,
+    val showDebugRender: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<CameraAimAssistPacket> {
         enum class Action {
@@ -40,7 +42,8 @@ data class CameraAimAssistPacket(
                 viewAngle = Vector2f.deserialize(stream),
                 distance = ProtoLE.Float.deserialize(stream),
                 targetMode = CameraAimAssistTargetMode.deserialize(stream),
-                action = Action.deserialize(stream)
+                action = Action.deserialize(stream),
+                showDebugRender = Proto.Boolean.deserialize(stream),
             )
         }
 
@@ -50,6 +53,7 @@ data class CameraAimAssistPacket(
             ProtoLE.Float.serialize(value.distance, stream)
             CameraAimAssistTargetMode.serialize(value.targetMode, stream)
             Action.serialize(value.action, stream)
+            Proto.Boolean.serialize(value.showDebugRender, stream)
         }
     }
 }

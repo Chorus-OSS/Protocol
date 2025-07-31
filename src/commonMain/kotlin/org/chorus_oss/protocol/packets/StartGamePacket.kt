@@ -90,6 +90,7 @@ data class StartGamePacket(
     val clientSideGeneration: Boolean,
     val worldTemplateID: Uuid,
     val useBlockNetworkIDHashes: Boolean,
+    val tickDeathSystemsEnabled: Boolean,
     val serverAuthoritativeSound: Boolean,
 ) : Packet(id) {
     companion object : PacketCodec<StartGamePacket> {
@@ -176,6 +177,7 @@ data class StartGamePacket(
             Proto.Uuid.serialize(value.worldTemplateID, stream)
             Proto.Boolean.serialize(value.clientSideGeneration, stream)
             Proto.Boolean.serialize(value.useBlockNetworkIDHashes, stream)
+            Proto.Boolean.serialize(value.tickDeathSystemsEnabled, stream)
             Proto.Boolean.serialize(value.serverAuthoritativeSound, stream)
         }
 
@@ -260,6 +262,7 @@ data class StartGamePacket(
                 worldTemplateID = Proto.Uuid.deserialize(stream),
                 clientSideGeneration = Proto.Boolean.deserialize(stream),
                 useBlockNetworkIDHashes = Proto.Boolean.deserialize(stream),
+                tickDeathSystemsEnabled = Proto.Boolean.deserialize(stream),
                 serverAuthoritativeSound = Proto.Boolean.deserialize(stream),
             )
         }

@@ -14,8 +14,8 @@ data class CorrectPlayerMovePredictionPacket(
     val predictionType: PredictionType,
     val position: Vector3f,
     val delta: Vector3f,
-    val rotation: Vector2f?,
-    val vehicleAngularVelocity: Float?,
+    val rotation: Vector2f,
+    val vehicleAngularVelocity: Float,
     val onGround: Boolean,
     val tick: ULong,
 ) : Packet(id) {
@@ -47,37 +47,19 @@ data class CorrectPlayerMovePredictionPacket(
             PredictionType.serialize(value.predictionType, stream)
             Vector3f.serialize(value.position, stream)
             Vector3f.serialize(value.delta, stream)
-            when (value.predictionType) {
-                PredictionType.Vehicle -> Vector2f.serialize(value.rotation as Vector2f, stream)
-                else -> Unit
-            }
-            when (value.predictionType) {
-                PredictionType.Vehicle -> ProtoHelper.serializeNullable(
-                    value.vehicleAngularVelocity,
-                    stream,
-                    ProtoLE.Float
-                )
-
-                else -> Unit
-            }
+            Vector2f.serialize(value.rotation, stream)
+            ProtoLE.Float.serialize(value.vehicleAngularVelocity, stream)
             Proto.Boolean.serialize(value.onGround, stream)
             ProtoVAR.ULong.serialize(value.tick, stream)
         }
 
         override fun deserialize(stream: Source): CorrectPlayerMovePredictionPacket {
-            val predictionType: PredictionType
             return CorrectPlayerMovePredictionPacket(
-                predictionType = PredictionType.deserialize(stream).also { predictionType = it },
+                predictionType = PredictionType.deserialize(stream),
                 position = Vector3f.deserialize(stream),
                 delta = Vector3f.deserialize(stream),
-                rotation = when (predictionType) {
-                    PredictionType.Vehicle -> Vector2f.deserialize(stream)
-                    else -> null
-                },
-                vehicleAngularVelocity = when (predictionType) {
-                    PredictionType.Vehicle -> ProtoHelper.deserializeNullable(stream, ProtoLE.Float)
-                    else -> null
-                },
+                rotation = Vector2f.deserialize(stream),
+                vehicleAngularVelocity = ProtoLE.Float.deserialize(stream),
                 onGround = Proto.Boolean.deserialize(stream),
                 tick = ProtoVAR.ULong.deserialize(stream),
             )

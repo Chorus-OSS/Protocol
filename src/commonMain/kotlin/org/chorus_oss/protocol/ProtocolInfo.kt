@@ -2,5 +2,5 @@ package org.chorus_oss.protocol
 
 @Suppress("unused")
 object ProtocolInfo {
-    const val VERSION = 819
+    const val VERSION = 827
 }

@@ -32,6 +32,8 @@ sealed class ActorDataType<T : Any>(
     data object OldSwell : ActorDataType<Int>(ActorDataKey.OldSwell, Int::class)
     data object SwellDirection : ActorDataType<Int>(ActorDataKey.SwellDirection, Int::class)
     data object ChargeAmount : ActorDataType<Byte>(ActorDataKey.ChargeAmount, Byte::class)
+    @Suppress("DEPRECATION")
+    @Deprecated("Since v827")
     data object CarryBlockRuntimeID : ActorDataType<Int>(ActorDataKey.CarryBlockRuntimeID, Int::class)
     data object ClientEvent : ActorDataType<Byte>(ActorDataKey.ClientEvent, Byte::class)
     data object UsingItem : ActorDataType<Byte>(ActorDataKey.UsingItem, Byte::class)

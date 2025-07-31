@@ -108,7 +108,8 @@ enum class DisconnectFailReason {
     AsyncJoinTaskDenied,
     RealmsTimelineRequired,
     GuestWithoutHost,
-    FailedToJoinExperience;
+    FailedToJoinExperience,
+    NetherNetDataChannelClosed;
 
     companion object : ProtoCodec<DisconnectFailReason> {
         override fun serialize(value: DisconnectFailReason, stream: Sink) {

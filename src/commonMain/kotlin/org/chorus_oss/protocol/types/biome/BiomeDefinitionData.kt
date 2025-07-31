@@ -12,7 +12,7 @@ import org.chorus_oss.protocol.core.types.Int
 import org.chorus_oss.protocol.core.types.UShort
 
 data class BiomeDefinitionData(
-    val id: UShort? = null,
+    val id: UShort,
     val temperature: Float,
     val downfall: Float,
     val redSporeDensity: Float,
@@ -28,7 +28,7 @@ data class BiomeDefinitionData(
 ) {
     companion object : ProtoCodec<BiomeDefinitionData> {
         override fun serialize(value: BiomeDefinitionData, stream: Sink) {
-            ProtoHelper.serializeNullable(value.id, stream, ProtoLE.UShort)
+            ProtoLE.UShort.serialize(value.id, stream)
             ProtoLE.Float.serialize(value.temperature, stream)
             ProtoLE.Float.serialize(value.downfall, stream)
             ProtoLE.Float.serialize(value.redSporeDensity, stream)
@@ -45,7 +45,7 @@ data class BiomeDefinitionData(
 
         override fun deserialize(stream: Source): BiomeDefinitionData {
             return BiomeDefinitionData(
-                id = ProtoHelper.deserializeNullable(stream, ProtoLE.UShort),
+                id = ProtoLE.UShort.deserialize(stream),
                 temperature = ProtoLE.Float.deserialize(stream),
                 downfall = ProtoLE.Float.deserialize(stream),
                 redSporeDensity = ProtoLE.Float.deserialize(stream),

@@ -8,6 +8,7 @@ import org.chorus_oss.protocol.core.Proto
 import org.chorus_oss.protocol.core.ProtoHelper
 import org.chorus_oss.protocol.core.types.Boolean
 import org.chorus_oss.protocol.types.camera.instruction.CameraFadeInstruction
+import org.chorus_oss.protocol.types.camera.instruction.CameraFieldOfViewInstruction
 import org.chorus_oss.protocol.types.camera.instruction.CameraSetInstruction
 import org.chorus_oss.protocol.types.camera.instruction.CameraTargetInstruction
 
@@ -17,6 +18,7 @@ data class CameraInstructionPacket(
     var fade: CameraFadeInstruction? = null,
     var target: CameraTargetInstruction? = null,
     var removeTarget: Boolean? = null,
+    var fieldOfView: CameraFieldOfViewInstruction? = null,
 ) : Packet(id) {
     companion object : PacketCodec<CameraInstructionPacket> {
         override val id: Int = 300
@@ -28,6 +30,7 @@ data class CameraInstructionPacket(
                 fade = ProtoHelper.deserializeNullable(stream, CameraFadeInstruction),
                 target = ProtoHelper.deserializeNullable(stream, CameraTargetInstruction),
                 removeTarget = ProtoHelper.deserializeNullable(stream, Proto.Boolean),
+                fieldOfView = ProtoHelper.deserializeNullable(stream, CameraFieldOfViewInstruction),
             )
         }
 
@@ -37,6 +40,7 @@ data class CameraInstructionPacket(
             ProtoHelper.serializeNullable(value.fade, stream, CameraFadeInstruction)
             ProtoHelper.serializeNullable(value.target, stream, CameraTargetInstruction)
             ProtoHelper.serializeNullable(value.removeTarget, stream, Proto.Boolean)
+            ProtoHelper.serializeNullable(value.fieldOfView, stream, CameraFieldOfViewInstruction)
         }
     }
 }
