@@ -171,6 +171,7 @@ object PacketRegistry {
             ScriptMessagePacket,
             ServerboundDiagnosticsPacket,
             ServerboundLoadingScreenPacket,
+            ServerboundPackSettingChangePacket,
             ServerPostMovePositionPacket,
             ServerScriptDebugDrawerPacket,
             ServerSettingsRequestPacket,

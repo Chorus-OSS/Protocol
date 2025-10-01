@@ -129,7 +129,7 @@ data class StartGamePacket(
             BroadcastMode.serialize(value.platformBroadcastMode, stream)
             Proto.Boolean.serialize(value.commandsEnabled, stream)
             Proto.Boolean.serialize(value.texturePackRequired, stream)
-            ProtoHelper.serializeList(value.gameRules, stream, GameRule)
+            ProtoHelper.serializeList(value.gameRules, stream, GameRuleLegacy)
             value.experiments.let { experiments ->
                 ProtoLE.UInt.serialize(experiments.size.toUInt(), stream)
                 experiments.forEach { ExperimentData.serialize(it, stream) }
@@ -215,7 +215,7 @@ data class StartGamePacket(
                 platformBroadcastMode = BroadcastMode.deserialize(stream),
                 commandsEnabled = Proto.Boolean.deserialize(stream),
                 texturePackRequired = Proto.Boolean.deserialize(stream),
-                gameRules = ProtoHelper.deserializeList(stream, GameRule),
+                gameRules = ProtoHelper.deserializeList(stream, GameRuleLegacy),
                 experiments = List(ProtoLE.UInt.deserialize(stream).toInt()) {
                     ExperimentData.deserialize(stream)
                 },

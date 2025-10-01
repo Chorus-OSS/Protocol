@@ -15,10 +15,7 @@ data class BiomeDefinitionData(
     val id: UShort,
     val temperature: Float,
     val downfall: Float,
-    val redSporeDensity: Float,
-    val blueSporeDensity: Float,
-    val ashDensity: Float,
-    val whiteAshDensity: Float,
+    val foliageSnow: Float,
     val depth: Float,
     val scale: Float,
     val mapWaterColorARGB: Int,
@@ -31,10 +28,7 @@ data class BiomeDefinitionData(
             ProtoLE.UShort.serialize(value.id, stream)
             ProtoLE.Float.serialize(value.temperature, stream)
             ProtoLE.Float.serialize(value.downfall, stream)
-            ProtoLE.Float.serialize(value.redSporeDensity, stream)
-            ProtoLE.Float.serialize(value.blueSporeDensity, stream)
-            ProtoLE.Float.serialize(value.ashDensity, stream)
-            ProtoLE.Float.serialize(value.whiteAshDensity, stream)
+            ProtoLE.Float.serialize(value.foliageSnow, stream)
             ProtoLE.Float.serialize(value.depth, stream)
             ProtoLE.Float.serialize(value.scale, stream)
             ProtoLE.Int.serialize(value.mapWaterColorARGB, stream)
@@ -48,10 +42,7 @@ data class BiomeDefinitionData(
                 id = ProtoLE.UShort.deserialize(stream),
                 temperature = ProtoLE.Float.deserialize(stream),
                 downfall = ProtoLE.Float.deserialize(stream),
-                redSporeDensity = ProtoLE.Float.deserialize(stream),
-                blueSporeDensity = ProtoLE.Float.deserialize(stream),
-                ashDensity = ProtoLE.Float.deserialize(stream),
-                whiteAshDensity = ProtoLE.Float.deserialize(stream),
+                foliageSnow = ProtoLE.Float.deserialize(stream),
                 depth = ProtoLE.Float.deserialize(stream),
                 scale = ProtoLE.Float.deserialize(stream),
                 mapWaterColorARGB = ProtoLE.Int.deserialize(stream),

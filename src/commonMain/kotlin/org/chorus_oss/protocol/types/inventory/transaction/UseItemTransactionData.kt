@@ -27,7 +27,8 @@ data class UseItemTransactionData(
         enum class ActionType {
             ClickBlock,
             ClickAir,
-            BreakBlock;
+            BreakBlock,
+            UseAsAttack;
 
             companion object : ProtoCodec<ActionType> {
                 override fun serialize(

@@ -131,5 +131,6 @@ enum class ActorDataFlag {
     Collidable,
     WasdAirControlled,
     DoesServerAuthOnlyDismount,
-    BodyRotationAlwaysFollowsHead;
+    BodyRotationAlwaysFollowsHead,
+    CanUseVerticalMovementAction;
 }

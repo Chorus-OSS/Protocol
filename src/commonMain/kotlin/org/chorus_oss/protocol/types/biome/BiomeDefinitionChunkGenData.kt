@@ -13,6 +13,7 @@ data class BiomeDefinitionChunkGenData(
     val mountainParams: BiomeMountainsParamData? = null,
     val surfaceMaterialAdjustments: BiomeSurfaceMaterialAdjustmentData? = null,
     val surfaceMaterials: BiomeSurfaceMaterialData? = null,
+    val hasDefaultOverworldSurface: Boolean,
     val hasSwampSurface: Boolean,
     val hasFrozenOceanSurface: Boolean,
     val hasTheEndSurface: Boolean,
@@ -29,6 +30,7 @@ data class BiomeDefinitionChunkGenData(
             ProtoHelper.serializeNullable(value.mountainParams, stream, BiomeMountainsParamData)
             ProtoHelper.serializeNullable(value.surfaceMaterialAdjustments, stream, BiomeSurfaceMaterialAdjustmentData)
             ProtoHelper.serializeNullable(value.surfaceMaterials, stream, BiomeSurfaceMaterialData)
+            Proto.Boolean.serialize(value.hasDefaultOverworldSurface, stream)
             Proto.Boolean.serialize(value.hasSwampSurface, stream)
             Proto.Boolean.serialize(value.hasFrozenOceanSurface, stream)
             Proto.Boolean.serialize(value.hasTheEndSurface, stream)
@@ -49,6 +51,7 @@ data class BiomeDefinitionChunkGenData(
                     BiomeSurfaceMaterialAdjustmentData
                 ),
                 surfaceMaterials = ProtoHelper.deserializeNullable(stream, BiomeSurfaceMaterialData),
+                hasDefaultOverworldSurface = Proto.Boolean.deserialize(stream),
                 hasSwampSurface = Proto.Boolean.deserialize(stream),
                 hasFrozenOceanSurface = Proto.Boolean.deserialize(stream),
                 hasTheEndSurface = Proto.Boolean.deserialize(stream),

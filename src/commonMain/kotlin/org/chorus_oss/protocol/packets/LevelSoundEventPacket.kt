@@ -578,7 +578,10 @@ data class LevelSoundEventPacket(
             Unsaddle(560),
             EquipCopper(561),
             RecordLavaChicken(562),
-            Undefined(563);
+            PlaceItem(563),
+            SingleItemSwap(564),
+            MultiItemSwap(565),
+            Undefined(566);
 
             companion object : ProtoCodec<SoundType> {
                 override fun serialize(

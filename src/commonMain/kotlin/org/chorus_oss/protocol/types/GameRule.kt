@@ -29,7 +29,7 @@ data class GameRule<T>(
 
                 is UInt -> {
                     ProtoVAR.UInt.serialize(2u, stream)
-                    ProtoVAR.UInt.serialize(value.value, stream)
+                    ProtoLE.UInt.serialize(value.value, stream)
                 }
 
                 is Float -> {
@@ -48,7 +48,7 @@ data class GameRule<T>(
                 value = ProtoVAR.UInt.deserialize(stream).let {
                     when (it) {
                         1u -> Proto.Boolean.deserialize(stream)
-                        2u -> ProtoVAR.UInt.deserialize(stream)
+                        2u -> ProtoLE.UInt.deserialize(stream)
                         3u -> ProtoLE.Float.deserialize(stream)
                         else -> throw IllegalArgumentException("Unknown GameRule type: $it")
                     }
